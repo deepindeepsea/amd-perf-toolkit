@@ -251,40 +251,46 @@ if [ -f "$PLACEMENT_PY" ]; then
 fi
 
 # ---- turbostat: run concurrently to capture Aperf/Mperf freq + per-core watts ----
-# Uses a FIFO so the reader (cat) runs as the current user and can be killed without sudo.
-# turbostat (root) → FIFO → cat (user) → TURBOSTAT_OUT file
-# Killing cat closes the read end; turbostat gets SIGPIPE on next write and exits cleanly.
+# Runs as sudo directly (user must be able to sudo turbostat).
+# Killed with sudo pkill after workload finishes.
+# Column discovery: probe available columns first; fall back to no --show (all columns).
 TURBOSTAT_OUT=$(mktemp /tmp/amd_turbostat_XXXXXX.txt)
-TURBOSTAT_FIFO=$(mktemp -u /tmp/amd_ts_XXXXXX.fifo)
+TURBOSTAT_ERR=$(mktemp /tmp/amd_turbostat_err_XXXXXX.txt)
 TURBOSTAT_BG=""
-TURBOSTAT_CAT_PID=""
 TURBOSTAT_AVAILABLE=0
 
-if command -v turbostat &>/dev/null; then
-    mkfifo "$TURBOSTAT_FIFO" 2>/dev/null
-    if [ -p "$TURBOSTAT_FIFO" ]; then
-        # cat reads from FIFO (as user) → writes to output file
-        cat "$TURBOSTAT_FIFO" > "$TURBOSTAT_OUT" &
-        TURBOSTAT_CAT_PID=$!
-        # turbostat writes to FIFO (as root via sudo)
+if command -v turbostat &>/dev/null && sudo -n turbostat --version &>/dev/null 2>&1; then
+    # Discover which --show columns are available in this turbostat version
+    AVAIL_COLS=$(sudo turbostat --list 2>&1 | tr ',' '\n' | tr -d ' ')
+    TS_SHOW_COLS=""
+    for want in Core CPU Busy% Bzy_MHz Avg_MHz CoreTmp CPU_W Pkg_J PkgWatt SysWatt; do
+        if echo "$AVAIL_COLS" | grep -qx "$want"; then
+            TS_SHOW_COLS="${TS_SHOW_COLS:+$TS_SHOW_COLS,}$want"
+        fi
+    done
+
+    if [ -n "$TS_SHOW_COLS" ]; then
+        sudo turbostat --interval 1 --quiet --show "$TS_SHOW_COLS" \
+            > "$TURBOSTAT_OUT" 2>"$TURBOSTAT_ERR" &
+    else
+        # Fall back: no column filter — capture everything
         sudo turbostat --interval 1 --quiet \
-            --show "Core,CPU,Busy%,Bzy_MHz,Avg_MHz,CPU_W,PkgWatt,SysWatt" \
-            > "$TURBOSTAT_FIFO" 2>/dev/null &
-        TURBOSTAT_BG=$!
-        TURBOSTAT_AVAILABLE=1
+            > "$TURBOSTAT_OUT" 2>"$TURBOSTAT_ERR" &
     fi
+    TURBOSTAT_BG=$!
+    TURBOSTAT_AVAILABLE=1
 fi
 
 # Wait for perf stat (= workload) to finish
 wait "$PERF_BG"
 [ -n "$CCD_BG" ] && wait "$CCD_BG" 2>/dev/null
 
-# Stop turbostat: kill cat (user process) → turbostat gets SIGPIPE → exits cleanly
-if [ -n "$TURBOSTAT_CAT_PID" ]; then
-    kill "$TURBOSTAT_CAT_PID" 2>/dev/null
-    wait "$TURBOSTAT_CAT_PID" 2>/dev/null
+# Stop turbostat: use sudo pkill (turbostat runs as root, only root can signal it)
+if [ -n "$TURBOSTAT_BG" ]; then
+    sudo pkill -SIGINT turbostat 2>/dev/null || sudo kill "$TURBOSTAT_BG" 2>/dev/null
+    wait "$TURBOSTAT_BG" 2>/dev/null
 fi
-rm -f "$TURBOSTAT_FIFO"
+rm -f "$TURBOSTAT_ERR"
 
 # Parse all events from the single perf output file into E[]
 parse_perf_output "$PERF_OUTPUT"
@@ -449,19 +455,52 @@ busy_cpus = {cpu_id: row for cpu_id, row in averaged.items()
 summary_rows = {cpu_id: row for cpu_id, row in averaged.items()
                 if str(row.get('Core', '')).strip() == '-' or cpu_id == '-'}
 
+# Detect which power/watt column exists (varies by turbostat version)
+def get_float(row, *keys):
+    for k in keys:
+        try:
+            v = float(row.get(k, 0))
+            if v != 0:
+                return v, k
+        except: pass
+    return 0.0, keys[0]
+
 # Print busy core table
 if busy_cpus:
-    print(f'  Busy cores (Busy% > 5%) — {len(busy_cpus)} core(s):')
-    print(f'  {\"CPU\":>5}  {\"Core\":>5}  {\"Busy%\":>7}  {\"Bzy_MHz\":>9}  {\"Avg_MHz\":>9}  {\"CPU_W\":>7}')
-    print('  ' + '-'*58)
+    # Check which per-core power column is available
+    sample_row = next(iter(busy_cpus.values()))
+    has_cpuw = any(k in sample_row for k in ('CPU_W', 'CoreTmp'))
+    if 'CPU_W' in sample_row:
+        pwr_col = 'CPU_W'; pwr_lbl = 'CPU_W'
+    elif 'CoreTmp' in sample_row:
+        pwr_col = 'CoreTmp'; pwr_lbl = 'CoreTmp'
+    else:
+        pwr_col = None; pwr_lbl = None
+
+    print('  Busy cores (Busy%% > 5%%) -- %d core(s):' % len(busy_cpus))
+    hdr_line = '  %5s  %5s  %7s  %9s  %9s' % ('CPU','Core','Busy%','Bzy_MHz','Avg_MHz')
+    if pwr_col:
+        hdr_line += '  %9s' % pwr_lbl
+    print(hdr_line)
+    sep_len = 52 + (12 if pwr_col else 0)
+    print('  ' + '-'*sep_len)
     for cpu_id in sorted(busy_cpus.keys(), key=lambda x: int(x) if str(x).isdigit() else 0):
         row = busy_cpus[cpu_id]
         busy  = float(row.get('Busy%', 0))
         bzy   = float(row.get('Bzy_MHz', 0))
         avg   = float(row.get('Avg_MHz', 0))
-        cpuw  = float(row.get('CPU_W', 0))
         core  = row.get('Core', '?')
-        print(f'  {cpu_id:>5}  {core:>5}  {busy:>6.1f}%  {bzy:>8.0f}  {avg:>8.0f}  {cpuw:>7.3f} W')
+        line  = f'  {cpu_id:>5}  {core:>5}  {busy:>6.1f}%  {bzy:>8.0f}  {avg:>8.0f}'
+        if pwr_col:
+            try:
+                pval = float(row.get(pwr_col, 0))
+                if pwr_col == 'CoreTmp':
+                    line += f'  {pval:>8.0f} °C'
+                else:
+                    line += f'  {pval:>8.3f} W'
+            except:
+                line += f'  {\"N/A\":>9}'
+        print(line)
 else:
     print('  No cores with Busy% > 5% detected (workload may have been too brief for turbostat sampling).')
 
@@ -490,11 +529,14 @@ if sys_watt > 0:
 " 2>/dev/null
 else
     if [ "$TURBOSTAT_AVAILABLE" -eq 0 ]; then
-        echo "  [--] turbostat not available (not installed or sudo not configured)."
-        echo "       To enable: install linux-tools-common and configure sudoers."
-        echo "       Add to /etc/sudoers.d/turbostat: $(whoami) ALL=(ALL) NOPASSWD: /usr/sbin/turbostat"
+        echo "  [--] turbostat not available or sudo access not configured."
+        echo "       To enable passwordless sudo for turbostat, run:"
+        echo "         echo '$(whoami) ALL=(ALL) NOPASSWD: /usr/sbin/turbostat' | sudo tee /etc/sudoers.d/turbostat"
+        echo "       Or run the script as root: sudo ./amd_pipeline_metrics.sh \"<cmd>\""
     else
-        echo "  [--] turbostat ran but produced no output (workload finished too quickly?)."
+        echo "  [--] turbostat ran but produced no output."
+        echo "       Workload may have finished before the first 1-second sample."
+        echo "       Try a longer workload (>5 sec) or run: sudo turbostat --interval 1 --quiet"
     fi
 fi
 
