@@ -95,7 +95,9 @@ collect_group() {
     local events="$1"
     local workload="$2"
 
-    perf stat -j -e "$events" -- $workload 2>&1 \
+    # Redirect workload stdout to /dev/null so it doesn't pollute perf JSON output.
+    # perf stat writes JSON counters to stderr; we capture only that via 2>&1 on a subshell.
+    { perf stat -j -e "$events" -- $workload > /dev/null; } 2>&1 \
         | grep '"event"' \
         | python3 -c "
 import sys, json
@@ -128,6 +130,8 @@ declare -A E
 load_events() {
     local raw_output="$1"
     while IFS='=' read -r key val; do
+        # Skip empty or invalid keys (can occur if non-JSON lines slip through)
+        [[ -z "$key" || "$key" =~ ^[[:space:]]*$ ]] && continue
         E["$key"]="$val"
     done <<< "$raw_output"
 }

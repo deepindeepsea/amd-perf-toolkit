@@ -1042,19 +1042,11 @@ def main():
     else:
         print(ctx.banner())
 
-        # Feff self-test using /proc/cpuinfo current_freq if available
-        try:
-            freqs = []
-            for line in open("/proc/cpuinfo"):
-                if "cpu mhz" in line.lower():
-                    freqs.append(float(line.split(":")[1].strip()))
-            if freqs:
-                avg_ghz = sum(freqs) / len(freqs) / 1000
-                w = ctx.feff_warning(avg_ghz)
-                if w:
-                    print(w)
-        except Exception:
-            pass
+        # NOTE: Do NOT read /proc/cpuinfo here for frequency.
+        # /proc/cpuinfo reflects idle frequency before any workload runs.
+        # Idle cores operate at low frequency by design — this is not throttling.
+        # Effective frequency must be measured by perf stat *during* workload execution
+        # using: cpu-cycles / (task-clock_ms * 1e6). See amd_pipeline_metrics.sh Section 0.
 
 
 if __name__ == "__main__":
