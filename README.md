@@ -190,12 +190,39 @@ ls_bad_status2.stli_other        # store-to-load interlock
 ## Requirements
 
 - Linux with `perf` installed (`perf stat -j` support)
-- Python 3.10+ (for `list[str]` type hints in chip_compare.py)
-- `kernel.perf_event_paranoid` ≤ 1: `sudo sysctl -w kernel.perf_event_paranoid=1`
+- Python 3.10+
 - For Excel output: `pip install openpyxl`
 - For CCD topology: `lstopo` (hwloc, optional) or Zen3+ sysfs
 - For PPTX generation: `pip install python-pptx`
 - For cloud pricing: Python stdlib only (chip_compare.py uses urllib)
+
+### perf_event_paranoid — required before first run
+
+`perf stat` needs access to hardware performance counters. The default Linux
+setting on many distros (including Ubuntu 22.04+) blocks this. Check your
+current value and set it to `-1` for full bare-metal PMC access:
+
+```bash
+# Check current value
+cat /proc/sys/kernel/perf_event_paranoid
+
+# Fix for current session
+sudo sysctl kernel.perf_event_paranoid=-1
+
+# Fix permanently (survives reboot)
+echo 'kernel.perf_event_paranoid = -1' | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+```
+
+| Value | Effect |
+|-------|--------|
+| `-1` | Full access — all PMC events, uncore, NDA events. **Use this on bare-metal perf machines.** |
+| `0` | Hardware events allowed; raw/ftrace tracepoints blocked |
+| `1` | CPU events blocked; software events (task-clock) allowed |
+| `≥ 2` | Kernel profiling blocked |
+| `4` | Everything blocked — `perf stat` returns nothing (all counters will show 0) |
+
+If you see all-zero output from `amd_pipeline_metrics.sh`, run `cat /proc/sys/kernel/perf_event_paranoid` first — a value of 2 or higher is almost always the cause.
 
 ---
 
