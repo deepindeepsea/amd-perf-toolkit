@@ -251,37 +251,40 @@ if [ -f "$PLACEMENT_PY" ]; then
 fi
 
 # ---- turbostat: run concurrently to capture Aperf/Mperf freq + per-core watts ----
-# Needs sudo; silently skipped if unavailable.
+# Uses a FIFO so the reader (cat) runs as the current user and can be killed without sudo.
+# turbostat (root) → FIFO → cat (user) → TURBOSTAT_OUT file
+# Killing cat closes the read end; turbostat gets SIGPIPE on next write and exits cleanly.
 TURBOSTAT_OUT=$(mktemp /tmp/amd_turbostat_XXXXXX.txt)
+TURBOSTAT_FIFO=$(mktemp -u /tmp/amd_ts_XXXXXX.fifo)
 TURBOSTAT_BG=""
+TURBOSTAT_CAT_PID=""
 TURBOSTAT_AVAILABLE=0
 
-if command -v turbostat &>/dev/null && sudo -n turbostat --version &>/dev/null 2>&1; then
-    # turbostat --interval 1: sample every 1 second; --quiet: no banner
-    # Columns: Core CPU Busy% Bzy_MHz Avg_MHz CPU_W PkgWatt SysWatt
-    sudo turbostat --interval 1 --quiet \
-        --show "Core,CPU,Busy%,Bzy_MHz,Avg_MHz,CPU_W,PkgWatt,SysWatt" \
-        > "$TURBOSTAT_OUT" 2>/dev/null &
-    TURBOSTAT_BG=$!
-    TURBOSTAT_AVAILABLE=1
-elif command -v turbostat &>/dev/null; then
-    # turbostat exists but needs sudo with password — try with sudo (will prompt if needed)
-    sudo turbostat --interval 1 --quiet \
-        --show "Core,CPU,Busy%,Bzy_MHz,Avg_MHz,CPU_W,PkgWatt,SysWatt" \
-        > "$TURBOSTAT_OUT" 2>/dev/null &
-    TURBOSTAT_BG=$!
-    TURBOSTAT_AVAILABLE=1
+if command -v turbostat &>/dev/null; then
+    mkfifo "$TURBOSTAT_FIFO" 2>/dev/null
+    if [ -p "$TURBOSTAT_FIFO" ]; then
+        # cat reads from FIFO (as user) → writes to output file
+        cat "$TURBOSTAT_FIFO" > "$TURBOSTAT_OUT" &
+        TURBOSTAT_CAT_PID=$!
+        # turbostat writes to FIFO (as root via sudo)
+        sudo turbostat --interval 1 --quiet \
+            --show "Core,CPU,Busy%,Bzy_MHz,Avg_MHz,CPU_W,PkgWatt,SysWatt" \
+            > "$TURBOSTAT_FIFO" 2>/dev/null &
+        TURBOSTAT_BG=$!
+        TURBOSTAT_AVAILABLE=1
+    fi
 fi
 
 # Wait for perf stat (= workload) to finish
 wait "$PERF_BG"
 [ -n "$CCD_BG" ] && wait "$CCD_BG" 2>/dev/null
 
-# Stop turbostat now that the workload is done
-if [ -n "$TURBOSTAT_BG" ]; then
-    kill "$TURBOSTAT_BG" 2>/dev/null
-    wait "$TURBOSTAT_BG" 2>/dev/null
+# Stop turbostat: kill cat (user process) → turbostat gets SIGPIPE → exits cleanly
+if [ -n "$TURBOSTAT_CAT_PID" ]; then
+    kill "$TURBOSTAT_CAT_PID" 2>/dev/null
+    wait "$TURBOSTAT_CAT_PID" 2>/dev/null
 fi
+rm -f "$TURBOSTAT_FIFO"
 
 # Parse all events from the single perf output file into E[]
 parse_perf_output "$PERF_OUTPUT"
@@ -608,239 +611,6 @@ CYCLES=${E["ls_not_halted_cyc"]:-1}
 TOTAL_SLOTS=$(calc "$CYCLES * 6")
 FRONTEND_PCT=$(calc "($FRONTEND / ($CYCLES * 6)) * 100")
 BACKEND_PCT=$(calc "($BACKEND / ($CYCLES * 6)) * 100")
-BADSPEC_PCT=$(calc "(($DISPATCHED - $RETIRED) / ($CYCLES * 6)) * 100")
-RETIRING_PCT=$(calc "($RETIRED / ($CYCLES * 6)) * 100")
-
-printf "  %-40s %15.0f\n" "Active CPU Cycles"              $CYCLES
-printf "  %-40s %15.0f\n" "Total Dispatch Slots (6x)"      $TOTAL_SLOTS
-sep
-printf "  %-40s %14s%%\n" "Frontend Bound"                  "$FRONTEND_PCT"
-printf "    %-38s %15.0f\n" "--- Unused Slots (Frontend)"  $FRONTEND
-printf "  %-40s %14s%%\n" "Backend Bound"                   "$BACKEND_PCT"
-printf "    %-38s %15.0f\n" "--- Unused Slots (Backend)"   $BACKEND
-printf "  %-40s %14s%%\n" "Bad Speculation"                 "$BADSPEC_PCT"
-printf "    %-38s %15.0f\n" "--- Dispatched Ops"           $DISPATCHED
-printf "    %-38s %15.0f\n" "--- Retired Ops"              $RETIRED
-printf "  %-40s %14s%%\n" "Retiring (Useful Work)"          "$RETIRING_PCT"
-echo ""
-
-# =============================================================================
-# SECTION 2: BACKEND BREAKDOWN
-# =============================================================================
-hdr
-echo "  SECTION 2: Backend Bound Breakdown"
-echo "  Memory subsystem vs CPU execution stalls"
-hdr
-echo ""
-
-LOAD_NOT_COMPLETE=${E["ex_no_retire.load_not_complete"]:-0}
-NOT_COMPLETE=${E["ex_no_retire.not_complete"]:-1}
-CYCLES2=${E["ls_not_halted_cyc"]:-1}
-
-MEM_RATIO=$(calc "($LOAD_NOT_COMPLETE / $NOT_COMPLETE) * 100")
-CPU_RATIO=$(calc "((1 - ($LOAD_NOT_COMPLETE / $NOT_COMPLETE)) * 100)")
-BACKEND_MEM_PCT=$(calcf "(($BACKEND / ($CYCLES2 * 6)) * ($LOAD_NOT_COMPLETE / $NOT_COMPLETE)) * 100" 2)
-BACKEND_CPU_PCT=$(calcf "(($BACKEND / ($CYCLES2 * 6)) * (1 - ($LOAD_NOT_COMPLETE / $NOT_COMPLETE))) * 100" 2)
-
-printf "  %-40s %14s%%\n" "Backend Memory Bound"     "$BACKEND_MEM_PCT"
-printf "    %-38s %14s%%\n" "--- Memory/Load ratio"   "$MEM_RATIO"
-printf "  %-40s %14s%%\n" "Backend CPU Bound"        "$BACKEND_CPU_PCT"
-printf "    %-38s %14s%%\n" "--- CPU stall ratio"     "$CPU_RATIO"
-sep
-printf "  %-40s %15.0f\n" "Load-not-complete events"  $LOAD_NOT_COMPLETE
-printf "  %-40s %15.0f\n" "Total non-retire events"   $NOT_COMPLETE
-echo ""
-
-# Cloud Backend Memory annotation
-if [ -n "$CLOUD_JSON" ] && [ "$BACKEND_MEM_PCT" != "N/A" ]; then
-    export _BK_MEM="$BACKEND_MEM_PCT"
-    python3 -c "
-import json, sys, os
-
-ctx_json = os.environ.get('_CLOUD_JSON_ENV', '')
-bk_mem   = float(os.environ.get('_BK_MEM', '0'))
-
-try:
-    d   = json.loads(ctx_json)
-    topo     = d.get('topology_vis', 'correct')
-    smt      = d.get('smt_enabled', False)
-    numa_x   = d.get('is_numa_crossing', False)
-    csp      = d.get('csp', 'unknown').upper()
-    family   = d.get('instance_family', '')
-    emulated = d.get('emulated', False)
-    tag      = ' [EMULATED]' if emulated else ''
-
-    if bk_mem >= 20:
-        if topo == 'unreliable':
-            print(f'  [!] Backend Memory {bk_mem:.1f}%{tag}: Non-deterministic stack ({csp} {family}).')
-            print(f'      May reflect NUMA/CCX misalignment by hypervisor -- not workload pressure.')
-        elif numa_x:
-            print(f'  [!] Backend Memory {bk_mem:.1f}%{tag}: NUMA boundary crossed on this instance.')
-            print(f'      Remote-socket latency (~100 ns) likely contributing to memory-bound stalls.')
-        elif smt:
-            print(f'  [i] Backend Memory {bk_mem:.1f}%{tag}: SMT on -- sibling thread cache footprint')
-            print(f'      may be evicting your L2 working set, inflating this metric.')
-except Exception:
-    pass
-" 2>/dev/null
-    echo ""
-fi
-
-# =============================================================================
-# SECTION 3: BRANCH PREDICTION
-# =============================================================================
-hdr
-echo "  SECTION 3: Branch Prediction"
-if [ "$CLOUD_SMT" = "true" ]; then
-    echo "  NOTE: SMT ON -- branch predictor shared; misprediction rate may be elevated."
-fi
-hdr
-echo ""
-
-MISP=${E["ex_ret_brn_misp"]:-0}
-BRANCHES=${E["ex_ret_brn"]:-1}
-CYCLES3=${E["cpu-cycles"]:-1}
-INSTRS3=${E["instructions"]:-1}
-
-MISP_RATE=$(calc "($MISP / $BRANCHES) * 100")
-IPC=$(calcf "($INSTRS3 / $CYCLES3)" 3)
-BRANCH_RATE=$(calc "($BRANCHES / $INSTRS3) * 100")
-
-printf "  %-40s %14s%%\n" "Branch Misprediction Rate"      "$MISP_RATE"
-printf "    %-38s %15.0f\n" "--- Mispredicted Branches"    $MISP
-printf "    %-38s %15.0f\n" "--- Total Branches Retired"   $BRANCHES
-sep
-printf "  %-40s %15s\n"   "IPC (Instructions per Cycle)"   "$IPC"
-printf "  %-40s %14s%%\n" "Branch Density (branches/instr)" "$BRANCH_RATE"
-echo ""
-
-if [ -n "$CLOUD_JSON" ] && [ "$IPC" != "N/A" ] && [ "$CLOUD_SMT" = "true" ]; then
-    export _IPC="$IPC"
-    python3 -c "
-import os
-ipc = float(os.environ.get('_IPC', '0'))
-emulated = os.environ.get('_CLOUD_JSON_ENV', '{}')
-import json
-try:
-    d = json.loads(emulated)
-    tag = ' [EMULATED]' if d.get('emulated') else ''
-    print(f'  [i] IPC {ipc:.3f}{tag}: SMT on -- per-thread IPC with sibling thread competing')
-    print(f'      for dispatch slots and execution units. Single-thread IPC would be higher.')
-except Exception:
-    pass
-" 2>/dev/null
-    echo ""
-fi
-
-# =============================================================================
-# SECTION 4: L2 CACHE
-# =============================================================================
-hdr
-echo "  SECTION 4: L2 Cache (1 MB per core on Zen4/Zen5)"
-if [ "$CLOUD_SMT" = "true" ]; then
-    echo "  NOTE: SMT ON -- L2 capacity shared between sibling threads (effective ~512 KB)."
-fi
-hdr
-echo ""
-
-DC_HIT=${E["l2_cache_req_stat.dc_hit_in_l2"]:-0}
-DC_MISS=${E["l2_cache_req_stat.ls_rd_blk_c"]:-0}
-IC_MISS=${E["l2_cache_req_stat.ic_fill_miss"]:-0}
-IC_HIT=${E["l2_cache_req_stat.ic_hit_in_l2"]:-0}
-
-DC_HIT_RATE=$(calc "($DC_HIT / ($DC_HIT + $DC_MISS)) * 100")
-IC_HIT_RATE=$(calc "($IC_HIT / ($IC_HIT + $IC_MISS)) * 100")
-
-printf "  %-40s %14s%%\n" "L2 Data Cache Hit Rate"          "$DC_HIT_RATE"
-printf "    %-38s %15.0f\n" "--- L2 DC Hits"                $DC_HIT
-printf "    %-38s %15.0f\n" "--- L2 DC Misses (->L3/DRAM)" $DC_MISS
-sep
-printf "  %-40s %14s%%\n" "L2 Instruction Cache Hit Rate"   "$IC_HIT_RATE"
-printf "    %-38s %15.0f\n" "--- L2 IC Hits"                $IC_HIT
-printf "    %-38s %15.0f\n" "--- L2 IC Misses (->L3)"      $IC_MISS
-echo ""
-
-if [ -n "$CLOUD_JSON" ] && [ "$DC_HIT_RATE" != "N/A" ] && [ "$CLOUD_SMT" = "true" ]; then
-    export _DC_HIT="$DC_HIT_RATE"
-    python3 -c "
-import os, json
-l2h = float(os.environ.get('_DC_HIT', '100'))
-ctx = os.environ.get('_CLOUD_JSON_ENV', '{}')
-try:
-    d = json.loads(ctx)
-    tag = ' [EMULATED]' if d.get('emulated') else ''
-    if l2h < 70:
-        print(f'  [i] L2 DC Hit {l2h:.1f}%{tag}: SMT on -- sibling thread working set competes')
-        print(f'      for L2 capacity. Single-thread hit rate would be higher.')
-except Exception:
-    pass
-" 2>/dev/null
-    echo ""
-fi
-
-# =============================================================================
-# SECTION 5: SUMMARY
-# =============================================================================
-hdr
-echo "  SECTION 5: Summary"
-hdr
-echo ""
-printf "  %-40s %15s\n"   "Workload"                       "$WORKLOAD"
-printf "  %-40s %12s GHz\n" "Eff. Freq (perf cycles/task-clock)" "$EFF_FREQ_GHZ"
-if [ "$BZY_MHZ_MAX" != "N/A" ]; then
-    printf "  %-40s %12s GHz\n" "Bzy_MHz (turbostat APERF/MPERF)"   "$BZY_MHZ_MAX"
-else
-    printf "  %-40s %15s\n"   "Bzy_MHz (turbostat APERF/MPERF)"     "N/A (no turbostat)"
-fi
-printf "  %-40s %14s%%\n" "CPU Utilization (system-wide)"   "$CPU_UTIL_PCT"
-printf "  %-40s %15s\n"   "IPC"                             "$IPC"
-sep
-printf "  %-40s %14s%%\n" "Frontend Bound"                  "$FRONTEND_PCT"
-printf "  %-40s %14s%%\n" "Backend Bound"                   "$BACKEND_PCT"
-printf "    %-38s %14s%%\n" "Backend Memory"               "$BACKEND_MEM_PCT"
-printf "    %-38s %14s%%\n" "Backend CPU"                  "$BACKEND_CPU_PCT"
-printf "  %-40s %14s%%\n" "Bad Speculation"                 "$BADSPEC_PCT"
-printf "  %-40s %14s%%\n" "Retiring (Useful Work)"          "$RETIRING_PCT"
-sep
-printf "  %-40s %14s%%\n" "Branch Misprediction Rate"       "$MISP_RATE"
-printf "  %-40s %14s%%\n" "L2 DC Hit Rate"                  "$DC_HIT_RATE"
-printf "  %-40s %14s%%\n" "L2 IC Hit Rate"                  "$IC_HIT_RATE"
-sep
-printf "  %-40s %15s\n"   "Peak Parallel CPUs"              "$PEAK_CPUS"
-printf "  %-40s %15s\n"   "Unique Cores Seen"               "$CORES_SEEN"
-printf "  %-40s %15s\n"   "CCDs Used"                       "$N_CCDS"
-printf "  %-40s %15s\n"   "Cross-CCD Execution"             "$CROSS_CCD"
-printf "  %-40s %15s\n"   "Execution Mode"                  "$EXEC_MODE"
-
-if [ -n "$CLOUD_JSON" ]; then
-    sep
-    python3 -c "
-import json, os
-ctx = os.environ.get('_CLOUD_JSON_ENV', '{}')
-try:
-    d = json.loads(ctx)
-    csp      = d.get('csp', 'unknown').upper()
-    inst     = d.get('instance_type', '--')
-    ppl      = d.get('ppl_watts', 0)
-    pmc      = d.get('pmc_support', 'core')
-    smt      = d.get('smt_enabled', False)
-    emulated = d.get('emulated', False)
-    tag      = ' [EMULATED]' if emulated else ''
-    pmc_l    = {'full':'Full','core':'Core PMCs only','limited':'Limited','none':'NONE'}[pmc]
-    ppl_l    = f'{ppl}W' if ppl else 'unconstrained'
-    smt_l    = 'ON' if smt else 'OFF'
-    print(f'  Cloud{tag}: {csp} {inst}')
-    print(f'  PPL={ppl_l}  SMT={smt_l}  PMC={pmc_l}')
-    if pmc == 'none':
-        print('  [!] PMC data above is INVALID -- Oracle Cloud has no PMC support.')
-except Exception:
-    pass
-" 2>/dev/null
-fi
-
-echo ""
-hdr
-echo ""
 BADSPEC_PCT=$(calc "(($DISPATCHED - $RETIRED) / ($CYCLES * 6)) * 100")
 RETIRING_PCT=$(calc "($RETIRED / ($CYCLES * 6)) * 100")
 
