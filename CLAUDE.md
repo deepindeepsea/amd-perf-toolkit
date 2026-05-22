@@ -40,7 +40,10 @@ python3 amd_cpu_placement.py --pid 12345
 
 - **Dispatch model**: 6 slots per cycle (NOT Intel's 4-wide TopDown model)
 - **L2 cache**: 1 MB per core (Zen4/5) — much larger than Intel (256–512 KB)
-- **CCD**: Core Complex Die — 8 cores per CCD, each CCD has its own 32 MB L3 cache
+- **CCD**: Core Complex Die — 8 cores per CCD, each CCD has its own L3 cache
+  - Standard Genoa (9004 series): 32 MB L3 per CCD
+  - Genoa X (9004X series, e.g. 9684X): 96 MB L3 per CCD (32 MB base + 64 MB 3D V-Cache stacked)
+  - `lscpu` reports full 96 MB; `lstopo`/hwloc may only see 32 MB base — use `--l3-per-ccd 96` flag
 - **EPYC 9684X**: 96 cores = 12 CCDs × 8 cores; cross-CCD = separate L3 domains → ~100 ns latency
 - **Topology sources**: `lstopo --of xml` (preferred) → sysfs `die_id` (fallback)
 
