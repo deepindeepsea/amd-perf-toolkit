@@ -426,7 +426,12 @@ if not intervals:
     print('  [!] turbostat: no data captured (workload may have finished before first sample)')
     sys.exit(0)
 
-# Merge intervals: average numeric fields per CPU
+# Merge intervals: average most fields; peak for Bzy_MHz.
+# Averaging Bzy_MHz is misleading when a thread migrates: while the thread
+# is on another core, this core has Busy%~0 and its Bzy_MHz is meaningless.
+# Peak Bzy_MHz = highest frequency seen when the core was actually executing.
+PEAK_COLS = {'Bzy_MHz'}
+
 merged = {}
 for interval in intervals:
     for cpu_id, row in interval.items():
@@ -440,9 +445,13 @@ for cpu_id, fields in merged.items():
     averaged[cpu_id] = {}
     for k, vals in fields.items():
         try:
-            averaged[cpu_id][k] = sum(float(v) for v in vals) / len(vals)
+            numeric = [float(v) for v in vals]
+            if k in PEAK_COLS:
+                averaged[cpu_id][k] = max(numeric)
+            else:
+                averaged[cpu_id][k] = sum(numeric) / len(numeric)
         except ValueError:
-            averaged[cpu_id][k] = vals[-1]  # string field: take last value
+            averaged[cpu_id][k] = vals[-1]
 
 # Determine which CPUs ran the workload
 # From CCD placement: cores_seen_str may be a count string ('7') or comma list
@@ -478,7 +487,7 @@ if busy_cpus:
         pwr_col = None; pwr_lbl = None
 
     print('  Busy cores (Busy%% > 5%%) -- %d core(s):' % len(busy_cpus))
-    hdr_line = '  %5s  %5s  %7s  %9s  %9s' % ('CPU','Core','Busy%','Bzy_MHz','Avg_MHz')
+    hdr_line = '  %5s  %5s  %8s  %11s  %9s' % ('CPU','Core','Busy%avg','Bzy_MHz(pk)','Avg_MHz')
     if pwr_col:
         hdr_line += '  %9s' % pwr_lbl
     print(hdr_line)
@@ -490,7 +499,7 @@ if busy_cpus:
         bzy   = float(row.get('Bzy_MHz', 0))
         avg   = float(row.get('Avg_MHz', 0))
         core  = row.get('Core', '?')
-        line  = f'  {cpu_id:>5}  {core:>5}  {busy:>6.1f}%  {bzy:>8.0f}  {avg:>8.0f}'
+        line  = f'  {cpu_id:>5}  {core:>5}  {busy:>7.1f}%  {bzy:>10.0f}  {avg:>8.0f}'
         if pwr_col:
             try:
                 pval = float(row.get(pwr_col, 0))
