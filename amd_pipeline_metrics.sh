@@ -279,7 +279,7 @@ wait "$PERF_BG"
 
 # Stop turbostat now that the workload is done
 if [ -n "$TURBOSTAT_BG" ]; then
-    sudo kill "$TURBOSTAT_BG" 2>/dev/null
+    kill "$TURBOSTAT_BG" 2>/dev/null
     wait "$TURBOSTAT_BG" 2>/dev/null
 fi
 
@@ -318,9 +318,17 @@ CPUS_UTILIZED=${E["task-clock__metric"]:-0}
 # Formula:
 #   ns unit:   cycles / task_clock_ns  = GHz  (cycles/ns = GHz directly)
 #   ms unit:   cycles / (task_clock_ms * 1e6) = GHz
+# Detect actual unit by magnitude — perf sometimes reports ns but labels unit as "msec".
+# If raw value / 1e9 < 3600 (1 hour), it's nanoseconds; otherwise milliseconds.
+# cycles/ns = GHz directly; cycles/(ms*1e6) = GHz for ms.
 if [[ "$TASK_CLOCK_UNIT" == "ns" || "$TASK_CLOCK_UNIT" == "nsec" ]]; then
     EFF_FREQ_GHZ=$(calcf "($CPU_CYCLES_S0 / $TASK_CLOCK_RAW)" 3)
-    TASK_CLOCK_MS=$(calcf "($TASK_CLOCK_RAW / 1e6)" 1)   # convert ns→ms for display
+    TASK_CLOCK_MS=$(calcf "($TASK_CLOCK_RAW / 1e6)" 1)   # ns→ms for display
+elif python3 -c "import sys; sys.exit(0 if $TASK_CLOCK_RAW / 1e9 < 3600 else 1)" 2>/dev/null; then
+    # Unit field says msec but magnitude is nanoseconds (perf version bug)
+    TASK_CLOCK_UNIT="ns(detected)"
+    EFF_FREQ_GHZ=$(calcf "($CPU_CYCLES_S0 / $TASK_CLOCK_RAW)" 3)
+    TASK_CLOCK_MS=$(calcf "($TASK_CLOCK_RAW / 1e6)" 1)
 else
     EFF_FREQ_GHZ=$(calcf "($CPU_CYCLES_S0 / ($TASK_CLOCK_RAW * 1e6))" 3)
     TASK_CLOCK_MS="$TASK_CLOCK_RAW"
@@ -833,7 +841,6 @@ fi
 echo ""
 hdr
 echo ""
-LES * 6)) * 100")
 BADSPEC_PCT=$(calc "(($DISPATCHED - $RETIRED) / ($CYCLES * 6)) * 100")
 RETIRING_PCT=$(calc "($RETIRED / ($CYCLES * 6)) * 100")
 
