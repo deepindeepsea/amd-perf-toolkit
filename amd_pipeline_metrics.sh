@@ -127,13 +127,35 @@ for k, v in results.items():
 
 declare -A E
 
-load_events() {
-    local raw_output="$1"
+# Parse a perf stat -j output file into the E[] associative array.
+# Called once after the single collection run.
+parse_perf_output() {
+    local perf_file="$1"
     while IFS='=' read -r key val; do
-        # Skip empty or invalid keys (can occur if non-JSON lines slip through)
         [[ -z "$key" || "$key" =~ ^[[:space:]]*$ ]] && continue
         E["$key"]="$val"
-    done <<< "$raw_output"
+    done < <(
+        grep '"event"' "$perf_file" | python3 -c "
+import sys, json
+results = {}
+for line in sys.stdin:
+    line = line.strip()
+    if not line: continue
+    try:
+        obj = json.loads(line)
+        event = obj.get('event', '').strip()
+        val   = obj.get('counter-value', '0').replace(',','').strip()
+        mval  = obj.get('metric-value', '')
+        if not event: continue
+        results[event] = float(val) if val and val not in ['<not counted>','<not supported>'] else 0.0
+        if mval and mval not in ['<not counted>','<not supported>','']:
+            try: results[event + '__metric'] = float(str(mval).replace(',',''))
+            except: pass
+    except: pass
+for k, v in results.items():
+    print(f'{k}={v}')
+" 2>/dev/null
+    )
 }
 
 calc() {
@@ -169,6 +191,80 @@ sep() { echo "--------------------------------------------------------"; }
 hdr() { echo "========================================================"; }
 
 # =============================================================================
+# SINGLE COLLECTION PASS — all PMC events in one perf stat run
+# perf stat wraps the workload from start to finish.
+# CCD topology monitor attaches to the workload PID concurrently.
+# Total wall time = workload duration + ~2 s overhead.
+# =============================================================================
+
+ALL_EVENTS="\
+task-clock,\
+cpu-cycles,\
+instructions,\
+de_no_dispatch_per_slot.no_ops_from_frontend,\
+de_no_dispatch_per_slot.backend_stalls,\
+de_src_op_disp.all,\
+ex_ret_ops,\
+ls_not_halted_cyc,\
+ex_no_retire.load_not_complete,\
+ex_no_retire.not_complete,\
+ex_ret_brn_misp,\
+ex_ret_brn,\
+l2_cache_req_stat.dc_hit_in_l2,\
+l2_cache_req_stat.ls_rd_blk_c,\
+l2_cache_req_stat.ic_fill_miss,\
+l2_cache_req_stat.ic_hit_in_l2"
+
+PERF_OUTPUT=$(mktemp /tmp/amd_perf_XXXXXX.txt)
+WL_PID_FILE=$(mktemp /tmp/amd_wlpid_XXXXXX)
+PLACEMENT_JSON_TMP=$(mktemp /tmp/amd_placement_XXXXXX.json)
+
+echo "  Collecting PMCs for: $WORKLOAD"
+echo "  (runs once — duration = workload runtime)"
+echo ""
+
+# Launch perf stat; workload writes its own PID to a file immediately on start
+# so CCD monitoring can attach while perf is already running.
+{ perf stat -j -e "$ALL_EVENTS" \
+    -- bash -c "echo \$\$ > $WL_PID_FILE; exec $WORKLOAD" \
+    > /dev/null; } 2>"$PERF_OUTPUT" &
+PERF_BG=$!
+
+# Wait up to 2 s for the workload PID to appear, then start CCD monitor
+PLACEMENT_PY="${SCRIPT_DIR}/amd_cpu_placement.py"
+CCD_BG=""
+if [ -f "$PLACEMENT_PY" ]; then
+    for _i in $(seq 1 40); do
+        [ -s "$WL_PID_FILE" ] && break
+        sleep 0.05
+    done
+    WL_PID=$(cat "$WL_PID_FILE" 2>/dev/null)
+    if [ -n "$WL_PID" ] && kill -0 "$WL_PID" 2>/dev/null; then
+        python3 "$PLACEMENT_PY" --pid "$WL_PID" --json-file "$PLACEMENT_JSON_TMP" 2>/dev/null &
+        CCD_BG=$!
+    fi
+fi
+
+# Wait for perf stat (= workload) to finish
+wait "$PERF_BG"
+[ -n "$CCD_BG" ] && wait "$CCD_BG" 2>/dev/null
+
+# Parse all events from the single perf output file into E[]
+parse_perf_output "$PERF_OUTPUT"
+rm -f "$PERF_OUTPUT" "$WL_PID_FILE"
+
+# Extract CCD placement results from JSON
+PEAK_CPUS="?"; CORES_SEEN="?"; N_CCDS="?"; CROSS_CCD="?"; EXEC_MODE="?"
+if [ -f "$PLACEMENT_JSON_TMP" ]; then
+    PEAK_CPUS=$(python3 -c "import json; d=json.load(open('$PLACEMENT_JSON_TMP')); print(d.get('peak_parallel_cpus','?'))" 2>/dev/null || echo "?")
+    CORES_SEEN=$(python3 -c "import json; d=json.load(open('$PLACEMENT_JSON_TMP')); print(d.get('unique_cores_seen','?'))" 2>/dev/null || echo "?")
+    N_CCDS=$(python3 -c "import json; d=json.load(open('$PLACEMENT_JSON_TMP')); print(d.get('n_ccds_used','?'))" 2>/dev/null || echo "?")
+    CROSS_CCD=$(python3 -c "import json; d=json.load(open('$PLACEMENT_JSON_TMP')); print('YES' if d.get('cross_ccd_execution') else 'NO')" 2>/dev/null || echo "?")
+    EXEC_MODE=$(python3 -c "import json; d=json.load(open('$PLACEMENT_JSON_TMP')); print(d.get('execution_mode','?'))" 2>/dev/null || echo "?")
+    rm -f "$PLACEMENT_JSON_TMP"
+fi
+
+# =============================================================================
 # SECTION 0: CPU FREQUENCY & UTILIZATION
 # =============================================================================
 hdr
@@ -176,11 +272,6 @@ echo "  SECTION 0: CPU Frequency & Utilization"
 echo "  Effective values measured during workload execution"
 hdr
 echo ""
-
-RAW=$(collect_group \
-    "task-clock,cpu-cycles,instructions" \
-    "$WORKLOAD")
-load_events "$RAW"
 
 TASK_CLOCK_MS=${E["task-clock"]:-0}
 CPU_CYCLES_S0=${E["cpu-cycles"]:-1}
@@ -260,60 +351,6 @@ if [ "$CLOUD_NUMA_CROSSING" = "true" ]; then
     echo "      Cross-socket memory latency (~100 ns) will inflate Backend Memory%."
 fi
 
-PLACEMENT_PY="${SCRIPT_DIR}/amd_cpu_placement.py"
-PLACEMENT_JSON_TMP=$(mktemp /tmp/amd_placement_XXXXXX.json)
-
-if [ -f "$PLACEMENT_PY" ]; then
-    python3 "$PLACEMENT_PY" --json-file "$PLACEMENT_JSON_TMP" -- $WORKLOAD
-
-    if [ -f "$PLACEMENT_JSON_TMP" ]; then
-        PEAK_CPUS=$(python3 -c "
-import json
-try:
-    d = json.load(open('$PLACEMENT_JSON_TMP'))
-    print(d.get('peak_parallel_cpus', '?'))
-except:
-    print('?')
-")
-        CORES_SEEN=$(python3 -c "
-import json
-try:
-    d = json.load(open('$PLACEMENT_JSON_TMP'))
-    print(d.get('unique_cores_seen', '?'))
-except:
-    print('?')
-")
-        N_CCDS=$(python3 -c "
-import json
-try:
-    d = json.load(open('$PLACEMENT_JSON_TMP'))
-    print(d.get('n_ccds_used', '?'))
-except:
-    print('?')
-")
-        CROSS_CCD=$(python3 -c "
-import json
-try:
-    d = json.load(open('$PLACEMENT_JSON_TMP'))
-    print('YES' if d.get('cross_ccd_execution') else 'NO')
-except:
-    print('?')
-")
-        EXEC_MODE=$(python3 -c "
-import json
-try:
-    d = json.load(open('$PLACEMENT_JSON_TMP'))
-    print(d.get('execution_mode', '?'))
-except:
-    print('?')
-")
-        rm -f "$PLACEMENT_JSON_TMP"
-    fi
-else
-    echo "  [amd_cpu_placement.py not found -- skipping CCD topology section]"
-    echo "  Expected: $PLACEMENT_PY"
-    PEAK_CPUS="?"; CORES_SEEN="?"; N_CCDS="?"; CROSS_CCD="?"; EXEC_MODE="?"
-fi
 echo ""
 
 # =============================================================================
@@ -328,15 +365,6 @@ if [ "$CLOUD_SMT" = "true" ]; then
 fi
 hdr
 echo ""
-
-RAW=$(collect_group \
-    "de_no_dispatch_per_slot.no_ops_from_frontend,\
-de_no_dispatch_per_slot.backend_stalls,\
-de_src_op_disp.all,\
-ex_ret_ops,\
-ls_not_halted_cyc" \
-    "$WORKLOAD")
-load_events "$RAW"
 
 FRONTEND=${E["de_no_dispatch_per_slot.no_ops_from_frontend"]:-0}
 BACKEND=${E["de_no_dispatch_per_slot.backend_stalls"]:-0}
@@ -371,13 +399,6 @@ echo "  SECTION 2: Backend Bound Breakdown"
 echo "  Memory subsystem vs CPU execution stalls"
 hdr
 echo ""
-
-RAW=$(collect_group \
-    "ex_no_retire.load_not_complete,\
-ex_no_retire.not_complete,\
-ls_not_halted_cyc" \
-    "$WORKLOAD")
-load_events "$RAW"
 
 LOAD_NOT_COMPLETE=${E["ex_no_retire.load_not_complete"]:-0}
 NOT_COMPLETE=${E["ex_no_retire.not_complete"]:-1}
@@ -443,14 +464,6 @@ fi
 hdr
 echo ""
 
-RAW=$(collect_group \
-    "ex_ret_brn_misp,\
-ex_ret_brn,\
-cpu-cycles,\
-instructions" \
-    "$WORKLOAD")
-load_events "$RAW"
-
 MISP=${E["ex_ret_brn_misp"]:-0}
 BRANCHES=${E["ex_ret_brn"]:-1}
 CYCLES3=${E["cpu-cycles"]:-1}
@@ -496,14 +509,6 @@ if [ "$CLOUD_SMT" = "true" ]; then
 fi
 hdr
 echo ""
-
-RAW=$(collect_group \
-    "l2_cache_req_stat.dc_hit_in_l2,\
-l2_cache_req_stat.ls_rd_blk_c,\
-l2_cache_req_stat.ic_fill_miss,\
-l2_cache_req_stat.ic_hit_in_l2" \
-    "$WORKLOAD")
-load_events "$RAW"
 
 DC_HIT=${E["l2_cache_req_stat.dc_hit_in_l2"]:-0}
 DC_MISS=${E["l2_cache_req_stat.ls_rd_blk_c"]:-0}

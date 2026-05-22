@@ -461,11 +461,13 @@ _DB: Dict[Tuple[str, str], dict] = {
     ),
 
     # ── Bare metal (fallback / explicit) ─────────────────────────────────────
+    # NOTE: smt is intentionally None here — it will be overridden at detection
+    # time by _detect_smt() so the banner reflects the actual BIOS setting.
 
     ("baremetal", "epyc"): dict(
         cpu_gen="unknown", zen_gen="unknown",
         ppl_watts=0, feff_ratio=FEFF_RATIO_BARE,
-        smt=True, deterministic=True,
+        smt=None, deterministic=True,
         pmc=PMC_FULL, pmc_notes=["All PMCs available including uncore and NDA events."],
         sockets=1, numa_vcpu_max=0, local_nvme=True,
         topology_vis="correct",
@@ -826,16 +828,35 @@ def _detect_vcpus() -> int:
 
 
 def _detect_smt() -> bool:
-    """True if any core has siblings > 1 in /sys."""
+    """True if SMT (Hyper-Threading) is active on this host.
+
+    Detection order (most to least reliable):
+    1. /sys/devices/system/cpu/smt/active  — kernel's own SMT state (0/1)
+    2. lscpu 'Thread(s) per core'         — direct threads-per-core count
+    3. /proc/cpuinfo siblings vs cpu cores comparison
+    4. thread_siblings_list in /sys       — bitmask approach (least reliable)
+    """
     try:
-        for path in ["/sys/devices/system/cpu/cpu0/topology/thread_siblings_list"]:
-            val = _read(path)
-            if "," in val or "-" in val:
-                # more than one thread in siblings
-                parts = re.split(r'[,\-]', val)
-                if len(parts) > 1 and parts[0] != parts[-1]:
-                    return True
-        # fallback: compare siblings vs cpu cores in /proc/cpuinfo
+        # 1. Kernel SMT control file — most authoritative
+        val = _read("/sys/devices/system/cpu/smt/active").strip()
+        if val in ("0", "1"):
+            return val == "1"
+    except Exception:
+        pass
+
+    try:
+        # 2. lscpu threads-per-core — definitive and always present
+        import subprocess
+        out = subprocess.check_output(["lscpu"], text=True, stderr=subprocess.DEVNULL)
+        for line in out.splitlines():
+            if "Thread(s) per core" in line:
+                threads = int(line.split(":")[1].strip())
+                return threads > 1
+    except Exception:
+        pass
+
+    try:
+        # 3. /proc/cpuinfo siblings vs cpu cores
         siblings = cores = 0
         for line in open("/proc/cpuinfo"):
             if line.startswith("siblings"):
@@ -848,6 +869,17 @@ def _detect_smt() -> bool:
             return siblings > cores
     except Exception:
         pass
+
+    try:
+        # 4. thread_siblings_list — bitmask approach
+        val = _read("/sys/devices/system/cpu/cpu0/topology/thread_siblings_list")
+        if "," in val or "-" in val:
+            parts = re.split(r'[,\-]', val)
+            if len(parts) > 1 and parts[0] != parts[-1]:
+                return True
+    except Exception:
+        pass
+
     return False
 
 
@@ -932,7 +964,7 @@ def _build_context(csp: str, family_key: str, instance_type: str,
         ppl_watts       = db.get("ppl_watts", 0),
         feff_ratio      = db.get("feff_ratio", FEFF_RATIO_BARE),
         fmax_ghz        = FMAX_GHZBY_GEN.get(zen_gen, 4.0),
-        smt_enabled     = db.get("smt", _detect_smt()),
+        smt_enabled     = db.get("smt") if db.get("smt") is not None else _detect_smt(),
         deterministic   = db.get("deterministic", True),
         pmc_support     = db.get("pmc", PMC_CORE),
         pmc_notes       = list(db.get("pmc_notes", [])),
