@@ -146,13 +146,18 @@ for line in sys.stdin:
         event = obj.get('event', '').strip()
         val   = obj.get('counter-value', '0').replace(',','').strip()
         mval  = obj.get('metric-value', '')
+        unit  = obj.get('unit', '').strip()
         if not event: continue
         results[event] = float(val) if val and val not in ['<not counted>','<not supported>'] else 0.0
+        # Capture the unit string so the caller can detect ns vs msec for task-clock
+        if unit:
+            results[event + '__unit'] = unit  # stored as string, printed quoted
         if mval and mval not in ['<not counted>','<not supported>','']:
             try: results[event + '__metric'] = float(str(mval).replace(',',''))
             except: pass
     except: pass
 for k, v in results.items():
+    # unit fields are strings; others are floats
     print(f'{k}={v}')
 " 2>/dev/null
     )
@@ -245,9 +250,38 @@ if [ -f "$PLACEMENT_PY" ]; then
     fi
 fi
 
+# ---- turbostat: run concurrently to capture Aperf/Mperf freq + per-core watts ----
+# Needs sudo; silently skipped if unavailable.
+TURBOSTAT_OUT=$(mktemp /tmp/amd_turbostat_XXXXXX.txt)
+TURBOSTAT_BG=""
+TURBOSTAT_AVAILABLE=0
+
+if command -v turbostat &>/dev/null && sudo -n turbostat --version &>/dev/null 2>&1; then
+    # turbostat --interval 1: sample every 1 second; --quiet: no banner
+    # Columns: Core CPU Busy% Bzy_MHz Avg_MHz CPU_W PkgWatt SysWatt
+    sudo turbostat --interval 1 --quiet \
+        --show "Core,CPU,Busy%,Bzy_MHz,Avg_MHz,CPU_W,PkgWatt,SysWatt" \
+        > "$TURBOSTAT_OUT" 2>/dev/null &
+    TURBOSTAT_BG=$!
+    TURBOSTAT_AVAILABLE=1
+elif command -v turbostat &>/dev/null; then
+    # turbostat exists but needs sudo with password — try with sudo (will prompt if needed)
+    sudo turbostat --interval 1 --quiet \
+        --show "Core,CPU,Busy%,Bzy_MHz,Avg_MHz,CPU_W,PkgWatt,SysWatt" \
+        > "$TURBOSTAT_OUT" 2>/dev/null &
+    TURBOSTAT_BG=$!
+    TURBOSTAT_AVAILABLE=1
+fi
+
 # Wait for perf stat (= workload) to finish
 wait "$PERF_BG"
 [ -n "$CCD_BG" ] && wait "$CCD_BG" 2>/dev/null
+
+# Stop turbostat now that the workload is done
+if [ -n "$TURBOSTAT_BG" ]; then
+    sudo kill "$TURBOSTAT_BG" 2>/dev/null
+    wait "$TURBOSTAT_BG" 2>/dev/null
+fi
 
 # Parse all events from the single perf output file into E[]
 parse_perf_output "$PERF_OUTPUT"
@@ -273,24 +307,215 @@ echo "  Effective values measured during workload execution"
 hdr
 echo ""
 
-TASK_CLOCK_MS=${E["task-clock"]:-0}
+TASK_CLOCK_RAW=${E["task-clock"]:-0}
+TASK_CLOCK_UNIT=${E["task-clock__unit"]:-msec}
 CPU_CYCLES_S0=${E["cpu-cycles"]:-1}
 INSTRS_S0=${E["instructions"]:-0}
 CPUS_UTILIZED=${E["task-clock__metric"]:-0}
 
-EFF_FREQ_GHZ=$(calcf "($CPU_CYCLES_S0 / ($TASK_CLOCK_MS * 1e6))" 3)
+# Detect task-clock unit: newer perf versions report in nanoseconds (ns/nsec),
+# older versions report in milliseconds (msec/ms).
+# Formula:
+#   ns unit:   cycles / task_clock_ns  = GHz  (cycles/ns = GHz directly)
+#   ms unit:   cycles / (task_clock_ms * 1e6) = GHz
+if [[ "$TASK_CLOCK_UNIT" == "ns" || "$TASK_CLOCK_UNIT" == "nsec" ]]; then
+    EFF_FREQ_GHZ=$(calcf "($CPU_CYCLES_S0 / $TASK_CLOCK_RAW)" 3)
+    TASK_CLOCK_MS=$(calcf "($TASK_CLOCK_RAW / 1e6)" 1)   # convert ns→ms for display
+else
+    EFF_FREQ_GHZ=$(calcf "($CPU_CYCLES_S0 / ($TASK_CLOCK_RAW * 1e6))" 3)
+    TASK_CLOCK_MS="$TASK_CLOCK_RAW"
+fi
+
 CPU_UTIL_PCT=$(calcf "($CPUS_UTILIZED / $TOTAL_CORES) * 100" 2)
 CPUS_UTIL_ABS=$(calcf "$CPUS_UTILIZED" 3)
 
-printf "  %-40s %12s GHz\n" "CPU Operating Frequency (effective)"  "$EFF_FREQ_GHZ"
-printf "  %-40s %14s%%\n"   "CPU Utilization (all cores)"          "$CPU_UTIL_PCT"
-printf "  %-40s %12s CPUs\n" "CPUs Utilized (absolute)"            "$CPUS_UTIL_ABS"
+printf "  %-40s %12s GHz\n" "Eff. Freq (perf cycles/task-clock)"   "$EFF_FREQ_GHZ"
+printf "  %-40s %12s CPUs\n" "CPUs Utilized (perf task-clock)"     "$CPUS_UTIL_ABS"
+printf "  %-40s %14s%%\n"   "System Util (utilized / $TOTAL_CORES cores)"  "$CPU_UTIL_PCT"
 sep
-printf "  %-40s %15.0f\n" "task-clock CPU time (ms)"               $TASK_CLOCK_MS
-printf "  %-40s %15.0f\n" "Total Cores on System"                  $TOTAL_CORES
+printf "  %-40s %12s ms\n"  "task-clock CPU time"                  "$TASK_CLOCK_MS"
+printf "  %-40s %14s\n"     "task-clock unit (raw perf)"           "$TASK_CLOCK_UNIT"
+printf "  %-40s %15.0f\n"   "Total Cores on System"                $TOTAL_CORES
 echo ""
-echo "  Note: Effective frequency reflects actual boost frequency"
-echo "        during execution, not the static base freq from lscpu."
+echo "  Note: System Util = CPUs utilized / all system cores."
+echo "        Single-threaded workload on 96-core system = ~1% system util — expected."
+echo "        See Section 0a for per-core Busy% (utilization of the active core only)."
+echo "        Eff. Freq uses perf cycles/task-clock; Bzy_MHz below is APERF/MPERF cross-check."
+echo ""
+
+# =============================================================================
+# SECTION 0a: TURBOSTAT — Per-core Aperf/Mperf frequency + power
+# Runs concurrently with the workload. Needs sudo.
+# Bzy_MHz = frequency only when core is busy (Aperf/Mperf derived).
+# This is the same method turbostat-C uses; it is the gold standard for
+# measuring effective boost under load on AMD EPYC.
+# =============================================================================
+hdr
+echo "  SECTION 0a: Core Frequency & Power (turbostat — Aperf/Mperf)"
+echo "  Bzy_MHz = busy-only frequency (Aperf/Mperf ratio × TSC) — gold standard"
+echo "  CPU_W = per-core watts  |  PkgWatt = socket package  |  SysWatt = SoC total"
+hdr
+echo ""
+
+if [ "$TURBOSTAT_AVAILABLE" -eq 1 ] && [ -s "$TURBOSTAT_OUT" ]; then
+    # Parse turbostat output: filter to cores that ran the workload
+    # Pass the list of unique cores seen from CCD placement
+    python3 -c "
+import sys, os
+
+turbostat_file = '$TURBOSTAT_OUT'
+cores_seen_str = '$CORES_SEEN'   # e.g. '7' or '0,4,8,12'
+
+# Parse turbostat TSV output; handle multi-interval runs (average across intervals)
+# turbostat output has a header line then data lines with blank-line-separated intervals
+cols = []
+intervals = []  # list of dicts per interval (core -> row)
+
+current_interval = {}
+header_found = False
+with open(turbostat_file) as f:
+    for line in f:
+        line = line.rstrip()
+        if not line:
+            if current_interval:
+                intervals.append(current_interval)
+                current_interval = {}
+            continue
+        parts = line.split()
+        if parts and parts[0] == 'Core' and not header_found:
+            cols = parts
+            header_found = True
+            continue
+        if parts and parts[0] == 'Core' and header_found:
+            # New interval header — save previous
+            if current_interval:
+                intervals.append(current_interval)
+            current_interval = {}
+            continue
+        if not header_found or not parts:
+            continue
+        try:
+            row = dict(zip(cols, parts))
+            core_id = row.get('Core', '-')
+            cpu_id  = row.get('CPU', '-')
+            current_interval[cpu_id] = row
+        except Exception:
+            pass
+
+if current_interval:
+    intervals.append(current_interval)
+
+if not intervals:
+    print('  [!] turbostat: no data captured (workload may have finished before first sample)')
+    sys.exit(0)
+
+# Merge intervals: average numeric fields per CPU
+merged = {}
+for interval in intervals:
+    for cpu_id, row in interval.items():
+        if cpu_id not in merged:
+            merged[cpu_id] = {k: [] for k in row}
+        for k, v in row.items():
+            merged[cpu_id][k].append(v)
+
+averaged = {}
+for cpu_id, fields in merged.items():
+    averaged[cpu_id] = {}
+    for k, vals in fields.items():
+        try:
+            averaged[cpu_id][k] = sum(float(v) for v in vals) / len(vals)
+        except ValueError:
+            averaged[cpu_id][k] = vals[-1]  # string field: take last value
+
+# Determine which CPUs ran the workload
+# From CCD placement: cores_seen_str may be a count string ('7') or comma list
+# Prefer to show all CPUs with Busy% > 5%
+busy_cpus = {cpu_id: row for cpu_id, row in averaged.items()
+             if float(row.get('Busy%', 0)) > 5.0}
+
+# Find the summary row (Core = '-' or first row which is system summary)
+# turbostat puts a summary row at the top of each interval with no Core value
+summary_rows = {cpu_id: row for cpu_id, row in averaged.items()
+                if str(row.get('Core', '')).strip() == '-' or cpu_id == '-'}
+
+# Print busy core table
+if busy_cpus:
+    print(f'  Busy cores (Busy% > 5%) — {len(busy_cpus)} core(s):')
+    print(f'  {\"CPU\":>5}  {\"Core\":>5}  {\"Busy%\":>7}  {\"Bzy_MHz\":>9}  {\"Avg_MHz\":>9}  {\"CPU_W\":>7}')
+    print('  ' + '-'*58)
+    for cpu_id in sorted(busy_cpus.keys(), key=lambda x: int(x) if str(x).isdigit() else 0):
+        row = busy_cpus[cpu_id]
+        busy  = float(row.get('Busy%', 0))
+        bzy   = float(row.get('Bzy_MHz', 0))
+        avg   = float(row.get('Avg_MHz', 0))
+        cpuw  = float(row.get('CPU_W', 0))
+        core  = row.get('Core', '?')
+        print(f'  {cpu_id:>5}  {core:>5}  {busy:>6.1f}%  {bzy:>8.0f}  {avg:>8.0f}  {cpuw:>7.3f} W')
+else:
+    print('  No cores with Busy% > 5% detected (workload may have been too brief for turbostat sampling).')
+
+# Print package/system summary
+print()
+# Find package summary row(s): PkgWatt and SysWatt
+all_rows_list = list(averaged.values())
+pkg_watt = 0.0
+sys_watt = 0.0
+for row in all_rows_list:
+    try:
+        pw = float(row.get('PkgWatt', 0))
+        if pw > pkg_watt:
+            pkg_watt = pw
+    except: pass
+    try:
+        sw = float(row.get('SysWatt', 0))
+        if sw > sys_watt:
+            sys_watt = sw
+    except: pass
+
+if pkg_watt > 0:
+    print(f'  Package Power:  {pkg_watt:.1f} W')
+if sys_watt > 0:
+    print(f'  System (SoC):   {sys_watt:.1f} W')
+" 2>/dev/null
+else
+    if [ "$TURBOSTAT_AVAILABLE" -eq 0 ]; then
+        echo "  [--] turbostat not available (not installed or sudo not configured)."
+        echo "       To enable: install linux-tools-common and configure sudoers."
+        echo "       Add to /etc/sudoers.d/turbostat: $(whoami) ALL=(ALL) NOPASSWD: /usr/sbin/turbostat"
+    else
+        echo "  [--] turbostat ran but produced no output (workload finished too quickly?)."
+    fi
+fi
+
+# Extract max Bzy_MHz across busy cores for use in Section 5 summary
+BZY_MHZ_MAX="N/A"
+if [ "$TURBOSTAT_AVAILABLE" -eq 1 ] && [ -s "$TURBOSTAT_OUT" ]; then
+    BZY_MHZ_MAX=$(python3 -c "
+try:
+    cols = []
+    max_bzy = 0.0
+    header_found = False
+    with open('$TURBOSTAT_OUT') as f:
+        for line in f:
+            parts = line.split()
+            if not parts: continue
+            if parts[0] == 'Core' and not header_found:
+                cols = parts; header_found = True; continue
+            if not header_found: continue
+            row = dict(zip(cols, parts))
+            try:
+                busy = float(row.get('Busy%', 0))
+                bzy  = float(row.get('Bzy_MHz', 0))
+                if busy > 5 and bzy > max_bzy:
+                    max_bzy = bzy
+            except: pass
+    print(f'{max_bzy/1000:.3f}' if max_bzy > 0 else 'N/A')
+except:
+    print('N/A')
+" 2>/dev/null)
+fi
+
+rm -f "$TURBOSTAT_OUT"
 echo ""
 
 # ---- Cloud Feff check -------------------------------------------------------
@@ -553,9 +778,248 @@ echo "  SECTION 5: Summary"
 hdr
 echo ""
 printf "  %-40s %15s\n"   "Workload"                       "$WORKLOAD"
-printf "  %-40s %12s GHz\n" "Effective Frequency"          "$EFF_FREQ_GHZ"
-printf "  %-40s %14s%%\n" "CPU Utilization"                "$CPU_UTIL_PCT"
-printf "  %-40s %15s\n"   "IPC"                            "$IPC"
+printf "  %-40s %12s GHz\n" "Eff. Freq (perf cycles/task-clock)" "$EFF_FREQ_GHZ"
+if [ "$BZY_MHZ_MAX" != "N/A" ]; then
+    printf "  %-40s %12s GHz\n" "Bzy_MHz (turbostat APERF/MPERF)"   "$BZY_MHZ_MAX"
+else
+    printf "  %-40s %15s\n"   "Bzy_MHz (turbostat APERF/MPERF)"     "N/A (no turbostat)"
+fi
+printf "  %-40s %14s%%\n" "CPU Utilization (system-wide)"   "$CPU_UTIL_PCT"
+printf "  %-40s %15s\n"   "IPC"                             "$IPC"
+sep
+printf "  %-40s %14s%%\n" "Frontend Bound"                  "$FRONTEND_PCT"
+printf "  %-40s %14s%%\n" "Backend Bound"                   "$BACKEND_PCT"
+printf "    %-38s %14s%%\n" "Backend Memory"               "$BACKEND_MEM_PCT"
+printf "    %-38s %14s%%\n" "Backend CPU"                  "$BACKEND_CPU_PCT"
+printf "  %-40s %14s%%\n" "Bad Speculation"                 "$BADSPEC_PCT"
+printf "  %-40s %14s%%\n" "Retiring (Useful Work)"          "$RETIRING_PCT"
+sep
+printf "  %-40s %14s%%\n" "Branch Misprediction Rate"       "$MISP_RATE"
+printf "  %-40s %14s%%\n" "L2 DC Hit Rate"                  "$DC_HIT_RATE"
+printf "  %-40s %14s%%\n" "L2 IC Hit Rate"                  "$IC_HIT_RATE"
+sep
+printf "  %-40s %15s\n"   "Peak Parallel CPUs"              "$PEAK_CPUS"
+printf "  %-40s %15s\n"   "Unique Cores Seen"               "$CORES_SEEN"
+printf "  %-40s %15s\n"   "CCDs Used"                       "$N_CCDS"
+printf "  %-40s %15s\n"   "Cross-CCD Execution"             "$CROSS_CCD"
+printf "  %-40s %15s\n"   "Execution Mode"                  "$EXEC_MODE"
+
+if [ -n "$CLOUD_JSON" ]; then
+    sep
+    python3 -c "
+import json, os
+ctx = os.environ.get('_CLOUD_JSON_ENV', '{}')
+try:
+    d = json.loads(ctx)
+    csp      = d.get('csp', 'unknown').upper()
+    inst     = d.get('instance_type', '--')
+    ppl      = d.get('ppl_watts', 0)
+    pmc      = d.get('pmc_support', 'core')
+    smt      = d.get('smt_enabled', False)
+    emulated = d.get('emulated', False)
+    tag      = ' [EMULATED]' if emulated else ''
+    pmc_l    = {'full':'Full','core':'Core PMCs only','limited':'Limited','none':'NONE'}[pmc]
+    ppl_l    = f'{ppl}W' if ppl else 'unconstrained'
+    smt_l    = 'ON' if smt else 'OFF'
+    print(f'  Cloud{tag}: {csp} {inst}')
+    print(f'  PPL={ppl_l}  SMT={smt_l}  PMC={pmc_l}')
+    if pmc == 'none':
+        print('  [!] PMC data above is INVALID -- Oracle Cloud has no PMC support.')
+except Exception:
+    pass
+" 2>/dev/null
+fi
+
+echo ""
+hdr
+echo ""
+LES * 6)) * 100")
+BADSPEC_PCT=$(calc "(($DISPATCHED - $RETIRED) / ($CYCLES * 6)) * 100")
+RETIRING_PCT=$(calc "($RETIRED / ($CYCLES * 6)) * 100")
+
+printf "  %-40s %15.0f\n" "Active CPU Cycles"              $CYCLES
+printf "  %-40s %15.0f\n" "Total Dispatch Slots (6x)"      $TOTAL_SLOTS
+sep
+printf "  %-40s %14s%%\n" "Frontend Bound"                  "$FRONTEND_PCT"
+printf "    %-38s %15.0f\n" "--- Unused Slots (Frontend)"  $FRONTEND
+printf "  %-40s %14s%%\n" "Backend Bound"                   "$BACKEND_PCT"
+printf "    %-38s %15.0f\n" "--- Unused Slots (Backend)"   $BACKEND
+printf "  %-40s %14s%%\n" "Bad Speculation"                 "$BADSPEC_PCT"
+printf "    %-38s %15.0f\n" "--- Dispatched Ops"           $DISPATCHED
+printf "    %-38s %15.0f\n" "--- Retired Ops"              $RETIRED
+printf "  %-40s %14s%%\n" "Retiring (Useful Work)"          "$RETIRING_PCT"
+echo ""
+
+# =============================================================================
+# SECTION 2: BACKEND BREAKDOWN
+# =============================================================================
+hdr
+echo "  SECTION 2: Backend Bound Breakdown"
+echo "  Memory subsystem vs CPU execution stalls"
+hdr
+echo ""
+
+LOAD_NOT_COMPLETE=${E["ex_no_retire.load_not_complete"]:-0}
+NOT_COMPLETE=${E["ex_no_retire.not_complete"]:-1}
+CYCLES2=${E["ls_not_halted_cyc"]:-1}
+
+MEM_RATIO=$(calc "($LOAD_NOT_COMPLETE / $NOT_COMPLETE) * 100")
+CPU_RATIO=$(calc "((1 - ($LOAD_NOT_COMPLETE / $NOT_COMPLETE)) * 100)")
+BACKEND_MEM_PCT=$(calcf "(($BACKEND / ($CYCLES2 * 6)) * ($LOAD_NOT_COMPLETE / $NOT_COMPLETE)) * 100" 2)
+BACKEND_CPU_PCT=$(calcf "(($BACKEND / ($CYCLES2 * 6)) * (1 - ($LOAD_NOT_COMPLETE / $NOT_COMPLETE))) * 100" 2)
+
+printf "  %-40s %14s%%\n" "Backend Memory Bound"     "$BACKEND_MEM_PCT"
+printf "    %-38s %14s%%\n" "--- Memory/Load ratio"   "$MEM_RATIO"
+printf "  %-40s %14s%%\n" "Backend CPU Bound"        "$BACKEND_CPU_PCT"
+printf "    %-38s %14s%%\n" "--- CPU stall ratio"     "$CPU_RATIO"
+sep
+printf "  %-40s %15.0f\n" "Load-not-complete events"  $LOAD_NOT_COMPLETE
+printf "  %-40s %15.0f\n" "Total non-retire events"   $NOT_COMPLETE
+echo ""
+
+# Cloud Backend Memory annotation
+if [ -n "$CLOUD_JSON" ] && [ "$BACKEND_MEM_PCT" != "N/A" ]; then
+    export _BK_MEM="$BACKEND_MEM_PCT"
+    python3 -c "
+import json, sys, os
+
+ctx_json = os.environ.get('_CLOUD_JSON_ENV', '')
+bk_mem   = float(os.environ.get('_BK_MEM', '0'))
+
+try:
+    d   = json.loads(ctx_json)
+    topo     = d.get('topology_vis', 'correct')
+    smt      = d.get('smt_enabled', False)
+    numa_x   = d.get('is_numa_crossing', False)
+    csp      = d.get('csp', 'unknown').upper()
+    family   = d.get('instance_family', '')
+    emulated = d.get('emulated', False)
+    tag      = ' [EMULATED]' if emulated else ''
+
+    if bk_mem >= 20:
+        if topo == 'unreliable':
+            print(f'  [!] Backend Memory {bk_mem:.1f}%{tag}: Non-deterministic stack ({csp} {family}).')
+            print(f'      May reflect NUMA/CCX misalignment by hypervisor -- not workload pressure.')
+        elif numa_x:
+            print(f'  [!] Backend Memory {bk_mem:.1f}%{tag}: NUMA boundary crossed on this instance.')
+            print(f'      Remote-socket latency (~100 ns) likely contributing to memory-bound stalls.')
+        elif smt:
+            print(f'  [i] Backend Memory {bk_mem:.1f}%{tag}: SMT on -- sibling thread cache footprint')
+            print(f'      may be evicting your L2 working set, inflating this metric.')
+except Exception:
+    pass
+" 2>/dev/null
+    echo ""
+fi
+
+# =============================================================================
+# SECTION 3: BRANCH PREDICTION
+# =============================================================================
+hdr
+echo "  SECTION 3: Branch Prediction"
+if [ "$CLOUD_SMT" = "true" ]; then
+    echo "  NOTE: SMT ON -- branch predictor shared; misprediction rate may be elevated."
+fi
+hdr
+echo ""
+
+MISP=${E["ex_ret_brn_misp"]:-0}
+BRANCHES=${E["ex_ret_brn"]:-1}
+CYCLES3=${E["cpu-cycles"]:-1}
+INSTRS3=${E["instructions"]:-1}
+
+MISP_RATE=$(calc "($MISP / $BRANCHES) * 100")
+IPC=$(calcf "($INSTRS3 / $CYCLES3)" 3)
+BRANCH_RATE=$(calc "($BRANCHES / $INSTRS3) * 100")
+
+printf "  %-40s %14s%%\n" "Branch Misprediction Rate"      "$MISP_RATE"
+printf "    %-38s %15.0f\n" "--- Mispredicted Branches"    $MISP
+printf "    %-38s %15.0f\n" "--- Total Branches Retired"   $BRANCHES
+sep
+printf "  %-40s %15s\n"   "IPC (Instructions per Cycle)"   "$IPC"
+printf "  %-40s %14s%%\n" "Branch Density (branches/instr)" "$BRANCH_RATE"
+echo ""
+
+if [ -n "$CLOUD_JSON" ] && [ "$IPC" != "N/A" ] && [ "$CLOUD_SMT" = "true" ]; then
+    export _IPC="$IPC"
+    python3 -c "
+import os
+ipc = float(os.environ.get('_IPC', '0'))
+emulated = os.environ.get('_CLOUD_JSON_ENV', '{}')
+import json
+try:
+    d = json.loads(emulated)
+    tag = ' [EMULATED]' if d.get('emulated') else ''
+    print(f'  [i] IPC {ipc:.3f}{tag}: SMT on -- per-thread IPC with sibling thread competing')
+    print(f'      for dispatch slots and execution units. Single-thread IPC would be higher.')
+except Exception:
+    pass
+" 2>/dev/null
+    echo ""
+fi
+
+# =============================================================================
+# SECTION 4: L2 CACHE
+# =============================================================================
+hdr
+echo "  SECTION 4: L2 Cache (1 MB per core on Zen4/Zen5)"
+if [ "$CLOUD_SMT" = "true" ]; then
+    echo "  NOTE: SMT ON -- L2 capacity shared between sibling threads (effective ~512 KB)."
+fi
+hdr
+echo ""
+
+DC_HIT=${E["l2_cache_req_stat.dc_hit_in_l2"]:-0}
+DC_MISS=${E["l2_cache_req_stat.ls_rd_blk_c"]:-0}
+IC_MISS=${E["l2_cache_req_stat.ic_fill_miss"]:-0}
+IC_HIT=${E["l2_cache_req_stat.ic_hit_in_l2"]:-0}
+
+DC_HIT_RATE=$(calc "($DC_HIT / ($DC_HIT + $DC_MISS)) * 100")
+IC_HIT_RATE=$(calc "($IC_HIT / ($IC_HIT + $IC_MISS)) * 100")
+
+printf "  %-40s %14s%%\n" "L2 Data Cache Hit Rate"          "$DC_HIT_RATE"
+printf "    %-38s %15.0f\n" "--- L2 DC Hits"                $DC_HIT
+printf "    %-38s %15.0f\n" "--- L2 DC Misses (->L3/DRAM)" $DC_MISS
+sep
+printf "  %-40s %14s%%\n" "L2 Instruction Cache Hit Rate"   "$IC_HIT_RATE"
+printf "    %-38s %15.0f\n" "--- L2 IC Hits"                $IC_HIT
+printf "    %-38s %15.0f\n" "--- L2 IC Misses (->L3)"      $IC_MISS
+echo ""
+
+if [ -n "$CLOUD_JSON" ] && [ "$DC_HIT_RATE" != "N/A" ] && [ "$CLOUD_SMT" = "true" ]; then
+    export _DC_HIT="$DC_HIT_RATE"
+    python3 -c "
+import os, json
+l2h = float(os.environ.get('_DC_HIT', '100'))
+ctx = os.environ.get('_CLOUD_JSON_ENV', '{}')
+try:
+    d = json.loads(ctx)
+    tag = ' [EMULATED]' if d.get('emulated') else ''
+    if l2h < 70:
+        print(f'  [i] L2 DC Hit {l2h:.1f}%{tag}: SMT on -- sibling thread working set competes')
+        print(f'      for L2 capacity. Single-thread hit rate would be higher.')
+except Exception:
+    pass
+" 2>/dev/null
+    echo ""
+fi
+
+# =============================================================================
+# SECTION 5: SUMMARY
+# =============================================================================
+hdr
+echo "  SECTION 5: Summary"
+hdr
+echo ""
+printf "  %-40s %15s\n"   "Workload"                       "$WORKLOAD"
+printf "  %-40s %12s GHz\n" "Eff. Freq (perf cycles/task-clock)" "$EFF_FREQ_GHZ"
+if [ "$BZY_MHZ_MAX" != "N/A" ]; then
+    printf "  %-40s %12s GHz\n" "Bzy_MHz (turbostat APERF/MPERF)"   "$BZY_MHZ_MAX"
+else
+    printf "  %-40s %15s\n"   "Bzy_MHz (turbostat APERF/MPERF)"     "N/A (no turbostat)"
+fi
+printf "  %-40s %14s%%\n" "CPU Utilization (system-wide)"   "$CPU_UTIL_PCT"
+printf "  %-40s %15s\n"   "IPC"                             "$IPC"
 sep
 printf "  %-40s %14s%%\n" "Frontend Bound"                  "$FRONTEND_PCT"
 printf "  %-40s %14s%%\n" "Backend Bound"                   "$BACKEND_PCT"
