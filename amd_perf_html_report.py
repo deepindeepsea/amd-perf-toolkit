@@ -348,6 +348,7 @@ HTML_HEAD = """<!DOCTYPE html>
 SIDEBAR = """<div class="sidebar">
   <div class="brand">AMD Perf Report</div>
   <h3>Sections</h3>
+  <a href="#cloud-context">Cloud Context</a>
   <a href="#system-info">CPU Freq &amp; Utilization</a>
   <a href="#ccd-topology">CCD Topology</a>
   <a href="#pipeline-summary">Pipeline Summary</a>
@@ -396,7 +397,7 @@ def table_block(rows_html, table_id=""):
 
 
 def generate_html(metrics: dict, workload: str, cpu_info: str, timestamp: str,
-                  placement: dict = None) -> str:
+                  placement: dict = None, cloud_ctx=None) -> str:
     sb = [HTML_HEAD, "<body>", SIDEBAR, '<div class="content">']
 
     # ── Report header ──────────────────────────────────────────────────────
@@ -467,6 +468,99 @@ def generate_html(metrics: dict, workload: str, cpu_info: str, timestamp: str,
                        f"{task_ms:,.0f} ms")
     sb.append(table_block(rows))
     sb.append('</div>')  # system-info
+
+
+    # ── Cloud Context Section (conditionally rendered) ────────────────────
+    sb.append('<div id="cloud-context">')
+    sb.append('<div class="section-title">Cloud Environment Context</div>')
+
+    if cloud_ctx is not None:
+        import html as _h
+        tag       = " [EMULATED]" if cloud_ctx.emulated else ""
+        csp_disp  = cloud_ctx.csp.upper() if cloud_ctx.csp != "unknown" else "Bare Metal / Unknown"
+        inst_disp = cloud_ctx.instance_type if cloud_ctx.instance_type != "unknown" else "—"
+        gen_disp  = (f"{cloud_ctx.cpu_gen.title()} ({cloud_ctx.zen_gen.upper()})"
+                     if cloud_ctx.cpu_gen != "unknown" else "—")
+        ppl_disp  = f"{cloud_ctx.ppl_watts}W" if cloud_ctx.ppl_watts else "unconstrained"
+        feff_disp = f"≥{cloud_ctx.feff_expected_min_ghz:.2f} GHz (≥{cloud_ctx.feff_ratio*100:.0f}% of Fmax)"
+        smt_disp  = "ON (2 vCPUs/core)" if cloud_ctx.smt_enabled else "OFF (1 vCPU = 1 core)"
+        det_disp  = "Yes (predictable)" if cloud_ctx.deterministic else "No — variable VM-to-VM"
+        pmc_disp  = {"full":"Full (all PMCs)","core":"Core PMCs only",
+                     "limited":"Limited core PMCs","none":"NONE — no PMC support"}[cloud_ctx.pmc_support]
+        topo_disp = {"correct":"Correct","obfuscated":"Obfuscated (see notes)",
+                     "unreliable":"Unreliable","none":"Not exposed"}[cloud_ctx.topology_vis]
+        nvme_disp = "Yes" if cloud_ctx.local_nvme else "No (network-attached only)"
+        numa_disp = (f"Crosses at >{cloud_ctx.numa_vcpu_max} vCPUs"
+                     if cloud_ctx.numa_vcpu_max > 0 else
+                     ("1P host — no NUMA" if cloud_ctx.sockets == 1 else "N/A"))
+
+        sb.append(f'<div class="section-subtitle">Cloud 201 embedded knowledge base' +
+                  (f' — EMULATING {_h.escape(csp_disp)} {_h.escape(inst_disp)}' if cloud_ctx.emulated else
+                   f' — Auto-detected: {_h.escape(csp_disp)}') + '</div>')
+
+        # Gauge cards row: PPL, Feff floor, SMT, PMC
+        ppl_css  = "warn" if cloud_ctx.ppl_watts in (280, 320) else ("good" if cloud_ctx.ppl_watts == 0 else "")
+        pmc_css  = "bad" if cloud_ctx.pmc_support == "none" else ("warn" if cloud_ctx.pmc_support == "limited" else "good")
+        det_css  = "good" if cloud_ctx.deterministic else "bad"
+        topo_css = "good" if cloud_ctx.topology_vis == "correct" else "bad"
+
+        sb.append('<div class="gauge-row">')
+        sb.append(f'<div class="gauge-card"><div class="label">Package Power Limit</div>' +
+                  f'<div class="value {ppl_css}">{_h.escape(ppl_disp)}</div>' +
+                  f'<div class="unit">Feff floor: {_h.escape(feff_disp)}</div></div>')
+        sb.append(f'<div class="gauge-card"><div class="label">SMT on Host</div>' +
+                  f'<div class="value">{_h.escape(smt_disp)}</div>' +
+                  f'<div class="unit">IPC/L2-hit interpretation changes</div></div>')
+        sb.append(f'<div class="gauge-card"><div class="label">PMC Support</div>' +
+                  f'<div class="value {pmc_css}">{_h.escape(pmc_disp)}</div>' +
+                  f'<div class="unit">perf event reliability</div></div>')
+        sb.append(f'<div class="gauge-card"><div class="label">Deterministic Stack</div>' +
+                  f'<div class="value {det_css}">{_h.escape(det_disp)}</div>' +
+                  f'<div class="unit">topology reproducibility</div></div>')
+        sb.append('</div>')  # gauge-row
+
+        rows = ""
+        rows += metric_row(f"CSP{tag}",                   csp_disp)
+        rows += metric_row("Instance type",               inst_disp)
+        rows += metric_row("CPU Generation",              gen_disp)
+        rows += metric_row("Host sockets",                f"{cloud_ctx.sockets}P")
+        rows += metric_row("Guest vCPUs (detected)",      str(cloud_ctx.detected_vcpus) or "—")
+        rows += metric_row("NUMA nodes (detected)",       str(cloud_ctx.detected_numa))
+        rows += metric_row("Package Power Limit",         ppl_disp)
+        rows += metric_row("Expected Feff floor",         feff_disp)
+        rows += metric_row("SMT on host",                 smt_disp)
+        rows += metric_row("Virtualization stack",        det_disp, det_css)
+        rows += metric_row("CCX topology visible",        topo_disp, topo_css)
+        rows += metric_row("PMC support in VM",           pmc_disp, pmc_css)
+        rows += metric_row("Local NVMe",                  nvme_disp)
+        rows += metric_row("NUMA boundary",               numa_disp)
+        if cloud_ctx.numa_vcpu_max > 0:
+            numa_x = "YES — cross-socket" if cloud_ctx.is_numa_crossing else "No"
+            rows += metric_row("NUMA crossing (this guest)", numa_x,
+                               "bad" if cloud_ctx.is_numa_crossing else "good")
+        sb.append(table_block(rows))
+
+        # Interpretation notes as insight boxes
+        if cloud_ctx.pmc_support == "none":
+            sb.append('<div class="insight bad"><strong>No PMC Support</strong>' +
+                      'All perf counter data in this report is INVALID. Oracle Cloud VMs ' +
+                      'do not expose performance counters to guests.</div>')
+        if not cloud_ctx.deterministic:
+            sb.append('<div class="insight bad"><strong>Non-Deterministic Virtualization Stack</strong>' +
+                      'VM-to-VM performance variability is expected by design on this instance family. ' +
+                      'High Backend Memory% may reflect NUMA/CCX misalignment, not workload behavior.</div>')
+        for note in cloud_ctx.notes[:3]:
+            sb.append(f'<div class="insight"><strong>Note:</strong> {_h.escape(note)}</div>')
+        if cloud_ctx.pmc_notes:
+            sb.append(f'<div class="insight"><strong>PMC Notes:</strong> ' +
+                      _h.escape(" | ".join(cloud_ctx.pmc_notes)) + '</div>')
+    else:
+        sb.append('<div class="section-subtitle">No cloud context detected or specified.</div>')
+        sb.append('<div class="insight"><strong>Add Cloud Context</strong>' +
+                  'Run with <code>--emulate CSP INSTANCE</code> to add cloud-aware metric ' +
+                  'interpretation, e.g.: <code>--emulate aws m8a.8xlarge</code></div>')
+
+    sb.append('</div>')  # cloud-context
 
     # ── CCD Topology Section ───────────────────────────────────────────────
     sb.append('<div id="ccd-topology">')
@@ -713,3 +807,392 @@ new Chart(document.getElementById('pipelineChart'), {{
     # ── Section 2: Backend Breakdown ──────────────────────────────────────
     sb.append('<div id="backend-breakdown">')
     
+    # ── Section 2: Backend Breakdown ──────────────────────────────────────
+    bm  = metrics.get("Backend Memory Bound %", 0)
+    bc  = metrics.get("Backend CPU Bound %", 0)
+    mr  = metrics.get("_Mem Load Ratio %", 0)
+    cr  = metrics.get("_CPU Stall Ratio %", 0)
+
+    rows = ""
+    rows += metric_row("Backend Memory Bound",
+                       fmt_pct(bm),
+                       pct_class(bm, 15, 35))
+    rows += metric_row("  └─ Memory/Load stall ratio",    fmt_pct(mr))
+    rows += metric_row("Backend CPU Bound",
+                       fmt_pct(bc),
+                       pct_class(bc, 15, 35))
+    rows += metric_row("  └─ CPU stall ratio",            fmt_pct(cr))
+    rows += metric_row("Load-not-complete events",
+                       fmt_int(metrics.get("_Load Not Complete", 0)))
+    rows += metric_row("Total non-retire events",
+                       fmt_int(metrics.get("_Not Complete", 0)))
+    sb.append(table_block(rows))
+
+    # Cloud annotation for Backend Memory
+    if cloud_ctx is not None and bm >= 20:
+        if cloud_ctx.topology_vis == "unreliable":
+            sb.append(
+                f'<div class="insight bad"><strong>Cloud: Non-Deterministic Stack Warning</strong>'
+                f'Backend Memory {bm:.1f}% on {cloud_ctx.csp.upper()} {cloud_ctx.instance_family}: '
+                f'may reflect NUMA/CCX misalignment by the hypervisor, not actual workload pressure. '
+                f'Try a pinned benchmark to separate the two causes.</div>'
+            )
+        elif cloud_ctx.is_numa_crossing:
+            sb.append(
+                f'<div class="insight bad"><strong>Cloud: NUMA Boundary Crossed</strong>'
+                f'This instance ({cloud_ctx.detected_vcpus} vCPUs) crosses the socket boundary '
+                f'(>{cloud_ctx.numa_vcpu_max} vCPUs = 2 sockets). Remote-socket latency '
+                f'(~100&nbsp;ns) is likely inflating Backend Memory%.</div>'
+            )
+        elif cloud_ctx.smt_enabled:
+            sb.append(
+                f'<div class="insight"><strong>Cloud: SMT Effect on Backend Memory</strong>'
+                f'SMT is ON on this instance. The sibling thread\'s working set competes for L2 '
+                f'capacity, which can inflate Backend Memory%. Single-thread equivalent would be lower.</div>'
+            )
+    sb.append('</div>')  # backend-breakdown
+
+    # ── Section 3: Branch Prediction ─────────────────────────────────────
+    sb.append('<div id="branch-prediction">')
+    sb.append('<div class="section-title">Section 3 — Branch Prediction</div>')
+    smt_note = " (SMT ON: predictor shared between sibling threads)" if (cloud_ctx and cloud_ctx.smt_enabled) else ""
+    sb.append(f'<div class="section-subtitle">Branch misprediction rate and IPC{html_escape_module.escape(smt_note)}</div>')
+
+    ipc      = metrics.get("IPC", 0)
+    misp_pct = metrics.get("Branch Misprediction Rate %", 0)
+    brn_rate = metrics.get("_Branch Density %", 0)
+
+    sb.append('<div class="gauge-row">')
+    ipc_css  = "good" if ipc > 2.5 else ("warn" if ipc > 1.5 else "bad")
+    sb.append(f'<div class="gauge-card"><div class="label">IPC</div>'
+              f'<div class="value {ipc_css}">{ipc:.3f}</div>'
+              f'<div class="unit">instructions/cycle</div></div>')
+    misp_css = pct_class(misp_pct, 2, 10)
+    sb.append(f'<div class="gauge-card"><div class="label">Misprediction Rate</div>'
+              f'<div class="value {misp_css}">{misp_pct:.2f}</div>'
+              f'<div class="unit">% of all branches</div></div>')
+    sb.append('</div>')
+
+    rows = ""
+    rows += metric_row("IPC (Instructions per Cycle)", f"{ipc:.3f}", ipc_css)
+    rows += metric_row("Branch Misprediction Rate",    fmt_pct(misp_pct), misp_css)
+    rows += metric_row("  └─ Mispredicted branches",  fmt_int(metrics.get("_Misp Branches", 0)))
+    rows += metric_row("  └─ Total branches retired",  fmt_int(metrics.get("_Total Branches", 0)))
+    rows += metric_row("Branch density (branches/instr)", fmt_pct(brn_rate))
+    sb.append(table_block(rows))
+
+    if cloud_ctx and cloud_ctx.smt_enabled:
+        sb.append(
+            f'<div class="insight"><strong>Cloud: SMT IPC Context</strong>'
+            f'IPC {ipc:.3f} reflects per-thread execution with a sibling thread competing '
+            f'for dispatch slots and execution units. Single-thread IPC would be higher.</div>'
+        )
+    sb.append('</div>')  # branch-prediction
+
+    # ── Section 4: L2 Cache ───────────────────────────────────────────────
+    sb.append('<div id="l2-cache">')
+    sb.append('<div class="section-title">Section 4 — L2 Cache</div>')
+    l2_note = " (SMT: effective L2 per thread ~512 KB)" if (cloud_ctx and cloud_ctx.smt_enabled) else " (1 MB per core, Zen4/Zen5)"
+    sb.append(f'<div class="section-subtitle">L2 data and instruction cache hit rates{html_escape_module.escape(l2_note)}</div>')
+
+    dc_hit  = metrics.get("L2 DC Hit Rate %", 0)
+    ic_hit  = metrics.get("L2 IC Hit Rate %", 0)
+
+    sb.append('<div class="gauge-row">')
+    dc_css  = "good" if dc_hit > 80 else ("warn" if dc_hit > 50 else "bad")
+    sb.append(f'<div class="gauge-card"><div class="label">L2 DC Hit Rate</div>'
+              f'<div class="value {dc_css}">{dc_hit:.1f}</div>'
+              f'<div class="unit">% (data cache)</div></div>')
+    ic_css  = "good" if ic_hit > 90 else ("warn" if ic_hit > 70 else "bad")
+    sb.append(f'<div class="gauge-card"><div class="label">L2 IC Hit Rate</div>'
+              f'<div class="value {ic_css}">{ic_hit:.1f}</div>'
+              f'<div class="unit">% (instruction cache)</div></div>')
+    sb.append('</div>')
+
+    rows = ""
+    rows += metric_row("L2 Data Cache Hit Rate",        fmt_pct(dc_hit), dc_css)
+    rows += metric_row("  └─ L2 DC Hits",               fmt_int(metrics.get("_L2 DC Hits", 0)))
+    rows += metric_row("  └─ L2 DC Misses (-> L3/DRAM)", fmt_int(metrics.get("_L2 DC Misses", 0)))
+    rows += metric_row("L2 Instruction Cache Hit Rate",  fmt_pct(ic_hit), ic_css)
+    rows += metric_row("  └─ L2 IC Hits",               fmt_int(metrics.get("_L2 IC Hits", 0)))
+    rows += metric_row("  └─ L2 IC Misses (-> L3)",     fmt_int(metrics.get("_L2 IC Misses", 0)))
+    sb.append(table_block(rows))
+
+    if cloud_ctx and cloud_ctx.smt_enabled and dc_hit < 70:
+        sb.append(
+            f'<div class="insight"><strong>Cloud: SMT L2 Pressure</strong>'
+            f'L2 DC hit rate {dc_hit:.1f}% is below 70%. With SMT ON, the sibling thread\'s '
+            f'working set shares the 1&nbsp;MB L2. Single-thread L2 hit rate would be higher.</div>'
+        )
+    sb.append('</div>')  # l2-cache
+
+    # ── Section 5: Insights ───────────────────────────────────────────────
+    sb.append('<div id="interpretation">')
+    sb.append('<div class="section-title">Performance Insights</div>')
+    sb.append('<div class="section-subtitle">Automated interpretation of metric combinations</div>')
+
+    # Bottleneck classification
+    bottleneck = "Balanced"
+    bottleneck_css = "good"
+    bottleneck_detail = "No single bottleneck dominates. Pipeline is relatively balanced."
+    if bm > 35:
+        bottleneck = "Memory Bound"
+        bottleneck_css = "bad"
+        bottleneck_detail = (f"Backend Memory Bound {bm:.1f}% is high. "
+                             "Investigate cache footprint size, memory access patterns, "
+                             "or NUMA locality. L2 misses flow to L3 or DRAM.")
+    elif bc > 30:
+        bottleneck = "CPU Compute Bound"
+        bottleneck_css = "warn"
+        bottleneck_detail = (f"Backend CPU Bound {bc:.1f}%. Execution units are saturated. "
+                             "Look for vectorization opportunities (AVX-512 on EPYC) "
+                             "or reduce dependency chains.")
+    elif fe > 25:
+        bottleneck = "Frontend Bound"
+        bottleneck_css = "warn"
+        bottleneck_detail = (f"Frontend Bound {fe:.1f}%. Instruction supply is limiting dispatch. "
+                             "Check code density, branch prediction, and I-cache pressure.")
+    elif misp_pct > 10:
+        bottleneck = "Branch Misprediction"
+        bottleneck_css = "warn"
+        bottleneck_detail = (f"Misprediction rate {misp_pct:.1f}%. "
+                             "Branch-heavy code with unpredictable control flow. "
+                             "Profile-guided optimization (PGO) or branchless transforms may help.")
+
+    sb.append(f'<div class="insight {bottleneck_css}">'
+              f'<strong>Primary Bottleneck: {bottleneck}</strong>'
+              f'{html_escape_module.escape(bottleneck_detail)}</div>')
+
+    # IPC context
+    if ipc < 1.0:
+        sb.append('<div class="insight bad"><strong>Very Low IPC (&lt;1.0)</strong>'
+                  'Less than one instruction retiring per cycle. Heavy stalls — '
+                  'likely memory-bound or branch-misprediction dominated.</div>')
+    elif ipc > 3.5:
+        sb.append('<div class="insight good"><strong>High IPC (&gt;3.5)</strong>'
+                  'Excellent instruction throughput. Workload fits well in cache hierarchy '
+                  'and dispatch pipeline is largely occupied with useful work.</div>')
+
+    # Cloud-specific insights
+    if cloud_ctx is not None:
+        tag = " [EMULATED]" if cloud_ctx.emulated else ""
+        if cloud_ctx.pmc_support == "none":
+            sb.append(f'<div class="insight bad"><strong>Cloud{tag}: No PMC Support</strong>'
+                      f'All perf metrics above are INVALID. Oracle Cloud VMs do not expose '
+                      f'performance counters. Run on bare metal for accurate data.</div>')
+        elif cloud_ctx.pmc_support == "limited":
+            sb.append(f'<div class="insight"><strong>Cloud{tag}: Limited PMC Set</strong>'
+                      f'This {cloud_ctx.csp.upper()} instance has reduced PMC support. '
+                      f'Some AMD unit masks may return zero silently. '
+                      f'Verify events return non-zero on a known CPU-bound workload.</div>')
+
+        if not cloud_ctx.deterministic:
+            sb.append(f'<div class="insight bad"><strong>Cloud{tag}: Non-Deterministic Stack</strong>'
+                      f'This {cloud_ctx.csp.upper()} {cloud_ctx.instance_family} instance uses '
+                      f'an oversubscribed virtualization stack. Metric variability between '
+                      f'runs is expected by design. Use a deterministic instance family for '
+                      f'reproducible performance measurement.</div>')
+
+    sb.append('</div>')  # interpretation
+
+    # ── Footer ────────────────────────────────────────────────────────────
+    footer_cloud = ""
+    if cloud_ctx is not None:
+        tag = " [EMULATED]" if cloud_ctx.emulated else ""
+        footer_cloud = (f' | Cloud{tag}: {cloud_ctx.csp.upper()} {cloud_ctx.instance_type} '
+                        f'| PPL: {cloud_ctx.ppl_label} | SMT: {"ON" if cloud_ctx.smt_enabled else "OFF"} '
+                        f'| PMC: {cloud_ctx.pmc_support}')
+
+    sb.append(f'<div class="footer">'
+              f'Generated by amd_perf_html_report.py on {timestamp} '
+              f'| AMD EPYC Zen4/Zen5 pipeline analysis'
+              f'{html_escape_module.escape(footer_cloud)}'
+              f'</div>')
+
+    sb.append('</div>')  # content
+    sb.append('</body></html>')
+    return "\n".join(sb)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Metric computation from raw perf event values
+# ─────────────────────────────────────────────────────────────────────────────
+
+def compute_metrics(raw: dict, total_cores: int) -> dict:
+    """Derive all display metrics from raw perf event counters."""
+    m = {}
+
+    # CPU freq / util
+    task_ms    = raw.get("task-clock", 0)
+    cycles_s0  = raw.get("cpu-cycles", 1)
+    instrs_s0  = raw.get("instructions", 1)
+    cpus_util  = raw.get("task-clock__metric", 0)
+
+    m["_task-clock ms"]            = task_ms
+    m["_Total Cores"]              = total_cores
+    m["CPU Operating Frequency (GHz)"] = (cycles_s0 / (task_ms * 1e6)) if task_ms > 0 else 0
+    m["CPU Utilization %"]         = (cpus_util / total_cores * 100) if total_cores > 0 else 0
+    m["CPUs Utilized (abs)"]       = cpus_util
+
+    # Pipeline L1
+    frontend   = raw.get("de_no_dispatch_per_slot.no_ops_from_frontend", 0)
+    backend    = raw.get("de_no_dispatch_per_slot.backend_stalls", 0)
+    dispatched = raw.get("de_src_op_disp.all", 0)
+    retired    = raw.get("ex_ret_ops", 0)
+    cycles     = raw.get("ls_not_halted_cyc", 1)
+
+    total_slots = cycles * 6
+    m["_Active Cycles"]           = cycles
+    m["_Total Dispatch Slots"]    = total_slots
+    m["_Frontend Unused Slots"]   = frontend
+    m["_Backend Unused Slots"]    = backend
+    m["_Dispatched Ops"]          = dispatched
+    m["_Retired Ops"]             = retired
+    m["Frontend Bound %"]         = (frontend / total_slots * 100) if total_slots > 0 else 0
+    m["Backend Bound %"]          = (backend  / total_slots * 100) if total_slots > 0 else 0
+    m["Bad Speculation %"]        = (max(dispatched - retired, 0) / total_slots * 100) if total_slots > 0 else 0
+    m["Retiring %"]               = (retired  / total_slots * 100) if total_slots > 0 else 0
+
+    # Backend breakdown
+    load_nc    = raw.get("ex_no_retire.load_not_complete", 0)
+    not_comp   = raw.get("ex_no_retire.not_complete", 1)
+    cycles2    = raw.get("ls_not_halted_cyc", 1)
+
+    mem_ratio  = (load_nc / not_comp) if not_comp > 0 else 0
+    cpu_ratio  = 1 - mem_ratio
+    be_pct     = m["Backend Bound %"] / 100
+    m["_Load Not Complete"]       = load_nc
+    m["_Not Complete"]            = not_comp
+    m["_Mem Load Ratio %"]        = mem_ratio * 100
+    m["_CPU Stall Ratio %"]       = cpu_ratio * 100
+    m["Backend Memory Bound %"]   = be_pct * mem_ratio * 100
+    m["Backend CPU Bound %"]      = be_pct * cpu_ratio * 100
+
+    # Branch prediction + IPC
+    misp       = raw.get("ex_ret_brn_misp", 0)
+    branches   = raw.get("ex_ret_brn", 1)
+    cycles3    = raw.get("cpu-cycles", 1)
+    instrs3    = raw.get("instructions", 1)
+
+    m["_Misp Branches"]           = misp
+    m["_Total Branches"]          = branches
+    m["Branch Misprediction Rate %"] = (misp / branches * 100) if branches > 0 else 0
+    m["IPC"]                      = (instrs3 / cycles3) if cycles3 > 0 else 0
+    m["_Branch Density %"]        = (branches / instrs3 * 100) if instrs3 > 0 else 0
+
+    # L2 cache
+    dc_hit     = raw.get("l2_cache_req_stat.dc_hit_in_l2", 0)
+    dc_miss    = raw.get("l2_cache_req_stat.ls_rd_blk_c", 0)
+    ic_miss    = raw.get("l2_cache_req_stat.ic_fill_miss", 0)
+    ic_hit     = raw.get("l2_cache_req_stat.ic_hit_in_l2", 0)
+
+    m["_L2 DC Hits"]              = dc_hit
+    m["_L2 DC Misses"]            = dc_miss
+    m["_L2 IC Hits"]              = ic_hit
+    m["_L2 IC Misses"]            = ic_miss
+    m["L2 DC Hit Rate %"]         = (dc_hit / (dc_hit + dc_miss) * 100) if (dc_hit + dc_miss) > 0 else 0
+    m["L2 IC Hit Rate %"]         = (ic_hit / (ic_hit + ic_miss) * 100) if (ic_hit + ic_miss) > 0 else 0
+
+    return m
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Main
+# ─────────────────────────────────────────────────────────────────────────────
+
+def main():
+    # ── Argument parsing ──────────────────────────────────────────────────
+    parser = argparse.ArgumentParser(
+        description="AMD Pipeline Metrics — HTML Report Generator",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python3 amd_perf_html_report.py "openssl speed aes-256-cbc" report.html
+  python3 amd_perf_html_report.py "sleep 2" report.html --emulate aws m8a.8xlarge
+  python3 amd_perf_html_report.py "my_bench" report.html --emulate gcp c4d-standard-16
+        """
+    )
+    parser.add_argument("workload",    nargs="?", default="sleep 2",
+                        help="Workload command to profile (default: 'sleep 2')")
+    parser.add_argument("output",      nargs="?", default="amd_report.html",
+                        help="Output HTML file (default: amd_report.html)")
+    parser.add_argument("--emulate",   nargs=2,   metavar=("CSP", "INSTANCE"),
+                        help="Emulate cloud context, e.g. --emulate aws m8a.8xlarge")
+    args = parser.parse_args()
+
+    workload    = args.workload
+    output_file = args.output
+    timestamp   = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # ── Cloud context ─────────────────────────────────────────────────────
+    cloud_ctx = None
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    ctx_py = os.path.join(script_dir, "cloud_context.py")
+
+    try:
+        # Try importing as a module first (cleanest)
+        sys.path.insert(0, script_dir)
+        from cloud_context import detect, from_instance
+        if args.emulate:
+            cloud_ctx = from_instance(args.emulate[0], args.emulate[1])
+            print(f"[cloud_context] Emulating {args.emulate[0]} {args.emulate[1]}")
+        else:
+            cloud_ctx = detect()
+            print(f"[cloud_context] Detected: {cloud_ctx.csp} / {cloud_ctx.instance_family}")
+    except Exception as e:
+        print(f"[cloud_context] Not available: {e}", file=sys.stderr)
+
+    # ── CPU info ──────────────────────────────────────────────────────────
+    try:
+        cpu_info = subprocess.check_output(
+            "lscpu | grep 'Model name' | head -1 | cut -d: -f2",
+            shell=True, text=True
+        ).strip().replace("  ", " ")
+    except Exception:
+        cpu_info = platform.processor() or "Unknown CPU"
+
+    total_cores = os.cpu_count() or 1
+
+    print(f"AMD Perf HTML Report")
+    print(f"  Workload:    {workload}")
+    print(f"  Output:      {output_file}")
+    print(f"  CPU:         {cpu_info}")
+    print(f"  Cores:       {total_cores}")
+    if cloud_ctx:
+        tag = " [EMULATED]" if cloud_ctx.emulated else ""
+        print(f"  Cloud{tag}:    {cloud_ctx.csp.upper()} {cloud_ctx.instance_type}")
+    print()
+
+    # ── Collect all event groups ──────────────────────────────────────────
+    print("Collecting perf events...")
+    raw = {}
+    for group_name, events in EVENT_GROUPS.items():
+        print(f"  [{group_name}]")
+        group_raw = collect_events(events, workload)
+        raw.update(group_raw)
+
+    # ── Collect CCD placement data ────────────────────────────────────────
+    print("Collecting CCD placement data...")
+    placement = collect_placement_data(workload)
+
+    # ── Compute derived metrics ───────────────────────────────────────────
+    metrics = compute_metrics(raw, total_cores)
+
+    # ── Generate HTML ─────────────────────────────────────────────────────
+    print("Generating HTML report...")
+    html = generate_html(metrics, workload, cpu_info, timestamp,
+                         placement=placement, cloud_ctx=cloud_ctx)
+
+    with open(output_file, "w", encoding="utf-8") as f:
+        f.write(html)
+
+    print(f"\nReport written: {output_file}")
+    if cloud_ctx:
+        tag = " [EMULATED]" if cloud_ctx.emulated else ""
+        print(f"Cloud context{tag}: {cloud_ctx.csp.upper()} {cloud_ctx.instance_type} | "
+              f"PPL={cloud_ctx.ppl_label} | SMT={'ON' if cloud_ctx.smt_enabled else 'OFF'} | "
+              f"PMC={cloud_ctx.pmc_support}")
+
+
+if __name__ == "__main__":
+    main()

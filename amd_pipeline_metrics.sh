@@ -2,15 +2,82 @@
 
 # AMD Pipeline Metrics Analysis
 # Displays human-readable metrics like PerfSpect
-# Parses raw events and calculates derived metrics
+# Supports cloud context via --emulate CSP INSTANCE_TYPE
+#
+# Usage:
+#   ./amd_pipeline_metrics.sh "workload command"
+#   ./amd_pipeline_metrics.sh "workload command" --emulate aws m8a.8xlarge
+#   ./amd_pipeline_metrics.sh "workload command" --emulate gcp c4d-standard-16
 
-WORKLOAD="${1:-sleep 2}"
-DURATION="${2:-2}"
+WORKLOAD=""
+EMULATE_CSP=""
+EMULATE_INSTANCE=""
+PARSE_EMULATE=0
 
-# ─── Script directory (so we can find amd_cpu_placement.py) ────────────────────
+for arg in "$@"; do
+    if [ "$PARSE_EMULATE" -eq 1 ]; then
+        EMULATE_CSP="$arg"; PARSE_EMULATE=2
+    elif [ "$PARSE_EMULATE" -eq 2 ]; then
+        EMULATE_INSTANCE="$arg"; PARSE_EMULATE=3
+    elif [ "$arg" = "--emulate" ]; then
+        PARSE_EMULATE=1
+    elif [ "$PARSE_EMULATE" -eq 0 ]; then
+        WORKLOAD="$WORKLOAD $arg"
+    fi
+done
+WORKLOAD="${WORKLOAD## }"
+WORKLOAD="${WORKLOAD:-sleep 2}"
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# ─── CPU info (deduplicated model name) ────────────────────────────────────────
+# ---- Cloud context (detect or emulate) --------------------------------------
+CLOUD_CTX_PY="${SCRIPT_DIR}/cloud_context.py"
+CLOUD_JSON=""
+CLOUD_PMC_SUPPORT="core"
+CLOUD_FEFF_MIN="0"
+CLOUD_SMT="false"
+CLOUD_DETERMINISTIC="true"
+CLOUD_PPL="0"
+CLOUD_NUMA_CROSSING="false"
+CLOUD_TOPO_VIS="correct"
+CLOUD_EMULATED="false"
+CLOUD_CSP="unknown"
+
+if [ -f "$CLOUD_CTX_PY" ]; then
+    if [ -n "$EMULATE_CSP" ] && [ -n "$EMULATE_INSTANCE" ]; then
+        CLOUD_JSON=$(python3 "$CLOUD_CTX_PY" --emulate "$EMULATE_CSP" "$EMULATE_INSTANCE" --json 2>/dev/null)
+    else
+        CLOUD_JSON=$(python3 "$CLOUD_CTX_PY" --json 2>/dev/null)
+    fi
+
+    if [ -n "$CLOUD_JSON" ]; then
+        CLOUD_PMC_SUPPORT=$(echo "$CLOUD_JSON" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('pmc_support','core'))")
+        CLOUD_FEFF_MIN=$(echo "$CLOUD_JSON"    | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('feff_expected_min_ghz',0))")
+        CLOUD_SMT=$(echo "$CLOUD_JSON"         | python3 -c "import sys,json; d=json.load(sys.stdin); print(str(d.get('smt_enabled',False)).lower())")
+        CLOUD_PPL=$(echo "$CLOUD_JSON"         | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('ppl_watts',0))")
+        CLOUD_NUMA_CROSSING=$(echo "$CLOUD_JSON" | python3 -c "import sys,json; d=json.load(sys.stdin); print(str(d.get('is_numa_crossing',False)).lower())")
+        CLOUD_TOPO_VIS=$(echo "$CLOUD_JSON"    | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('topology_vis','correct'))")
+        CLOUD_EMULATED=$(echo "$CLOUD_JSON"    | python3 -c "import sys,json; d=json.load(sys.stdin); print(str(d.get('emulated',False)).lower())")
+        CLOUD_CSP=$(echo "$CLOUD_JSON"         | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('csp','unknown'))")
+    fi
+
+    # Print human-readable banner
+    if [ -n "$EMULATE_CSP" ] && [ -n "$EMULATE_INSTANCE" ]; then
+        python3 "$CLOUD_CTX_PY" --emulate "$EMULATE_CSP" "$EMULATE_INSTANCE" 2>/dev/null
+    else
+        python3 "$CLOUD_CTX_PY" 2>/dev/null
+    fi
+    echo ""
+fi
+
+if [ "$CLOUD_PMC_SUPPORT" = "none" ]; then
+    echo "WARNING: PMC SUPPORT NONE -- perf stat events will return zero on this cloud instance."
+    echo "Oracle Cloud VMs do not expose performance counters."
+    echo "Run on bare metal for accurate profiling."
+    echo ""
+fi
+
+# ---- CPU info ----------------------------------------------------------------
 CPU_MODEL=$(lscpu | grep 'Model name' | head -1 | cut -d: -f2 | xargs | sed 's/  */ /g')
 TOTAL_CORES=$(nproc)
 
@@ -18,10 +85,12 @@ echo "=== AMD Performance Analysis ==="
 echo "CPU:          $CPU_MODEL"
 echo "Total Cores:  $TOTAL_CORES"
 echo "Workload:     $WORKLOAD"
+if [ -n "$EMULATE_CSP" ]; then
+    echo "Context:      EMULATING $EMULATE_CSP $EMULATE_INSTANCE"
+fi
 echo ""
 
-# ─── Collect all events in one perf stat call (more efficient) ─────────────────
-# Also captures metric-value (e.g. "CPUs utilized" from task-clock)
+# ---- perf event collection --------------------------------------------------
 collect_group() {
     local events="$1"
     local workload="$2"
@@ -40,13 +109,11 @@ for line in sys.stdin:
         event = obj.get('event', '').strip()
         val   = obj.get('counter-value', '0').replace(',','').strip()
         mval  = obj.get('metric-value', '')
-        munit = obj.get('metric-unit', '')
         results[event] = float(val) if val and val not in ['<not counted>', '<not supported>'] else 0.0
-        # Store metric-value if present (e.g. CPUs utilized from task-clock)
         if mval and mval not in ['<not counted>', '<not supported>', '']:
             try:
                 results[event + '__metric'] = float(str(mval).replace(',',''))
-                results[event + '__unit']   = 0.0  # placeholder to signal unit exists
+                results[event + '__unit']   = 0.0
             except:
                 pass
     except:
@@ -56,8 +123,7 @@ for k, v in results.items():
 " 2>/dev/null
 }
 
-# ─── Parse key=value output into bash associative array ───────────────────────
-declare -A E  # E[event_name] = counter_value
+declare -A E
 
 load_events() {
     local raw_output="$1"
@@ -66,7 +132,6 @@ load_events() {
     done <<< "$raw_output"
 }
 
-# ─── Arithmetic helper ─────────────────────────────────────────────────────────
 calc() {
     python3 -c "
 import sys
@@ -84,7 +149,6 @@ except:
 }
 
 calcf() {
-    # Like calc but with configurable decimal places: calcf "expr" decimals
     python3 -c "
 import sys
 try:
@@ -97,39 +161,30 @@ except:
 "
 }
 
-# ─── Separator ─────────────────────────────────────────────────────────────────
-sep() { echo "────────────────────────────────────────────────────────"; }
+sep() { echo "--------------------------------------------------------"; }
+hdr() { echo "========================================================"; }
 
-# ══════════════════════════════════════════════════════════════════════════════
-# SECTION 0: CPU FREQUENCY & UTILIZATION  (perf-derived, not lscpu static value)
-# ══════════════════════════════════════════════════════════════════════════════
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+# =============================================================================
+# SECTION 0: CPU FREQUENCY & UTILIZATION
+# =============================================================================
+hdr
 echo "  SECTION 0: CPU Frequency & Utilization"
 echo "  Effective values measured during workload execution"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+hdr
 echo ""
 
 RAW=$(collect_group \
-    "task-clock,\
-cpu-cycles,\
-instructions" \
+    "task-clock,cpu-cycles,instructions" \
     "$WORKLOAD")
-
 load_events "$RAW"
 
-TASK_CLOCK_MS=${E["task-clock"]:-0}       # CPU time in milliseconds
-CPU_CYCLES_S0=${E["cpu-cycles"]:-1}       # total cycles
+TASK_CLOCK_MS=${E["task-clock"]:-0}
+CPU_CYCLES_S0=${E["cpu-cycles"]:-1}
 INSTRS_S0=${E["instructions"]:-0}
-CPUS_UTILIZED=${E["task-clock__metric"]:-0}  # "CPUs utilized" from perf metric-value
+CPUS_UTILIZED=${E["task-clock__metric"]:-0}
 
-# Effective frequency: cycles / (task-clock in seconds) → GHz
-# task-clock is in ms, so: cycles / (ms * 1e6) = GHz
 EFF_FREQ_GHZ=$(calcf "($CPU_CYCLES_S0 / ($TASK_CLOCK_MS * 1e6))" 3)
-
-# CPU utilization %:  CPUs utilized / total_cores * 100
 CPU_UTIL_PCT=$(calcf "($CPUS_UTILIZED / $TOTAL_CORES) * 100" 2)
-
-# CPU busy % on the cores that ran (CPUs utilized as direct % of 1 core = util per-core)
 CPUS_UTIL_ABS=$(calcf "$CPUS_UTILIZED" 3)
 
 printf "  %-40s %12s GHz\n" "CPU Operating Frequency (effective)"  "$EFF_FREQ_GHZ"
@@ -143,29 +198,73 @@ echo "  Note: Effective frequency reflects actual boost frequency"
 echo "        during execution, not the static base freq from lscpu."
 echo ""
 
-# ══════════════════════════════════════════════════════════════════════════════
+# ---- Cloud Feff check -------------------------------------------------------
+export _CLOUD_JSON_ENV="$CLOUD_JSON"
+export _EFF_GHZ="$EFF_FREQ_GHZ"
+export _FEFF_MIN="$CLOUD_FEFF_MIN"
+
+if [ -n "$CLOUD_JSON" ] && [ "$CLOUD_FEFF_MIN" != "0" ] && [ "$EFF_FREQ_GHZ" != "N/A" ]; then
+    python3 -c "
+import json, sys, os
+
+ctx_json = os.environ.get('_CLOUD_JSON_ENV', '')
+try:
+    eff_ghz  = float(os.environ.get('_EFF_GHZ', '0'))
+    feff_min = float(os.environ.get('_FEFF_MIN', '0'))
+    d = json.loads(ctx_json)
+    fmax      = d.get('fmax_ghz', 4.0)
+    ppl       = d.get('ppl_watts', 0)
+    csp       = d.get('csp', 'unknown').upper()
+    exp_ratio = d.get('feff_ratio', 0.90)
+    exp_pct   = round((1 - exp_ratio) * 100, 1)
+    ratio     = eff_ghz / fmax if fmax > 0 else 1.0
+    act_pct   = round((1 - ratio) * 100, 1)
+    emulated  = d.get('emulated', False)
+    tag       = ' [EMULATED]' if emulated else ''
+
+    if ratio < (exp_ratio - 0.05):
+        print(f'  [!] FREQ THROTTLE{tag}: Feff {eff_ghz:.3f} GHz = {ratio*100:.1f}% of Fmax ({fmax:.1f} GHz)')
+        if ppl > 0:
+            print(f'      {csp} PPL {ppl}W => expected floor >={feff_min:.2f} GHz (>={exp_ratio*100:.0f}% of Fmax)')
+    elif ppl > 0:
+        print(f'  [OK] Feff {eff_ghz:.3f} GHz >= {csp} PPL{tag} floor ({feff_min:.2f} GHz, PPL={ppl}W)')
+except Exception:
+    pass
+" 2>/dev/null
+    echo ""
+fi
+
+# =============================================================================
 # SECTION 0.5: CPU PLACEMENT & CCD TOPOLOGY
-# Tracks which cores the workload actually uses (including OS migrations)
-# and detects cross-CCD execution (= separate L3 caches → extra latency)
-# ══════════════════════════════════════════════════════════════════════════════
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+# =============================================================================
+hdr
 echo "  SECTION 0.5: CPU Placement & CCD Topology"
 echo "  Which cores ran this workload, and which chiplets?"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+hdr
+
+if [ "$CLOUD_TOPO_VIS" = "obfuscated" ]; then
+    echo "  [!] TOPOLOGY OBFUSCATED: CSP hides CCD/CCX boundaries on this instance."
+    echo "      lstopo may show incorrect shared-L3 groupings. See cloud notes above."
+elif [ "$CLOUD_TOPO_VIS" = "unreliable" ]; then
+    echo "  [!] TOPOLOGY UNRELIABLE: Non-deterministic stack -- core-to-CCD may vary."
+elif [ "$CLOUD_TOPO_VIS" = "none" ]; then
+    echo "  [!] TOPOLOGY NOT EXPOSED: CSP does not surface CCD/CCX topology."
+fi
+
+if [ "$CLOUD_NUMA_CROSSING" = "true" ]; then
+    echo "  [!] NUMA CROSSING: This guest vCPU count spans >1 socket."
+    echo "      Cross-socket memory latency (~100 ns) will inflate Backend Memory%."
+fi
 
 PLACEMENT_PY="${SCRIPT_DIR}/amd_cpu_placement.py"
 PLACEMENT_JSON_TMP=$(mktemp /tmp/amd_placement_XXXXXX.json)
 
 if [ -f "$PLACEMENT_PY" ]; then
-    # Run the workload under the placement monitor.
-    # --quiet suppresses human-readable so we can format ourselves,
-    # --json-file writes the data we'll parse, stdout is the pretty print.
     python3 "$PLACEMENT_PY" --json-file "$PLACEMENT_JSON_TMP" -- $WORKLOAD
 
-    # Parse key fields from JSON for the SUMMARY section later
     if [ -f "$PLACEMENT_JSON_TMP" ]; then
         PEAK_CPUS=$(python3 -c "
-import json, sys
+import json
 try:
     d = json.load(open('$PLACEMENT_JSON_TMP'))
     print(d.get('peak_parallel_cpus', '?'))
@@ -173,7 +272,7 @@ except:
     print('?')
 ")
         CORES_SEEN=$(python3 -c "
-import json, sys
+import json
 try:
     d = json.load(open('$PLACEMENT_JSON_TMP'))
     print(d.get('unique_cores_seen', '?'))
@@ -181,7 +280,7 @@ except:
     print('?')
 ")
         N_CCDS=$(python3 -c "
-import json, sys
+import json
 try:
     d = json.load(open('$PLACEMENT_JSON_TMP'))
     print(d.get('n_ccds_used', '?'))
@@ -189,7 +288,7 @@ except:
     print('?')
 ")
         CROSS_CCD=$(python3 -c "
-import json, sys
+import json
 try:
     d = json.load(open('$PLACEMENT_JSON_TMP'))
     print('YES' if d.get('cross_ccd_execution') else 'NO')
@@ -197,7 +296,7 @@ except:
     print('?')
 ")
         EXEC_MODE=$(python3 -c "
-import json, sys
+import json
 try:
     d = json.load(open('$PLACEMENT_JSON_TMP'))
     print(d.get('execution_mode', '?'))
@@ -207,23 +306,23 @@ except:
         rm -f "$PLACEMENT_JSON_TMP"
     fi
 else
-    echo "  [amd_cpu_placement.py not found — skipping CCD topology section]"
+    echo "  [amd_cpu_placement.py not found -- skipping CCD topology section]"
     echo "  Expected: $PLACEMENT_PY"
-    PEAK_CPUS="?"
-    CORES_SEEN="?"
-    N_CCDS="?"
-    CROSS_CCD="?"
-    EXEC_MODE="?"
+    PEAK_CPUS="?"; CORES_SEEN="?"; N_CCDS="?"; CROSS_CCD="?"; EXEC_MODE="?"
 fi
 echo ""
 
-# ══════════════════════════════════════════════════════════════════════════════
+# =============================================================================
 # SECTION 1: AMD PIPELINE UTILIZATION
-# ══════════════════════════════════════════════════════════════════════════════
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+# =============================================================================
+hdr
 echo "  SECTION 1: AMD Pipeline Utilization (Dispatch Slots)"
 echo "  AMD dispatches up to 6 ops per cycle"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+if [ "$CLOUD_SMT" = "true" ]; then
+    echo "  NOTE: SMT ON -- 6 slots shared between 2 threads."
+    echo "        Per-thread metrics reflect 2-thread execution context."
+fi
+hdr
 echo ""
 
 RAW=$(collect_group \
@@ -233,7 +332,6 @@ de_src_op_disp.all,\
 ex_ret_ops,\
 ls_not_halted_cyc" \
     "$WORKLOAD")
-
 load_events "$RAW"
 
 FRONTEND=${E["de_no_dispatch_per_slot.no_ops_from_frontend"]:-0}
@@ -252,22 +350,22 @@ printf "  %-40s %15.0f\n" "Active CPU Cycles"              $CYCLES
 printf "  %-40s %15.0f\n" "Total Dispatch Slots (6x)"      $TOTAL_SLOTS
 sep
 printf "  %-40s %14s%%\n" "Frontend Bound"                  "$FRONTEND_PCT"
-printf "    %-38s %15.0f\n" "└─ Unused Slots (Frontend)"   $FRONTEND
+printf "    %-38s %15.0f\n" "--- Unused Slots (Frontend)"  $FRONTEND
 printf "  %-40s %14s%%\n" "Backend Bound"                   "$BACKEND_PCT"
-printf "    %-38s %15.0f\n" "└─ Unused Slots (Backend)"    $BACKEND
+printf "    %-38s %15.0f\n" "--- Unused Slots (Backend)"   $BACKEND
 printf "  %-40s %14s%%\n" "Bad Speculation"                 "$BADSPEC_PCT"
-printf "    %-38s %15.0f\n" "└─ Dispatched Ops"            $DISPATCHED
-printf "    %-38s %15.0f\n" "└─ Retired Ops"               $RETIRED
+printf "    %-38s %15.0f\n" "--- Dispatched Ops"           $DISPATCHED
+printf "    %-38s %15.0f\n" "--- Retired Ops"              $RETIRED
 printf "  %-40s %14s%%\n" "Retiring (Useful Work)"          "$RETIRING_PCT"
 echo ""
 
-# ══════════════════════════════════════════════════════════════════════════════
-# SECTION 2: BACKEND BREAKDOWN (Memory vs CPU Stalls)
-# ══════════════════════════════════════════════════════════════════════════════
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+# =============================================================================
+# SECTION 2: BACKEND BREAKDOWN
+# =============================================================================
+hdr
 echo "  SECTION 2: Backend Bound Breakdown"
 echo "  Memory subsystem vs CPU execution stalls"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+hdr
 echo ""
 
 RAW=$(collect_group \
@@ -275,7 +373,6 @@ RAW=$(collect_group \
 ex_no_retire.not_complete,\
 ls_not_halted_cyc" \
     "$WORKLOAD")
-
 load_events "$RAW"
 
 LOAD_NOT_COMPLETE=${E["ex_no_retire.load_not_complete"]:-0}
@@ -284,5 +381,217 @@ CYCLES2=${E["ls_not_halted_cyc"]:-1}
 
 MEM_RATIO=$(calc "($LOAD_NOT_COMPLETE / $NOT_COMPLETE) * 100")
 CPU_RATIO=$(calc "((1 - ($LOAD_NOT_COMPLETE / $NOT_COMPLETE)) * 100)")
-BACKEND_MEM_PCT=$(calc "(($BACKEND / ($CYCLES2 * 6)) * ($LOAD_NOT_COMPLETE / $NOT_COMPLETE)) * 100")
-BACKEND_CPU_PCT=$(calc "(($BACKEND / ($CYCLES2 * 6)) * (1 - ($LOAD_NOT_COMPLETE / $NOT_
+BACKEND_MEM_PCT=$(calcf "(($BACKEND / ($CYCLES2 * 6)) * ($LOAD_NOT_COMPLETE / $NOT_COMPLETE)) * 100" 2)
+BACKEND_CPU_PCT=$(calcf "(($BACKEND / ($CYCLES2 * 6)) * (1 - ($LOAD_NOT_COMPLETE / $NOT_COMPLETE))) * 100" 2)
+
+printf "  %-40s %14s%%\n" "Backend Memory Bound"     "$BACKEND_MEM_PCT"
+printf "    %-38s %14s%%\n" "--- Memory/Load ratio"   "$MEM_RATIO"
+printf "  %-40s %14s%%\n" "Backend CPU Bound"        "$BACKEND_CPU_PCT"
+printf "    %-38s %14s%%\n" "--- CPU stall ratio"     "$CPU_RATIO"
+sep
+printf "  %-40s %15.0f\n" "Load-not-complete events"  $LOAD_NOT_COMPLETE
+printf "  %-40s %15.0f\n" "Total non-retire events"   $NOT_COMPLETE
+echo ""
+
+# Cloud Backend Memory annotation
+if [ -n "$CLOUD_JSON" ] && [ "$BACKEND_MEM_PCT" != "N/A" ]; then
+    export _BK_MEM="$BACKEND_MEM_PCT"
+    python3 -c "
+import json, sys, os
+
+ctx_json = os.environ.get('_CLOUD_JSON_ENV', '')
+bk_mem   = float(os.environ.get('_BK_MEM', '0'))
+
+try:
+    d   = json.loads(ctx_json)
+    topo     = d.get('topology_vis', 'correct')
+    smt      = d.get('smt_enabled', False)
+    numa_x   = d.get('is_numa_crossing', False)
+    csp      = d.get('csp', 'unknown').upper()
+    family   = d.get('instance_family', '')
+    emulated = d.get('emulated', False)
+    tag      = ' [EMULATED]' if emulated else ''
+
+    if bk_mem >= 20:
+        if topo == 'unreliable':
+            print(f'  [!] Backend Memory {bk_mem:.1f}%{tag}: Non-deterministic stack ({csp} {family}).')
+            print(f'      May reflect NUMA/CCX misalignment by hypervisor -- not workload pressure.')
+        elif numa_x:
+            print(f'  [!] Backend Memory {bk_mem:.1f}%{tag}: NUMA boundary crossed on this instance.')
+            print(f'      Remote-socket latency (~100 ns) likely contributing to memory-bound stalls.')
+        elif smt:
+            print(f'  [i] Backend Memory {bk_mem:.1f}%{tag}: SMT on -- sibling thread cache footprint')
+            print(f'      may be evicting your L2 working set, inflating this metric.')
+except Exception:
+    pass
+" 2>/dev/null
+    echo ""
+fi
+
+# =============================================================================
+# SECTION 3: BRANCH PREDICTION
+# =============================================================================
+hdr
+echo "  SECTION 3: Branch Prediction"
+if [ "$CLOUD_SMT" = "true" ]; then
+    echo "  NOTE: SMT ON -- branch predictor shared; misprediction rate may be elevated."
+fi
+hdr
+echo ""
+
+RAW=$(collect_group \
+    "ex_ret_brn_misp,\
+ex_ret_brn,\
+cpu-cycles,\
+instructions" \
+    "$WORKLOAD")
+load_events "$RAW"
+
+MISP=${E["ex_ret_brn_misp"]:-0}
+BRANCHES=${E["ex_ret_brn"]:-1}
+CYCLES3=${E["cpu-cycles"]:-1}
+INSTRS3=${E["instructions"]:-1}
+
+MISP_RATE=$(calc "($MISP / $BRANCHES) * 100")
+IPC=$(calcf "($INSTRS3 / $CYCLES3)" 3)
+BRANCH_RATE=$(calc "($BRANCHES / $INSTRS3) * 100")
+
+printf "  %-40s %14s%%\n" "Branch Misprediction Rate"      "$MISP_RATE"
+printf "    %-38s %15.0f\n" "--- Mispredicted Branches"    $MISP
+printf "    %-38s %15.0f\n" "--- Total Branches Retired"   $BRANCHES
+sep
+printf "  %-40s %15s\n"   "IPC (Instructions per Cycle)"   "$IPC"
+printf "  %-40s %14s%%\n" "Branch Density (branches/instr)" "$BRANCH_RATE"
+echo ""
+
+if [ -n "$CLOUD_JSON" ] && [ "$IPC" != "N/A" ] && [ "$CLOUD_SMT" = "true" ]; then
+    export _IPC="$IPC"
+    python3 -c "
+import os
+ipc = float(os.environ.get('_IPC', '0'))
+emulated = os.environ.get('_CLOUD_JSON_ENV', '{}')
+import json
+try:
+    d = json.loads(emulated)
+    tag = ' [EMULATED]' if d.get('emulated') else ''
+    print(f'  [i] IPC {ipc:.3f}{tag}: SMT on -- per-thread IPC with sibling thread competing')
+    print(f'      for dispatch slots and execution units. Single-thread IPC would be higher.')
+except Exception:
+    pass
+" 2>/dev/null
+    echo ""
+fi
+
+# =============================================================================
+# SECTION 4: L2 CACHE
+# =============================================================================
+hdr
+echo "  SECTION 4: L2 Cache (1 MB per core on Zen4/Zen5)"
+if [ "$CLOUD_SMT" = "true" ]; then
+    echo "  NOTE: SMT ON -- L2 capacity shared between sibling threads (effective ~512 KB)."
+fi
+hdr
+echo ""
+
+RAW=$(collect_group \
+    "l2_cache_req_stat.dc_hit_in_l2,\
+l2_cache_req_stat.ls_rd_blk_c,\
+l2_cache_req_stat.ic_fill_miss,\
+l2_cache_req_stat.ic_hit_in_l2" \
+    "$WORKLOAD")
+load_events "$RAW"
+
+DC_HIT=${E["l2_cache_req_stat.dc_hit_in_l2"]:-0}
+DC_MISS=${E["l2_cache_req_stat.ls_rd_blk_c"]:-0}
+IC_MISS=${E["l2_cache_req_stat.ic_fill_miss"]:-0}
+IC_HIT=${E["l2_cache_req_stat.ic_hit_in_l2"]:-0}
+
+DC_HIT_RATE=$(calc "($DC_HIT / ($DC_HIT + $DC_MISS)) * 100")
+IC_HIT_RATE=$(calc "($IC_HIT / ($IC_HIT + $IC_MISS)) * 100")
+
+printf "  %-40s %14s%%\n" "L2 Data Cache Hit Rate"          "$DC_HIT_RATE"
+printf "    %-38s %15.0f\n" "--- L2 DC Hits"                $DC_HIT
+printf "    %-38s %15.0f\n" "--- L2 DC Misses (->L3/DRAM)" $DC_MISS
+sep
+printf "  %-40s %14s%%\n" "L2 Instruction Cache Hit Rate"   "$IC_HIT_RATE"
+printf "    %-38s %15.0f\n" "--- L2 IC Hits"                $IC_HIT
+printf "    %-38s %15.0f\n" "--- L2 IC Misses (->L3)"      $IC_MISS
+echo ""
+
+if [ -n "$CLOUD_JSON" ] && [ "$DC_HIT_RATE" != "N/A" ] && [ "$CLOUD_SMT" = "true" ]; then
+    export _DC_HIT="$DC_HIT_RATE"
+    python3 -c "
+import os, json
+l2h = float(os.environ.get('_DC_HIT', '100'))
+ctx = os.environ.get('_CLOUD_JSON_ENV', '{}')
+try:
+    d = json.loads(ctx)
+    tag = ' [EMULATED]' if d.get('emulated') else ''
+    if l2h < 70:
+        print(f'  [i] L2 DC Hit {l2h:.1f}%{tag}: SMT on -- sibling thread working set competes')
+        print(f'      for L2 capacity. Single-thread hit rate would be higher.')
+except Exception:
+    pass
+" 2>/dev/null
+    echo ""
+fi
+
+# =============================================================================
+# SECTION 5: SUMMARY
+# =============================================================================
+hdr
+echo "  SECTION 5: Summary"
+hdr
+echo ""
+printf "  %-40s %15s\n"   "Workload"                       "$WORKLOAD"
+printf "  %-40s %12s GHz\n" "Effective Frequency"          "$EFF_FREQ_GHZ"
+printf "  %-40s %14s%%\n" "CPU Utilization"                "$CPU_UTIL_PCT"
+printf "  %-40s %15s\n"   "IPC"                            "$IPC"
+sep
+printf "  %-40s %14s%%\n" "Frontend Bound"                  "$FRONTEND_PCT"
+printf "  %-40s %14s%%\n" "Backend Bound"                   "$BACKEND_PCT"
+printf "    %-38s %14s%%\n" "Backend Memory"               "$BACKEND_MEM_PCT"
+printf "    %-38s %14s%%\n" "Backend CPU"                  "$BACKEND_CPU_PCT"
+printf "  %-40s %14s%%\n" "Bad Speculation"                 "$BADSPEC_PCT"
+printf "  %-40s %14s%%\n" "Retiring (Useful Work)"          "$RETIRING_PCT"
+sep
+printf "  %-40s %14s%%\n" "Branch Misprediction Rate"       "$MISP_RATE"
+printf "  %-40s %14s%%\n" "L2 DC Hit Rate"                  "$DC_HIT_RATE"
+printf "  %-40s %14s%%\n" "L2 IC Hit Rate"                  "$IC_HIT_RATE"
+sep
+printf "  %-40s %15s\n"   "Peak Parallel CPUs"              "$PEAK_CPUS"
+printf "  %-40s %15s\n"   "Unique Cores Seen"               "$CORES_SEEN"
+printf "  %-40s %15s\n"   "CCDs Used"                       "$N_CCDS"
+printf "  %-40s %15s\n"   "Cross-CCD Execution"             "$CROSS_CCD"
+printf "  %-40s %15s\n"   "Execution Mode"                  "$EXEC_MODE"
+
+if [ -n "$CLOUD_JSON" ]; then
+    sep
+    python3 -c "
+import json, os
+ctx = os.environ.get('_CLOUD_JSON_ENV', '{}')
+try:
+    d = json.loads(ctx)
+    csp      = d.get('csp', 'unknown').upper()
+    inst     = d.get('instance_type', '--')
+    ppl      = d.get('ppl_watts', 0)
+    pmc      = d.get('pmc_support', 'core')
+    smt      = d.get('smt_enabled', False)
+    emulated = d.get('emulated', False)
+    tag      = ' [EMULATED]' if emulated else ''
+    pmc_l    = {'full':'Full','core':'Core PMCs only','limited':'Limited','none':'NONE'}[pmc]
+    ppl_l    = f'{ppl}W' if ppl else 'unconstrained'
+    smt_l    = 'ON' if smt else 'OFF'
+    print(f'  Cloud{tag}: {csp} {inst}')
+    print(f'  PPL={ppl_l}  SMT={smt_l}  PMC={pmc_l}')
+    if pmc == 'none':
+        print('  [!] PMC data above is INVALID -- Oracle Cloud has no PMC support.')
+except Exception:
+    pass
+" 2>/dev/null
+fi
+
+echo ""
+hdr
+echo ""
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
