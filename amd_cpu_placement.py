@@ -196,9 +196,9 @@ def _parse_stat(data):
     if len(fields) < 37:
         return None, None
     try:
-        return int(fields[1]), int(fields[36])   # ppid, cpu
+        return int(fields[1]), int(fields[36]), fields[0]  # ppid, cpu, state
     except (ValueError, IndexError):
-        return None, None
+        return None, None, None
 
 
 def _read_proc_table():
@@ -212,9 +212,9 @@ def _read_proc_table():
             pid_s = stat_path.split('/')[2]
             with open(stat_path) as f:
                 data = f.read()
-            ppid, cpu = _parse_stat(data)
+            ppid, cpu, state = _parse_stat(data)
             if ppid is not None:
-                table[int(pid_s)] = (ppid, cpu)
+                table[int(pid_s)] = (ppid, cpu, state)
         except Exception:
             pass
     return table
@@ -245,7 +245,7 @@ def get_descendant_cpus(root_pid):
         if pid in desc_pids:
             continue
         desc_pids.add(pid)
-        for child_pid, (ppid, _) in table.items():
+        for child_pid, (ppid, _, _state) in table.items():
             if ppid == pid and child_pid not in desc_pids:
                 queue.append(child_pid)
 
@@ -255,9 +255,10 @@ def get_descendant_cpus(root_pid):
     for pid in desc_pids:
         if pid not in table:
             continue
-        _, main_cpu = table[pid]
-        cpus.add(main_cpu)
+        _, main_cpu, main_state = table[pid]
         n_procs += 1
+        if main_state == "R":  # only count actively running processes
+            cpus.add(main_cpu)
         # Threads (may be on different CPUs than the main thread)
         task_dir = f'/proc/{pid}/task'
         if os.path.isdir(task_dir):
@@ -268,8 +269,8 @@ def get_descendant_cpus(root_pid):
                         continue          # already counted via table
                     with open(f'{task_dir}/{tid}/stat') as tf:
                         tdata = tf.read()
-                    _, tcpu = _parse_stat(tdata)
-                    if tcpu is not None:
+                    _, tcpu, tstate = _parse_stat(tdata)
+                    if tcpu is not None and tstate == "R":
                         cpus.add(tcpu)
                 except Exception:
                     pass
