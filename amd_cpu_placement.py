@@ -183,42 +183,103 @@ def fallback_topology():
 # /proc polling
 # ---------------------------------------------------------------------------
 
-def get_thread_cpus(pid):
+def _parse_stat(data):
     """
-    Sample the current CPU of every thread belonging to `pid`.
-
-    Uses /proc/<pid>/task/<tid>/stat field 39 (0-indexed after comm field = 36).
-    Returns a set of CPU IDs currently scheduled on hardware at this instant.
+    Parse /proc/pid/stat into (ppid, cpu).
+    comm field can contain spaces/parens — split after the LAST closing paren.
+    Fields after ')': [0]=state [1]=ppid [2]=pgrp ... [36]=processor
     """
-    cpus = set()
+    cp = data.rfind(')')
+    if cp == -1:
+        return None, None
+    fields = data[cp + 2:].split()
+    if len(fields) < 37:
+        return None, None
     try:
+        return int(fields[1]), int(fields[36])   # ppid, cpu
+    except (ValueError, IndexError):
+        return None, None
+
+
+def _read_proc_table():
+    """
+    Scan all /proc/[0-9]*/stat in one pass.
+    Returns dict: pid → (ppid, cpu)
+    """
+    table = {}
+    for stat_path in glob.glob('/proc/[0-9]*/stat'):
+        try:
+            pid_s = stat_path.split('/')[2]
+            with open(stat_path) as f:
+                data = f.read()
+            ppid, cpu = _parse_stat(data)
+            if ppid is not None:
+                table[int(pid_s)] = (ppid, cpu)
+        except Exception:
+            pass
+    return table
+
+
+def get_descendant_cpus(root_pid):
+    """
+    Return (cpus, n_processes) for root_pid and ALL its descendants.
+
+    Walks the full parent→child tree from a single /proc scan so that
+    forked workloads (e.g. openssl -multi 4, nginx workers, MPI ranks)
+    are fully visible — not just threads of the root process.
+
+    Also reads /proc/<pid>/task/<tid>/stat for multi-threaded processes
+    so that pthreads are captured even within child processes.
+
+    Returns:
+        cpus       : set of int CPU IDs currently in use
+        n_processes: int  number of live descendant processes found
+    """
+    table = _read_proc_table()   # pid → (ppid, cpu)
+
+    # BFS to collect all descendants of root_pid
+    desc_pids = set()
+    queue     = [root_pid]
+    while queue:
+        pid = queue.pop()
+        if pid in desc_pids:
+            continue
+        desc_pids.add(pid)
+        for child_pid, (ppid, _) in table.items():
+            if ppid == pid and child_pid not in desc_pids:
+                queue.append(child_pid)
+
+    # Gather CPUs from every descendant + their threads
+    cpus      = set()
+    n_procs   = 0
+    for pid in desc_pids:
+        if pid not in table:
+            continue
+        _, main_cpu = table[pid]
+        cpus.add(main_cpu)
+        n_procs += 1
+        # Threads (may be on different CPUs than the main thread)
         task_dir = f'/proc/{pid}/task'
-        if not os.path.isdir(task_dir):
-            return cpus
+        if os.path.isdir(task_dir):
+            for tid_s in os.listdir(task_dir):
+                try:
+                    tid = int(tid_s)
+                    if tid == pid:
+                        continue          # already counted via table
+                    with open(f'{task_dir}/{tid}/stat') as tf:
+                        tdata = tf.read()
+                    _, tcpu = _parse_stat(tdata)
+                    if tcpu is not None:
+                        cpus.add(tcpu)
+                except Exception:
+                    pass
 
-        for tid in os.listdir(task_dir):
-            stat_path = f'{task_dir}/{tid}/stat'
-            try:
-                with open(stat_path) as f:
-                    data = f.read()
+    return cpus, n_procs
 
-                # /proc/pid/stat format:
-                #   pid (comm) state ppid pgrp session ... processor(field39) ...
-                # comm can contain spaces/parens, so split AFTER the last ')'
-                close_paren = data.rfind(')')
-                if close_paren == -1:
-                    continue
-                # Fields after ')': state(0) ppid(1) ... processor(36)
-                fields = data[close_paren + 2:].split()
-                CPU_FIELD_IDX = 36  # field 39 (1-based) → after ')' → index 36
-                if len(fields) > CPU_FIELD_IDX:
-                    cpus.add(int(fields[CPU_FIELD_IDX]))
-            except (IOError, ValueError, IndexError):
-                continue
 
-    except (IOError, OSError):
-        pass
-
+# Keep old name as alias so any external callers still work
+def get_thread_cpus(pid):
+    cpus, _ = get_descendant_cpus(pid)
     return cpus
 
 
@@ -233,9 +294,10 @@ class PlacementMonitor:
     """
 
     def __init__(self, pid):
-        self.pid          = pid
+        self.pid           = pid
         self.all_cpus_seen = set()
         self.peak_parallel = 0
+        self.peak_procs    = 0           # max forked child processes seen at once
         self.samples       = []          # (t, frozenset)
         self._stop         = threading.Event()
         self._thread       = threading.Thread(target=self._run, daemon=True)
@@ -249,11 +311,13 @@ class PlacementMonitor:
 
     def _run(self):
         while not self._stop.is_set():
-            cpus = get_thread_cpus(self.pid)
+            cpus, n_procs = get_descendant_cpus(self.pid)
             if cpus:
                 self.all_cpus_seen.update(cpus)
                 if len(cpus) > self.peak_parallel:
                     self.peak_parallel = len(cpus)
+                if n_procs > self.peak_procs:
+                    self.peak_procs = n_procs
                 self.samples.append((time.time(), frozenset(cpus)))
             time.sleep(POLL_INTERVAL_S)
 
@@ -349,8 +413,12 @@ def build_report(monitor, cpu_to_ccd, ccd_to_cpus,
     cross   = n_ccds > 1
 
     # Infer execution character
-    if peak <= 1:
+    peak_procs = getattr(monitor, "peak_procs", 0)
+    if peak <= 1 and peak_procs <= 1:
         exec_mode = "single-threaded"
+    elif peak_procs > 1 and peak_procs >= peak:
+        # Forked multi-process workload (e.g. openssl -multi N, nginx, MPI)
+        exec_mode = f"multi-process ({peak_procs} processes, {peak} CPUs peak)"
     elif peak <= 4:
         exec_mode = f"multi-threaded ({peak} threads peak)"
     else:
@@ -374,6 +442,7 @@ def build_report(monitor, cpu_to_ccd, ccd_to_cpus,
         "unique_cores_seen"   : len(all_cpus),
         "cores_seen"          : all_cpus,
         "peak_parallel_cpus"  : peak,
+        "peak_processes"      : getattr(monitor, "peak_procs", 0),
         "execution_mode"      : exec_mode,
         "migration_note"      : migration_note,
 
@@ -430,8 +499,11 @@ def print_report(report):
     print(divider)
 
     # --- Thread / concurrency summary ----------------------------------
+    peak_procs = report.get("peak_processes", 0)
     print(f"  {'Execution mode':<42} {BOLD}{mode}{RESET}")
     print(f"  {'Peak concurrent CPUs (true parallelism)':<42} {BOLD}{peak}{RESET}")
+    if peak_procs > 1:
+        print(f"  {'Peak forked processes (e.g. -multi N)':<42} {BOLD}{CYAN}{peak_procs}{RESET}")
     print(f"  {'Unique cores touched (incl. migrations)':<42} {n_cores}")
     print(f"  {'Core numbers seen':<42} {report['cores_seen']}")
 
@@ -583,4 +655,4 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys
