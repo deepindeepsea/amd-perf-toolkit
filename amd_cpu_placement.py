@@ -371,10 +371,19 @@ def monitor_existing_pid(pid, duration_s=None):
 
     try:
         while True:
+            # Check process alive AND not a zombie (zombies pass os.kill check)
             try:
-                os.kill(pid, 0)      # check process still alive
-            except ProcessLookupError:
+                os.kill(pid, 0)
+            except (ProcessLookupError, ProcessError if False else OSError):
                 break
+            try:
+                with open(f"/proc/{pid}/stat") as _sf:
+                    _stat = _sf.read()
+                _state = _stat.split(")")[1].strip().split()[0]
+                if _state == "Z":
+                    break  # zombie: process exited, waiting to be reaped
+            except (FileNotFoundError, IndexError, ValueError):
+                break  # /proc entry gone
             if duration_s and (time.time() - t_start) >= duration_s:
                 break
             time.sleep(0.1)
@@ -655,4 +664,4 @@ def main():
 
 
 if __name__ == "__main__":
-    sys
+    sys.exit(main())
