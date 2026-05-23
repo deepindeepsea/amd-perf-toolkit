@@ -1145,7 +1145,16 @@ hdr
 # ---- Post-analysis: generate HTML report if amd_perf_html_analyze.py exists ----
 HTML_ANALYZE="${SCRIPT_DIR}/amd_perf_html_analyze.py"
 if [ -f "$HTML_ANALYZE" ]; then
-    HTML_OUT="${HTML_OUT:-./amd_analysis_$(date +%Y%m%d_%H%M%S).html}"
+    if [ -z "$HTML_OUT" ]; then
+        _RESULTS_BASE="${RESULTS_DIR:-./results}"
+        _RUN_TS=$(date +%Y%m%d_%H%M%S)
+        _RUN_DIR="$_RESULTS_BASE/run_${_RUN_TS}"
+        mkdir -p "$_RUN_DIR"
+        HTML_OUT="$_RUN_DIR/amd_analysis.html"
+    else
+        # caller-supplied path — make sure its parent dir exists
+        mkdir -p "$(dirname "$HTML_OUT")" 2>/dev/null || true
+    fi
     python3 "$HTML_ANALYZE" --from-env "$HTML_OUT" \
         WORKLOAD="$WORKLOAD" \
         CPU_MODEL="$CPU_MODEL" \
