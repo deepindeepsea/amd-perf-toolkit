@@ -404,6 +404,240 @@ def analyze(m):
         bzy_ghz=bzy_ghz,
     )
 
+
+# ─────────────────────────────────────────────────────────────────────────────
+# System metadata helpers
+# ─────────────────────────────────────────────────────────────────────────────
+
+def load_meta(path):
+    """Load system metadata JSON written by collect_sys_metadata()."""
+    if not path:
+        return {}
+    try:
+        return json.loads(Path(path).read_text())
+    except Exception:
+        return {}
+
+
+def _vuln_badge(val):
+    val = val or ""
+    if "Mitigation" in val or "Not affected" in val:
+        bg, fg = "#166534", "#bbf7d0"
+    elif "Vulnerable" in val:
+        bg, fg = "#7f1d1d", "#fecaca"
+    else:
+        bg, fg = "#1e293b", "#94a3b8"
+    short = val[:60] + ("…" if len(val) > 60 else "")
+    return f'<span style="background:{bg};color:{fg};padding:1px 7px;border-radius:4px;font-size:11px">{short}</span>'
+
+
+def build_meta_section(meta):
+    """Build HTML for the Platform Configuration section."""
+    if not meta:
+        return "<p style='color:#64748b'>No metadata collected.</p>"
+
+    parts = []
+
+    # ── System / BIOS ─────────────────────────────────────────────────────────
+    def mrow(label, val, color=None):
+        if not val:
+            return ""
+        cs = f"color:{color};" if color else ""
+        return (f'<div style="display:flex;justify-content:space-between;padding:5px 0;'
+                f'border-bottom:1px solid #1e293b">'
+                f'<span style="color:#94a3b8;font-size:12px">{label}</span>'
+                f'<span style="font-size:12px;font-weight:600;{cs}">{val}</span></div>')
+
+    sys_rows = (
+        mrow("Hostname",           meta.get("hostname",""))
+      + mrow("OS",                 meta.get("os",""))
+      + mrow("Kernel",             meta.get("kernel",""))
+      + mrow("Architecture",       meta.get("arch",""))
+      + mrow("System Vendor",      meta.get("sys_vendor",""))
+      + mrow("System Product",     meta.get("sys_product",""))
+      + mrow("Baseboard",          f"{meta.get('baseboard_vendor','')} {meta.get('baseboard_product','')}".strip())
+      + mrow("Chassis",            meta.get("chassis_type",""))
+      + mrow("BIOS",               f"{meta.get('bios_vendor','')} {meta.get('bios_version','')} ({meta.get('bios_date','')})")
+      + mrow("Sockets / Cores / Threads",
+             f"{meta.get('sockets','')} socket(s) · {meta.get('cores_per_socket','')} cores · "
+             f"{meta.get('threads_per_core','')} thread(s)/core")
+      + mrow("CPU Family / Stepping",
+             f"Family {meta.get('cpu_family','')} Model {meta.get('model_id','')} Stepping {meta.get('stepping','')}")
+      + mrow("CPU Max / Min MHz",  f"{meta.get('cpu_max_mhz','N/A')} / {meta.get('cpu_min_mhz','N/A')} MHz")
+      + mrow("L1d / L1i",         f"{meta.get('l1d_cache','')} / {meta.get('l1i_cache','')}")
+      + mrow("L2 cache",           meta.get("l2_cache",""))
+      + mrow("L3 cache",           meta.get("l3_cache",""))
+      + mrow("Uptime",             meta.get("uptime",""))
+      + mrow("Load Average",       meta.get("load",""))
+    )
+    # Power (from turbostat)
+    pkg_w  = meta.get("pkg_watt","")
+    sys_w  = meta.get("sys_watt","")
+    ct_max = meta.get("core_temp_max","")
+    if pkg_w:
+        sys_rows += mrow("Package Power (PkgWatt)", f"{pkg_w} W", color="#fbbf24")
+    if sys_w:
+        sys_rows += mrow("System Power (SysWatt)",  f"{sys_w} W", color="#fbbf24")
+    if ct_max:
+        sys_rows += mrow("Core Temp Max",           f"{ct_max} °C",
+                         color="#ef4444" if float(ct_max or 0) > 80 else "#22c55e")
+
+    parts.append(f'<div style="margin-bottom:18px"><h4 style="color:#00C2DE;font-size:12px;'
+                 f'text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">System & BIOS</h4>'
+                 f'{sys_rows}</div>')
+
+    # ── Memory ────────────────────────────────────────────────────────────────
+    mem_rows = (
+        mrow("Total Memory",  meta.get("mem_total",""))
+      + mrow("Used / Free",   f"{meta.get('mem_used','')} / {meta.get('mem_free','')}")
+      + mrow("Swap",          meta.get("swap_total",""))
+      + mrow("DIMMs populated", f"{meta.get('dimm_populated',0)} of {meta.get('dimm_count',0)} slots")
+    )
+    dimms = meta.get("dimms", [])
+    if dimms:
+        tbl_hdr = ('<table style="width:100%;border-collapse:collapse;font-size:11px;margin-top:8px">'
+                   '<tr style="color:#64748b;border-bottom:1px solid #334155">'
+                   '<th style="text-align:left;padding:3px 6px">Slot</th>'
+                   '<th style="text-align:left;padding:3px 6px">Size</th>'
+                   '<th style="text-align:left;padding:3px 6px">Type</th>'
+                   '<th style="text-align:left;padding:3px 6px">Speed</th>'
+                   '<th style="text-align:left;padding:3px 6px">Manufacturer</th>'
+                   '<th style="text-align:left;padding:3px 6px">Part #</th>'
+                   '<th style="text-align:left;padding:3px 6px">Rank</th>'
+                   '</tr>')
+        tbl_rows = ""
+        for i, d in enumerate(dimms):
+            bg = "#0f172a" if i % 2 else "#1e293b"
+            tbl_rows += (f'<tr style="background:{bg}">'
+                         f'<td style="padding:3px 6px;color:#94a3b8">{d.get("locator","")}</td>'
+                         f'<td style="padding:3px 6px;color:#e2e8f0;font-weight:600">{d.get("size","")}</td>'
+                         f'<td style="padding:3px 6px;color:#e2e8f0">{d.get("type","")}</td>'
+                         f'<td style="padding:3px 6px;color:#e2e8f0">{d.get("config_speed") or d.get("speed","")}</td>'
+                         f'<td style="padding:3px 6px;color:#94a3b8">{d.get("manufacturer","")}</td>'
+                         f'<td style="padding:3px 6px;color:#94a3b8;font-family:monospace">{d.get("part","")}</td>'
+                         f'<td style="padding:3px 6px;color:#94a3b8">{d.get("rank","")}</td>'
+                         f'</tr>')
+        mem_rows += tbl_hdr + tbl_rows + '</table>'
+    parts.append(f'<div style="margin-bottom:18px"><h4 style="color:#00C2DE;font-size:12px;'
+                 f'text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Memory Configuration</h4>'
+                 f'{mem_rows}</div>')
+
+    # ── NUMA ─────────────────────────────────────────────────────────────────
+    numa_info  = meta.get("numa_info", "").strip()
+    numa_nodes = meta.get("numa_nodes", "")
+    numa_cpus  = meta.get("numa_cpus", {})
+    numa_html  = mrow("NUMA nodes", numa_nodes)
+    for node, cpus in sorted(numa_cpus.items()):
+        numa_html += mrow(f"  {node} CPUs", cpus)
+    if numa_info:
+        numa_html += (f'<pre style="background:#0f172a;color:#94a3b8;font-size:10px;'
+                      f'padding:8px;border-radius:4px;overflow-x:auto;margin-top:6px;'
+                      f'white-space:pre-wrap">{numa_info[:1200]}</pre>')
+    parts.append(f'<div style="margin-bottom:18px"><h4 style="color:#00C2DE;font-size:12px;'
+                 f'text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">NUMA Topology</h4>'
+                 f'{numa_html}</div>')
+
+    # ── CPU Vulnerabilities / Mitigations ─────────────────────────────────────
+    vulns = meta.get("vulnerabilities", {})
+    if vulns:
+        vuln_rows = ""
+        for cve, status in sorted(vulns.items()):
+            vuln_rows += (f'<div style="display:flex;align-items:flex-start;gap:10px;'
+                          f'padding:4px 0;border-bottom:1px solid #1e293b">'
+                          f'<span style="color:#94a3b8;font-size:11px;min-width:180px;'
+                          f'font-family:monospace">{cve}</span>'
+                          f'{_vuln_badge(status)}</div>')
+        parts.append(f'<div style="margin-bottom:18px"><h4 style="color:#00C2DE;font-size:12px;'
+                     f'text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">'
+                     f'CPU Vulnerabilities / Mitigations</h4>{vuln_rows}</div>')
+
+    # ── Network ───────────────────────────────────────────────────────────────
+    net_ifaces = meta.get("network", [])
+    pci_net    = meta.get("pci_net", "").strip()
+    if net_ifaces:
+        net_tbl = ('<table style="width:100%;border-collapse:collapse;font-size:11px;margin-bottom:8px">'
+                   '<tr style="color:#64748b;border-bottom:1px solid #334155">'
+                   '<th style="text-align:left;padding:3px 6px">Interface</th>'
+                   '<th style="text-align:left;padding:3px 6px">State</th>'
+                   '<th style="text-align:left;padding:3px 6px">Speed</th>'
+                   '<th style="text-align:left;padding:3px 6px">Driver</th>'
+                   '<th style="text-align:left;padding:3px 6px">Firmware</th>'
+                   '</tr>')
+        for i, d in enumerate(net_ifaces):
+            bg    = "#0f172a" if i % 2 else "#1e293b"
+            state = d.get("state","")
+            sc    = "#22c55e" if state == "UP" else "#ef4444" if state == "DOWN" else "#94a3b8"
+            net_tbl += (f'<tr style="background:{bg}">'
+                        f'<td style="padding:3px 6px;color:#e2e8f0;font-weight:600">{d.get("iface","")}</td>'
+                        f'<td style="padding:3px 6px;color:{sc};font-weight:600">{state}</td>'
+                        f'<td style="padding:3px 6px;color:#e2e8f0">{d.get("speed","—")}</td>'
+                        f'<td style="padding:3px 6px;color:#94a3b8">{d.get("driver","—")}</td>'
+                        f'<td style="padding:3px 6px;color:#64748b;font-family:monospace;font-size:10px">'
+                        f'{d.get("firmware","—")[:30]}</td></tr>')
+        net_tbl += '</table>'
+    else:
+        net_tbl = ""
+    pci_net_html = ""
+    if pci_net:
+        pci_net_html = (f'<pre style="background:#0f172a;color:#94a3b8;font-size:10px;'
+                        f'padding:8px;border-radius:4px;overflow-x:auto;white-space:pre-wrap">'
+                        f'{pci_net}</pre>')
+    if net_tbl or pci_net_html:
+        parts.append(f'<div style="margin-bottom:18px"><h4 style="color:#00C2DE;font-size:12px;'
+                     f'text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Network</h4>'
+                     f'{net_tbl}{pci_net_html}</div>')
+
+    # ── Storage ───────────────────────────────────────────────────────────────
+    storage    = meta.get("storage", [])
+    pci_storage = meta.get("pci_storage","").strip()
+    df_root    = meta.get("df_root","")
+    stor_html  = ""
+    if storage:
+        stbl = ('<table style="width:100%;border-collapse:collapse;font-size:11px;margin-bottom:6px">'
+                '<tr style="color:#64748b;border-bottom:1px solid #334155">'
+                '<th style="text-align:left;padding:3px 6px">Device</th>'
+                '<th style="text-align:left;padding:3px 6px">Size</th>'
+                '<th style="text-align:left;padding:3px 6px">Media</th>'
+                '<th style="text-align:left;padding:3px 6px">Transport</th>'
+                '<th style="text-align:left;padding:3px 6px">Model</th>'
+                '</tr>')
+        for i, d in enumerate(storage):
+            bg    = "#0f172a" if i % 2 else "#1e293b"
+            media = d.get("media","")
+            mc    = "#22c55e" if "NVMe" in media else "#60a5fa" if "SSD" in media else "#94a3b8"
+            stbl += (f'<tr style="background:{bg}">'
+                     f'<td style="padding:3px 6px;color:#e2e8f0;font-family:monospace">/dev/{d.get("name","")}</td>'
+                     f'<td style="padding:3px 6px;color:#e2e8f0;font-weight:600">{d.get("size","")}</td>'
+                     f'<td style="padding:3px 6px;color:{mc};font-weight:600">{media}</td>'
+                     f'<td style="padding:3px 6px;color:#94a3b8">{d.get("tran","")}</td>'
+                     f'<td style="padding:3px 6px;color:#94a3b8">{d.get("model","")}</td></tr>')
+        stbl += '</table>'
+        stor_html += stbl
+    if df_root:
+        stor_html += f'<div style="color:#64748b;font-size:11px">Root fs: {df_root}</div>'
+    if pci_storage:
+        stor_html += (f'<pre style="background:#0f172a;color:#94a3b8;font-size:10px;'
+                      f'padding:8px;border-radius:4px;overflow-x:auto;white-space:pre-wrap;margin-top:6px">'
+                      f'{pci_storage}</pre>')
+    if stor_html:
+        parts.append(f'<div style="margin-bottom:18px"><h4 style="color:#00C2DE;font-size:12px;'
+                     f'text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Storage</h4>'
+                     f'{stor_html}</div>')
+
+    # ── lstopo ────────────────────────────────────────────────────────────────
+    lstopo = meta.get("lstopo","").strip()
+    if lstopo:
+        parts.append(f'<div style="margin-bottom:8px"><h4 style="color:#00C2DE;font-size:12px;'
+                     f'text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">lstopo Topology</h4>'
+                     f'<details><summary style="cursor:pointer;color:#94a3b8;font-size:12px">'
+                     f'Click to expand topology tree</summary>'
+                     f'<pre style="background:#0f172a;color:#94a3b8;font-size:10px;'
+                     f'padding:10px;border-radius:4px;overflow-x:auto;white-space:pre;margin-top:6px">'
+                     f'{lstopo}</pre></details></div>')
+
+    content = "".join(parts)
+    return content or "<p style='color:#64748b'>Metadata not available on this platform.</p>"
+
 # ─────────────────────────────────────────────────────────────────────────────
 # HTML generation
 # ─────────────────────────────────────────────────────────────────────────────
@@ -420,22 +654,23 @@ def bar(value, max_val=100, color=None, height=20):
 
 def gauge_svg(value, max_val, color, label, unit="%"):
     """Simple SVG arc gauge."""
-    frac  = min(1.0, safe_div(value, max_val))
-    angle = frac * 180  # degrees (0-180 = half circle)
-    r = 60
-    cx, cy = 80, 80
     import math
+    frac  = min(1.0, safe_div(value, max_val))
+    angle = frac * 180
+    r = 55
+    cx, cy = 80, 75
     rad = math.radians(180 - angle)
     ex  = cx + r * math.cos(rad)
     ey  = cy - r * math.sin(rad)
     large = 1 if angle > 180 else 0
     arc_d = f"M {cx-r},{cy} A {r},{r} 0 {large},1 {ex:.1f},{ey:.1f}"
+    val_str = f"{value:.1f}{unit}"
     return f"""
-<svg width="160" height="100" viewBox="0 0 160 100">
-  <path d="M {cx-r},{cy} A {r},{r} 0 1,1 {cx+r},{cy}" fill="none" stroke="#1e293b" stroke-width="12"/>
-  <path d="{arc_d}" fill="none" stroke="{color}" stroke-width="12" stroke-linecap="round"/>
-  <text x="{cx}" y="{cy+5}" text-anchor="middle" fill="#f1f5f9" font-size="22" font-weight="bold">{value:.1f}{unit}</text>
-  <text x="{cx}" y="{cy+22}" text-anchor="middle" fill="#94a3b8" font-size="11">{label}</text>
+<svg width="160" height="115" viewBox="0 0 160 115">
+  <path d="M {cx-r},{cy} A {r},{r} 0 1,1 {cx+r},{cy}" fill="none" stroke="#1e293b" stroke-width="11"/>
+  <path d="{arc_d}" fill="none" stroke="{color}" stroke-width="11" stroke-linecap="round"/>
+  <text x="{cx}" y="{cy+2}" text-anchor="middle" fill="#f1f5f9" font-size="20" font-weight="bold">{val_str}</text>
+  <text x="{cx}" y="{cy+18}" text-anchor="middle" fill="#94a3b8" font-size="11">{label}</text>
 </svg>"""
 
 def conf_badge(conf):
@@ -467,18 +702,19 @@ def card(title, content, accent="#00C2DE"):
   {content}
 </div>"""
 
-def build_html(m, a, workload, cpu_model, ts):
+def build_html(m, a, workload, cpu_model, ts, meta=None):
     primary_color = SEV_COLOR.get(a["primary_sev"], "#f59e0b")
     bzy_ghz  = a["bzy_ghz"]
     eff_freq = m.get("eff_freq_ghz", 0)
 
     # ── Scorecard bars ──
+    ret_color = "#22c55e" if m["retiring_pct"] > 40 else "#84cc16" if m["retiring_pct"] > 25 else "#f59e0b"
     scorecard_rows = [
-        ("Retiring (useful work)",  m["retiring_pct"],  "#22c55e", 100),
-        ("Frontend Bound",          m["frontend_pct"],  SEV_COLOR.get(severity(m["frontend_pct"]), "#f59e0b"), 100),
-        ("Backend CPU Bound",       m["bcpu_pct"],      SEV_COLOR.get(severity(m["bcpu_pct"]), "#f59e0b"), 100),
-        ("Backend Memory Bound",    m["bmem_pct"],      SEV_COLOR.get(severity(m["bmem_pct"]), "#f59e0b"), 100),
-        ("Bad Speculation",         m["badspec_pct"],   SEV_COLOR.get(severity(m["badspec_pct"]), "#f59e0b"), 100),
+        ("Retiring (useful work ↑)", m["retiring_pct"],  ret_color, 100),
+        ("Frontend Bound ↓",         m["frontend_pct"],  SEV_COLOR.get(severity(m["frontend_pct"]), "#f59e0b"), 100),
+        ("Backend CPU Bound ↓",      m["bcpu_pct"],      SEV_COLOR.get(severity(m["bcpu_pct"]), "#f59e0b"), 100),
+        ("Backend Memory Bound ↓",   m["bmem_pct"],      SEV_COLOR.get(severity(m["bmem_pct"]), "#f59e0b"), 100),
+        ("Bad Speculation ↓",        m["badspec_pct"],   SEV_COLOR.get(severity(m["badspec_pct"]), "#f59e0b"), 100),
     ]
     sc_html = ""
     for label, val, color, maxv in scorecard_rows:
@@ -533,7 +769,7 @@ def build_html(m, a, workload, cpu_model, ts):
 {metric_row("Zen4 dispatch width (theoretical)", f"{ZEN4_DISPATCH_WIDTH:.0f}", " ops/cycle")}
 {metric_row("Zen4 practical max (integer)", f"{ZEN4_PRACTICAL_MAX:.1f}", " ops/cycle")}
 {metric_row("IPC efficiency", f"{ipc_eff:.1f}", "%", color=ipc_col)}
-{metric_row("Retiring %", f"{m['retiring_pct']:.2f}", "%", color="#22c55e" if m['retiring_pct'] > 40 else "#f59e0b")}"""
+{metric_row("Retiring % (useful work ↑)", f"{m['retiring_pct']:.2f}", "%", color="#22c55e" if m['retiring_pct'] > 40 else "#84cc16" if m['retiring_pct'] > 25 else "#f59e0b")}"""
 
     # ── Cache ──
     dc_lbl, dc_sev = cache_label(m["dc_hit_rate"])
@@ -648,7 +884,9 @@ def build_html(m, a, workload, cpu_model, ts):
     {card("F · Parallelism &amp; Topology", topo_html, accent="#60a5fa")}
   </div>
 
-  <div style="text-align:center;color:#1e293b;font-size:11px;margin-top:24px;padding-top:12px;border-top:1px solid #1e293b">
+  {card("G · Platform Configuration", build_meta_section(meta or {}), accent="#818cf8")}
+
+  <div style="text-align:center;color:#334155;font-size:11px;margin-top:24px;padding-top:12px;border-top:1px solid #1e293b">
     AMD EPYC Performance Toolkit · amd_perf_html_analyze.py · {ts}
   </div>
 
@@ -714,6 +952,7 @@ def main():
             n_ccds       = gs("N_CCDS"),
             cloud_csp    = gs("CLOUD_CSP"),
         )
+        meta = load_meta(gs("METADATA_JSON"))
 
     # ── Mode: --from-terminal ──
     elif args[0] == "--from-terminal":
@@ -751,7 +990,7 @@ def main():
             cpu_model = "AMD EPYC"
 
     a    = analyze(m)
-    html = build_html(m, a, workload, cpu_model, ts)
+    html = build_html(m, a, workload, cpu_model, ts, meta=meta)
 
     Path(out_html).write_text(html)
     print(f"Analysis written to: {out_html}")

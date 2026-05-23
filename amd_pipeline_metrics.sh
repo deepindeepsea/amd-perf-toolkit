@@ -27,6 +27,236 @@ for arg in "$@"; do
 done
 WORKLOAD="${WORKLOAD## }"
 WORKLOAD="${WORKLOAD:-sleep 2}"
+# ── System metadata JSON (filled by collect_sys_metadata before workload) ─────
+META_JSON="$(mktemp /tmp/amd_meta_XXXXXX.json 2>/dev/null || echo "/tmp/amd_meta_$$.json")"
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# System metadata collection
+# Gathers OS, BIOS, DIMM, NUMA, lstopo, mitigations, network, storage, power.
+# Writes a JSON file; passed to the HTML analyzer via METADATA_JSON env var.
+# Takes ~2-5 s (dmidecode calls). Runs before the workload.
+# ─────────────────────────────────────────────────────────────────────────────
+collect_sys_metadata() {
+    local out_json="$1"
+    python3 << 'PYEOF' > "$out_json" 2>/dev/null
+import subprocess, json, re, os
+
+def run(cmd, timeout=15, sudo=False):
+    try:
+        if sudo:
+            cmd = ['sudo', '-n'] + (cmd if isinstance(cmd, list) else cmd.split())
+        elif isinstance(cmd, str):
+            cmd = cmd.split()
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+        return r.stdout
+    except Exception:
+        return ''
+
+def sh(cmd, timeout=15):
+    try:
+        r = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=timeout)
+        return r.stdout.strip()
+    except Exception:
+        return ''
+
+meta = {}
+
+# ── OS ───────────────────────────────────────────────────────────────────────
+for line in (open('/etc/os-release').readlines() if os.path.exists('/etc/os-release') else []):
+    if line.startswith('PRETTY_NAME='):
+        meta['os'] = line.strip().split('=', 1)[1].strip('"')
+        break
+meta.setdefault('os', sh('uname -o'))
+meta['kernel']   = sh('uname -r')
+meta['arch']     = sh('uname -m')
+meta['hostname'] = sh('hostname -s')
+
+# ── BIOS / System (dmidecode) ─────────────────────────────────────────────────
+for key, dmi_key in [
+    ('bios_vendor',       'bios-vendor'),
+    ('bios_version',      'bios-version'),
+    ('bios_date',         'bios-release-date'),
+    ('sys_vendor',        'system-manufacturer'),
+    ('sys_product',       'system-product-name'),
+    ('baseboard_vendor',  'baseboard-manufacturer'),
+    ('baseboard_product', 'baseboard-product-name'),
+    ('chassis_type',      'chassis-type'),
+]:
+    meta[key] = run(['dmidecode', '-s', dmi_key], sudo=True).strip().split('\n')[0]
+
+# ── DIMM info (dmidecode type 17) ─────────────────────────────────────────────
+dimm_raw = run(['dmidecode', '-t', '17'], sudo=True)
+dimms = []
+DIMM_FIELDS = [
+    ('Locator',                   'locator'),
+    ('Bank Locator',              'bank'),
+    ('Form Factor',               'form'),
+    ('Type',                      'type'),
+    ('Size',                      'size'),
+    ('Speed',                     'speed'),
+    ('Configured Memory Speed',   'config_speed'),
+    ('Manufacturer',              'manufacturer'),
+    ('Part Number',               'part'),
+    ('Data Width',                'width'),
+    ('Rank',                      'rank'),
+    ('Minimum Voltage',           'volt_min'),
+    ('Maximum Voltage',           'volt_max'),
+    ('Configured Voltage',        'volt_cfg'),
+]
+for slot_text in re.split(r'Memory Device\n', dimm_raw)[1:]:
+    d = {}
+    for dmi_f, dict_k in DIMM_FIELDS:
+        m = re.search(rf'{re.escape(dmi_f)}:\s+(.+)', slot_text)
+        if m:
+            d[dict_k] = m.group(1).strip()
+    sz = d.get('size', '')
+    if sz and not any(x in sz for x in ('No Module', 'Not Installed', 'Unknown')):
+        dimms.append(d)
+meta['dimms']          = dimms
+meta['dimm_count']     = len(dimms)
+meta['dimm_populated'] = sum(1 for d in dimms if d.get('size') and 'No Module' not in d.get('size', ''))
+
+# Memory total + swap
+for line in sh('free -h').split('\n'):
+    if line.startswith('Mem:'):
+        parts = line.split()
+        meta['mem_total'] = parts[1]; meta['mem_used'] = parts[2]; meta['mem_free'] = parts[3]
+    if line.startswith('Swap:'):
+        meta['swap_total'] = line.split()[1]
+
+# ── NUMA ──────────────────────────────────────────────────────────────────────
+meta['numa_nodes'] = sh("lscpu | grep 'NUMA node(s)' | awk '{print $NF}'")
+numa_hw = run(['numactl', '--hardware'])
+if not numa_hw:
+    numa_hw = sh("lscpu | grep -i numa")
+meta['numa_info'] = numa_hw.strip()
+numa_cpus = {}
+for line in sh('lscpu').split('\n'):
+    m = re.match(r'NUMA node(\d+) CPU\(s\):\s+(.+)', line)
+    if m:
+        numa_cpus[f'node{m.group(1)}'] = m.group(2).strip()
+meta['numa_cpus'] = numa_cpus
+
+# ── lscpu — cache + freq + topology ──────────────────────────────────────────
+lscpu_lines = {}
+for line in sh('lscpu').split('\n'):
+    if ':' in line:
+        k, v = line.split(':', 1)
+        lscpu_lines[k.strip()] = v.strip()
+for dst, src_key in [
+    ('cpu_max_mhz','CPU max MHz'), ('cpu_min_mhz','CPU min MHz'), ('cpu_mhz','CPU MHz'),
+    ('threads_per_core','Thread(s) per core'), ('cores_per_socket','Core(s) per socket'),
+    ('sockets','Socket(s)'), ('l1d_cache','L1d cache'), ('l1i_cache','L1i cache'),
+    ('l2_cache','L2 cache'), ('l3_cache','L3 cache'), ('stepping','Stepping'),
+    ('cpu_family','CPU family'), ('model_id','Model'), ('vendor_id','Vendor ID'),
+]:
+    meta[dst] = lscpu_lines.get(src_key, '')
+
+# ── CPU vulnerabilities / mitigations ─────────────────────────────────────────
+vulns = {}
+vpath = '/sys/devices/system/cpu/vulnerabilities'
+if os.path.isdir(vpath):
+    for f in sorted(os.listdir(vpath)):
+        try:
+            vulns[f] = open(f'{vpath}/{f}').read().strip()
+        except Exception:
+            pass
+meta['vulnerabilities'] = vulns
+
+# ── lstopo ────────────────────────────────────────────────────────────────────
+meta['lstopo'] = ''
+for cmd in (['lstopo-no-graphics', '--of', 'txt'], ['lstopo', '--of', 'txt']):
+    txt = run(cmd)
+    if txt:
+        meta['lstopo'] = '\n'.join(txt.split('\n')[:80])
+        break
+
+# ── Network ───────────────────────────────────────────────────────────────────
+ifaces = []
+try:
+    for line in sh('ip -br link show').split('\n'):
+        if not line.strip():
+            continue
+        parts = line.split()
+        iface = parts[0].split('@')[0] if parts else ''
+        state = parts[1] if len(parts) > 1 else ''
+        mac   = parts[2] if len(parts) > 2 else ''
+        if iface in ('lo',) or not iface:
+            continue
+        d = {'iface': iface, 'state': state, 'mac': mac}
+        eth_out = sh(f'ethtool {iface} 2>/dev/null')
+        for pat, key in [(r'Speed:\s+(\S+)', 'speed'), (r'Duplex:\s+(\S+)', 'duplex')]:
+            m = re.search(pat, eth_out)
+            if m:
+                d[key] = m.group(1)
+        drv_out = sh(f'ethtool -i {iface} 2>/dev/null')
+        for pat, key in [(r'driver:\s+(\S+)', 'driver'), (r'firmware-version:\s+(.+)', 'firmware'),
+                         (r'bus-info:\s+(\S+)', 'bus')]:
+            m = re.search(pat, drv_out)
+            if m:
+                d[key] = m.group(1).strip()
+        ifaces.append(d)
+except Exception:
+    pass
+meta['network']     = ifaces
+meta['pci_net']     = sh("lspci 2>/dev/null | grep -Ei 'ethernet|infiniband|network|mellanox|broadcom|roce' | head -12")
+meta['pci_storage'] = sh("lspci 2>/dev/null | grep -Ei 'nvme|storage|raid|sas|sata|scsi' | head -12")
+
+# ── Storage ───────────────────────────────────────────────────────────────────
+storage = []
+try:
+    lsblk_out = sh('lsblk -d -o NAME,SIZE,TYPE,ROTA,MODEL,TRAN,VENDOR --noheadings 2>/dev/null')
+    for line in lsblk_out.split('\n'):
+        if not line.strip():
+            continue
+        parts = line.split(None, 6)
+        if len(parts) < 3:
+            continue
+        name, size, stype = parts[0], parts[1], parts[2]
+        rota  = parts[3] if len(parts) > 3 else ''
+        model = parts[4] if len(parts) > 4 else ''
+        tran  = parts[5].strip() if len(parts) > 5 else ''
+        vendor= parts[6].strip() if len(parts) > 6 else ''
+        media = 'HDD' if rota == '1' else 'NVMe' if tran == 'nvme' else 'SSD'
+        storage.append({'name': name, 'size': size, 'type': stype,
+                        'media': media, 'model': model, 'tran': tran, 'vendor': vendor})
+except Exception:
+    pass
+meta['storage'] = storage
+meta['df_root'] = sh("df -h / 2>/dev/null | tail -1 | awk '{print $2\" total / \"$3\" used / \"$4\" avail\"}'")
+
+# ── CPU power from turbostat (read already-collected output file) ─────────────
+ts_file = os.environ.get('TURBOSTAT_OUT_PATH', '')
+meta['pkg_watt']      = ''
+meta['sys_watt']      = ''
+meta['core_temp_max'] = ''
+if ts_file and os.path.exists(ts_file) and os.path.getsize(ts_file) > 0:
+    try:
+        lines = open(ts_file).readlines()
+        for i, l in enumerate(lines):
+            if 'Core' in l and 'CPU' in l and 'Busy' in l:
+                hdr = l.split()
+                for sline in lines[i + 1:]:
+                    if sline.strip() and sline.split()[0] not in ('Core', 'Package', '-'):
+                        parts = sline.split()
+                        row = dict(zip(hdr, parts))
+                        meta['pkg_watt']      = row.get('PkgWatt', row.get('Pkg_J', ''))
+                        meta['sys_watt']      = row.get('SysWatt', '')
+                        meta['core_temp_max'] = row.get('CoreTmp', '')
+                        break
+                break
+    except Exception:
+        pass
+
+# ── System misc ───────────────────────────────────────────────────────────────
+meta['uptime'] = sh('uptime -p 2>/dev/null || uptime')
+meta['load']   = sh('cat /proc/loadavg')
+
+print(json.dumps(meta, indent=2))
+PYEOF
+    [ -s "$out_json" ] || echo '{}' > "$out_json"
+}
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -85,6 +315,9 @@ echo "=== AMD Performance Analysis ==="
 echo "CPU:          $CPU_MODEL"
 echo "Total Cores:  $TOTAL_CORES"
 echo "Workload:     $WORKLOAD"
+# ── Collect system metadata (OS, BIOS, DIMM, NUMA, network, storage) ─────────
+collect_sys_metadata "$META_JSON"
+
 if [ -n "$EMULATE_CSP" ]; then
     echo "Context:      EMULATING $EMULATE_CSP $EMULATE_INSTANCE"
 fi
@@ -279,6 +512,7 @@ if command -v turbostat &>/dev/null && sudo -n turbostat --version &>/dev/null 2
     fi
     TURBOSTAT_BG=$!
     TURBOSTAT_AVAILABLE=1
+    export TURBOSTAT_OUT_PATH="$TURBOSTAT_OUT"
 fi
 
 # Wait for perf stat (= workload) to finish
@@ -923,7 +1157,8 @@ if [ -f "$HTML_ANALYZE" ]; then
         EXEC_MODE="$EXEC_MODE" \
         CROSS_CCD="$CROSS_CCD" \
         N_CCDS="$N_CCDS" \
-        CLOUD_CSP="$CLOUD_CSP" 2>/dev/null && \
+        CLOUD_CSP="$CLOUD_CSP" \
+        METADATA_JSON="$META_JSON" 2>/dev/null && \
         echo "  Post-analysis HTML: $HTML_OUT" || \
         echo "  [!] HTML analysis generation failed"
 fi
