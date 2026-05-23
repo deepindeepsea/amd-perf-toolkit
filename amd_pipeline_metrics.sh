@@ -309,7 +309,7 @@ fi
 
 # ---- CPU info ----------------------------------------------------------------
 CPU_MODEL=$(lscpu | grep 'Model name' | head -1 | cut -d: -f2 | xargs | sed 's/  */ /g')
-TOTAL_CORES=$(nproc)
+TOTAL_CORES=$(nproc --all)
 
 echo "=== AMD Performance Analysis ==="
 echo "CPU:          $CPU_MODEL"
