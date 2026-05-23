@@ -456,6 +456,10 @@ l2_cache_req_stat.ic_hit_in_l2"
 PERF_OUTPUT=$(mktemp /tmp/amd_perf_XXXXXX.txt)
 WL_PID_FILE=$(mktemp /tmp/amd_wlpid_XXXXXX)
 PLACEMENT_JSON_TMP=$(mktemp /tmp/amd_placement_XXXXXX.json)
+# ALWAYS capture workload stdout (RPS for wrk, openssl benchmark table,
+# whatever the wrapped command prints). This is critical: the headline
+# performance number lives in the workload output, not in PMC events.
+WL_STDOUT=$(mktemp /tmp/amd_wlstdout_XXXXXX.txt)
 
 echo "  Collecting PMCs for: $WORKLOAD"
 echo "  (runs once — duration = workload runtime)"
@@ -467,11 +471,11 @@ if [ -n "$PERF_CPULIST" ]; then
     echo "  [PERF_CPULIST set] Per-CPU collection on: $PERF_CPULIST"
     { perf stat -j -C "$PERF_CPULIST" -e "$ALL_EVENTS" \
         -- bash -c "echo \$\$ > $WL_PID_FILE; exec $WORKLOAD" \
-        > /dev/null; } 2>"$PERF_OUTPUT" &
+        > "$WL_STDOUT"; } 2>"$PERF_OUTPUT" &
 else
     { perf stat -j -e "$ALL_EVENTS" \
         -- bash -c "echo \$\$ > $WL_PID_FILE; exec $WORKLOAD" \
-        > /dev/null; } 2>"$PERF_OUTPUT" &
+        > "$WL_STDOUT"; } 2>"$PERF_OUTPUT" &
 fi
 PERF_BG=$!
 
@@ -1169,6 +1173,20 @@ if [ -f "$HTML_ANALYZE" ]; then
         echo "  Post-analysis HTML: $HTML_OUT" || \
         echo "  [!] HTML analysis generation failed"
 fi
+
+# ---- ALWAYS save & print captured workload stdout (RPS, openssl results, etc.) ----
+# Sister file next to the HTML so every run has a record of what the test produced.
+if [ -s "$WL_STDOUT" ]; then
+    WL_LOG="${HTML_OUT%.html}.workload.log"
+    cp "$WL_STDOUT" "$WL_LOG" 2>/dev/null && echo "  Workload output: $WL_LOG"
+    echo ""
+    echo "========================================================"
+    echo "  WORKLOAD OUTPUT (captured stdout)"
+    echo "========================================================"
+    cat "$WL_STDOUT"
+    echo "========================================================"
+fi
+rm -f "$WL_STDOUT" 2>/dev/null
 
 echo ""
 hdr
