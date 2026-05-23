@@ -894,4 +894,40 @@ fi
 
 echo ""
 hdr
+
+# =============================================================================
+
+# ---- Post-analysis: generate HTML report if amd_perf_html_analyze.py exists ----
+HTML_ANALYZE="${SCRIPT_DIR}/amd_perf_html_analyze.py"
+if [ -f "$HTML_ANALYZE" ]; then
+    HTML_OUT="./amd_analysis_$(date +%Y%m%d_%H%M%S).html"
+    python3 "$HTML_ANALYZE" --from-env "$HTML_OUT" \
+        WORKLOAD="$WORKLOAD" \
+        CPU_MODEL="$CPU_MODEL" \
+        TOTAL_CORES="$TOTAL_CORES" \
+        FRONTEND_PCT="$FRONTEND_PCT" \
+        BACKEND_PCT="$BACKEND_PCT" \
+        BACKEND_MEM_PCT="$BACKEND_MEM_PCT" \
+        BACKEND_CPU_PCT="$BACKEND_CPU_PCT" \
+        BADSPEC_PCT="$BADSPEC_PCT" \
+        RETIRING_PCT="$RETIRING_PCT" \
+        IPC="$IPC" \
+        MISP_RATE="$MISP_RATE" \
+        DC_HIT_RATE="$DC_HIT_RATE" \
+        IC_HIT_RATE="$IC_HIT_RATE" \
+        EFF_FREQ_GHZ="$EFF_FREQ_GHZ" \
+        BZY_GHZ="$BZY_MHZ_MAX" \
+        CPU_UTIL_PCT="$CPU_UTIL_PCT" \
+        CLOUD_PPL="$CLOUD_PPL" \
+        PEAK_CPUS="$PEAK_CPUS" \
+        EXEC_MODE="$EXEC_MODE" \
+        CROSS_CCD="$CROSS_CCD" \
+        N_CCDS="$N_CCDS" \
+        CLOUD_CSP="$CLOUD_CSP" 2>/dev/null && \
+        echo "  Post-analysis HTML: $HTML_OUT" || \
+        echo "  [!] HTML analysis generation failed"
+fi
+
+echo ""
+hdr
 echo ""
