@@ -463,9 +463,16 @@ echo ""
 
 # Launch perf stat; workload writes its own PID to a file immediately on start
 # so CCD monitoring can attach while perf is already running.
-{ perf stat -j -e "$ALL_EVENTS" \
-    -- bash -c "echo \$\$ > $WL_PID_FILE; exec $WORKLOAD" \
-    > /dev/null; } 2>"$PERF_OUTPUT" &
+if [ -n "$PERF_CPULIST" ]; then
+    echo "  [PERF_CPULIST set] Per-CPU collection on: $PERF_CPULIST"
+    { perf stat -j -C "$PERF_CPULIST" -e "$ALL_EVENTS" \
+        -- bash -c "echo \$\$ > $WL_PID_FILE; exec $WORKLOAD" \
+        > /dev/null; } 2>"$PERF_OUTPUT" &
+else
+    { perf stat -j -e "$ALL_EVENTS" \
+        -- bash -c "echo \$\$ > $WL_PID_FILE; exec $WORKLOAD" \
+        > /dev/null; } 2>"$PERF_OUTPUT" &
+fi
 PERF_BG=$!
 
 # Wait up to 2 s for the workload PID to appear, then start CCD monitor
@@ -1134,7 +1141,7 @@ hdr
 # ---- Post-analysis: generate HTML report if amd_perf_html_analyze.py exists ----
 HTML_ANALYZE="${SCRIPT_DIR}/amd_perf_html_analyze.py"
 if [ -f "$HTML_ANALYZE" ]; then
-    HTML_OUT="./amd_analysis_$(date +%Y%m%d_%H%M%S).html"
+    HTML_OUT="${HTML_OUT:-./amd_analysis_$(date +%Y%m%d_%H%M%S).html}"
     python3 "$HTML_ANALYZE" --from-env "$HTML_OUT" \
         WORKLOAD="$WORKLOAD" \
         CPU_MODEL="$CPU_MODEL" \
