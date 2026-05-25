@@ -1,0 +1,94 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>PMC Enablement — aws_m8a</title>
+<style>
+body{font-family:-apple-system,Segoe UI,sans-serif;max-width:1100px;margin:32px auto;padding:0 20px;line-height:1.5;color:#222;}
+h1{border-bottom:2px solid #C2233F;padding-bottom:6px;}
+h2{margin-top:1.6em;color:#23272F;}
+table{border-collapse:collapse;margin:12px 0;font-size:0.92em;}
+th,td{border:1px solid #d0d0d0;padding:6px 10px;text-align:left;}
+th{background:#f4f4f6;}
+code{background:#f3f3f5;padding:1px 4px;border-radius:3px;}
+tr:nth-child(even){background:#fafafa;}
+</style></head><body>
+<h1>PMC Enablement Report — AWS m8a (Turin)</h1>
+<p>_Generated 2026-05-25 17:42 UTC from `csp_matrix.json`_</p>
+<p><strong>Instance class:</strong> m8a.* (EPYC Turin)  </p>
+<p><strong>Hypervisor:</strong> AWS Nitro  </p>
+<p><strong>Vendor contact:</strong> AWS EC2 support / Annapurna Labs  </p>
+<p><strong>Scope:</strong> Public Turin PPR (C1_pub_050) — 223 (event, umask) tuples</p>
+<h2>Headline</h2>
+<table><tr><th>Status</th><th>Count</th><th>% of public PPR</th><th>Notes</th></tr>
+<tr><td>**Supported (verified non-zero)**</td><td>48</td><td>22%</td><td>tuples that program AND produce signal</td></tr>
+<tr><td>**BLOCKED by hypervisor**</td><td>**28**</td><td>13%</td><td>works on BM, silently returns zero on this CSP — gap to escalate</td></tr>
+<tr><td>Zero-no-signal</td><td>34</td><td>15%</td><td>event legal, our workloads didn't exercise it</td></tr>
+<tr><td>Untested</td><td>113</td><td>51%</td><td>per-bit umask not yet probed</td></tr>
+</table>
+<p>BM-Turin reference: 75 supported / 34 no-signal / 114 untested.</p>
+<p>This CSP exposes <strong>64% of BM-verified events</strong> to guest workloads.</p>
+<h2>Events to Enable (P0/P1 first, then P2)</h2>
+<p>These tuples are documented in the public BRH PPR and verified on bare-metal Turin, but return zero on this CSP — hypervisor PMC filtering blocks them. Listed by severity.</p>
+<h3>P2 — 28 blocked</h3>
+<table><tr><th>PMC</th><th>Event</th><th>Umask</th><th>PPR Name</th><th>Used by PerfSpect</th></tr>
+<tr><td>PMCx024</td><td>0x24</td><td>0x1</td><td>Bad Status STLI</td><td>N</td></tr>
+<tr><td>PMCx02C</td><td>0x2c</td><td>0x1</td><td>Interrupts Taken</td><td>N</td></tr>
+<tr><td>PMCx043</td><td>0x43</td><td>0x10</td><td>Demand Data Cache Fills by Data Source</td><td>Y</td></tr>
+<tr><td>PMCx043</td><td>0x43</td><td>0x2</td><td>Demand Data Cache Fills by Data Source</td><td>Y</td></tr>
+<tr><td>PMCx043</td><td>0x43</td><td>0x4</td><td>Demand Data Cache Fills by Data Source</td><td>Y</td></tr>
+<tr><td>PMCx043</td><td>0x43</td><td>0x40</td><td>Demand Data Cache Fills by Data Source</td><td>Y</td></tr>
+<tr><td>PMCx043</td><td>0x43</td><td>0x8</td><td>Demand Data Cache Fills by Data Source</td><td>Y</td></tr>
+<tr><td>PMCx044</td><td>0x44</td><td>0x10</td><td>Any Data Cache Fills by Data Source</td><td>Y</td></tr>
+<tr><td>PMCx044</td><td>0x44</td><td>0x2</td><td>Any Data Cache Fills by Data Source</td><td>Y</td></tr>
+<tr><td>PMCx044</td><td>0x44</td><td>0x4</td><td>Any Data Cache Fills by Data Source</td><td>Y</td></tr>
+<tr><td>PMCx044</td><td>0x44</td><td>0x40</td><td>Any Data Cache Fills by Data Source</td><td>Y</td></tr>
+<tr><td>PMCx044</td><td>0x44</td><td>0x8</td><td>Any Data Cache Fills by Data Source</td><td>Y</td></tr>
+<tr><td>PMCx04B</td><td>0x4b</td><td>0x1</td><td>Prefetch Instructions Dispatched</td><td>N</td></tr>
+<tr><td>PMCx04B</td><td>0x4b</td><td>0x2</td><td>Prefetch Instructions Dispatched</td><td>N</td></tr>
+<tr><td>PMCx052</td><td>0x52</td><td>0x1</td><td>Ineffective Software Prefetches</td><td>N</td></tr>
+<tr><td>PMCx052</td><td>0x52</td><td>0x2</td><td>Ineffective Software Prefetches</td><td>N</td></tr>
+<tr><td>PMCx059</td><td>0x59</td><td>0x2</td><td>Software Prefetch Data Cache Fills by Data Source</td><td>N</td></tr>
+<tr><td>PMCx059</td><td>0x59</td><td>0x4</td><td>Software Prefetch Data Cache Fills by Data Source</td><td>N</td></tr>
+<tr><td>PMCx059</td><td>0x59</td><td>0x8</td><td>Software Prefetch Data Cache Fills by Data Source</td><td>N</td></tr>
+<tr><td>PMCx05A</td><td>0x5a</td><td>0x10</td><td>Hardware Prefetch Data Cache Fills by Data Source</td><td>N</td></tr>
+<tr><td>PMCx05A</td><td>0x5a</td><td>0x2</td><td>Hardware Prefetch Data Cache Fills by Data Source</td><td>N</td></tr>
+<tr><td>PMCx05A</td><td>0x5a</td><td>0x4</td><td>Hardware Prefetch Data Cache Fills by Data Source</td><td>N</td></tr>
+<tr><td>PMCx05A</td><td>0x5a</td><td>0x40</td><td>Hardware Prefetch Data Cache Fills by Data Source</td><td>N</td></tr>
+<tr><td>PMCx05A</td><td>0x5a</td><td>0x8</td><td>Hardware Prefetch Data Cache Fills by Data Source</td><td>N</td></tr>
+<tr><td>PMCx085</td><td>0x85</td><td>0x2</td><td>L1 ITLB Miss, L2 ITLB Miss</td><td>N</td></tr>
+<tr><td>PMCx0AE</td><td>0xae</td><td>0x10</td><td>Dynamic Tokens Dispatch Stall Cycles 1</td><td>N</td></tr>
+<tr><td>PMCx0CB</td><td>0xcb</td><td>0x1</td><td>Retired MMX FP Instructions</td><td>N</td></tr>
+<tr><td>PMCx0D6</td><td>0xd6</td><td>0x10</td><td>Cycles with no retire</td><td>N</td></tr>
+</table>
+<h2>Events Supported (Verified Non-Zero)</h2>
+<table><tr><th>PMC</th><th>PPR Name</th><th>Working umasks</th></tr>
+<tr><td>PMCx003</td><td>FP retired SSE and AVX FLOPs</td><td>0x8</td></tr>
+<tr><td>PMCx008</td><td>FP uops retired by size</td><td>0x1, 0x2, 0x4, 0x8, 0x10, 0x20</td></tr>
+<tr><td>PMCx024</td><td>Bad Status STLI</td><td>0x2</td></tr>
+<tr><td>PMCx029</td><td>LS Dispatch</td><td>0x1, 0x2, 0x4</td></tr>
+<tr><td>PMCx037</td><td>Store Globally Visible Cancels Due To External Conditions</td><td>0x1</td></tr>
+<tr><td>PMCx043</td><td>Demand Data Cache Fills by Data Source</td><td>0x1</td></tr>
+<tr><td>PMCx044</td><td>Any Data Cache Fills by Data Source</td><td>0x1</td></tr>
+<tr><td>PMCx045</td><td>L1 DTLB Reloads</td><td>0x1, 0x2, 0x4, 0x8, 0x10, 0x20, 0x40, 0x80</td></tr>
+<tr><td>PMCx047</td><td>Misaligned Load Flows</td><td>0x1, 0x2</td></tr>
+<tr><td>PMCx050</td><td>Write Combining Buffer Close</td><td>0x1</td></tr>
+<tr><td>PMCx059</td><td>Software Prefetch Data Cache Fills by Data Source</td><td>0x1</td></tr>
+<tr><td>PMCx05A</td><td>Hardware Prefetch Data Cache Fills by Data Source</td><td>0x1</td></tr>
+<tr><td>PMCx085</td><td>L1 ITLB Miss, L2 ITLB Miss</td><td>0x1, 0x8</td></tr>
+<tr><td>PMCx094</td><td>ITLB Instruction Fetch Hits</td><td>0x1, 0x2</td></tr>
+<tr><td>PMCx09F</td><td>BP Redirects</td><td>0x1, 0x2</td></tr>
+<tr><td>PMCx0AA</td><td>Source of Op Dispatched From Decoder</td><td>0x1, 0x2</td></tr>
+<tr><td>PMCx0AE</td><td>Dynamic Tokens Dispatch Stall Cycles 1</td><td>0x1, 0x2, 0x4, 0x40</td></tr>
+<tr><td>PMCx0AF</td><td>Dynamic Tokens Dispatch Stall Cycles 2</td><td>0x1, 0x2, 0x4, 0x20</td></tr>
+<tr><td>PMCx0CB</td><td>Retired MMX FP Instructions</td><td>0x4</td></tr>
+<tr><td>PMCx0D6</td><td>Cycles with no retire</td><td>0x1, 0x2, 0x8</td></tr>
+<tr><td>PMCx120</td><td>P0 Freq Cycles not in Halt</td><td>0x1</td></tr>
+</table>
+<h2>Severity Legend</h2>
+<p>- <strong>P0</strong> — Required for AMD&#x27;s BRH Pipeline-Utilization (top-down) model. Blocking these breaks tier-1 performance methodology.</p>
+<p>- <strong>P1</strong> — Used by upstream OSS tooling (PerfSpect, Linux perf metric groups, RHEL/Ubuntu pmu-tools). Blocking these breaks community observability.</p>
+<p>- <strong>P2</strong> — Documented in the public PPR but not on the critical path of any known major tool. Lower priority.</p>
+<h2>State Legend</h2>
+<p>- <strong>Y</strong> — Programmable AND returns non-zero on at least one well-known workload</p>
+<p>- <strong>B</strong> — Programmable on bare metal but returns 0 on this CSP (hypervisor filter)</p>
+<p>- <strong>Z</strong> — Programmable but our workload mix didn&#x27;t trigger it (no information)</p>
+<p>- <strong>?</strong> — Not yet probed in the current sweep</p>
+</body></html>

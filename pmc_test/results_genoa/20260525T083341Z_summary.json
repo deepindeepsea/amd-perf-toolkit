@@ -1,0 +1,220 @@
+{
+  "meta": {
+    "ts": "20260525T083341Z",
+    "host": "host-ruby-de91",
+    "ncpu": 96,
+    "ccd_topology": [
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      [
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      [
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
+      ],
+      [
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71
+      ],
+      [
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79
+      ],
+      [
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87
+      ],
+      [
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95
+      ]
+    ],
+    "mode": "ppr-extras"
+  },
+  "ppr_extras": [
+    {
+      "event": "ex_ret_ops",
+      "workload": "all",
+      "value": 0.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12536311149597168
+    },
+    {
+      "event": "ex_ret_brn_tkn",
+      "workload": "all",
+      "value": 0.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12536311149597168
+    },
+    {
+      "event": "ex_ret_cond",
+      "workload": "all",
+      "value": 0.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12536311149597168
+    },
+    {
+      "event": "ex_ret_near_ret",
+      "workload": "all",
+      "value": 0.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12536311149597168
+    },
+    {
+      "event": "ex_div_busy",
+      "workload": "all",
+      "value": 0.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12536311149597168
+    },
+    {
+      "event": "de_op_queue_empty",
+      "workload": "all",
+      "value": 0.0,
+      "category": "DE",
+      "ok": false,
+      "duration_s": 0.12536311149597168
+    },
+    {
+      "event": "ls_int_taken",
+      "workload": "all",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.12536311149597168
+    },
+    {
+      "event": "ls_not_halted_cyc",
+      "workload": "all",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.12536311149597168
+    },
+    {
+      "event": "ic_cache_fill_l2",
+      "workload": "all",
+      "value": 0.0,
+      "category": "IC_BP",
+      "ok": false,
+      "duration_s": 0.1254715919494629
+    },
+    {
+      "event": "ic_cache_fill_sys",
+      "workload": "all",
+      "value": 0.0,
+      "category": "IC_BP",
+      "ok": false,
+      "duration_s": 0.1254715919494629
+    },
+    {
+      "event": "bp_dyn_ind_pred",
+      "workload": "all",
+      "value": 0.0,
+      "category": "IC_BP",
+      "ok": false,
+      "duration_s": 0.1254715919494629
+    }
+  ]
+}

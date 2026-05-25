@@ -1,0 +1,2693 @@
+{
+  "chip": "Genoa",
+  "source": "AMD PPR #55901 Rev 0.50 (Family 19h Model 11h B2 - Storm Peak; Zen 4 core IP = Genoa EPYC). Vol 1 pp.314-341",
+  "dataset": "core",
+  "event_count": 103,
+  "events": [
+    {
+      "code": "PMCxFFF",
+      "name": "Merge",
+      "symbolic": "Core::X86::Pmc::Core::Merge",
+      "category": "",
+      "description": "",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved. 2.1.20.5 Core Performance Monitor Counters This section provides the core performance counter events that may be selected through Core::X86::Msr::PERF_CTL0[EventSelect[11:8],EventSelect[7:0],UnitMask]. See Core::X86::Msr::PERF_CTR. See Core::X86::Msr::PERF_LEGACY_CTL0..3 and Core::X86::Msr::PERF_LEGACY_CTR."
+        }
+      ]
+    },
+    {
+      "code": "PMCx002",
+      "name": "Retired x87 FP Ops",
+      "symbolic": "Core::X86::Pmc::Core::FpRetx87FpOps",
+      "category": "FP",
+      "description": "The number of x87 floating-point Ops that have retired.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:3",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "DivSqrROps",
+          "description": "Divide and square root Ops."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "MulOps",
+          "description": "Multiply Ops."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "AddSubOps",
+          "description": "Add/subtract Ops."
+        }
+      ]
+    },
+    {
+      "code": "PMCx003",
+      "name": "Retired SSE/AVX FLOPs",
+      "symbolic": "Core::X86::Pmc::Core::FpRetSseAvxOps",
+      "category": "FP",
+      "description": "This is a retire-based event. The number of retired SSE/AVX FLOPs. The number of events logged per cycle can vary from 0 to 64. This event requires the use of the MergeEvent since it can count above 15 events per cycle. See 2.1.20.4 [Large Increment per Cycle Events]. It does not provide a useful count without the use of the MergeEvent.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:5",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "BfloatMacFLOPs",
+          "description": "bfloat Multiply-Accumulate FLOPs. Each bfloat MAC operation is counted as 2 FLOPS."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "MacFLOPs",
+          "description": "Multiply-Accumulate FLOPs. Each MAC operation is counted as 2 FLOPS. This event does not include bfloat MAC operations."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "DivFLOPs",
+          "description": "Divide/square root FLOPs."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "MultFLOPs",
+          "description": "Multiply FLOPs."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "AddSubFLOPs",
+          "description": "Add/subtract FLOPs. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx005",
+      "name": "Retired Serializing Ops",
+      "symbolic": "Core::X86::Pmc::Core::FpRetiredSerOps",
+      "category": "FP",
+      "description": "The number of serializing Ops retired.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:4",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "SseBotRet",
+          "description": "SSE/AVX bottom-executing ops retired."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "SseCtrlRet",
+          "description": "SSE/AVX control word mispredict traps."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "X87BotRet",
+          "description": "x87 bottom-executing ops retired."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "X87CtrlRet",
+          "description": "x87 control word mispredict traps due to mispredictions in RC or PC, or changes in Exception Mask bits."
+        }
+      ]
+    },
+    {
+      "code": "PMCx008",
+      "name": "Retired FP Ops By Width",
+      "symbolic": "Core::X86::Pmc::Core::FpOpsRetiredByWidth",
+      "category": "FP",
+      "description": "",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:6",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Pack512uOpsRetired",
+          "description": "Number of packed 512-bit ops retired."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "Pack256uOpsRetired",
+          "description": "Number of packed 256-bit ops retired."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "Pack128uOpsRetired",
+          "description": "Number of packed 128-bit ops retired."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "ScalaruOpsRetired",
+          "description": "Number of scalar ops retired."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "MMXuOpsRetired",
+          "description": "Number of MMX ops retired."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "x87uOpsRetired",
+          "description": "Number of x87 ops retired. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx00A",
+      "name": "Retired FP Ops By Type",
+      "symbolic": "Core::X86::Pmc::Core::FpOpsRetiredByType",
+      "category": "FP",
+      "description": "Note: Shuffle op counts may count for instructions that are not necessarily thought of as including shuffles. For example, Horizontal Add, Dot Product, and certain MOV instructions may include or use only shuffle type ops.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:4",
+          "mnemonic": "VectorFpOpType",
+          "description": "ValidValues: Value Description 0h None 1h Add 2h Sub 3h Mul 4h Mac 5h Div 6h Sqrt 7h Cmp 8h Cvt 9h Blend Ah Reserved. Bh Shuffle Ch Reserved. Dh Logical Eh Other Fh All"
+        },
+        {
+          "bit": "3:0",
+          "mnemonic": "ScalarFpOpType",
+          "description": "ValidValues: Value Description 0h None 1h Add 2h Sub 3h Mul 4h Mac 5h Div 6h Sqrt 7h Cmp 8h Cvt 9h Blend Dh-Ah Reserved. Eh Other Fh All AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx00B",
+      "name": "INT Ops Retired",
+      "symbolic": "Core::X86::Pmc::Core::SseAvxOpsRetired",
+      "category": "FP",
+      "description": "Note: Shuffle op counts may count for instructions that are not necessarily thought of as including shuffles. For example, Horizontal Add, Dot Product, and certain MOV instructions may include or use only shuffle type ops.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:4",
+          "mnemonic": "SseAvxOpType",
+          "description": "ValidValues: Value Description 0h None 1h Add 2h Sub 3h Mul 4h Mac 5h AES 6h SHA 7h Cmp 8h CLM 9h Shift Ah Mov Bh Shuffle Ch Pack Dh Logical Eh Other Fh All"
+        },
+        {
+          "bit": "3:0",
+          "mnemonic": "MmxOpType",
+          "description": "ValidValues: Value Description 0h None 1h Add 2h Sub 3h Mul 4h Mac 6h-5h Reserved. 7h Cmp 8h Reserved. 9h Shift Ah Mov Bh Shuffle Ch Pack Dh Logical Eh Other Fh All AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx00C",
+      "name": "Packed FP Ops Retired",
+      "symbolic": "Core::X86::Pmc::Core::FpPackOpsRetired",
+      "category": "FP",
+      "description": "Note: Shuffle op counts may count for instructions that are not necessarily thought of as including shuffles. For example, Horizontal Add, Dot Product, and certain MOV instructions may include or use only shuffle type ops.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:4",
+          "mnemonic": "Fp256OpType",
+          "description": "ValidValues: Value Description 0h None 1h Add 2h Sub 3h Mul 4h Mac 5h Div 6h Sqrt 7h Cmp 8h Cvt 9h Blend Ah Reserved. Bh Shuffle Ch Reserved. Dh Logical Eh Other Fh All"
+        },
+        {
+          "bit": "3:0",
+          "mnemonic": "Fp128OpType",
+          "description": "ValidValues: Value Description 0h None 1h Add 2h Sub 3h Mul 4h Mac 5h Div 6h Sqrt 7h Cmp 8h Cvt 9h Blend Ah Reserved. Bh Shuffle Ch Reserved. Dh Logical Eh Other Fh All AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx00D",
+      "name": "Packed INT Ops Retired",
+      "symbolic": "Core::X86::Pmc::Core::PackedIntOpType",
+      "category": "FP",
+      "description": "Note: Shuffle op counts may count for instructions that are not necessarily thought of as including shuffles. For example, Horizontal Add, Dot Product, and certain MOV instructions may include or use only shuffle type ops.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:4",
+          "mnemonic": "Int256OpType",
+          "description": "This event also counts FP data type packed and scalar MOV and shuffle operations. ValidValues: Value Description 0h None 1h Add 2h Sub 3h Mul 4h Mac 6h-5h Reserved. 7h Cmp 8h Reserved. 9h Shift Ah Mov Bh Shuffle Ch Pack Dh Logical Eh Other Fh All"
+        },
+        {
+          "bit": "3:0",
+          "mnemonic": "Int128OpType",
+          "description": "This event also counts FP data type packed and scalar MOV and shuffle operations. ValidValues: Value Description 0h None 1h Add 2h Sub 3h Mul 4h Mac 5h AES 6h SHA 7h Cmp 8h CLM 9h Shift Ah Mov Bh Shuffle Ch Pack Dh Logical Eh Other Fh All AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx00E",
+      "name": "FP Dispatch Faults",
+      "symbolic": "Core::X86::Pmc::Core::FpDispFaults",
+      "category": "FP",
+      "description": "Floating-point Dispatch Faults.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:4",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "YmmSpillFault",
+          "description": "YMM Spill fault."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "YmmFillFault",
+          "description": "YMM Fill fault."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "XmmFillFault",
+          "description": "XMM Fill fault."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "x87FillFault",
+          "description": "x87 Fill fault."
+        }
+      ]
+    },
+    {
+      "code": "PMCx024",
+      "name": "Bad Status 2",
+      "symbolic": "Core::X86::Pmc::Core::LsBadStatus2",
+      "category": "LS",
+      "description": "Store To Load Interlock (STLI) are loads that were unable to complete because of a possible match with an older store, and the older store could not do STLF for some reason. There are a number of reasons why this occurs, and this perfmon organizes them into three major groups. UnitMask events are ORed within same pipe and then ADDed across pipes.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:3",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "StlfNoData",
+          "description": "The load is capable of forwarding from an older store (i.e. the address match/overlap between the load and the older store) was good and everything works from an address perspective, but the store's data has not been produced by the execution unit or floating point unit yet so it can't be forwarded."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "StliOther",
+          "description": "Store-to-load conflicts: A load was unable to complete due to a non-forwardable conflict with an older store. Most commonly, a load's address range partially but not completely overlaps with an uncompleted older store. Software can avoid this problem by using same-size and same-alignment loads and stores when accessing the same data. Vector/SIMD code is particularly susceptible to this problem; software should construct wide vector stores by manipulating vector elements in registers using shuffle/blend/swap instructions prior to storing to memory, instead of using narrow element-by-element stores."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "StliNoState",
+          "description": "The STLF candidate does not have a DC hit and a valid DC way for a successful STLF."
+        }
+      ]
+    },
+    {
+      "code": "PMCx025",
+      "name": "Retired Lock Instructions",
+      "symbolic": "Core::X86::Pmc::Core::LsLocks",
+      "category": "LS",
+      "description": "UnitMask events are ORed.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:4",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "SpecLockHiSpec",
+          "description": "High speculative cacheable lock speculation succeeded."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "SpecLockLoSpec",
+          "description": "Low speculative cacheable lock speculation succeeded."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "NonSpecLock",
+          "description": "Non speculative cacheable lock."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "BusLock",
+          "description": "Non-cacheable or cacheline-misaligned lock. Comparable to legacy bus lock."
+        }
+      ]
+    },
+    {
+      "code": "PMCx026",
+      "name": "Retired CLFLUSH Instructions",
+      "symbolic": "Core::X86::Pmc::Core::LsRetClClush",
+      "category": "LS",
+      "description": "The number of retired CLFLUSH instructions. This is a non-speculative event.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx027",
+      "name": "Retired CPUID Instructions",
+      "symbolic": "Core::X86::Pmc::Core::LsRetCpuid",
+      "category": "LS",
+      "description": "The number of CPUID instructions retired.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx029",
+      "name": "LS Dispatch",
+      "symbolic": "Core::X86::Pmc::Core::LsDispatch",
+      "category": "LS",
+      "description": "Counts the number of operations dispatched to the LS unit. Unit Masks events are ADDed.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:3",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "LdStDispatch",
+          "description": "Load-op-Store Dispatch. Dispatch of an op that performs a load from and store to the same memory address."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "StoreDispatch",
+          "description": "Dispatch of an op that performs a memory store."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "LdDispatch",
+          "description": "Dispatch of an op that performs a memory load."
+        }
+      ]
+    },
+    {
+      "code": "PMCx02B",
+      "name": "SMIs Received",
+      "symbolic": "Core::X86::Pmc::Core::LsSmiRx",
+      "category": "LS",
+      "description": "Counts the number of SMIs received.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx02C",
+      "name": "Interrupts Taken",
+      "symbolic": "Core::X86::Pmc::Core::LsIntTaken",
+      "category": "LS",
+      "description": "Counts the number of interrupts taken.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:1",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "IntTaken",
+          "description": "Number of Interrupts taken. This event is also counted when UnitMask[7:0]=0."
+        }
+      ]
+    },
+    {
+      "code": "PMCx02D",
+      "name": "Time Stamp Counter Reads",
+      "symbolic": "Core::X86::Pmc::Core::LsRdTsc",
+      "category": "LS",
+      "description": "Counts the number of reads of the TSC. The count is speculative.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx035",
+      "name": "Store to Load Forward",
+      "symbolic": "Core::X86::Pmc::Core::LsSTLF",
+      "category": "LS",
+      "description": "Number of STLF hits.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx037",
+      "name": "Store Commit Cancels 2",
+      "symbolic": "Core::X86::Pmc::Core::LsStCommitCancel2",
+      "category": "LS",
+      "description": "",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:1",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "StCommitCancelWcbFull",
+          "description": "A non-cacheable store and the non-cacheable commit buffer is full. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx040",
+      "name": "Data Cache Accesses",
+      "symbolic": "Core::X86::Pmc::Core::LsDcAccesses",
+      "category": "LS",
+      "description": "The number of accesses to the data cache for load and store references. This may include certain microcode scratchpad accesses, although these are generally rare. Each increment represents an up to 32-byte access. Misaligned loads and stores may cause two or three data cache accesses.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx041",
+      "name": "LS MAB Allocates by Type",
+      "symbolic": "Core::X86::Pmc::Core::LsMabAlloc",
+      "category": "LS",
+      "description": "Counts when a LS pipe allocates a MAB entry.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "6:0",
+          "mnemonic": "LsMabAllocation",
+          "description": "ValidValues: Value Description 3Eh- Reserved. 00h 3Fh Load Store Allocations. 40h Hardware Prefetcher Allocations. 7Eh- Reserved. 41h 7Fh All Allocations."
+        }
+      ]
+    },
+    {
+      "code": "PMCx043",
+      "name": "Demand Data Cache Fills by Data Source",
+      "symbolic": "Core::X86::Pmc::Core::LsDmndFillsFromSys",
+      "category": "LS",
+      "description": "Demand Data Cache Fills by Data Source.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "AlternateMemories_NearFar",
+          "description": "Requests that return from Extension Memory."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "DramIO_Far",
+          "description": "Requests that target another NUMA node and return from DRAM or MMIO."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "NearFarCache_Far",
+          "description": "Requests that target another NUMA node and return from another CCX's cache."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "DramIO_Near",
+          "description": "Requests that target the same NUMA node and return from DRAM or MMIO."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "NearFarCache_Near",
+          "description": "Requests that target the same NUMA node and return from another CCX's cache."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "LocalCcx",
+          "description": "Data returned from L3 or different L2 in the same CCX."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "LocalL2",
+          "description": "Data returned from local L2. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx044",
+      "name": "Any Data Cache Fills by Data Source",
+      "symbolic": "Core::X86::Pmc::Core::LsAnyFillsFromSys",
+      "category": "LS",
+      "description": "Any Data Cache Fills by Data Source.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "AlternateMemories_NearFar",
+          "description": "Requests that return from Extension Memory."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "DramIO_Far",
+          "description": "Requests that target another NUMA node and return from DRAM."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "NearFarCache_Far",
+          "description": "Requests that target another NUMA node and return from another CCX's cache."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "DramIO_Near",
+          "description": "Requests that target the same NUMA node and return from DRAM or MMIO."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "NearFarCache_Near",
+          "description": "Requests that target the same NUMA node and return from another CCX's cache."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "LocalCcx",
+          "description": "Data returned from L3 or different L2 in the same CCX."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "LocalL2",
+          "description": "Data returned from local L2."
+        }
+      ]
+    },
+    {
+      "code": "PMCx045",
+      "name": "L1 DTLB Misses",
+      "symbolic": "Core::X86::Pmc::Core::LsL1DTlbMiss",
+      "category": "LS",
+      "description": "",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "TlbReload1GL2Miss",
+          "description": "DTLB reload to a 1-G page that also missed in the L2 TLB."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "TlbReload2ML2Miss",
+          "description": "DTLB reload to a 2-M page that also missed in the L2 TLB."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "TlbReloadCoalescedPageMiss",
+          "description": "DTLB reload to a coalesced page that also missed in the L2 TLB."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "TlbReload4KL2Miss",
+          "description": "DTLB reload to a 4-K page that missed the L2 TLB."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "TlbReload1GL2Hit",
+          "description": "DTLB reload to a 1-G page that hit in the L2 TLB."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "TlbReload2ML2Hit",
+          "description": "DTLB reload to a 2-M page that hit in the L2 TLB."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "TlbReloadCoalescedPageHit",
+          "description": "DTLB reload to a coalesced page that hit in the L2 TLB."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "TlbReload4KL2Hit",
+          "description": "DTLB reload to a 4-K page that hit in the L2 TLB."
+        }
+      ]
+    },
+    {
+      "code": "PMCx046",
+      "name": "Total Page Table Walks",
+      "symbolic": "Core::X86::Pmc::Core::LsTablewalker",
+      "category": "LS",
+      "description": "UnitMask events are ADDed.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:4",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "TlbMabAllocIside",
+          "description": "Allocation of an I-side Tablewalk MAB."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "TlbMabAllocDside",
+          "description": "Allocation of a D-side Tablewalk MAB."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "TableWalkIside",
+          "description": "Allocation of an I-side Tablewalker."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "TableWalkDside",
+          "description": "Allocation of a D-side Tablewalker."
+        }
+      ]
+    },
+    {
+      "code": "PMCx047",
+      "name": "Misaligned loads",
+      "symbolic": "Core::X86::Pmc::Core::LsMisalLoads",
+      "category": "LS",
+      "description": "",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:2",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "MA4K",
+          "description": "The number of 4-KB misaligned (i.e., page crossing) loads."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "MA64",
+          "description": "The number of 64-B misaligned (i.e., cacheline crossing) loads. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx048",
+      "name": "Any Data Cache Fills by Data Source 2",
+      "symbolic": "Core::X86::Pmc::Core::LsAnyFillsFromSys2",
+      "category": "LS",
+      "description": "Any SCM type Data Cache fills by detailed data source. This event provides a further break-down of PMCx044 (Core::X86::Pmc::Core::LsAnyFillsFromSys[AlternateMemories_NearFar]) events.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:6",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Peer_Far",
+          "description": "Requests that target another NUMA node and return from coherent memory of a different processor type (e.g. GPU, accelerator)."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "Ext_Far",
+          "description": "Requests that target another NUMA node and return from Extension Memory (CXL™)."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "Peer_Near",
+          "description": "Requests that target the same NUMA node and return from coherent memory of a different processor type (e.g. GPU, accelerator)."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "Ext_Near",
+          "description": "Requests that target the same NUMA node and return from Extension Memory (CXL)."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx04B",
+      "name": "Prefetch Instructions Dispatched",
+      "symbolic": "Core::X86::Pmc::Core::LsPrefInstrDisp",
+      "category": "LS",
+      "description": "Software Prefetch Instructions Dispatched (Speculative).",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:3",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "PREFETCHNTA",
+          "description": "PrefetchNTA instruction. See docAPM3 PREFETCHlevel."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "PREFETCHW",
+          "description": "PrefetchW instruction. See docAPM3 PREFETCHW."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "PREFETCH",
+          "description": "PrefetchT0, T1 and T2 instructions. See docAPM3 PREFETCHlevel."
+        }
+      ]
+    },
+    {
+      "code": "PMCx04C",
+      "name": "HwPf Entries Allocated",
+      "symbolic": "Core::X86::Pmc::Core::LsHwPfAlocated",
+      "category": "LS",
+      "description": "Counts when a new entry is allocated in one of the prefetchers selected by UnitMask.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:3",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "RegionAlloc",
+          "description": "Region prefetcher."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "StrideAlloc",
+          "description": "Stride prefetcher."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "StreamAlloc",
+          "description": "Stream prefetcher."
+        }
+      ]
+    },
+    {
+      "code": "PMCx04D",
+      "name": "HwPf Entries Hit",
+      "symbolic": "Core::X86::Pmc::Core::LsHwPfHit",
+      "category": "LS",
+      "description": "Counts when a prefetcher training op hits on an existing entry in one of the prefetchers selected by UnitMask.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:3",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "RegionHit",
+          "description": ""
+        },
+        {
+          "bit": "1",
+          "mnemonic": "StrideHit",
+          "description": ""
+        },
+        {
+          "bit": "0",
+          "mnemonic": "StreamHit",
+          "description": "AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx04E",
+      "name": "Tablewalk latency",
+      "symbolic": "Core::X86::Pmc::Core::LsL1TlbRelLat",
+      "category": "LS",
+      "description": "TLB MAB allocation is generally find first from 0 to 5. Counts one for each cycle that a selected TLB MAB is allocated and is performing a tablewalk (has seen a leaf-level miss). Masks[5:0] select the tablewalk MAB and Masks[6] and [7] select the source of the tablewalk (ITLB or DTLB)",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "CountISideWalks",
+          "description": "Counts cycles when TLB-MAB I-side is performing a tablewalk."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "CountDSideWalks",
+          "description": "Counts cycles when TLB-MAB D-side is performing a tablewalk."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "TlbMab5",
+          "description": "Counts cycles when TLB-MAB 5 is allocated."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "TlbMab4",
+          "description": "Counts cycles when TLB-MAB 4 is allocated."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "TlbMab3",
+          "description": "Counts cycles when TLB-MAB 3 is allocated."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "TlbMab2",
+          "description": "Counts cycles when TLB-MAB 2 is allocated."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "TlbMab1",
+          "description": "Counts cycles when TLB-MAB 1 is allocated."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "TlbMab0",
+          "description": "Counts cycles when TLB-MAB 0 is allocated."
+        }
+      ]
+    },
+    {
+      "code": "PMCx050",
+      "name": "Write Combine Buffer Close Flush",
+      "symbolic": "Core::X86::Pmc::Core::LsWcbCloseFlush",
+      "category": "LS",
+      "description": "UnitMask events ADDed. Multible WCB can report events at the same time.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "LdHit",
+          "description": "WCB hit by a younger load."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "SmcHit",
+          "description": "WCB hit by SMC probe."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Timer",
+          "description": "WCB timer expired."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "WcbFull",
+          "description": "WCB full and a non-cacheable store needs to commit."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "Barrier",
+          "description": "Closed dure to barrier (a non-combinable, non-cacheable store committed)."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "WfqVirtCrBuslock",
+          "description": ""
+        },
+        {
+          "bit": "1",
+          "mnemonic": "NeedSbex",
+          "description": "LDQ requested WCB close due to SBEX op."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "FullLine64B",
+          "description": "All 64 bytes of the WCB entry have been written."
+        }
+      ]
+    },
+    {
+      "code": "PMCx052",
+      "name": "Ineffective Software Prefetches",
+      "symbolic": "Core::X86::Pmc::Core::LsInefSwPref",
+      "category": "LS",
+      "description": "The number of software prefetches that did not fetch data outside of the processor core.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:2",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "MabMchCnt",
+          "description": "Software PREFETCH instruction saw a match on an already-allocated miss request buffer."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "DataPipeSwPfDcHit",
+          "description": "Software PREFETCH instruction saw a DC hit."
+        }
+      ]
+    },
+    {
+      "code": "PMCx055",
+      "name": "MAB Match",
+      "symbolic": "Core::X86::Pmc::Core::LsMabMchCnt",
+      "category": "LS",
+      "description": "Counts load flows (no HW prefetches) that requested a MAB and hit on an existing MAB entry.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx057",
+      "name": "Hw Prefetch MAB Allocation",
+      "symbolic": "Core::X86::Pmc::Core::LsHwPfMabAlloc",
+      "category": "LS",
+      "description": "Counts MAB allocations by various HW prefetchers. The UnitMask bits control the types of prefetchers that are considered for counting MAB allocations.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:4",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "L2Stride",
+          "description": ""
+        },
+        {
+          "bit": "2",
+          "mnemonic": "Region",
+          "description": ""
+        },
+        {
+          "bit": "1",
+          "mnemonic": "L1Stride",
+          "description": ""
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Stream",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx058",
+      "name": "Hw Prefetch MAB Match",
+      "symbolic": "Core::X86::Pmc::Core::LsHwPfMabMatch",
+      "category": "LS",
+      "description": "Counts MAB matches by various HW prefetchers. The UnitMask bits control the types of prefetchers that are considered for counting MAB allocations.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:4",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "L2Stride",
+          "description": ""
+        },
+        {
+          "bit": "2",
+          "mnemonic": "Region",
+          "description": ""
+        },
+        {
+          "bit": "1",
+          "mnemonic": "L1Stride",
+          "description": ""
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Stream",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx059",
+      "name": "Software Prefetch Data Cache Fills",
+      "symbolic": "Core::X86::Pmc::Core::LsSwPfDcFills",
+      "category": "LS",
+      "description": "Software Prefetch Data Cache Fills by Data Source.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "AlternateMemories_NearFar",
+          "description": "Requests that return from Extension Memory."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "DramIO_Far",
+          "description": "Requests that target another NUMA node and return from DRAM or MMIO."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "NearFarCache_Far",
+          "description": "Requests that target another NUMA node and return from another CCX's cache."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "DramIO_Near",
+          "description": "Requests that target the same NUMA node and return from DRAM or MMIO."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "NearFarCache_Near",
+          "description": "Requests that target the same NUMA node and return from another CCX's cache."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "LocalCcx",
+          "description": "Data returned from L3 or different L2 in the same CCX."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "LocalL2",
+          "description": "Data returned from local L2. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx05A",
+      "name": "Hardware Prefetch Data Cache Fills",
+      "symbolic": "Core::X86::Pmc::Core::LsHwPfDcFills",
+      "category": "LS",
+      "description": "Hardware Prefetch Data Cache Fills by Data Source.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "AlternateMemories_NearFar",
+          "description": "Requests that return from Extension Memory."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "DramIO_Far",
+          "description": "Requests that target another NUMA node and return from DRAM or MMIO."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "NearFarCache_Far",
+          "description": "Requests that target another NUMA node and return from another CCX's cache."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "DramIO_Near",
+          "description": "Requests that target the same NUMA node and return from DRAM or MMIO."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "NearFarCache_Near",
+          "description": "Requests that target the same NUMA node and return from another CCX's cache."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "LocalCcx",
+          "description": "Data returned from L3 or different L2 in the same CCX."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "LocalL2",
+          "description": "Data returned from local L2."
+        }
+      ]
+    },
+    {
+      "code": "PMCx05B",
+      "name": "Table Walker Data Cache Fills by Data Source",
+      "symbolic": "Core::X86::Pmc::Core::LsTwDcFills",
+      "category": "LS",
+      "description": "Tablewalker Data Cache Fills by Data Source. Mask OR'd.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "DFCache_LongLat_Peer_NearFar",
+          "description": "Requests that return from alternate memories (Extension Memory, Peer Agent Memory)."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "DramIO_Far",
+          "description": "Requests that target another NUMA node and return from DRAM or MMIO."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "NearFarCache_Far",
+          "description": "Requests that target another NUMA node and return from another CCX's cache."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "DramIO_Near",
+          "description": "Requests that target the same NUMA node and return from DRAM or MMIO."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "NearFarCache_Near",
+          "description": "Requests that target the same NUMA node and return from another CCX's cache."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "LocalCcx",
+          "description": "Data returned from L3 or different L2 in the same CCX."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "LocalL2",
+          "description": "Data returned from local L2."
+        }
+      ]
+    },
+    {
+      "code": "PMCx05F",
+      "name": "Count of Allocated Mabs",
+      "symbolic": "Core::X86::Pmc::Core::LsAllocMabCount",
+      "category": "LS",
+      "description": "This event counts the in-flight L1 data cache misses (allocated Miss Address Buffers) each cycle.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx06E",
+      "name": "Tablewalker Init level",
+      "symbolic": "Core::X86::Pmc::Core::LsTwInitLevel",
+      "category": "LS",
+      "description": "Counts the level at which a tablewalk starts. If the tablewalk does not hit on a cached entry the walk starts from CR3. Otherwise it can start at intermediate page table entries.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "CountNested",
+          "description": ""
+        },
+        {
+          "bit": "6",
+          "mnemonic": "CountGuestHost",
+          "description": ""
+        },
+        {
+          "bit": "5",
+          "mnemonic": "RdPml5e",
+          "description": "Counts tablewalks that start at CR3 with 5-level paging (CR4.LA57 = 1)."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "RdPml4e",
+          "description": "Counts tablewalks that start at CR3 with 4-level paging (CR4.LA57 = 0) and read a PLM4E or hit a cached PLM5E."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "RdPdpe",
+          "description": "Counts tablewalks that start at a cached PLM4E and read a PDPE."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "RdPde",
+          "description": "Counts tablewalks that start at a cached PDPE and read a PDE."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "RdPte",
+          "description": "Counts tablewalks that start at a cached PDE and read a PTE."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "HitLeaf",
+          "description": "Counts tablewalks that start at a cached PTE."
+        }
+      ]
+    },
+    {
+      "code": "PMCx076",
+      "name": "Cycles not in Halt",
+      "symbolic": "Core::X86::Pmc::Core::LsNotHaltedCyc",
+      "category": "LS",
+      "description": "",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx078",
+      "name": "All TLB Flushes",
+      "symbolic": "Core::X86::Pmc::Core::LsTlbFlush",
+      "category": "LS",
+      "description": "",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "All",
+          "description": "ValidValues: Value Description FEh- Reserved. 00h FFh All TLB Flushes."
+        }
+      ]
+    },
+    {
+      "code": "PMCx120",
+      "name": "P0 Freq Cycles not in Halt",
+      "symbolic": "Core::X86::Pmc::Core::LsNotHaltedP0Cyc",
+      "category": "LS",
+      "description": "",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:1",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "P0FreqCyc",
+          "description": "Counts at the P0 frequency (same as Core::X86::Msr::MPERF) when not in Halt. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx170",
+      "name": "Tablewalker return types",
+      "symbolic": "Core::X86::Pmc::Core::LsTwReturnTypes",
+      "category": "LS",
+      "description": "Counts the type of table walk responses to the TLBs. UnitMask events 0-5 are ORed. UnitMasks 6 and 7 qualify the type of TLB (ITLB, DTLB or both) included in the count.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "CountIside",
+          "description": "Include tablewalker returns to the ITLB."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "CountDside",
+          "description": "Include tablewalker returns to the DTLB."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "SbexFault",
+          "description": "A non-speculative (SBEX) tablewalk returned a page fault."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "SbexVal",
+          "description": "A non-speculative (SBEX) tablewalk returned a valid translation."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "SpecADbitNeeded",
+          "description": "A speculative tablewalk requires A/D bit update."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "SpecFault",
+          "description": "A speculative tablewalk returned a page fault."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "Retry",
+          "description": "Tablewalk is a retry."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "SpecVal",
+          "description": "A speculative tablewalk returned a valid translation."
+        }
+      ]
+    },
+    {
+      "code": "PMCx080",
+      "name": "Total Number of 32B Instruction Fetches",
+      "symbolic": "Core::X86::Pmc::Core::IcFw32",
+      "category": "IC_BP",
+      "description": "The number of 32-B instruction cache fetches transferred to the instruction decoder.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx081",
+      "name": "Number of 32B Instruction Fetches that Miss in Instruction Cache",
+      "symbolic": "Core::X86::Pmc::Core::IcFw32Miss",
+      "category": "IC_BP",
+      "description": "The number of 32B fetches that tried to read the L1 instruction cache and missed. .",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx082",
+      "name": "Instruction Cache Refills from L2",
+      "symbolic": "Core::X86::Pmc::Core::IcCacheFillL2",
+      "category": "IC_BP",
+      "description": "The number of 64-byte instruction cache lines fulfilled from the L2 cache.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx083",
+      "name": "Instruction Cache Refills from System",
+      "symbolic": "Core::X86::Pmc::Core::IcCacheFillSys",
+      "category": "IC_BP",
+      "description": "The number of 64-byte instruction cache line fulfilled from system memory or another cache.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx084",
+      "name": "L1 ITLB Miss, L2 ITLB Hit",
+      "symbolic": "Core::X86::Pmc::Core::BpL1TlbMissL2TlbHit",
+      "category": "IC_BP",
+      "description": "The number of instruction fetches that miss in the L1 ITLB but hit in the L2 ITLB.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx085",
+      "name": "ITLB Reload from Page-Table walk",
+      "symbolic": "Core::X86::Pmc::Core::BpL1TlbMissL2TlbMiss",
+      "category": "IC_BP",
+      "description": "The number of valid fills into the ITLB originating from the LS Page-Table Walker. Tablewalk requests are issued for L1-ITLB and L2-ITLB misses.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:4",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "Coalesced4K",
+          "description": "Walk for >4-K Coalesced page."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "IF1G",
+          "description": "Walk for 1-G page."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "IF2M",
+          "description": "Walk for 2-M page."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "IF4K",
+          "description": "Walk to 4-K page."
+        }
+      ]
+    },
+    {
+      "code": "PMCx08A",
+      "name": "L1 Branch Target Buffer Hit",
+      "symbolic": "Core::X86::Pmc::Core::BpL1BtbHit",
+      "category": "IC_BP",
+      "description": "Counts hits in the L1 BTB.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx08B",
+      "name": "L2 Branch Prediction Overrides Existing Prediction (speculative)",
+      "symbolic": "Core::X86::Pmc::Core::BpL2BTBCorrect",
+      "category": "IC_BP",
+      "description": "Counts L2 branch prediction overrides by L2 BTB hits.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx08C",
+      "name": "Instruction Cache Lines Invalidated",
+      "symbolic": "Core::X86::Pmc::Core::IcCacheInval",
+      "category": "IC_BP",
+      "description": "The number of instruction cache lines invalidated. A non-SMC event is CMC (cross modifying code), either from the other thread of the same core or another core.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:2",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "L2InvalidatingProbe",
+          "description": "IC line invalidated due to an invalidating probe."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "FillInvalidated",
+          "description": "IC line invalidated due to overwriting fill response."
+        }
+      ]
+    },
+    {
+      "code": "PMCx08E",
+      "name": "Dynamic Indirect Predictions",
+      "symbolic": "Core::X86::Pmc::Core::BpDynIndPred",
+      "category": "IC_BP",
+      "description": "The number of times a branch used the indirect predictor to make a prediction.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx091",
+      "name": "Decode Redirects",
+      "symbolic": "Core::X86::Pmc::Core::BpDeReDirect",
+      "category": "IC_BP",
+      "description": "The number of times the instruction decoder overrides the predicted target.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx094",
+      "name": "L1 TLB Hits for Instruction Fetch",
+      "symbolic": "Core::X86::Pmc::Core::BpL1TlbFetchHit",
+      "category": "IC_BP",
+      "description": "The number of instruction fetches that hit in the L1 ITLB.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:3",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "IF1G",
+          "description": "L1 Instruction TLB hit (1-G page size)."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "IF2M",
+          "description": "L1 Instruction TLB hit (2-M page size)."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "IF4K",
+          "description": "L1 Instruction TLB hit (4-K or 16-K page size)."
+        }
+      ]
+    },
+    {
+      "code": "PMCx096",
+      "name": "Resyncs",
+      "symbolic": "Core::X86::Pmc::Core::ResyncsOrNcRedirects",
+      "category": "IC_BP",
+      "description": "Counts the number of HW resyncs (pipeline restarts) or NC redirects. NC redirects occur when the front-end transitions to fetching from UC (un-cacheable) memory.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx099",
+      "name": "L1 ITLB Reloads",
+      "symbolic": "Core::X86::Pmc::Core::BpTlbRel",
+      "category": "IC_BP",
+      "description": "TLB Reloads and Invalidations (counts the number of L1 ITLB writes in total including invalidations). Note that Reload here means any fill to the L1 TLB.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:2",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "1:0",
+          "mnemonic": "L1ITLB_Reload_Invalidations",
+          "description": "L1 ITLB Reloads and Invalidations. ValidValues: Value Description 0h L1 ITLB Fills; L1 ITLB Fills including those from L2 TLB. This event includes 11b,01b,00b encoding. 1h Reserved. 2h ITLB Invalidations; Counts the number of invalidation requests; The invalidation request may result in any number of TLB entry invalidations. 3h Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx188",
+      "name": "Fetch IBS events",
+      "symbolic": "Core::X86::Pmc::Core::IcFetchIbs",
+      "category": "IC_BP",
+      "description": "Counts Fetch IBS related events.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:5",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "SampleVal",
+          "description": "Counts collected IBS samples. Each collected IBS sample signals an interrupt."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "SampleFiltered",
+          "description": "Counts the number of tagged fetches that were discarded due to IBS filtering (Core::X86::Msr::IBS_FETCH_CTL[IbsL3MissOnly] set). When a tagged fetch is discarded the Fetch IBS facility will automatically tag a new fetch."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "SampleDiscarded",
+          "description": "Counts when the Fetch IBS facility discards an IBS tagged fetch for reasons other than IBS filtering. When a tagged fetch is discarded the Fetch IBS facility will automatically tag a new fetch."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "FetchTagged",
+          "description": "Counts the number of fetches tagged for Fetch IBS. Not all tagged fetches create an IBS interrupt and valid fetch sample."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "",
+          "description": "Reserved. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx189",
+      "name": "Predictor Flush Events",
+      "symbolic": "Core::X86::Pmc::Core::BpPredFlush",
+      "category": "IC_BP",
+      "description": "Counts branch predictor flush events associated with security mitigations.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:3",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "RasOnlyFlush",
+          "description": "Indirect Branch Predictor Barrier: Only RAS flush was initiated for this thread."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "IndirPredFlushOther",
+          "description": "Indirect Branch Predictor Barrier. Flush of BTB, ITTAGE and RAS. The Flush was initiated by the other thread."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "IndirPredFlushSelf",
+          "description": "Indirect Branch Predictor Barrier. Flush of BTB, ITTAGE and RAS. The Flush was initiated by this thread."
+        }
+      ]
+    },
+    {
+      "code": "PMCx18E",
+      "name": "IC Tag Hit/Miss Events",
+      "symbolic": "Core::X86::Pmc::Core::IcTagHitMiss",
+      "category": "IC_BP",
+      "description": "Counts various IC tag related hit and miss events.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:5",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "4:0",
+          "mnemonic": "IcAccessTypes",
+          "description": "Instruction Cache accesses. ValidValues: Value Description 06h-00h Reserved. 07h Instruction Cache Hit. 17h-08h Reserved. 18h Instruction Cache Miss. 1Eh- Reserved. 19h 1Fh All Instruction Cache Accesses."
+        }
+      ]
+    },
+    {
+      "code": "PMCx28A",
+      "name": "Switches Between Instruction Fetch and Op Cache Fetch Modes",
+      "symbolic": "Core::X86::Pmc::Core::IcOcModeSwitch",
+      "category": "IC_BP",
+      "description": "Counts transitions between IC and OC fetches.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:2",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "OcIcModeSwitch",
+          "description": "OC to IC mode switch."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "IcOcModeSwitch",
+          "description": "IC to OC mode switch. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx28F",
+      "name": "Op Cache Hit/Miss",
+      "symbolic": "Core::X86::Pmc::Core::OpCacheHitMiss",
+      "category": "IC_BP",
+      "description": "Counts Op Cache micro-tag hit/miss events.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:3",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "2:0",
+          "mnemonic": "OpCacheAccesses",
+          "description": "ValidValues: Value Description 2h-0h Reserved. 3h Op Cache Hit. 4h Op Cache Miss. 6h-5h Reserved. 7h All Op Cache accesses."
+        }
+      ]
+    },
+    {
+      "code": "PMCx29C",
+      "name": "Any Instruction Cache Fills by Data Source",
+      "symbolic": "Core::X86::Pmc::Core::IcAnyFillsFromSys",
+      "category": "IC_BP",
+      "description": "Any Instruction Cache Fills by Data Source.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "DFCache_LongLat_Peer_NearFar",
+          "description": "FRequests that return from alternate memories (Extension Memory, Peer Agent Memory)."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "DramIO_Far",
+          "description": "Requests that target another NUMA node and return from DRAM or MMIO."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "NearFarCache_Far",
+          "description": "Requests that return from another CCX cache in a different NUMA node."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "DramIO_Near",
+          "description": "Requests that target the same NUMA node and return from DRAM or MMIO."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "NearFarCache_Near",
+          "description": "Requests that target the same NUMA node and return from another CCX's cache."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "LocalCcx",
+          "description": "Data returned from L3 or different L2 in the same CCX."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "LocalL2",
+          "description": "Data returned from local L2."
+        }
+      ]
+    },
+    {
+      "code": "PMCx29D",
+      "name": "Any Instruction Cache Fills by Data Source 2",
+      "symbolic": "Core::X86::Pmc::Core::IcAnyFillsFromSys2",
+      "category": "IC_BP",
+      "description": "Any SCM type Instruction Cache fills by detailed data source. This event provides a further break-down of PMCx29C (Core::X86::Pmc::Core::IcAnyFillsFromSys[DFCache_LongLat_Peer_NearFar]) events.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:6",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Peer_Far",
+          "description": "Requests that target another NUMA node and return from coherent memory of a different processor type (e.g. GPU, accelerator)."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "Ext_Far",
+          "description": "Requests that target another NUMA node and return from Extension Memory (CXL)."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "Peer_Near",
+          "description": "Requests that target the same NUMA node and return from coherent memory of a different processor type (e.g. GPU, accelerator)."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "Ext_Near",
+          "description": "Requests that target the same NUMA node and return from Extension Memory (CXL)."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "",
+          "description": "Reserved. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx0A9",
+      "name": "Op Queue Empty",
+      "symbolic": "Core::X86::Pmc::Core::DeOpQueueEmpty",
+      "category": "DE",
+      "description": "Cycles where the Op Queue is empty.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx0AA",
+      "name": "Source of Op Dispatched From Decoder",
+      "symbolic": "Core::X86::Pmc::Core::DeSrcOpDisp",
+      "category": "DE",
+      "description": "Counts the number of ops dispatched from the decoder classified by op source.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:3",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "LoopBuffer",
+          "description": "Count of ops dispatched from Loop Buffer."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "OpCache",
+          "description": "Count of ops fetched from Op Cache and dispatched."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Decoder",
+          "description": "Count of ops fetched from Instruction Cache and dispatched."
+        }
+      ]
+    },
+    {
+      "code": "PMCx0AB",
+      "name": "Types of Ops Dispatched From Decoder",
+      "symbolic": "Core::X86::Pmc::Core::DeDisOpsFromDecoder",
+      "category": "DE",
+      "description": "Counts the number of ops dispatched from the decoder classified by op type. The UnitMask value encodes which types of ops are counted.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:5",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "4:0",
+          "mnemonic": "DispOpType",
+          "description": "ValidValues: Value Description 03h-00h Reserved. 04h Any FP dispatch. 07h-05h Reserved. 08h Any Integer dispatch. 1Fh-09h Reserved. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx0AE",
+      "name": "Dispatch Resource Stall Cycles 1",
+      "symbolic": "Core::X86::Pmc::Core::DeDisDispatchTokenStalls1",
+      "category": "DE",
+      "description": "Cycles where a dispatch group is valid but does not get dispatched due to a Token Stall. UnitMask bits select the stall types included in the count.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "FpFlushRecoveryStall",
+          "description": "Counts FP Flush Recovery stall cycles."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "FPSchRsrcStall",
+          "description": "FP scheduler resource stall. Counts FP Scheduler token stall cycles. ."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "FpRegFileRsrcStall",
+          "description": "floating-point register file resource stall. Counts FP Register File token stall cycles. This applies to all ops that have an FP or SIMD destination register. ."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "TakenBrnchBufferRsrc",
+          "description": "taken branch buffer resource stall. Counts Taken Branch Buffer token stall cycles."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "StoreQueueRsrcStall",
+          "description": "Store Queue resource stall. Counts Store Queue token stall cycles."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "LoadQueueRsrcStall",
+          "description": "Load Queue resource stall. Counts Load Queue token stall cycles."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "IntPhyRegFileRsrcStall",
+          "description": "Integer Physical Register File resource stall. Counts Integer PRF token stall cycles. This applies to all ops that have an integer destination register."
+        }
+      ]
+    },
+    {
+      "code": "PMCx0AF",
+      "name": "Dynamic Tokens Dispatch Stall Cycles 2",
+      "symbolic": "Core::X86::Pmc::Core::DeDisDispatchTokenStalls2",
+      "category": "DE",
+      "description": "Cycles where a dispatch group is valid but does not get dispatched due to a token stall. UnitMask bits select the stall types included in the count.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:6",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "RetireTokenStall",
+          "description": "Counts Retire Queue token stall cycles."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "IntSch3TokenStall",
+          "description": "Counts Integer Scheduler Queue 3 token stall cycles."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "IntSch2TokenStall",
+          "description": "Counts Integer Scheduler Queue 2 token stall cycles."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "IntSch1TokenStall",
+          "description": "Counts Integer Scheduler Queue 1 token stall cycles."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "IntSch0TokenStall",
+          "description": "Counts Integer Scheduler Queue 0 token stall cycles."
+        }
+      ]
+    },
+    {
+      "code": "PMCx1A0",
+      "name": "Dispatch Stalls Per Slot",
+      "symbolic": "Core::X86::Pmc::Core::DeNoDispatchPerSlot",
+      "category": "DE",
+      "description": "Counts the number of dispatch slots (each cycle) that remained unused for reasons selected by StallReason.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "StallReason",
+          "description": "ValidValues: Value Description 00h Reserved. 01h Counts dispatch slots left empty because the front-end did not supply ops. 1Dh- Reserved. 02h 1Eh Counts ops unable to dispatch due to back-end stalls. 5Fh- Reserved. 1Fh 60h Counts ops unable to dispatch because the dispatch cycle was granted to the other SMT thread. FFh- Reserved. 61h AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx1A2",
+      "name": "Dispatch Additional Resource Stalls",
+      "symbolic": "Core::X86::Pmc::Core::DeAdditionalResourceStalls",
+      "category": "DE",
+      "description": "This PMC event counts additional resource stalls that are not captured by Core::X86::Pmc::Core::DeDisDispatchTokenStalls1 or Core::X86::Pmc::Core::DeDisDispatchTokenStalls2.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Stall",
+          "description": "ValidValues: Value Description 2Fh-00h Reserved. 30h Counts additional cycles dispatch is stalled due to the lack of dispatch resources FFh- Reserved. 31h"
+        }
+      ]
+    },
+    {
+      "code": "PMCx0C0",
+      "name": "Retired Instructions",
+      "symbolic": "Core::X86::Pmc::Core::ExRetInstr",
+      "category": "EX",
+      "description": "The number of instructions retired.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx0C1",
+      "name": "Retired Ops",
+      "symbolic": "Core::X86::Pmc::Core::ExRetOps",
+      "category": "EX",
+      "description": "The number of macro-ops retired. This count includes all processor activity (instructions, exceptions, interrupts, microcode assists, etc.). The number of events logged per cycle can vary from 0 to 8.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx0C2",
+      "name": "Retired Branch Instructions",
+      "symbolic": "Core::X86::Pmc::Core::ExRetBrn",
+      "category": "EX",
+      "description": "The number of branch instructions retired. This includes all types of architectural control flow changes, including exceptions and interrupts.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx0C3",
+      "name": "Retired Branch Instructions Mispredicted",
+      "symbolic": "Core::X86::Pmc::Core::ExRetBrnMisp",
+      "category": "EX",
+      "description": "The number of retired branch instructions, that were mispredicted.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx0C4",
+      "name": "Retired Taken Branch Instructions",
+      "symbolic": "Core::X86::Pmc::Core::ExRetBrnTkn",
+      "category": "EX",
+      "description": "The number of taken branches that were retired. This includes all types of architectural control flow changes, including exceptions and interrupts.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx0C5",
+      "name": "Retired Taken Branch Instructions Mispredicted",
+      "symbolic": "Core::X86::Pmc::Core::ExRetBrnTknMisp",
+      "category": "EX",
+      "description": "The number of retired taken branch instructions that were mispredicted.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx0C6",
+      "name": "Retired Far Control Transfers",
+      "symbolic": "Core::X86::Pmc::Core::ExRetBrnFar",
+      "category": "EX",
+      "description": "The number of far control transfers retired including far call/jump/return, IRET, SYSCALL and SYSRET, plus exceptions and interrupts. Far control transfers are not subject to branch prediction.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx0C8",
+      "name": "Retired Near Returns",
+      "symbolic": "Core::X86::Pmc::Core::ExRetNearRet",
+      "category": "EX",
+      "description": "The number of near return instructions (RET or RET Iw) retired.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx0C9",
+      "name": "Retired Near Returns Mispredicted",
+      "symbolic": "Core::X86::Pmc::Core::ExRetNearRetMispred",
+      "category": "EX",
+      "description": "The number of near returns retired that were not correctly predicted by the return address predictor. Each such mispredict incurs the same penalty as a mispredicted conditional branch instruction.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx0CA",
+      "name": "Retired Indirect Branch Instructions Mispredicted",
+      "symbolic": "Core::X86::Pmc::Core::ExRetBrnIndMisp",
+      "category": "EX",
+      "description": "The number of indirect branches retired that were not correctly predicted. Each such mispredict incurs the same penalty as a mispredicted conditional branch instruction. Note that only EX mispredicts are counted.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx0CB",
+      "name": "Retired MMX/FP Instructions",
+      "symbolic": "Core::X86::Pmc::Core::ExRetMmxFpInstr",
+      "category": "EX",
+      "description": "The number of MMX, SSE or x87 instructions retired. The UnitMask allows the selection of the individual classes of instructions as given in the table. Each increment represents one complete instruction. Since this event includes non- numeric instructions it is not suitable for measuring MFLOPs.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:3",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "SseInstr",
+          "description": "SSE instructions (SSE, SSE2, SSE3, SSSE3, SSE4A, SSE41, SSE42, AVX)."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "MmxInstr",
+          "description": "MMX instructions."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "X87Instr",
+          "description": "x87 instructions."
+        }
+      ]
+    },
+    {
+      "code": "PMCx0CC",
+      "name": "Retired Indirect Branch Instructions",
+      "symbolic": "Core::X86::Pmc::Core::ExRetIndBrchInstr",
+      "category": "EX",
+      "description": "The number of indirect branches retired.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx0D1",
+      "name": "Retired Conditional Branch Instructions",
+      "symbolic": "Core::X86::Pmc::Core::ExRetCond",
+      "category": "EX",
+      "description": "",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx0D3",
+      "name": "Div Cycles Busy count",
+      "symbolic": "Core::X86::Pmc::Core::ExDivBusy",
+      "category": "EX",
+      "description": "",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx0D4",
+      "name": "Div Op Count",
+      "symbolic": "Core::X86::Pmc::Core::ExDivCount",
+      "category": "EX",
+      "description": "",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx0D6",
+      "name": "Cycles With No Retire",
+      "symbolic": "Core::X86::Pmc::Core::ExNoRetire",
+      "category": "EX",
+      "description": "This event counts cycles when the hardware thread does not retire any ops for reasons selected by UnitMask[4:0]. UnitMask events [4:0] are mutually exclusive. If multiple reasons apply for a given cycle, the lowest numbered UnitMask event is counted.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:5",
+          "mnemonic": "CompletionFilter",
+          "description": "ValidValues: Value Description 0h Load and ALU completion is considered for UnitMask[1]:NotComplete events. 4h-1h Reserved. 5h Only missing load completion is considered for UnitMask[1]:NotComplete events. 7h-6h Reserved."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "ThreadNotSelected",
+          "description": "The number cycles where ops could have retired (i.e. did not fall into UnitMask events [0]...[3]). but did not retire because thread arbitration did not select the thread for retire."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "Other",
+          "description": "The number of cycles where ops could have retired (self and older ops are complete), but were stopped from retirement for other reasons: retire breaks, traps, faults, etc."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "NotComplete",
+          "description": "The number of cycles where the oldest retire slot did not have its completion bits set."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Empty",
+          "description": "The number of cycles when there were no valid ops in the retire queue. This may be caused by front-end bottlenecks or pipeline redirects."
+        }
+      ]
+    },
+    {
+      "code": "PMCx1C1",
+      "name": "Retired Microcoded Instructions",
+      "symbolic": "Core::X86::Pmc::Core::ExRetUcodeInstr",
+      "category": "EX",
+      "description": "Retired Microcoded Instructions.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx1C2",
+      "name": "Retired Microcode Ops",
+      "symbolic": "Core::X86::Pmc::Core::ExRetUcodeOps",
+      "category": "EX",
+      "description": "The number of microcode ops that have retired.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx1C7",
+      "name": "Retired Mispredicted Branch Instructions due to Direction Mismatch",
+      "symbolic": "Core::X86::Pmc::Core::ExRetMsprdBrnchInstrDirMsmtch",
+      "category": "EX",
+      "description": "The number of retired conditional branch instructions that were not correctly predicted because of a branch direction mismatch.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx1C8",
+      "name": "Retired Unconditional Indirect Branch Instructions Mispredicted",
+      "symbolic": "Core::X86::Pmc::Core::ExRetUncondBrnchInstrMispred",
+      "category": "EX",
+      "description": "The number of retired unconditional indirect branch instructions that were mispredicted.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx1C9",
+      "name": "Retired Unconditional Branch Instructions",
+      "symbolic": "Core::X86::Pmc::Core::ExRetUncondBrnchInstr",
+      "category": "EX",
+      "description": "The number of retired unconditional branch instructions.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "PMCx1CF",
+      "name": "Tagged IBS Ops",
+      "symbolic": "Core::X86::Pmc::Core::ExTaggedIbsOps",
+      "category": "EX",
+      "description": "Counts Op IBS related events.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:3",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "IbsCountRollover",
+          "description": "Number of times an op could not be tagged by IBS because of a previous tagged op that has not retired."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "IbsTaggedOpsRet",
+          "description": "Number of Ops tagged by IBS that retired."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "IbsTaggedOps",
+          "description": "Number of Ops tagged by IBS."
+        }
+      ]
+    },
+    {
+      "code": "PMCx1D0",
+      "name": "Retired Fused Instructions",
+      "symbolic": "Core::X86::Pmc::Core::ExRetFusedInstr",
+      "category": "EX",
+      "description": "Counts retired fused instructions.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "",
+          "description": "Reserved. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx060",
+      "name": "Requests to L2 Group1",
+      "symbolic": "Core::X86::Pmc::L2::L2RequestG1",
+      "category": "L2",
+      "description": "All L2 Cache Requests (Breakdown 1 - Common)",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "RdBlkL",
+          "description": "Data Cache Reads (including hardware and software prefetch)."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "RdBlkX",
+          "description": "Data Cache Stores"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "LsRdBlkC_S",
+          "description": "Data Cache Shared Reads"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "CacheableIcRead",
+          "description": "Instruction Cache Reads."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "ChangeToX",
+          "description": "Data Cache State Change Requests. Request change to writable, check L2 for current state."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "PrefetchL2Cmd",
+          "description": "Does not count prefetches from core initiated by non-PrefetchL2 Cmd. Assume core should also count all types of prefetches and allow the breakdown between hardware versus software and data versus instruction."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "L2HwPf",
+          "description": "L2 Prefetcher. All prefetches accepted by L2 pipeline, hit or miss. Types of PF and L2 hit/miss broken out in a separate perfmon event"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Group2",
+          "description": "Miscellaneous events covered in more detail by Core::X86::Pmc::L2::L2RequestG2 (PMCx061)."
+        }
+      ]
+    },
+    {
+      "code": "PMCx061",
+      "name": "Requests to L2 Group2",
+      "symbolic": "Core::X86::Pmc::L2::L2RequestG2",
+      "category": "L2",
+      "description": "All L2 Cache Requests (Breakdown 2 - Rare).",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "Group1",
+          "description": "Miscellaneous events covered in more detail by Core::X86::Pmc::L2::L2RequestG1 (PMCx060)."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "LsRdSized",
+          "description": "LS sized read, coherent non-cacheable."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "LsRdSizedNC",
+          "description": "LS sized read, non-coherent, non-cacheable."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "IcRdSized",
+          "description": "Instruction cache read sized."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "IcRdSizedNC",
+          "description": "Instruction cache read sized non-cacheable."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "SmcInval",
+          "description": "Self-modifying code invalidates."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "BusLockTLBSyncOriginator",
+          "description": "BusLocks or TLBSyncs originator. Counts if there is a Bus lock or TLBSync originating from this thread"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "BusLockTLBSyncResponse",
+          "description": "BusLock or TLBSync responses. Counts if there is a Bus lock response or TLBSync response from this thread"
+        }
+      ]
+    },
+    {
+      "code": "PMCx063",
+      "name": "Write Combining Buffer Requests",
+      "symbolic": "Core::X86::Pmc::L2::L2WcbReq",
+      "category": "L2",
+      "description": "Write Combining Buffer operations. For information on Write Combining see docAPM2 sections: Memory System, Memory Types, Buffering and Combining Memory Writes.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "WcbWrite",
+          "description": "Write Combining Buffer write"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "WcbClose",
+          "description": "Write Combining Buffer close"
+        },
+        {
+          "bit": "4:0",
+          "mnemonic": "",
+          "description": "Reserved. AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "PMCx064",
+      "name": "Core to L2 Cacheable Request Access Status",
+      "symbolic": "Core::X86::Pmc::L2::L2CacheReqStat",
+      "category": "L2",
+      "description": "L2 Cache Request Outcomes (not including L2 Prefetch).",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "LsRdBlkCS",
+          "description": "Data Cache Shared Read Hit in L2. LsRdBlkCS"
+        },
+        {
+          "bit": "6",
+          "mnemonic": "LsRdBlkLHitX",
+          "description": "Data Cache Read Hit in L2. Modifiable"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "LsRdBlkLHitS",
+          "description": "Data Cache Read Hit Non-Modifiable Line in L2."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "LsRdBlkX",
+          "description": "Data Cache Store or State Change Hit in L2."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "LsRdBlkC",
+          "description": "Data Cache Req Miss in L2."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "IcFillHitX",
+          "description": "Instruction Cache Hit Modifiable Line in L2. IcFillHitX"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "IcFillHitS",
+          "description": "Instruction Cache Hit Non-Modifiable Line in L2.."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "IcFillMiss",
+          "description": "Instruction Cache Req Miss in L2. IcFillMiss"
+        }
+      ]
+    },
+    {
+      "code": "PMCx070",
+      "name": "L2 Prefetch Hit in L2",
+      "symbolic": "Core::X86::Pmc::L2::L2PfHitL2",
+      "category": "L2",
+      "description": "Counts all L2 prefetches accepted by L2 pipeline which hit in the L2 cache.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Prefetches",
+          "description": "ValidValues: Value Description 1Eh- Reserved. 00h 1Fh Counts requests generated from L2 Hardware Prefetchers. DFh- Reserved. 20h E0h Counts requests generated from L1 DC Hardware Prefetchers. FEh- Reserved. E1h FFh Counts requests generated from L1 DC and L2 Hardware Prefetchers."
+        }
+      ]
+    },
+    {
+      "code": "PMCx071",
+      "name": "L2 Prefetcher Hits in L3",
+      "symbolic": "Core::X86::Pmc::L2::L2PfMissL2HitL3",
+      "category": "L2",
+      "description": "Counts all L2 prefetches accepted by the L2 pipeline which miss the L2 cache and hit the L3.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Prefetches",
+          "description": "L2Stream ValidValues: Value Description 1Eh- Reserved. 00h 1Fh Counts requests generated from L2 Hardware Prefetchers. DFh- Reserved. 20h E0h Counts requests generated from L1 DC Hardware Prefetchers. FEh- Reserved. E1h FFh Counts requests generated from L1 DC and L2 Hardware Prefetchers."
+        }
+      ]
+    }
+  ]
+}

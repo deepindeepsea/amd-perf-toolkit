@@ -1,0 +1,71 @@
+=== Install gcc ===
+gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+
+=== Build mhammer (STREAM-style) ===
+built OK
+warmup time:
+
+real	0m1.524s
+user	0m0.840s
+sys	0m3.039s
+
+=== ALL-EVENT SWEEP (CSV mode) ===
+EVENT                                                   STATUS         COUNT
+------------------------------------------------------------------------------
+ls_not_halted_cyc                                       OK             16360979886
+cpu-cycles                                              OK             16601150801
+instructions                                            OK             17643048623
+ex_ret_instr                                            OK             17746610199
+ex_ret_ops                                              OK             18157904471
+ex_ret_brn                                              OK             2832319022
+ex_ret_brn_misp                                         OK             6623399
+ex_ret_brn_far                                          OK             4739712
+ex_ret_brn_tkn                                          OK             2093570212
+ex_ret_near_ret                                         OK             194744851
+de_no_dispatch_per_slot.no_ops_from_frontend            OK             59660288335
+de_no_dispatch_per_slot.backend_stalls                  OK             57135348897
+de_no_dispatch_per_slot.smt_contention                  ZERO           0
+de_src_op_disp.op_cache                                 OK             17416828742
+ex_no_retire.load_not_complete                          OK             13346919374
+ex_no_retire.not_complete                               OK             13530178205
+op_cache_hit_miss.op_cache_hit                          OK             2983946725
+op_cache_hit_miss.op_cache_miss                         OK             897550752
+op_cache_hit_miss.all_op_cache_accesses                 OK             3783412737
+ic_tag_hit_miss.instruction_cache_hit                   OK             5744041932
+ic_tag_hit_miss.instruction_cache_miss                  OK             485676079
+ic_tag_hit_miss.all_instruction_cache_accesses          OK             6252679570
+ls_any_fills_from_sys.local_l2                          OK             304818507
+ls_any_fills_from_sys.local_ccx                         OK             3304853
+ls_any_fills_from_sys.near_cache                        OK             2266379
+ls_any_fills_from_sys.dram_io_near                      OK             64301855
+ls_any_fills_from_sys.far_cache                         ZERO           0
+ls_any_fills_from_sys.dram_io_far                       ZERO           0
+ls_any_fills_from_sys.all                               OK             376801451
+ls_dmnd_fills_from_sys.local_l2                         OK             42591780
+ls_dmnd_fills_from_sys.local_ccx                        OK             2464985
+ls_dmnd_fills_from_sys.near_cache                       OK             2107950
+ls_dmnd_fills_from_sys.dram_io_near                     OK             3083775
+ls_dmnd_fills_from_sys.far_cache                        ZERO           0
+ls_dmnd_fills_from_sys.all                              OK             50388606
+bp_l1_tlb_miss_l2_tlb_hit                               OK             3732
+bp_l1_tlb_miss_l2_tlb_miss.all                          OK             858
+bp_l1_tlb_miss_l2_tlb_miss.if4k                         OK             540
+bp_l1_tlb_miss_l2_tlb_miss.if2m                         OK             34
+bp_l1_tlb_miss_l2_tlb_miss.if1g                         ZERO           0
+l2_cache_req_stat.dc_hit_in_l2                          OK             327274495
+l2_cache_req_stat.ls_rd_blk_c                           OK             20699351
+l2_cache_req_stat.ic_fill_miss                          OK             5853882
+l2_cache_req_stat.ic_hit_in_l2                          OK             19267889
+ls_l1_d_tlb_miss.all                                    OK             10630909
+ls_l1_d_tlb_miss.all_l2_miss                            OK             10168793
+iTLB-loads                                              OK             1554
+iTLB-load-misses                                        OK             854
+dTLB-loads                                              OK             11051426
+dTLB-load-misses                                        OK             10044972
+
+=== IBS check ===
+Run 'perf list' for a list of valid events
+
+ Usage: perf stat [<options>] [<command>]
+
+    -e, --event <event>   event selector. use 'perf list' to list available events

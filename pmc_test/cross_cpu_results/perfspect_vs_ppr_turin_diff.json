@@ -1,0 +1,2261 @@
+{
+  "method": "Matched on raw event+umask codes (canonical), not symbolic names",
+  "perfspect_turin_event_entries": 62,
+  "ppr_brh_entries": 1302,
+  "counts": {
+    "in_both": 62,
+    "perfspec_only": 0,
+    "perfspec_only_bm_verified": 0,
+    "perfspec_only_m8a_verified": 0,
+    "ppr_only": 1139,
+    "ppr_only_bm_verified": 360,
+    "ppr_only_m8a_verified": 26
+  },
+  "in_both": {
+    "ls_not_halted_p0_cyc:k": {
+      "event": "0x120",
+      "umask": "0x1",
+      "ppr_name": "P0_frequency_Cycles_Not_in_Halt.P0_frequency_Cycles_Not_in_Halt"
+    },
+    "ex_ret_brn_misp1": {
+      "event": "0xc3",
+      "umask": null,
+      "ppr_name": "Retired_Branch_Instructions_Mispredicted"
+    },
+    "ex_ret_brn": {
+      "event": "0xc2",
+      "umask": null,
+      "ppr_name": "Retired_Branch_Instructions"
+    },
+    "ls_dispatch.any": {
+      "event": "0x29",
+      "umask": "0x7",
+      "ppr_name": "LS_Dispatch (event-only match)"
+    },
+    "l2_request_g1.cacheable_ic_read": {
+      "event": "0x60",
+      "umask": "0x10",
+      "ppr_name": "L2RequestG1.CacheableIcRead"
+    },
+    "l2_request_g1.all_dc": {
+      "event": "0x60",
+      "umask": "0xe0",
+      "ppr_name": "L2RequestG1 (event-only match)"
+    },
+    "l2_cache_req_stat.ic_fill_miss": {
+      "event": "0x64",
+      "umask": "0x1",
+      "ppr_name": "L2CacheReqStat.IcFillMiss"
+    },
+    "l2_request_g1.all_no_prefetch": {
+      "event": "0x60",
+      "umask": "0xf1",
+      "ppr_name": "L2RequestG1 (event-only match)"
+    },
+    "l2_pf_hit_l2.all": {
+      "event": "0x70",
+      "umask": "0x1f",
+      "ppr_name": "L2PfHitL2_Internal (event-only match)"
+    },
+    "l2_pf_miss_l2_hit_l3.all": {
+      "event": "0x71",
+      "umask": "0x1f",
+      "ppr_name": "L2PfMissL2HitL3_Internal (event-only match)"
+    },
+    "l2_pf_miss_l2_l3.all": {
+      "event": "0x72",
+      "umask": "0x1f",
+      "ppr_name": "L2PfMissL2L3_Internal (event-only match)"
+    },
+    "l2_cache_req_stat.ic_dc_miss_in_l2": {
+      "event": "0x64",
+      "umask": "0x9",
+      "ppr_name": "L2CacheReqStat (event-only match)"
+    },
+    "l2_cache_req_stat.ls_rd_blk_c": {
+      "event": "0x64",
+      "umask": "0x8",
+      "ppr_name": "L2CacheReqStat.LsRdBlkC"
+    },
+    "l2_cache_req_stat.ic_dc_hit_in_l2": {
+      "event": "0x64",
+      "umask": "0xf6",
+      "ppr_name": "L2CacheReqStat (event-only match)"
+    },
+    "l2_cache_req_stat.ic_hit_in_l2": {
+      "event": "0x64",
+      "umask": "0x6",
+      "ppr_name": "L2CacheReqStat (event-only match)"
+    },
+    "l2_cache_req_stat.dc_hit_in_l2": {
+      "event": "0x64",
+      "umask": "0xf0",
+      "ppr_name": "L2CacheReqStat (event-only match)"
+    },
+    "op_cache_hit_miss.miss": {
+      "event": "0x28f",
+      "umask": "0x4",
+      "ppr_name": "Op_Cache_hit_miss_INT.Full_Miss"
+    },
+    "op_cache_hit_miss.all": {
+      "event": "0x28f",
+      "umask": "0x7",
+      "ppr_name": "Op_Cache_hit_miss_INT (event-only match)"
+    },
+    "ic_tag_hit_miss.miss": {
+      "event": "0x18e",
+      "umask": "0x18",
+      "ppr_name": "IC_Tag_Hit_Miss_events_INT (event-only match)"
+    },
+    "ic_tag_hit_miss.all": {
+      "event": "0x18e",
+      "umask": "0x1f",
+      "ppr_name": "IC_Tag_Hit_Miss_events_INT (event-only match)"
+    },
+    "ls_any_fills_from_sys.local_l2": {
+      "event": "0x44",
+      "umask": "0x1",
+      "ppr_name": "Any_DC_Fills_by_Data_Source.LocalL2"
+    },
+    "ls_any_fills_from_sys.local_ccx": {
+      "event": "0x44",
+      "umask": "0x2",
+      "ppr_name": "Any_DC_Fills_by_Data_Source.LocalCcx"
+    },
+    "ls_any_fills_from_sys.near_cache": {
+      "event": "0x44",
+      "umask": "0x4",
+      "ppr_name": "Any_DC_Fills_by_Data_Source.NearFarCache_Near"
+    },
+    "ls_any_fills_from_sys.dram_io_near": {
+      "event": "0x44",
+      "umask": "0x8",
+      "ppr_name": "Any_DC_Fills_by_Data_Source.DramIO_Near"
+    },
+    "ls_any_fills_from_sys.far_cache": {
+      "event": "0x44",
+      "umask": "0x10",
+      "ppr_name": "Any_DC_Fills_by_Data_Source.NearFarCache_Far"
+    },
+    "ls_any_fills_from_sys.dram_io_far": {
+      "event": "0x44",
+      "umask": "0x40",
+      "ppr_name": "Any_DC_Fills_by_Data_Source.DramIO_Far"
+    },
+    "ls_any_fills_from_sys.all": {
+      "event": "0x44",
+      "umask": "0x5f",
+      "ppr_name": "Any_DC_Fills_by_Data_Source (event-only match)"
+    },
+    "ls_any_fills_from_sys.all1": {
+      "event": "0x44",
+      "umask": "0xff",
+      "ppr_name": "Any_DC_Fills_by_Data_Source (event-only match)"
+    },
+    "ls_dmnd_fills_from_sys.local_l2": {
+      "event": "0x43",
+      "umask": "0x1",
+      "ppr_name": "Demand_DC_Fills_by_Data_Source.LocalL2"
+    },
+    "ls_dmnd_fills_from_sys.local_ccx": {
+      "event": "0x43",
+      "umask": "0x2",
+      "ppr_name": "Demand_DC_Fills_by_Data_Source.LocalCcx"
+    },
+    "ls_dmnd_fills_from_sys.near_cache": {
+      "event": "0x43",
+      "umask": "0x4",
+      "ppr_name": "Demand_DC_Fills_by_Data_Source.NearFarCache_Near"
+    },
+    "ls_dmnd_fills_from_sys.dram_io_near": {
+      "event": "0x43",
+      "umask": "0x8",
+      "ppr_name": "Demand_DC_Fills_by_Data_Source.DramIO_Near"
+    },
+    "ls_dmnd_fills_from_sys.far_cache": {
+      "event": "0x43",
+      "umask": "0x10",
+      "ppr_name": "Demand_DC_Fills_by_Data_Source.NearFarCache_Far"
+    },
+    "ls_dmnd_fills_from_sys.dram_io_far": {
+      "event": "0x43",
+      "umask": "0x40",
+      "ppr_name": "Demand_DC_Fills_by_Data_Source.DramIO_Far"
+    },
+    "ls_64b_lines_written_wcb1": {
+      "event": "0x50",
+      "umask": "0x1",
+      "ppr_name": "WCB_Close.FullLine64B"
+    },
+    "ls_64b_lines_written_wcb2": {
+      "event": "0x63",
+      "umask": "0x20",
+      "ppr_name": "L2WcbReq.WcbClose"
+    },
+    "bp_l1_tlb_miss_l2_tlb_hit": {
+      "event": "0x84",
+      "umask": null,
+      "ppr_name": "L1_ITLB_Miss_L2_ITLB_Hit"
+    },
+    "bp_l1_tlb_miss_l2_tlb_miss.all": {
+      "event": "0x85",
+      "umask": "0xf",
+      "ppr_name": "ITLB_Reload_from_Page_Table_walk (event-only match)"
+    },
+    "ls_l1_d_tlb_miss.all": {
+      "event": "0x45",
+      "umask": "0xff",
+      "ppr_name": "L1_DTLB_Reloads (event-only match)"
+    },
+    "ls_l2_d_tlb_4k_activity.all": {
+      "event": "0x45",
+      "umask": "0x33",
+      "ppr_name": "L1_DTLB_Reloads (event-only match)"
+    },
+    "ls_l2_d_tlb_miss.all": {
+      "event": "0x45",
+      "umask": "0xf0",
+      "ppr_name": "L1_DTLB_Reloads (event-only match)"
+    },
+    "ls_tlb_flush.all": {
+      "event": "0x78",
+      "umask": "0x8f",
+      "ppr_name": "TLB_Flush_Events_Internal (event-only match)"
+    },
+    "ls_tlb_flush.tlbi_asid": {
+      "event": "0x78",
+      "umask": "0x50",
+      "ppr_name": "TLB_Flush_Events_Internal (event-only match)"
+    },
+    "ls_l2_d_tlb_hit.all": {
+      "event": "0x45",
+      "umask": "0xf",
+      "ppr_name": "L1_DTLB_Reloads (event-only match)"
+    },
+    "ls_l2_d_tlb_hit.4k": {
+      "event": "0x45",
+      "umask": "0x1",
+      "ppr_name": "L1_DTLB_Reloads.TlbReload4KL2Hit"
+    },
+    "ls_l2_d_tlb_hit.coalesced": {
+      "event": "0x45",
+      "umask": "0x2",
+      "ppr_name": "L1_DTLB_Reloads.TlbReloadCoalescedPageHit"
+    },
+    "ls_l2_d_tlb_hit.2M": {
+      "event": "0x45",
+      "umask": "0x4",
+      "ppr_name": "L1_DTLB_Reloads.TlbReload2ML2Hit"
+    },
+    "ls_l2_d_tlb_miss.4k": {
+      "event": "0x45",
+      "umask": "0x10",
+      "ppr_name": "L1_DTLB_Reloads.TlbReload4KL2Miss"
+    },
+    "ls_l2_d_tlb_miss.coalesced": {
+      "event": "0x45",
+      "umask": "0x20",
+      "ppr_name": "L1_DTLB_Reloads.TlbReloadCoalescedPageMiss"
+    },
+    "ls_l2_d_tlb_miss.2M": {
+      "event": "0x45",
+      "umask": "0x40",
+      "ppr_name": "L1_DTLB_Reloads.TlbReload2ML2Miss"
+    },
+    "de_src_op_disp.all1": {
+      "event": "0xaa",
+      "umask": "0x7",
+      "ppr_name": "Source_of_Op_Dispatched_From_Decoder (event-only match)"
+    },
+    "fp_disp_faults.sse_avx_all": {
+      "event": "0xe",
+      "umask": "0xe",
+      "ppr_name": "FP_Dispatch_Faults (event-only match)"
+    },
+    "ex_ret_ops2": {
+      "event": "0xc1",
+      "umask": null,
+      "ppr_name": "Retired_Macro_Ops"
+    },
+    "de_no_dispatch_per_cycle.no_ops_from_frontend": {
+      "event": "0x1a0",
+      "umask": "0x1",
+      "ppr_name": "No_Dispatch_per_Slot_INT.Empty"
+    },
+    "de_no_dispatch_per_slot.smt_contention": {
+      "event": "0x1a0",
+      "umask": "0x60",
+      "ppr_name": "No_Dispatch_per_Slot_INT (event-only match)"
+    },
+    "ls_not_halted_cyc3": {
+      "event": "0x76",
+      "umask": null,
+      "ppr_name": "Cycles_Not_in_Halt"
+    },
+    "resyncs_or_nc_redirects1": {
+      "event": "0x9f",
+      "umask": "0x1",
+      "ppr_name": "BP_redirects.Resync"
+    },
+    "ex_ret_brn_stalled": {
+      "event": "0x96",
+      "umask": "0x7",
+      "ppr_name": "BP_Stalled (event-only match)"
+    },
+    "de_no_dispatch_per_slot.backend_stalls": {
+      "event": "0x1a0",
+      "umask": "0x1e",
+      "ppr_name": "No_Dispatch_per_Slot_INT (event-only match)"
+    },
+    "ex_no_retire.load_not_complete": {
+      "event": "0xd6",
+      "umask": "0xa2",
+      "ppr_name": "Cycles_With_No_Retire_INT (event-only match)"
+    },
+    "ex_no_retire.not_complete": {
+      "event": "0xd6",
+      "umask": "0x2",
+      "ppr_name": "Cycles_With_No_Retire_INT.NotCompleteSelf"
+    },
+    "ex_ret_ucode_ops": {
+      "event": "0x1c2",
+      "umask": null,
+      "ppr_name": "Retired_Microcode_Ops"
+    }
+  },
+  "perfspec_only": {},
+  "ppr_only_bm_verified": [
+    {
+      "event": "0x0",
+      "umask": "0x20",
+      "ppr_name": "FPU_Pipe_Assignment.Pipe5"
+    },
+    {
+      "event": "0x0",
+      "umask": "0x10",
+      "ppr_name": "FPU_Pipe_Assignment.Pipe_4"
+    },
+    {
+      "event": "0x0",
+      "umask": "0x8",
+      "ppr_name": "FPU_Pipe_Assignment.Pipe_3"
+    },
+    {
+      "event": "0x0",
+      "umask": "0x4",
+      "ppr_name": "FPU_Pipe_Assignment.Pipe_2"
+    },
+    {
+      "event": "0x0",
+      "umask": "0x2",
+      "ppr_name": "FPU_Pipe_Assignment.Pipe_1"
+    },
+    {
+      "event": "0x0",
+      "umask": "0x1",
+      "ppr_name": "FPU_Pipe_Assignment.Pipe_0"
+    },
+    {
+      "event": "0x1",
+      "umask": "0x20",
+      "ppr_name": "FPU_uOps_Tracking.FpSqFull"
+    },
+    {
+      "event": "0x1",
+      "umask": "0x10",
+      "ppr_name": "FPU_uOps_Tracking.FpSqEmpty"
+    },
+    {
+      "event": "0x1",
+      "umask": "0x8",
+      "ppr_name": "FPU_uOps_Tracking.uOpsInFpSq"
+    },
+    {
+      "event": "0x1",
+      "umask": "0x4",
+      "ppr_name": "FPU_uOps_Tracking.uOpsSqIssued"
+    },
+    {
+      "event": "0x1",
+      "umask": "0x2",
+      "ppr_name": "FPU_uOps_Tracking.uOpsNsq2Sq"
+    },
+    {
+      "event": "0x1",
+      "umask": "0x1",
+      "ppr_name": "FPU_uOps_Tracking.uOpsDispatched2FpSq"
+    },
+    {
+      "event": "0x3",
+      "umask": "0x8",
+      "ppr_name": "Retired_SSE_AVX_FLOPs.MacFLOPs"
+    },
+    {
+      "event": "0x4",
+      "umask": "0x8",
+      "ppr_name": "MovElim_Scalar_Optimization.Optimized"
+    },
+    {
+      "event": "0x4",
+      "umask": "0x4",
+      "ppr_name": "MovElim_Scalar_Optimization.OptPotential"
+    },
+    {
+      "event": "0x4",
+      "umask": "0x2",
+      "ppr_name": "MovElim_Scalar_Optimization.SseMovOpsElim"
+    },
+    {
+      "event": "0x4",
+      "umask": "0x1",
+      "ppr_name": "MovElim_Scalar_Optimization.SseMovOps"
+    },
+    {
+      "event": "0x5",
+      "umask": "0x4",
+      "ppr_name": "Retired_Serializing_Ops.SseCtrlRet"
+    },
+    {
+      "event": "0x5",
+      "umask": "0x1",
+      "ppr_name": "Retired_Serializing_Ops.X87CtrlRet"
+    },
+    {
+      "event": "0x6",
+      "umask": "0x80",
+      "ppr_name": "FP_Flush_State_Machine_Arcs_and_Cycles.FlushCrmSrm"
+    },
+    {
+      "event": "0x6",
+      "umask": "0x40",
+      "ppr_name": "FP_Flush_State_Machine_Arcs_and_Cycles.FlushSlowRecovery"
+    },
+    {
+      "event": "0x6",
+      "umask": "0x20",
+      "ppr_name": "FP_Flush_State_Machine_Arcs_and_Cycles.FlushPend"
+    },
+    {
+      "event": "0x6",
+      "umask": "0x10",
+      "ppr_name": "FP_Flush_State_Machine_Arcs_and_Cycles.FlushFastRecovery"
+    },
+    {
+      "event": "0x6",
+      "umask": "0x8",
+      "ppr_name": "FP_Flush_State_Machine_Arcs_and_Cycles.ToFlushNone"
+    },
+    {
+      "event": "0x6",
+      "umask": "0x2",
+      "ppr_name": "FP_Flush_State_Machine_Arcs_and_Cycles.FlushNoneFastRec"
+    },
+    {
+      "event": "0x6",
+      "umask": "0x1",
+      "ppr_name": "FP_Flush_State_Machine_Arcs_and_Cycles.FlushNoneIgn"
+    },
+    {
+      "event": "0x7",
+      "umask": "0x8",
+      "ppr_name": "Changes_to_x87_SSE_control_words.X87CntrlWrite"
+    },
+    {
+      "event": "0x7",
+      "umask": "0x1",
+      "ppr_name": "Changes_to_x87_SSE_control_words.SseAvxCntrlWrite"
+    },
+    {
+      "event": "0x8",
+      "umask": "0x20",
+      "ppr_name": "Retired_FP_uOps.Pack512uOpsRetired"
+    },
+    {
+      "event": "0x8",
+      "umask": "0x10",
+      "ppr_name": "Retired_FP_uOps.Pack256uOpsRetired"
+    },
+    {
+      "event": "0x8",
+      "umask": "0x8",
+      "ppr_name": "Retired_FP_uOps.Pack128uOpsRetired"
+    },
+    {
+      "event": "0x8",
+      "umask": "0x4",
+      "ppr_name": "Retired_FP_uOps.ScalaruOpsRetired"
+    },
+    {
+      "event": "0x8",
+      "umask": "0x2",
+      "ppr_name": "Retired_FP_uOps.MMXuOpsRetired"
+    },
+    {
+      "event": "0x8",
+      "umask": "0x1",
+      "ppr_name": "Retired_FP_uOps.x87uOpsRetired"
+    },
+    {
+      "event": "0x9",
+      "umask": "0x8",
+      "ppr_name": "FP_Throttles.Pipe3Throttle"
+    },
+    {
+      "event": "0x9",
+      "umask": "0x4",
+      "ppr_name": "FP_Throttles.Pipe2Throttle"
+    },
+    {
+      "event": "0x9",
+      "umask": "0x2",
+      "ppr_name": "FP_Throttles.Pipe1Throttle"
+    },
+    {
+      "event": "0x9",
+      "umask": "0x1",
+      "ppr_name": "FP_Throttles.Pipe0Throttle"
+    },
+    {
+      "event": "0x10",
+      "umask": "0x4",
+      "ppr_name": "Mask_register_usage.MergeMasking"
+    },
+    {
+      "event": "0x10",
+      "umask": "0x2",
+      "ppr_name": "Mask_register_usage.MaskingRegUse"
+    },
+    {
+      "event": "0x10",
+      "umask": "0x1",
+      "ppr_name": "Mask_register_usage.MaskWrite"
+    },
+    {
+      "event": "0x13",
+      "umask": "0x80",
+      "ppr_name": "NSQ_before_rename.Total_I2F"
+    },
+    {
+      "event": "0x13",
+      "umask": "0x20",
+      "ppr_name": "NSQ_before_rename.Total_loads"
+    },
+    {
+      "event": "0x13",
+      "umask": "0x10",
+      "ppr_name": "NSQ_before_rename.Load_uses_LS_FIFO"
+    },
+    {
+      "event": "0x13",
+      "umask": "0x8",
+      "ppr_name": "NSQ_before_rename.SQ_token_stall"
+    },
+    {
+      "event": "0x13",
+      "umask": "0x1",
+      "ppr_name": "NSQ_before_rename.Flush_token_stall"
+    },
+    {
+      "event": "0x14",
+      "umask": "0x1",
+      "ppr_name": "Int_Vector_Ops_Retired.AddSub_LANEs"
+    },
+    {
+      "event": "0x20",
+      "umask": "0x20",
+      "ppr_name": "Segment_Register_Loads.GS"
+    },
+    {
+      "event": "0x20",
+      "umask": "0x10",
+      "ppr_name": "Segment_Register_Loads.FS"
+    },
+    {
+      "event": "0x20",
+      "umask": "0x8",
+      "ppr_name": "Segment_Register_Loads.DS"
+    },
+    {
+      "event": "0x20",
+      "umask": "0x4",
+      "ppr_name": "Segment_Register_Loads.SS"
+    },
+    {
+      "event": "0x20",
+      "umask": "0x2",
+      "ppr_name": "Segment_Register_Loads.CS"
+    },
+    {
+      "event": "0x20",
+      "umask": "0x1",
+      "ppr_name": "Segment_Register_Loads.ES"
+    },
+    {
+      "event": "0x21",
+      "umask": "0x4",
+      "ppr_name": "SpecGoodStatus_Activity.SpecGoodStatusOOBFullDC"
+    },
+    {
+      "event": "0x21",
+      "umask": "0x2",
+      "ppr_name": "SpecGoodStatus_Activity.SpecGoodStatusOOBFullSTLF"
+    },
+    {
+      "event": "0x21",
+      "umask": "0x1",
+      "ppr_name": "SpecGoodStatus_Activity.SpecGoodStatusSTLFLhash"
+    },
+    {
+      "event": "0x22",
+      "umask": "0x40",
+      "ppr_name": "Pipeline_Restart_Due_to_Various_Events.MemoryRenaming"
+    },
+    {
+      "event": "0x22",
+      "umask": "0x10",
+      "ppr_name": "Pipeline_Restart_Due_to_Various_Events.SpecLockMapAbort"
+    },
+    {
+      "event": "0x22",
+      "umask": "0x4",
+      "ppr_name": "Pipeline_Restart_Due_to_Various_Events.ResyncOobThread"
+    },
+    {
+      "event": "0x22",
+      "umask": "0x2",
+      "ppr_name": "Pipeline_Restart_Due_to_Various_Events.ResyncLoq"
+    },
+    {
+      "event": "0x22",
+      "umask": "0x1",
+      "ppr_name": "Pipeline_Restart_Due_to_Various_Events.SpecGoodStatusDc"
+    },
+    {
+      "event": "0x23",
+      "umask": "0x20",
+      "ppr_name": "Bad_Status_1.OobFull"
+    },
+    {
+      "event": "0x23",
+      "umask": "0x10",
+      "ppr_name": "Bad_Status_1.Iohc"
+    },
+    {
+      "event": "0x23",
+      "umask": "0x4",
+      "ppr_name": "Bad_Status_1.WayNotVal"
+    },
+    {
+      "event": "0x23",
+      "umask": "0x2",
+      "ppr_name": "Bad_Status_1.NoData"
+    },
+    {
+      "event": "0x23",
+      "umask": "0x1",
+      "ppr_name": "Bad_Status_1.TlbMiss"
+    },
+    {
+      "event": "0x24",
+      "umask": "0x80",
+      "ppr_name": "Bad_Status_STLI.StliBadPa"
+    },
+    {
+      "event": "0x24",
+      "umask": "0x40",
+      "ppr_name": "Bad_Status_STLI.StliMultimatch"
+    },
+    {
+      "event": "0x24",
+      "umask": "0x20",
+      "ppr_name": "Bad_Status_STLI.StlfCandidateStartAddrMismatch"
+    },
+    {
+      "event": "0x24",
+      "umask": "0x10",
+      "ppr_name": "Bad_Status_STLI.StliAgen"
+    },
+    {
+      "event": "0x24",
+      "umask": "0x8",
+      "ppr_name": "Bad_Status_STLI.StliScbNoState"
+    },
+    {
+      "event": "0x24",
+      "umask": "0x4",
+      "ppr_name": "Bad_Status_STLI.StlfNoData"
+    },
+    {
+      "event": "0x24",
+      "umask": "0x2",
+      "ppr_name": "Bad_Status_STLI.StliOther"
+    },
+    {
+      "event": "0x24",
+      "umask": "0x1",
+      "ppr_name": "Bad_Status_STLI.StliNoState"
+    },
+    {
+      "event": "0x28",
+      "umask": "0x40",
+      "ppr_name": "Bad_Status_3.SpecLockGoodStatus"
+    },
+    {
+      "event": "0x28",
+      "umask": "0x20",
+      "ppr_name": "Bad_Status_3.SpecGoodStatus"
+    },
+    {
+      "event": "0x28",
+      "umask": "0x10",
+      "ppr_name": "Bad_Status_3.HintedStoreNotReady"
+    },
+    {
+      "event": "0x28",
+      "umask": "0x4",
+      "ppr_name": "Bad_Status_3.AVX512_load_pipe_conflict"
+    },
+    {
+      "event": "0x28",
+      "umask": "0x2",
+      "ppr_name": "Bad_Status_3.DcPortConflict"
+    },
+    {
+      "event": "0x28",
+      "umask": "0x1",
+      "ppr_name": "Bad_Status_3.Bank_Conflict"
+    },
+    {
+      "event": "0x2a",
+      "umask": "0x4",
+      "ppr_name": "SCB_Close_Flush_2.NewSameAddress"
+    },
+    {
+      "event": "0x2a",
+      "umask": "0x2",
+      "ppr_name": "SCB_Close_Flush_2.GloballyVisibleProbeHit"
+    },
+    {
+      "event": "0x2a",
+      "umask": "0x1",
+      "ppr_name": "SCB_Close_Flush_2.Threshold"
+    },
+    {
+      "event": "0x2c",
+      "umask": "0x1",
+      "ppr_name": "Interrupts_Taken.NumInterrupts"
+    },
+    {
+      "event": "0x2e",
+      "umask": "0x8",
+      "ppr_name": "Store_Dealloc_Stalls.StoreDeallocCancel"
+    },
+    {
+      "event": "0x2e",
+      "umask": "0x2",
+      "ppr_name": "Store_Dealloc_Stalls.ScbFull"
+    },
+    {
+      "event": "0x2e",
+      "umask": "0x1",
+      "ppr_name": "Store_Dealloc_Stalls.StqRetireEmpty"
+    },
+    {
+      "event": "0x2f",
+      "umask": "0x80",
+      "ppr_name": "LS_Non_HwPf_Picks.Ptw"
+    },
+    {
+      "event": "0x2f",
+      "umask": "0x20",
+      "ppr_name": "LS_Non_HwPf_Picks.PureStPostRetireScb"
+    },
+    {
+      "event": "0x2f",
+      "umask": "0x10",
+      "ppr_name": "LS_Non_HwPf_Picks.PureStPostRetireStq"
+    },
+    {
+      "event": "0x2f",
+      "umask": "0x8",
+      "ppr_name": "LS_Non_HwPf_Picks.PureStPreRetire"
+    },
+    {
+      "event": "0x2f",
+      "umask": "0x4",
+      "ppr_name": "LS_Non_HwPf_Picks.PureSt"
+    },
+    {
+      "event": "0x2f",
+      "umask": "0x2",
+      "ppr_name": "LS_Non_HwPf_Picks.LdOpSt"
+    },
+    {
+      "event": "0x2f",
+      "umask": "0x1",
+      "ppr_name": "LS_Non_HwPf_Picks.PureLd"
+    },
+    {
+      "event": "0x30",
+      "umask": "0x8",
+      "ppr_name": "LS_HwPf_Picks.HwPfL2Stride"
+    },
+    {
+      "event": "0x30",
+      "umask": "0x4",
+      "ppr_name": "LS_HwPf_Picks.HwPfRegion"
+    },
+    {
+      "event": "0x30",
+      "umask": "0x2",
+      "ppr_name": "LS_HwPf_Picks.HwPfL1Stride"
+    },
+    {
+      "event": "0x30",
+      "umask": "0x1",
+      "ppr_name": "LS_HwPf_Picks.HwPfStream"
+    },
+    {
+      "event": "0x31",
+      "umask": "0x40",
+      "ppr_name": "Store_Dealloc_Activity.Other"
+    },
+    {
+      "event": "0x31",
+      "umask": "0x20",
+      "ppr_name": "Store_Dealloc_Activity.NoDealloc"
+    },
+    {
+      "event": "0x31",
+      "umask": "0x4",
+      "ppr_name": "Store_Dealloc_Activity.ScbFull"
+    },
+    {
+      "event": "0x31",
+      "umask": "0x2",
+      "ppr_name": "Store_Dealloc_Activity.ScbAlloc"
+    },
+    {
+      "event": "0x31",
+      "umask": "0x1",
+      "ppr_name": "Store_Dealloc_Activity.ScbCombine"
+    },
+    {
+      "event": "0x32",
+      "umask": "0x2",
+      "ppr_name": "Misaligned_Store_Flows.MA4K"
+    },
+    {
+      "event": "0x32",
+      "umask": "0x1",
+      "ppr_name": "Misaligned_Store_Flows.MA64"
+    },
+    {
+      "event": "0x33",
+      "umask": "0x10",
+      "ppr_name": "Store_Commit_Activity.StillOpenForCombining"
+    },
+    {
+      "event": "0x33",
+      "umask": "0x8",
+      "ppr_name": "Store_Commit_Activity.CommitPipeSwap"
+    },
+    {
+      "event": "0x33",
+      "umask": "0x4",
+      "ppr_name": "Store_Commit_Activity.StCommitStCommitBankConflict"
+    },
+    {
+      "event": "0x33",
+      "umask": "0x2",
+      "ppr_name": "Store_Commit_Activity.FillStCommitPortConflict"
+    },
+    {
+      "event": "0x33",
+      "umask": "0x1",
+      "ppr_name": "Store_Commit_Activity.FillStCommitBankConflict"
+    },
+    {
+      "event": "0x34",
+      "umask": "0x20",
+      "ppr_name": "Store_Commit_Stalls.Other"
+    },
+    {
+      "event": "0x34",
+      "umask": "0x10",
+      "ppr_name": "Store_Commit_Stalls.OtherThread"
+    },
+    {
+      "event": "0x34",
+      "umask": "0x4",
+      "ppr_name": "Store_Commit_Stalls.Fence"
+    },
+    {
+      "event": "0x34",
+      "umask": "0x2",
+      "ppr_name": "Store_Commit_Stalls.OldestScbNotExclState"
+    },
+    {
+      "event": "0x34",
+      "umask": "0x1",
+      "ppr_name": "Store_Commit_Stalls.ScbEmpty"
+    },
+    {
+      "event": "0x37",
+      "umask": "0x1",
+      "ppr_name": "Store_Globally_Visible_Cancels_External.OlderStVisibleDepCancel"
+    },
+    {
+      "event": "0x38",
+      "umask": "0x40",
+      "ppr_name": "LiveLock_Widgets.StCommitFwdProgWidget"
+    },
+    {
+      "event": "0x38",
+      "umask": "0x20",
+      "ppr_name": "LiveLock_Widgets.SafetyNetWakeUp"
+    },
+    {
+      "event": "0x41",
+      "umask": "0x8",
+      "ppr_name": "LS_MAB_Allocates_by_Type_INT.HwPf"
+    },
+    {
+      "event": "0x41",
+      "umask": "0x4",
+      "ppr_name": "LS_MAB_Allocates_by_Type_INT.TlbPipeEarly"
+    },
+    {
+      "event": "0x41",
+      "umask": "0x2",
+      "ppr_name": "LS_MAB_Allocates_by_Type_INT.TlbPipeLate"
+    },
+    {
+      "event": "0x41",
+      "umask": "0x1",
+      "ppr_name": "LS_MAB_Allocates_by_Type_INT.DataPipe"
+    },
+    {
+      "event": "0x42",
+      "umask": "0x4",
+      "ppr_name": "uTag_Mispredicts.uTagMissDCHit"
+    },
+    {
+      "event": "0x42",
+      "umask": "0x1",
+      "ppr_name": "uTag_Mispredicts.uTagHitDcMiss"
+    },
+    {
+      "event": "0x46",
+      "umask": "0x2",
+      "ppr_name": "Page_Table_Walk_Allocation.TableWalk_Iside"
+    },
+    {
+      "event": "0x46",
+      "umask": "0x1",
+      "ppr_name": "Page_Table_Walk_Allocation.TableWalk_Dside"
+    },
+    {
+      "event": "0x47",
+      "umask": "0x2",
+      "ppr_name": "Misaligned_Load_Flows.MA4K"
+    },
+    {
+      "event": "0x47",
+      "umask": "0x1",
+      "ppr_name": "Misaligned_Load_Flows.MA64"
+    },
+    {
+      "event": "0x49",
+      "umask": "0x10",
+      "ppr_name": "L1DTLB_Hit_Miss.Miss"
+    },
+    {
+      "event": "0x49",
+      "umask": "0x8",
+      "ppr_name": "L1DTLB_Hit_Miss.Hit1G"
+    },
+    {
+      "event": "0x49",
+      "umask": "0x4",
+      "ppr_name": "L1DTLB_Hit_Miss.Hit2M"
+    },
+    {
+      "event": "0x49",
+      "umask": "0x2",
+      "ppr_name": "L1DTLB_Hit_Miss.HitCoalesced"
+    },
+    {
+      "event": "0x49",
+      "umask": "0x1",
+      "ppr_name": "L1DTLB_Hit_Miss.Hit4K"
+    },
+    {
+      "event": "0x4b",
+      "umask": "0x8",
+      "ppr_name": "Software_Prefetch_Dispatched.PREFETCHT0_to_L1"
+    },
+    {
+      "event": "0x4b",
+      "umask": "0x2",
+      "ppr_name": "Software_Prefetch_Dispatched.PREFETCHW"
+    },
+    {
+      "event": "0x4b",
+      "umask": "0x1",
+      "ppr_name": "Software_Prefetch_Dispatched.PREFETCH"
+    },
+    {
+      "event": "0x4c",
+      "umask": "0x4",
+      "ppr_name": "HwPf_Entries_Allocated.RegionAlloc"
+    },
+    {
+      "event": "0x4c",
+      "umask": "0x2",
+      "ppr_name": "HwPf_Entries_Allocated.StrideAlloc"
+    },
+    {
+      "event": "0x4c",
+      "umask": "0x1",
+      "ppr_name": "HwPf_Entries_Allocated.StreamAlloc"
+    },
+    {
+      "event": "0x4d",
+      "umask": "0x4",
+      "ppr_name": "HwPf_Entries_Hit.RegionHit"
+    },
+    {
+      "event": "0x4d",
+      "umask": "0x2",
+      "ppr_name": "HwPf_Entries_Hit.StrideHit"
+    },
+    {
+      "event": "0x4d",
+      "umask": "0x1",
+      "ppr_name": "HwPf_Entries_Hit.StreamHit"
+    },
+    {
+      "event": "0x51",
+      "umask": "0x4",
+      "ppr_name": "HwPf_MAB_Matched.Region"
+    },
+    {
+      "event": "0x51",
+      "umask": "0x2",
+      "ppr_name": "HwPf_MAB_Matched.L1Stride"
+    },
+    {
+      "event": "0x51",
+      "umask": "0x1",
+      "ppr_name": "HwPf_MAB_Matched.L1Stream"
+    },
+    {
+      "event": "0x52",
+      "umask": "0x2",
+      "ppr_name": "Ineffective_Software_Prefetches.MabHit"
+    },
+    {
+      "event": "0x52",
+      "umask": "0x1",
+      "ppr_name": "Ineffective_Software_Prefetches.DcHit"
+    },
+    {
+      "event": "0x57",
+      "umask": "0x4",
+      "ppr_name": "HwPf_MAB_Alloc.Region"
+    },
+    {
+      "event": "0x57",
+      "umask": "0x2",
+      "ppr_name": "HwPf_MAB_Alloc.L1Stride"
+    },
+    {
+      "event": "0x57",
+      "umask": "0x1",
+      "ppr_name": "HwPf_MAB_Alloc.Stream"
+    },
+    {
+      "event": "0x58",
+      "umask": "0x4",
+      "ppr_name": "HwPf_MAB_Match_HwPf_hit_MAB.Region"
+    },
+    {
+      "event": "0x58",
+      "umask": "0x2",
+      "ppr_name": "HwPf_MAB_Match_HwPf_hit_MAB.L1Stride"
+    },
+    {
+      "event": "0x58",
+      "umask": "0x1",
+      "ppr_name": "HwPf_MAB_Match_HwPf_hit_MAB.Stream"
+    },
+    {
+      "event": "0x59",
+      "umask": "0x8",
+      "ppr_name": "Software_Prefetch_Data_Cache_Fills.DramIO_Near"
+    },
+    {
+      "event": "0x59",
+      "umask": "0x4",
+      "ppr_name": "Software_Prefetch_Data_Cache_Fills.NearFarCache_Near"
+    },
+    {
+      "event": "0x59",
+      "umask": "0x2",
+      "ppr_name": "Software_Prefetch_Data_Cache_Fills.LocalCcx"
+    },
+    {
+      "event": "0x59",
+      "umask": "0x1",
+      "ppr_name": "Software_Prefetch_Data_Cache_Fills.LocalL2"
+    },
+    {
+      "event": "0x5a",
+      "umask": "0x40",
+      "ppr_name": "Hardware_Prefetch_Data_Cache_Fills.DramIO_Far"
+    },
+    {
+      "event": "0x5a",
+      "umask": "0x10",
+      "ppr_name": "Hardware_Prefetch_Data_Cache_Fills.NearFarCache_Far"
+    },
+    {
+      "event": "0x5a",
+      "umask": "0x8",
+      "ppr_name": "Hardware_Prefetch_Data_Cache_Fills.DramIO_Near"
+    },
+    {
+      "event": "0x5a",
+      "umask": "0x4",
+      "ppr_name": "Hardware_Prefetch_Data_Cache_Fills.NearFarCache_Near"
+    },
+    {
+      "event": "0x5a",
+      "umask": "0x2",
+      "ppr_name": "Hardware_Prefetch_Data_Cache_Fills.LocalCcx"
+    },
+    {
+      "event": "0x5a",
+      "umask": "0x1",
+      "ppr_name": "Hardware_Prefetch_Data_Cache_Fills.LocalL2"
+    },
+    {
+      "event": "0x5b",
+      "umask": "0x40",
+      "ppr_name": "Table_Walker_Data_Cache_Fills_by_Data_Source.DramIO_Far"
+    },
+    {
+      "event": "0x5b",
+      "umask": "0x8",
+      "ppr_name": "Table_Walker_Data_Cache_Fills_by_Data_Source.DramIO_Near"
+    },
+    {
+      "event": "0x5b",
+      "umask": "0x2",
+      "ppr_name": "Table_Walker_Data_Cache_Fills_by_Data_Source.LocalCcx"
+    },
+    {
+      "event": "0x5b",
+      "umask": "0x1",
+      "ppr_name": "Table_Walker_Data_Cache_Fills_by_Data_Source.LocalL2"
+    },
+    {
+      "event": "0x5c",
+      "umask": "0x80",
+      "ppr_name": "Fill_Response_MOESI.M_Alias"
+    },
+    {
+      "event": "0x5c",
+      "umask": "0x20",
+      "ppr_name": "Fill_Response_MOESI.E_Alias"
+    },
+    {
+      "event": "0x5c",
+      "umask": "0x10",
+      "ppr_name": "Fill_Response_MOESI.S_Alias"
+    },
+    {
+      "event": "0x5c",
+      "umask": "0x2",
+      "ppr_name": "Fill_Response_MOESI.E_Fill"
+    },
+    {
+      "event": "0x5c",
+      "umask": "0x1",
+      "ppr_name": "Fill_Response_MOESI.S_Fill"
+    },
+    {
+      "event": "0x5d",
+      "umask": "0x8",
+      "ppr_name": "DC_Victim_MOESI.M"
+    },
+    {
+      "event": "0x5d",
+      "umask": "0x2",
+      "ppr_name": "DC_Victim_MOESI.E"
+    },
+    {
+      "event": "0x5d",
+      "umask": "0x1",
+      "ppr_name": "DC_Victim_MOESI.S"
+    },
+    {
+      "event": "0x5e",
+      "umask": "0x40",
+      "ppr_name": "Victim_Nack.CBB"
+    },
+    {
+      "event": "0x5e",
+      "umask": "0x4",
+      "ppr_name": "Victim_Nack.ScbGloballyVisible"
+    },
+    {
+      "event": "0x86",
+      "umask": "0x2",
+      "ppr_name": "SMC_or_CMC_Pipeline_restart_requests.CMC"
+    },
+    {
+      "event": "0x87",
+      "umask": "0x8",
+      "ppr_name": "Instruction_Cache_Pipe_Stall.IcStallIcMiss"
+    },
+    {
+      "event": "0x87",
+      "umask": "0x4",
+      "ppr_name": "Instruction_Cache_Pipe_Stall.IcStallAny"
+    },
+    {
+      "event": "0x87",
+      "umask": "0x2",
+      "ppr_name": "Instruction_Cache_Pipe_Stall.IcStallPrqEmpty"
+    },
+    {
+      "event": "0x87",
+      "umask": "0x1",
+      "ppr_name": "Instruction_Cache_Pipe_Stall.IcStallBackPressure"
+    },
+    {
+      "event": "0x8a",
+      "umask": "0x40",
+      "ppr_name": "BTB_Hit_Attributes.SB"
+    },
+    {
+      "event": "0x8a",
+      "umask": "0x20",
+      "ppr_name": "BTB_Hit_Attributes.TPair"
+    },
+    {
+      "event": "0x8a",
+      "umask": "0x10",
+      "ppr_name": "BTB_Hit_Attributes.NPair"
+    },
+    {
+      "event": "0x8a",
+      "umask": "0x8",
+      "ppr_name": "BTB_Hit_Attributes.Large"
+    },
+    {
+      "event": "0x8a",
+      "umask": "0x4",
+      "ppr_name": "BTB_Hit_Attributes.Single"
+    },
+    {
+      "event": "0x8a",
+      "umask": "0x2",
+      "ppr_name": "BTB_Hit_Attributes.BtbHitOrLoop"
+    },
+    {
+      "event": "0x8a",
+      "umask": "0x1",
+      "ppr_name": "BTB_Hit_Attributes.BtbHit"
+    },
+    {
+      "event": "0x8b",
+      "umask": "0x20",
+      "ppr_name": "BP_Correct.PrqFullLate"
+    },
+    {
+      "event": "0x8b",
+      "umask": "0x8",
+      "ppr_name": "BP_Correct.L1BtbError"
+    },
+    {
+      "event": "0x8b",
+      "umask": "0x4",
+      "ppr_name": "BP_Correct.L2BtbCancel"
+    },
+    {
+      "event": "0x8b",
+      "umask": "0x2",
+      "ppr_name": "BP_Correct.WakeupCancel"
+    },
+    {
+      "event": "0x8b",
+      "umask": "0x1",
+      "ppr_name": "BP_Correct.RmcHit"
+    },
+    {
+      "event": "0x8c",
+      "umask": "0x2",
+      "ppr_name": "Instruction_Cache_Lines_Invalidated.L2InvalidatingProbe"
+    },
+    {
+      "event": "0x8c",
+      "umask": "0x1",
+      "ppr_name": "Instruction_Cache_Lines_Invalidated.FillInvalidated"
+    },
+    {
+      "event": "0x90",
+      "umask": "0x80",
+      "ppr_name": "BP_External_Stalls.FetchStall"
+    },
+    {
+      "event": "0x90",
+      "umask": "0x20",
+      "ppr_name": "BP_External_Stalls.ParkStall"
+    },
+    {
+      "event": "0x90",
+      "umask": "0x10",
+      "ppr_name": "BP_External_Stalls.BLQ_Full"
+    },
+    {
+      "event": "0x90",
+      "umask": "0x8",
+      "ppr_name": "BP_External_Stalls.PRQ_Full"
+    },
+    {
+      "event": "0x90",
+      "umask": "0x4",
+      "ppr_name": "BP_External_Stalls.FAQ_Full"
+    },
+    {
+      "event": "0x90",
+      "umask": "0x2",
+      "ppr_name": "BP_External_Stalls.BPQ_Full"
+    },
+    {
+      "event": "0x91",
+      "umask": "0x1",
+      "ppr_name": "Decoder_Overrides_Existing_Branch_Prediction_Speculative.DispatchRedirect"
+    },
+    {
+      "event": "0x94",
+      "umask": "0x2",
+      "ppr_name": "ITLB_Hits.IF2M"
+    },
+    {
+      "event": "0x94",
+      "umask": "0x1",
+      "ppr_name": "ITLB_Hits.IF4K"
+    },
+    {
+      "event": "0x97",
+      "umask": "0x4",
+      "ppr_name": "IC_Fill_Requests_instruction_prefetch.DemandFillPrefetch"
+    },
+    {
+      "event": "0x97",
+      "umask": "0x2",
+      "ppr_name": "IC_Fill_Requests_instruction_prefetch.NonSeqFillPrefetch"
+    },
+    {
+      "event": "0x97",
+      "umask": "0x1",
+      "ppr_name": "IC_Fill_Requests_instruction_prefetch.SeqFillPrefetch"
+    },
+    {
+      "event": "0x98",
+      "umask": "0x80",
+      "ppr_name": "BP_Internal_Stall.BtbUpdateRead"
+    },
+    {
+      "event": "0x98",
+      "umask": "0x40",
+      "ppr_name": "BP_Internal_Stall.TageUpdateRead"
+    },
+    {
+      "event": "0x98",
+      "umask": "0x20",
+      "ppr_name": "BP_Internal_Stall.BtbUpdateWrite"
+    },
+    {
+      "event": "0x98",
+      "umask": "0x10",
+      "ppr_name": "BP_Internal_Stall.RmcHit"
+    },
+    {
+      "event": "0x98",
+      "umask": "0x8",
+      "ppr_name": "BP_Internal_Stall.Reinterp"
+    },
+    {
+      "event": "0x98",
+      "umask": "0x2",
+      "ppr_name": "BP_Internal_Stall.L1BtbError"
+    },
+    {
+      "event": "0x98",
+      "umask": "0x1",
+      "ppr_name": "BP_Internal_Stall.L2BtbCancelCycle"
+    },
+    {
+      "event": "0x9b",
+      "umask": "0x2",
+      "ppr_name": "L1_BTB_Accesses.BpPipeActive"
+    },
+    {
+      "event": "0x9b",
+      "umask": "0x1",
+      "ppr_name": "L1_BTB_Accesses.BtbAccessed"
+    },
+    {
+      "event": "0x9d",
+      "umask": "0x4",
+      "ppr_name": "L2_BTB_Hit_Miss_events.L2BtbHitTbl1"
+    },
+    {
+      "event": "0x9d",
+      "umask": "0x2",
+      "ppr_name": "L2_BTB_Hit_Miss_events.L2BtbHitTbl0"
+    },
+    {
+      "event": "0x9d",
+      "umask": "0x1",
+      "ppr_name": "L2_BTB_Hit_Miss_events.L2BtbMiss"
+    },
+    {
+      "event": "0xa0",
+      "umask": "0x2",
+      "ppr_name": "UOQ_write_stall_cycles_from_OC_fetch_pipe.IdqStall"
+    },
+    {
+      "event": "0xa0",
+      "umask": "0x1",
+      "ppr_name": "UOQ_write_stall_cycles_from_OC_fetch_pipe.UopqStall"
+    },
+    {
+      "event": "0xa1",
+      "umask": "0x2",
+      "ppr_name": "Micro_Op_Cache_Full_Tag_Match_Events.OC_full_tag_miss"
+    },
+    {
+      "event": "0xa1",
+      "umask": "0x1",
+      "ppr_name": "Micro_Op_Cache_Full_Tag_Match_Events.OC_full_tag_hit"
+    },
+    {
+      "event": "0xa5",
+      "umask": "0x2",
+      "ppr_name": "Micro_Op_Cache_Build_Build_Break_Reason.Other"
+    },
+    {
+      "event": "0xa5",
+      "umask": "0x1",
+      "ppr_name": "Micro_Op_Cache_Build_Build_Break_Reason.Taken_Branch"
+    },
+    {
+      "event": "0xa7",
+      "umask": "0x10",
+      "ppr_name": "UOQ_Write_Stall_Cycles.decodeocfetch_interlock"
+    },
+    {
+      "event": "0xa7",
+      "umask": "0x8",
+      "ppr_name": "UOQ_Write_Stall_Cycles.Input_queue_empty"
+    },
+    {
+      "event": "0xa7",
+      "umask": "0x2",
+      "ppr_name": "UOQ_Write_Stall_Cycles.IDQ_full"
+    },
+    {
+      "event": "0xa7",
+      "umask": "0x1",
+      "ppr_name": "UOQ_Write_Stall_Cycles.UOQ_full"
+    },
+    {
+      "event": "0xa8",
+      "umask": "0x80",
+      "ppr_name": "Microcode_Sequencer_Stall_Cycles.wait_for_count_or_wait_for_countl"
+    },
+    {
+      "event": "0xa8",
+      "umask": "0x8",
+      "ppr_name": "Microcode_Sequencer_Stall_Cycles.wait_for_stq"
+    },
+    {
+      "event": "0xa8",
+      "umask": "0x4",
+      "ppr_name": "Microcode_Sequencer_Stall_Cycles.wait_for_segld"
+    },
+    {
+      "event": "0xa8",
+      "umask": "0x2",
+      "ppr_name": "Microcode_Sequencer_Stall_Cycles.wait_for_quiet"
+    },
+    {
+      "event": "0xa8",
+      "umask": "0x1",
+      "ppr_name": "Microcode_Sequencer_Stall_Cycles.Serialize"
+    },
+    {
+      "event": "0xa9",
+      "umask": "0x2",
+      "ppr_name": "Dispatch_Empty.Microcode_Stall"
+    },
+    {
+      "event": "0xa9",
+      "umask": "0x1",
+      "ppr_name": "Dispatch_Empty.UopQ_Empty"
+    },
+    {
+      "event": "0xab",
+      "umask": "0x80",
+      "ppr_name": "Types_of_Ops_Dispatched_From_Decoder_INT.RetQ_compression_correction"
+    },
+    {
+      "event": "0xab",
+      "umask": "0x10",
+      "ppr_name": "Types_of_Ops_Dispatched_From_Decoder_INT.fastpath_sequencer"
+    },
+    {
+      "event": "0xab",
+      "umask": "0x8",
+      "ppr_name": "Types_of_Ops_Dispatched_From_Decoder_INT.integer"
+    },
+    {
+      "event": "0xab",
+      "umask": "0x4",
+      "ppr_name": "Types_of_Ops_Dispatched_From_Decoder_INT.floating_pointSIMD"
+    },
+    {
+      "event": "0xab",
+      "umask": "0x2",
+      "ppr_name": "Types_of_Ops_Dispatched_From_Decoder_INT.microcode"
+    },
+    {
+      "event": "0xab",
+      "umask": "0x1",
+      "ppr_name": "Types_of_Ops_Dispatched_From_Decoder_INT.fastpath"
+    },
+    {
+      "event": "0xac",
+      "umask": "0x2",
+      "ppr_name": "Dispatch_Stall_Cycles_Static_Restrictions_Part_1.MaxIdrReads"
+    },
+    {
+      "event": "0xac",
+      "umask": "0x1",
+      "ppr_name": "Dispatch_Stall_Cycles_Static_Restrictions_Part_1.MaxBpw"
+    },
+    {
+      "event": "0xad",
+      "umask": "0x8",
+      "ppr_name": "Dispatch_Stall_Cycles_Static_Restrictions_Part_2.Max2TknBrn"
+    },
+    {
+      "event": "0xad",
+      "umask": "0x4",
+      "ppr_name": "Dispatch_Stall_Cycles_Static_Restrictions_Part_2.Max8OpDispatch"
+    },
+    {
+      "event": "0xad",
+      "umask": "0x2",
+      "ppr_name": "Dispatch_Stall_Cycles_Static_Restrictions_Part_2.BreakAfter"
+    },
+    {
+      "event": "0xad",
+      "umask": "0x1",
+      "ppr_name": "Dispatch_Stall_Cycles_Static_Restrictions_Part_2.BreakBefore"
+    },
+    {
+      "event": "0xae",
+      "umask": "0x40",
+      "ppr_name": "Dispatch_Stall_Cycles_Dynamic_Tokens_Part_1.FPSchRsrcStall"
+    },
+    {
+      "event": "0xae",
+      "umask": "0x10",
+      "ppr_name": "Dispatch_Stall_Cycles_Dynamic_Tokens_Part_1.TakenBrnchBufferRsrc"
+    },
+    {
+      "event": "0xae",
+      "umask": "0x4",
+      "ppr_name": "Dispatch_Stall_Cycles_Dynamic_Tokens_Part_1.StoreQueueRsrcStall"
+    },
+    {
+      "event": "0xae",
+      "umask": "0x2",
+      "ppr_name": "Dispatch_Stall_Cycles_Dynamic_Tokens_Part_1.LoadQueueRsrcStall"
+    },
+    {
+      "event": "0xae",
+      "umask": "0x1",
+      "ppr_name": "Dispatch_Stall_Cycles_Dynamic_Tokens_Part_1.IntPhyRegFileRsrcStall"
+    },
+    {
+      "event": "0xaf",
+      "umask": "0x20",
+      "ppr_name": "Dispatch_Stall_Cycles_Dynamic_Tokens_Part_2.RetQ"
+    },
+    {
+      "event": "0xaf",
+      "umask": "0x10",
+      "ppr_name": "Dispatch_Stall_Cycles_Dynamic_Tokens_Part_2.ExStallReq"
+    },
+    {
+      "event": "0xaf",
+      "umask": "0x2",
+      "ppr_name": "Dispatch_Stall_Cycles_Dynamic_Tokens_Part_2.AGTokens"
+    },
+    {
+      "event": "0xaf",
+      "umask": "0x1",
+      "ppr_name": "Dispatch_Stall_Cycles_Dynamic_Tokens_Part_2.ALTokens"
+    },
+    {
+      "event": "0xb0",
+      "umask": "0x2",
+      "ppr_name": "Loads_that_hit_in_the_Resync_Predictor.MemRenDisable"
+    },
+    {
+      "event": "0xb0",
+      "umask": "0x1",
+      "ppr_name": "Loads_that_hit_in_the_Resync_Predictor.IohcLoads"
+    },
+    {
+      "event": "0xb1",
+      "umask": "0x8",
+      "ppr_name": "Load_hits_in_Memory_Dependency_Widgets.MemfileHit"
+    },
+    {
+      "event": "0xb1",
+      "umask": "0x4",
+      "ppr_name": "Load_hits_in_Memory_Dependency_Widgets.StkTrackerHitRbp"
+    },
+    {
+      "event": "0xb1",
+      "umask": "0x2",
+      "ppr_name": "Load_hits_in_Memory_Dependency_Widgets.StkTrackerHitRsp"
+    },
+    {
+      "event": "0xb1",
+      "umask": "0x1",
+      "ppr_name": "Load_hits_in_Memory_Dependency_Widgets.MdpHit"
+    },
+    {
+      "event": "0xb3",
+      "umask": "0x8",
+      "ppr_name": "Memory_Renamed_Loads_Eliminated.MemfileHit"
+    },
+    {
+      "event": "0xb3",
+      "umask": "0x4",
+      "ppr_name": "Memory_Renamed_Loads_Eliminated.StkTrackerHitRbp"
+    },
+    {
+      "event": "0xb3",
+      "umask": "0x2",
+      "ppr_name": "Memory_Renamed_Loads_Eliminated.StkTrackerHitRsp"
+    },
+    {
+      "event": "0xb3",
+      "umask": "0x1",
+      "ppr_name": "Memory_Renamed_Loads_Eliminated.MdpHit"
+    },
+    {
+      "event": "0xb4",
+      "umask": "0x80",
+      "ppr_name": "Number_of_Dispatched_op_per_cycle_histogram.eightOps"
+    },
+    {
+      "event": "0xb4",
+      "umask": "0x40",
+      "ppr_name": "Number_of_Dispatched_op_per_cycle_histogram.sevenOps"
+    },
+    {
+      "event": "0xb4",
+      "umask": "0x20",
+      "ppr_name": "Number_of_Dispatched_op_per_cycle_histogram.sixOps"
+    },
+    {
+      "event": "0xb4",
+      "umask": "0x10",
+      "ppr_name": "Number_of_Dispatched_op_per_cycle_histogram.fiveOps"
+    },
+    {
+      "event": "0xb4",
+      "umask": "0x8",
+      "ppr_name": "Number_of_Dispatched_op_per_cycle_histogram.fourOps"
+    },
+    {
+      "event": "0xb4",
+      "umask": "0x4",
+      "ppr_name": "Number_of_Dispatched_op_per_cycle_histogram.threeOps"
+    },
+    {
+      "event": "0xb4",
+      "umask": "0x2",
+      "ppr_name": "Number_of_Dispatched_op_per_cycle_histogram.twoOps"
+    },
+    {
+      "event": "0xb4",
+      "umask": "0x1",
+      "ppr_name": "Number_of_Dispatched_op_per_cycle_histogram.oneOp"
+    },
+    {
+      "event": "0xb5",
+      "umask": "0x40",
+      "ppr_name": "No_Dispatch.Other"
+    },
+    {
+      "event": "0xb5",
+      "umask": "0x2",
+      "ppr_name": "No_Dispatch.TokenStall"
+    },
+    {
+      "event": "0xb5",
+      "umask": "0x1",
+      "ppr_name": "No_Dispatch.NoInstr"
+    },
+    {
+      "event": "0xb6",
+      "umask": "0x80",
+      "ppr_name": "Ops_Dispatched_Past_A_Branch.Past7thBranch"
+    },
+    {
+      "event": "0xb6",
+      "umask": "0x40",
+      "ppr_name": "Ops_Dispatched_Past_A_Branch.Past6thBranch"
+    },
+    {
+      "event": "0xb6",
+      "umask": "0x20",
+      "ppr_name": "Ops_Dispatched_Past_A_Branch.Past5thBranch"
+    },
+    {
+      "event": "0xb6",
+      "umask": "0x10",
+      "ppr_name": "Ops_Dispatched_Past_A_Branch.Past4thBranch"
+    },
+    {
+      "event": "0xb6",
+      "umask": "0x8",
+      "ppr_name": "Ops_Dispatched_Past_A_Branch.Past3rdBranch"
+    },
+    {
+      "event": "0xb6",
+      "umask": "0x4",
+      "ppr_name": "Ops_Dispatched_Past_A_Branch.Past2ndBranch"
+    },
+    {
+      "event": "0xb6",
+      "umask": "0x2",
+      "ppr_name": "Ops_Dispatched_Past_A_Branch.Past1stBranch"
+    },
+    {
+      "event": "0xb6",
+      "umask": "0x1",
+      "ppr_name": "Ops_Dispatched_Past_A_Branch.PastOneBranch"
+    },
+    {
+      "event": "0xb8",
+      "umask": "0x2",
+      "ppr_name": "Stack_Engine.FixupOps"
+    },
+    {
+      "event": "0xb8",
+      "umask": "0x1",
+      "ppr_name": "Stack_Engine.FixupOpReq"
+    },
+    {
+      "event": "0xb9",
+      "umask": "0x2",
+      "ppr_name": "Number_of_UopQ_writes.IcFetch"
+    },
+    {
+      "event": "0xb9",
+      "umask": "0x1",
+      "ppr_name": "Number_of_UopQ_writes.OcFetch"
+    },
+    {
+      "event": "0xba",
+      "umask": "0x40",
+      "ppr_name": "Dispatch_Conflict_Stall_Cycles_Dynamic_Tokens.IntPrf"
+    },
+    {
+      "event": "0xba",
+      "umask": "0x20",
+      "ppr_name": "Dispatch_Conflict_Stall_Cycles_Dynamic_Tokens.ExtId"
+    },
+    {
+      "event": "0xba",
+      "umask": "0x2",
+      "ppr_name": "Dispatch_Conflict_Stall_Cycles_Dynamic_Tokens.Agsq"
+    },
+    {
+      "event": "0xba",
+      "umask": "0x1",
+      "ppr_name": "Dispatch_Conflict_Stall_Cycles_Dynamic_Tokens.Alsq"
+    },
+    {
+      "event": "0xbc",
+      "umask": "0x4",
+      "ppr_name": "Dispatched_128b_SSE_AVX_Instructions.Dis_512SseAvx"
+    },
+    {
+      "event": "0xbc",
+      "umask": "0x2",
+      "ppr_name": "Dispatched_128b_SSE_AVX_Instructions.Dis_256SseAvx"
+    },
+    {
+      "event": "0xbc",
+      "umask": "0x1",
+      "ppr_name": "Dispatched_128b_SSE_AVX_Instructions.Dis_128SseAvx"
+    },
+    {
+      "event": "0xcb",
+      "umask": "0x4",
+      "ppr_name": "Retired_MMX_FP_Instructions.SSE"
+    },
+    {
+      "event": "0xcb",
+      "umask": "0x1",
+      "ppr_name": "Retired_MMX_FP_Instructions.X87"
+    },
+    {
+      "event": "0xd2",
+      "umask": "0x8",
+      "ppr_name": "No_Retire.Other"
+    },
+    {
+      "event": "0xd2",
+      "umask": "0x4",
+      "ppr_name": "No_Retire.NotCompleteOlder"
+    },
+    {
+      "event": "0xd2",
+      "umask": "0x2",
+      "ppr_name": "No_Retire.NotCompleteSelf"
+    },
+    {
+      "event": "0xd2",
+      "umask": "0x1",
+      "ppr_name": "No_Retire.Empty"
+    },
+    {
+      "event": "0xd5",
+      "umask": "0x4",
+      "ppr_name": "Count_of_Broadcasts.Frn"
+    },
+    {
+      "event": "0xd5",
+      "umask": "0x2",
+      "ppr_name": "Count_of_Broadcasts.PrnLd"
+    },
+    {
+      "event": "0xd5",
+      "umask": "0x1",
+      "ppr_name": "Count_of_Broadcasts.PrnAlu"
+    },
+    {
+      "event": "0xd9",
+      "umask": "0x4",
+      "ppr_name": "Retire_Empty.MicroRedirect"
+    },
+    {
+      "event": "0xd9",
+      "umask": "0x2",
+      "ppr_name": "Retire_Empty.Mispredict_to_BP"
+    },
+    {
+      "event": "0xd9",
+      "umask": "0x1",
+      "ppr_name": "Retire_Empty.Resync"
+    },
+    {
+      "event": "0x121",
+      "umask": "0x2",
+      "ppr_name": "SPEC_CTL_Modes.IBRS"
+    },
+    {
+      "event": "0x121",
+      "umask": "0x1",
+      "ppr_name": "SPEC_CTL_Modes.STIBP"
+    },
+    {
+      "event": "0x127",
+      "umask": "0x2",
+      "ppr_name": "Fences.SFENCE"
+    },
+    {
+      "event": "0x127",
+      "umask": "0x1",
+      "ppr_name": "Fences.LFENCE"
+    },
+    {
+      "event": "0x130",
+      "umask": "0x20",
+      "ppr_name": "Hwpf_Generation.L2HwpfMa"
+    },
+    {
+      "event": "0x130",
+      "umask": "0x10",
+      "ppr_name": "Hwpf_Generation.L2HwpfFilter"
+    },
+    {
+      "event": "0x130",
+      "umask": "0x8",
+      "ppr_name": "Hwpf_Generation.L2HwPfGen"
+    },
+    {
+      "event": "0x130",
+      "umask": "0x4",
+      "ppr_name": "Hwpf_Generation.L1HwpfMa"
+    },
+    {
+      "event": "0x130",
+      "umask": "0x2",
+      "ppr_name": "Hwpf_Generation.L1HwpfFilter"
+    },
+    {
+      "event": "0x130",
+      "umask": "0x1",
+      "ppr_name": "Hwpf_Generation.L1HwPfGen"
+    },
+    {
+      "event": "0x131",
+      "umask": "0x8",
+      "ppr_name": "Hwpf_Ma_Flows.L2HwpfMaFlow"
+    },
+    {
+      "event": "0x131",
+      "umask": "0x1",
+      "ppr_name": "Hwpf_Ma_Flows.L1HwpfMaFlow"
+    },
+    {
+      "event": "0x182",
+      "umask": "0x4",
+      "ppr_name": "ITLB_flow_stalls.ThreadNotSelected"
+    },
+    {
+      "event": "0x182",
+      "umask": "0x2",
+      "ppr_name": "ITLB_flow_stalls.ItlbMiss"
+    },
+    {
+      "event": "0x182",
+      "umask": "0x1",
+      "ppr_name": "ITLB_flow_stalls.Empty"
+    },
+    {
+      "event": "0x185",
+      "umask": "0x4",
+      "ppr_name": "L2_TLB_hit.hit_2M"
+    },
+    {
+      "event": "0x185",
+      "umask": "0x2",
+      "ppr_name": "L2_TLB_hit.hit_16K"
+    },
+    {
+      "event": "0x185",
+      "umask": "0x1",
+      "ppr_name": "L2_TLB_hit.hit_4K"
+    },
+    {
+      "event": "0x1a2",
+      "umask": "0x40",
+      "ppr_name": "Dispatch_Thread_Arbitration.Grant"
+    },
+    {
+      "event": "0x1a2",
+      "umask": "0x2",
+      "ppr_name": "Dispatch_Thread_Arbitration.HasWork"
+    },
+    {
+      "event": "0x1a2",
+      "umask": "0x1",
+      "ppr_name": "Dispatch_Thread_Arbitration.ArbReq"
+    },
+    {
+      "event": "0x1d0",
+      "umask": "0x2",
+      "ppr_name": "Retired_fused_instructions.FusedNonBranch"
+    },
+    {
+      "event": "0x1d0",
+      "umask": "0x1",
+      "ppr_name": "Retired_fused_instructions.FusedBranch"
+    },
+    {
+      "event": "0x1d4",
+      "umask": "0x40",
+      "ppr_name": "resync_fault.SLM_resync"
+    },
+    {
+      "event": "0x1d4",
+      "umask": "0x20",
+      "ppr_name": "resync_fault.faulttrap_on_fused_instruction_converted_to_resync_fault"
+    },
+    {
+      "event": "0x1d4",
+      "umask": "0x2",
+      "ppr_name": "resync_fault.LS_resync"
+    },
+    {
+      "event": "0x1d5",
+      "umask": "0x20",
+      "ppr_name": "Resync_from_traps.LsResync"
+    },
+    {
+      "event": "0x1d5",
+      "umask": "0x8",
+      "ppr_name": "Resync_from_traps.RflagsRtTf"
+    },
+    {
+      "event": "0x1d5",
+      "umask": "0x1",
+      "ppr_name": "Resync_from_traps.Cmc"
+    },
+    {
+      "event": "0x1d6",
+      "umask": "0x20",
+      "ppr_name": "Micro_ops_Issued_Part0.Al5"
+    },
+    {
+      "event": "0x1d6",
+      "umask": "0x10",
+      "ppr_name": "Micro_ops_Issued_Part0.Al4"
+    },
+    {
+      "event": "0x1d6",
+      "umask": "0x8",
+      "ppr_name": "Micro_ops_Issued_Part0.Al3"
+    },
+    {
+      "event": "0x1d6",
+      "umask": "0x4",
+      "ppr_name": "Micro_ops_Issued_Part0.Al2"
+    },
+    {
+      "event": "0x1d6",
+      "umask": "0x2",
+      "ppr_name": "Micro_ops_Issued_Part0.Al1"
+    },
+    {
+      "event": "0x1d6",
+      "umask": "0x1",
+      "ppr_name": "Micro_ops_Issued_Part0.Al0"
+    },
+    {
+      "event": "0x1d7",
+      "umask": "0x8",
+      "ppr_name": "Micro_ops_Issued_Part1.Ag3"
+    },
+    {
+      "event": "0x1d7",
+      "umask": "0x4",
+      "ppr_name": "Micro_ops_Issued_Part1.Ag2"
+    },
+    {
+      "event": "0x1d7",
+      "umask": "0x2",
+      "ppr_name": "Micro_ops_Issued_Part1.Ag1"
+    },
+    {
+      "event": "0x1d7",
+      "umask": "0x1",
+      "ppr_name": "Micro_ops_Issued_Part1.Ag0"
+    },
+    {
+      "event": "0x1dc",
+      "umask": "0x4",
+      "ppr_name": "Count_of_bad_status_load_broadcasts.BadPartial"
+    },
+    {
+      "event": "0x1dc",
+      "umask": "0x2",
+      "ppr_name": "Count_of_bad_status_load_broadcasts.Bad_Status"
+    },
+    {
+      "event": "0x1dc",
+      "umask": "0x1",
+      "ppr_name": "Count_of_bad_status_load_broadcasts.EbsCancel"
+    },
+    {
+      "event": "0x286",
+      "umask": "0x1",
+      "ppr_name": "IC_L2_Fill_Requests.UtagMiss"
+    },
+    {
+      "event": "0x28a",
+      "umask": "0x2",
+      "ppr_name": "OC_Mode_Switch.OcIcModeSwitch"
+    },
+    {
+      "event": "0x28a",
+      "umask": "0x1",
+      "ppr_name": "OC_Mode_Switch.IcOcModeSwitch"
+    },
+    {
+      "event": "0x29b",
+      "umask": "0x1",
+      "ppr_name": "I_TLB_access_cacheable_vs_non_cacheable.cacheable"
+    },
+    {
+      "event": "0x29c",
+      "umask": "0x40",
+      "ppr_name": "Any_IC_Fills_by_Data_Source.RmtDram"
+    },
+    {
+      "event": "0x29c",
+      "umask": "0x8",
+      "ppr_name": "Any_IC_Fills_by_Data_Source.LclDram"
+    },
+    {
+      "event": "0x29c",
+      "umask": "0x2",
+      "ppr_name": "Any_IC_Fills_by_Data_Source.LclCache"
+    },
+    {
+      "event": "0x29c",
+      "umask": "0x1",
+      "ppr_name": "Any_IC_Fills_by_Data_Source.LclL2"
+    }
+  ],
+  "ppr_only_m8a_verified": [
+    {
+      "event": "0x3",
+      "umask": "0x8",
+      "ppr_name": "Retired_SSE_AVX_FLOPs.MacFLOPs"
+    },
+    {
+      "event": "0x8",
+      "umask": "0x20",
+      "ppr_name": "Retired_FP_uOps.Pack512uOpsRetired"
+    },
+    {
+      "event": "0x8",
+      "umask": "0x10",
+      "ppr_name": "Retired_FP_uOps.Pack256uOpsRetired"
+    },
+    {
+      "event": "0x8",
+      "umask": "0x8",
+      "ppr_name": "Retired_FP_uOps.Pack128uOpsRetired"
+    },
+    {
+      "event": "0x8",
+      "umask": "0x4",
+      "ppr_name": "Retired_FP_uOps.ScalaruOpsRetired"
+    },
+    {
+      "event": "0x8",
+      "umask": "0x2",
+      "ppr_name": "Retired_FP_uOps.MMXuOpsRetired"
+    },
+    {
+      "event": "0x8",
+      "umask": "0x1",
+      "ppr_name": "Retired_FP_uOps.x87uOpsRetired"
+    },
+    {
+      "event": "0x24",
+      "umask": "0x2",
+      "ppr_name": "Bad_Status_STLI.StliOther"
+    },
+    {
+      "event": "0x37",
+      "umask": "0x1",
+      "ppr_name": "Store_Globally_Visible_Cancels_External.OlderStVisibleDepCancel"
+    },
+    {
+      "event": "0x47",
+      "umask": "0x2",
+      "ppr_name": "Misaligned_Load_Flows.MA4K"
+    },
+    {
+      "event": "0x47",
+      "umask": "0x1",
+      "ppr_name": "Misaligned_Load_Flows.MA64"
+    },
+    {
+      "event": "0x59",
+      "umask": "0x1",
+      "ppr_name": "Software_Prefetch_Data_Cache_Fills.LocalL2"
+    },
+    {
+      "event": "0x5a",
+      "umask": "0x1",
+      "ppr_name": "Hardware_Prefetch_Data_Cache_Fills.LocalL2"
+    },
+    {
+      "event": "0x94",
+      "umask": "0x2",
+      "ppr_name": "ITLB_Hits.IF2M"
+    },
+    {
+      "event": "0x94",
+      "umask": "0x1",
+      "ppr_name": "ITLB_Hits.IF4K"
+    },
+    {
+      "event": "0xab",
+      "umask": "0x8",
+      "ppr_name": "Types_of_Ops_Dispatched_From_Decoder_INT.integer"
+    },
+    {
+      "event": "0xab",
+      "umask": "0x4",
+      "ppr_name": "Types_of_Ops_Dispatched_From_Decoder_INT.floating_pointSIMD"
+    },
+    {
+      "event": "0xae",
+      "umask": "0x40",
+      "ppr_name": "Dispatch_Stall_Cycles_Dynamic_Tokens_Part_1.FPSchRsrcStall"
+    },
+    {
+      "event": "0xae",
+      "umask": "0x4",
+      "ppr_name": "Dispatch_Stall_Cycles_Dynamic_Tokens_Part_1.StoreQueueRsrcStall"
+    },
+    {
+      "event": "0xae",
+      "umask": "0x2",
+      "ppr_name": "Dispatch_Stall_Cycles_Dynamic_Tokens_Part_1.LoadQueueRsrcStall"
+    },
+    {
+      "event": "0xae",
+      "umask": "0x1",
+      "ppr_name": "Dispatch_Stall_Cycles_Dynamic_Tokens_Part_1.IntPhyRegFileRsrcStall"
+    },
+    {
+      "event": "0xaf",
+      "umask": "0x20",
+      "ppr_name": "Dispatch_Stall_Cycles_Dynamic_Tokens_Part_2.RetQ"
+    },
+    {
+      "event": "0xaf",
+      "umask": "0x4",
+      "ppr_name": "Dispatch_Stall_Cycles_Dynamic_Tokens_Part_2.EX_Flush_recovery"
+    },
+    {
+      "event": "0xaf",
+      "umask": "0x2",
+      "ppr_name": "Dispatch_Stall_Cycles_Dynamic_Tokens_Part_2.AGTokens"
+    },
+    {
+      "event": "0xaf",
+      "umask": "0x1",
+      "ppr_name": "Dispatch_Stall_Cycles_Dynamic_Tokens_Part_2.ALTokens"
+    },
+    {
+      "event": "0xcb",
+      "umask": "0x4",
+      "ppr_name": "Retired_MMX_FP_Instructions.SSE"
+    }
+  ]
+}

@@ -1,0 +1,2632 @@
+{
+  "chip": "BRH",
+  "source": "/sessions/wizardly-brave-brahmagupta/mnt/ppr_BRH_C1_int_050_pprweb",
+  "dataset": "l3",
+  "event_count": 71,
+  "events": [
+    {
+      "code": "L3PMCx01",
+      "name": "L3 Cache Accesses",
+      "symbolic": "Core::X86::Pmc::L3::L3RequestG1",
+      "description": "Types of requests entering l3s.RQ (3 groups total). Group 1",
+      "instance": "_ccd0_lthree0; L3PMCx01",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "Group3",
+          "description": "Command from Group 3 (count details in event 0x3)"
+        },
+        {
+          "bit": "6",
+          "mnemonic": "RdSized",
+          "description": ". uncacheable coherent reads."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "RdSizedNC",
+          "description": ". uncacheable non-coherent reads."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "RdSizedLock",
+          "description": "RdSizedUnderLock command"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "WrSized",
+          "description": ". uncacheable coherent writes."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "WrSizedNC",
+          "description": ". uncacheable non-coherent writes."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "WrNoData",
+          "description": "WrNoDataNC command"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Group2",
+          "description": "Command from Group 2 (count details in event 0x2)"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx02",
+      "name": "Requests to L3 Group2",
+      "symbolic": "Core::X86::Pmc::L3::L3RequestG2",
+      "description": "Types of requests entering l3s.RQ (3 groups total). Group 2",
+      "instance": "_ccd0_lthree0; L3PMCx02",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "RdBlkA_Vic",
+          "description": "L2 non-spec ERMSB store miss with victim."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "FlushL2L3Way",
+          "description": "FlushL2L3Way - used by uCode during execution of WBINVD X86 instruction to flush one way of L2 and two ways of L3 cache."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "ClearL2L3Way",
+          "description": "ClearL2L3Way - used by uCode during execution of INVD X86 instruction to invalidate one way of L2 and two ways of L3 cache."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "CleanseL2Way",
+          "description": "CleanseL2Way - used by uCode during CC6 entry to evict lines out of L2 cache."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "CleanseL2L3Way",
+          "description": "CleanseL2L3Way - used by uCode during execution of WBNOINVD X86 instruction to cleanse one way of L2 and two ways of L3 cache."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "ClnBlkAll",
+          "description": "ClnBlkAll - used for CLWB X86 instruction."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "WbInvBlkAll",
+          "description": "WbInvBlkAll - used for CLFLUSH X86 instruction."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "RdBlkA",
+          "description": "L2 non-spec ERMSB store miss."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx03",
+      "name": "L3 cache access types",
+      "symbolic": "Core::X86::Pmc::L3::L3FillVicReq",
+      "description": "Types of requests entering l3s.RQ (3 groups total). Group 3",
+      "instance": "_ccd0_lthree0; L3PMCx03",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "RdBlkL",
+          "description": "L2 load or non-spec store miss."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "RdBlkL_Vic",
+          "description": "L2 load or non-spec store miss with victim."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "RdBlkX",
+          "description": "L2 non-spec store miss."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "RdBlkX_Vic",
+          "description": "L2 non-spec store miss with victim."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "RdBlkC_S",
+          "description": "L2 miss request for instruction line or shared copy of line."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "RdBlkC_S_Vic",
+          "description": "L2 miss request for instruction line or shared copy of line with victim."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "ChgToX",
+          "description": "L2 request to make line writeable."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "VicBlk",
+          "description": "L2 victim."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx04",
+      "name": "L3 tag lookup state",
+      "symbolic": "Core::X86::Pmc::L3::L3LookupState_Internal",
+      "description": "State of cacheline returned when looking up the L3 tags on a coherent L2 fill request.",
+      "instance": "_ccd0_lthree0; L3PMCx04",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "Fe_Od",
+          "description": "Externally exclusive, internally shared."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "D",
+          "description": "Line brought into CCX in a modified state, not yet modified by this CCX ."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "M",
+          "description": "Line has been modified by this CCX ."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "E",
+          "description": "Exclusive; writeable, clean."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "O",
+          "description": "Owned; not writeable, modified data."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "F",
+          "description": "Forwarding state; not writeable."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "S",
+          "description": "Shared."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "I",
+          "description": "L2 fill missed in L3."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx05",
+      "name": "L3 Lookup L2 Shadow State",
+      "symbolic": "Core::X86::Pmc::L3::L3LookupL2Shadow",
+      "description": "Line state returned when looking up the L2 shadow tags (maintained by the L3 cache) on a coherent L2 fill request.",
+      "instance": "_ccd0_lthree0; L3PMCx05",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "S_multiple",
+          "description": "A shared copy of the line is present in one or more other L2 caches. None of the L2s have a unique copy (F/Fe/O/Od/X)."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "F_S_multiple",
+          "description": "One of the L2 caches has the line in ‘F’ state and one or more L2s has the line as well (assumed to be in ‘S’ state)."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "O_S_multiple",
+          "description": "One of the L2 caches has the line in ‘O’ state and one or more L2s has the line as well (assumed to be in ‘S’ state)."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "X_Fe_Od",
+          "description": "One of the L2 caches has the line in X, Fe or Od states."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "O",
+          "description": "One of the L2 caches has the line in ‘O’ state and no other L2 cache has the line."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "F",
+          "description": "One of the L2 caches has the line in ‘F’ state and no other L2 cache has the line."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "I_late",
+          "description": "No L2 cache has a copy of line, but one or more of the L2 shadow tags had a partial hit (Early hit in stage-1 of STM )"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "I",
+          "description": "No L2 cache has a copy of the line and none of the L2 shadow tags had a partial hit (Early hit in stage-1 of STM )"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx06",
+      "name": "CCX State",
+      "symbolic": "Core::X86::Pmc::L3::CCXState",
+      "description": "Overall line state in the CCX for a coherent L2 fill request to L3. NOTE: setting all the Unit Masks for the Combined CCX state event will count all coherent L3 accesses. Selecting the appropriate mask bits can count L3 hits or L2 hits so that the L3 hit rate or \"neighbor\" L2 hit rate can be calculated. A hit on a line in both the L3 and a neighbor L2 will be counted as an L3 hit",
+      "instance": "_ccd0_lthree0; L3PMCx06",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "RdBlkL_L3Hit",
+          "description": "RdBlkL hit in L3 cache. Never set in HyperTracer."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "RdBlkL_L2Hit",
+          "description": "RdBlkL missed in L3 cache and hit in another L2 in the CCX . Never set in HyperTracer."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "RdBlkC_S_L3Hit",
+          "description": "RdBlkC/S hit in L3 cache. Never set in HyperTracer."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "RdBlkC_S_L2_Hit",
+          "description": "RdBlkC/S missed in L3 cache and hit in another L2 in the CCX . Never set in HyperTracer."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "RdBlkX_ChgToX_HitL3_Usable",
+          "description": "RdBlkX/ChgToX/RdBlkA hit in L3 in E, M, D, Fe or Od state. Hit can be satisfied inside the CCX . Never set in HyperTracer."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "RdBlkX_ChgToX_HitStm_Usable",
+          "description": "RdBlkX/ChgToX/RdBlkA hit in STM in X, Fe or Od state. Hit can be satisfied inside the CCX . Never set in HyperTracer."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "RdBlkX_ChgToX_Hit_Unusable",
+          "description": "RdBlkX/ChgToX/RdBlkA hit in complex (L3 or STM ), but could not be satisfied in CCX . (i.e. did not get permission to write line). A miss request will be issued to system. Never set in HyperTracer."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "RdBlkL_C_S_X_ChgToX_Miss",
+          "description": "RdBlkL/C/S/A/X/ChgToX missed CCX (did not hit in L3 or L2 shadow tags). All of these requests will be counted here in HyperTracer"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx07",
+      "name": "L2 victim L3 tag state",
+      "symbolic": "Core::X86::Pmc::L3::L3StateL2Victim",
+      "description": "L2 victim L3 tag state: The L3 state of an L2 victim line 1. This event is only counted for coupled L2-victims. Non-coupled L2-victims tag lookup state is not counted by this event. 2. If a couple L2-victim tag lookup response comes back with Retry=1, then the event will not increment any count for that coupled L2-victim transaction.",
+      "instance": "_ccd0_lthree0; L3PMCx07",
+      "unit_masks": [
+        {
+          "bit": "6",
+          "mnemonic": "Fe",
+          "description": "Exclusive from CCX external view, shared in the CCX"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Od",
+          "description": "Modified from CCX external view, shared in the CCX"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "O",
+          "description": "Modified without exclusive rights for CCX , shared in CCX and shared potentially outside CCX ."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "F",
+          "description": "Forwarding state."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "S",
+          "description": "Shared"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "I",
+          "description": "Invalid"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx08",
+      "name": "L2 Victim state - Shadow tag view",
+      "symbolic": "Core::X86::Pmc::L3::L3ShadowL2VicState",
+      "description": "L2 Victim State, shadow tag view: The state an L2 victim line, accounting for the extra information the L3 maintains in the shadow tags",
+      "instance": "_ccd0_lthree0; L3PMCx08",
+      "unit_masks": [
+        {
+          "bit": "6",
+          "mnemonic": "Fe",
+          "description": "Forwarding and CCX-E. Exclusive from CCX external view, shared inside CCX ."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Od",
+          "description": "Owned and CCX-D. Modified from CCX external view, shared inside CCX ."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "E",
+          "description": "Exclusive. Clean copy."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "O",
+          "description": "Owned. Modified without exclusive rights for CCX , shared in CCX and shared potentially outside CCX"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "F",
+          "description": "Forwarding state."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "S",
+          "description": "Shared."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "I",
+          "description": "Invalid."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx09",
+      "name": "L3 Victim State",
+      "symbolic": "Core::X86::Pmc::L3::L3VictimState",
+      "description": "L3 victim lines. The state of a line evicted from the L3 on a lookup of L3 tags by L2 victim. NOTE: To count all Modified lines, set bits 3, 5-7 simultaneously. 1. This event is only counted for coupled L2-victims. Non-coupled L2-victims tag lookup that produces any L3-victims is not counted by this event. 2. If a couple L2-victim tag lookup response comes back with Retry=1, then the event will not increment any count for that coupled L2-victim transaction. 3. The perf event counting is blindly connected to the tag lookup response done for the coupled L2-victim. The following cases where the ultimate L3-victim is different are not counted correctly: a. L2-victim STM read state is INVALID (due to an earlier Cd-passed transaction taking away the line from the STM ). In this case, there is no real L3-victim, but the event will count blindly based on the tag lookup response state results. b. L2-victim is converted to L3-victim due to L3 no alloc case. For these cases, the real L3-victim is the L2-victim cacheline. However, the perfmon event will count based on the tag lookup response results only. The sub-cases which indicate not to install the coupled L2-victim into L3 cache are: i. STM indicates no L3-alloc. ii. WaysInUse collision indicates no L3-alloc. iii. L2 request indicates no L3-alloc.",
+      "instance": "_ccd0_lthree0; L3PMCx09",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "Od",
+          "description": "Modified data written back to memory from CCX ."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "D",
+          "description": "Modified data written back to memory from CCX ."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "M",
+          "description": "Modified data written back to memory from CCX ."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "E_Fe",
+          "description": "Clean L3 victim line in E or Fe state. No data written back to memory from CCX ."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "O",
+          "description": "Modified data written back to memory from CCX ."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "F_S",
+          "description": "Clean L3 victim line in E or Fe state. No data written back to memory from CCX ."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "I",
+          "description": "No L3 victim generated."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx0A",
+      "name": "System Probe Results",
+      "symbolic": "Core::X86::Pmc::L3::L3SysProbeResult",
+      "description": "Ignores ThreadMask. Actions taken by the CCX in response to probes from SDF. To count \"Data Move\" and \"No Data Move\" events, you must use 2 performance monitor counters. Note: For PMC events 0xa and 0xb the following categories apply 1.) Probe Result = \"Invalidate\": Probe hit in CCX and final state after the probe is ‘I’ or invalid - !{I} -> {I} 2.) Probe Result = \"Downgrade\": Probe hit an \"exclusive writeable\" line in CCX and the final state after the probe is \"valid, but not exclusive and writeable\" {M,D,E,Od,Fe} -> !{M,D,E,Od,Fe,I} 3.) Probe Result = \"No Change/Other\": Probe hit in CCX and is not in the above categories of \"Invalidate\" or \"Downgrade\" 4.) Probe Result = \"Miss\": Probe missed in CCX",
+      "instance": "_ccd0_lthree0; L3PMCx0A",
+      "unit_masks": [
+        {
+          "bit": "6",
+          "mnemonic": "Inv_Dm",
+          "description": "Invalidate, data move."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Inv_NoDm",
+          "description": "Invalidate, no data move."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "Dwn_Dm",
+          "description": "Downgrade, data move."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "Dwn_NoDm",
+          "description": "Downgrade, no data move."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "NoChgOther_Dm",
+          "description": "No change/other, data move."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "NoChgOther_NoDm",
+          "description": "No change/other, no data move."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Miss",
+          "description": "Probe missed in CCX ."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx0B",
+      "name": "System Probe Location",
+      "symbolic": "Core::X86::Pmc::L3::L3SysProbeLocation",
+      "description": "Ignores ThreadMask. Categories of where a probe hit/missed and what the probe result was. Note: For definitions of invalidate, downgrade, no change/other, miss, see Core::X86::Pmc::L3::L3SysProbeResult above. Note: For PMC event 0xb 1.) Hitting in the L3 Victim Queues counts towards an ‘L3’ hit 2.) Hitting in the L3 Miss Queue counts towards an ‘L2’ hit 3.) Each unit (row) is mutually exclusive - Hitting in shared states in L3 and L2(s) will be reported as \"one L2\" or \"multiple L2\" not \"hit L3…\"",
+      "instance": "_ccd0_lthree0; L3PMCx0B",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "HitL3Inv",
+          "description": "hit L3 and no L2, invalidate."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "HitOneL2Inv",
+          "description": "hit one L2, invalidate."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "HitMultL2Inv",
+          "description": "hit multiple L2, invalidate (any combination of L2)."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "HitL3Dwn",
+          "description": "hit L3 and no L2, downgrade."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "HitOneL2Dwn",
+          "description": "hit one L2, downgrade."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "HitMultL2Dwn",
+          "description": "hit multiple L2, downgrade (any combination of L2)."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "HitNoChg_Other",
+          "description": "hit, no change/other."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Miss",
+          "description": "Probe missed in CCX ."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx0C",
+      "name": "L3 RQ CD Fail Reasons",
+      "symbolic": "Core::X86::Pmc::L3::L3RqCdFailReasons",
+      "description": "L3 RQ Collision Detect fail reasons",
+      "instance": "_ccd0_lthree0; L3PMCx0C",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "Index",
+          "description": "Collision based on cache index match."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "Address",
+          "description": "Collision based on request address match."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Resource_MQ",
+          "description": "No MQ resource is available."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "Resource_L2VQ",
+          "description": "No L2VQ resource is available."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "Resource_L3VWB",
+          "description": "No L3VWB resource is available."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "TAPipe_type1",
+          "description": "Forced Cd-fail on MQ tokens due to forward progress reasons."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "TAPipe_type2",
+          "description": "Back to back ops to the same L2-index that Cd-fail the new one."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "TAPipe_type3",
+          "description": "Back to back ops to the same address that Cd-fail the new one."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx0D",
+      "name": "L3 Bank Conflicts",
+      "symbolic": "Core::X86::Pmc::L3::L3RQBankConflict",
+      "description": "Ignores ThreadMask. L3 RQ bank conflicts Note: RQ LkUp conflict vs. DR has been a port conflict, not a tag bank conflict.",
+      "instance": "_ccd0_lthree0; L3PMCx0D",
+      "unit_masks": [
+        {
+          "bit": "4",
+          "mnemonic": "FqLkVsDwBankConf",
+          "description": "FQ Lk vs DW data bank conflict: L3s_pipe."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "FqLkVsTagWrBankConf",
+          "description": "FQ Lk vs TagWr tag bank conflict: L3s_pipe."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "FqTagLookupBlocked",
+          "description": "FQ Tag lookup blocked: Trying to avoid banks or other for forward progress reasons."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "WqTagLookupBlocked",
+          "description": "WQ Tag lookup blocked: Trying to avoid banks or other for forward progress reasons."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx0E",
+      "name": "L3 Queue Full Cycles",
+      "symbolic": "Core::X86::Pmc::L3::L3QueueFullCycles",
+      "description": "Ignores ThreadMask. Number of cycles the selected queue is full.",
+      "instance": "_ccd0_lthree0; L3PMCx0E",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "L2VB",
+          "description": "L2 Victim Data Buffer"
+        },
+        {
+          "bit": "6",
+          "mnemonic": "RQ",
+          "description": "Request Queue"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "L2VQ",
+          "description": "L2 Victim Queue"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "L3VWB",
+          "description": "L3 Victim Write Data Buffer"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "PQ",
+          "description": "Probe Queue"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "MissQueue",
+          "description": "Miss Queue"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "BPQ",
+          "description": "Back Probe Queue"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "L3VQ",
+          "description": "L3 Victim Queue"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx0F",
+      "name": "L3 Queue 3/4 Full Cycles",
+      "symbolic": "Core::X86::Pmc::L3::L3Queue3_4FullCycles",
+      "description": "Ignores ThreadMask. Number of cycles the selected queue is more than 3/4 full.",
+      "instance": "_ccd0_lthree0; L3PMCx0F",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "L2VB",
+          "description": "L2 Victim Data Buffer"
+        },
+        {
+          "bit": "6",
+          "mnemonic": "RQ",
+          "description": "Request Queue"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "L2VQ",
+          "description": "L2 Victim Queue"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "L3VWB",
+          "description": "L3 Victim Write Data Buffer"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "PQ",
+          "description": "Probe Queue"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "MissQueue",
+          "description": "Miss Queue"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "BPQ",
+          "description": "Back Probe Queue"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "L3VQ",
+          "description": "L3 Victim Queue"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx10",
+      "name": "L3 Queue Half Full Cycles",
+      "symbolic": "Core::X86::Pmc::L3::L3QueueHalfFullCycles",
+      "description": "Ignores ThreadMask. Number of cycles the selected queue is more than half full.",
+      "instance": "_ccd0_lthree0; L3PMCx10",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "L2VB",
+          "description": "L2 Victim Data Buffer"
+        },
+        {
+          "bit": "6",
+          "mnemonic": "RQ",
+          "description": "Request Queue"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "L2VQ",
+          "description": "L2 Victim Queue"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "L3VWB",
+          "description": "L3 Victim Write Data Buffer"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "PQ",
+          "description": "Probe Queue"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "MissQueue",
+          "description": "Miss Queue"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "BPQ",
+          "description": "Back Probe Queue"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "L3VQ",
+          "description": "L3 Victim Queue"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx11",
+      "name": "L3 Internal Fabric On-Ramp Stalls",
+      "symbolic": "Core::X86::Pmc::L3::L3L3FOnRampStalls",
+      "description": "Ignores ThreadMask. L3s: L3 internal fabric on-ramp stalls Cycles when a transaction could not enter the L3 fabric due to backpressure * Traffic types starting with ‘s’ or ‘c’ are trying to get on here. * Traffic starting with ‘x’ enters at xi * csData = core to slice data (L2 victim, probe, wr data) * sxData = slice to xi data (L3 victim, probe, wr data) * scRdRsp = slice to core fill l3 hit data * xcRdRsp = xi to core fill l3 miss data * scPrb = slice to core probe * scPull = slice to core pull * xsPull = xi to slice pull * xsRdRsp = xi to slice, fill ended ctrl packet * csPrbRsp = core to slice probe response * xsSysAck = xi to slice SysAck or done message * sxPrbRsp = slice to xi probe response * sxReq = slice to xi request * cxReq = core to xi request (Spec Dram Rd) * xsPrb = xi to slice system probe * xcPrb = xi to core system probe (broadcast system/local_mgmt) * csReq = core to slice request",
+      "instance": "_ccd0_lthree0; L3PMCx11",
+      "unit_masks": [
+        {
+          "bit": "6",
+          "mnemonic": "V",
+          "description": "V: csData, sxData"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "D",
+          "description": "D: scRdRsp (xcRdRsp)"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "P",
+          "description": "P: scPrb, scPull"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "H",
+          "description": "H: (xsPull, xsRdRsp), csPrbRsp"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "A",
+          "description": "A: (xsSysAck), sxPrbRsp"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "X",
+          "description": "X: sxReq, cxReq, (xsPrb, xcPrb)"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "R",
+          "description": "R: csReq"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx12",
+      "name": "L3 L3FOnRampSatStall",
+      "symbolic": "Core::X86::Pmc::L3::L3_L3FOnRampSatStall",
+      "description": "Ignores ThreadMask. L3 internal fabric SAT stalls on-ramp Cycles when a transaction could not enter the L3 fabric due to SAT Stall (SAT Stall is part of the SATisfied fainess anti-livelock protocol) * Traffic types starting with ‘s’ or ‘c’ are trying to get on here. * Traffic starting with ‘x’ enters at xi * csData = core to slice data (L2 victim, probe, wr data) * sxData = slice to xi data (L3 victim, probe, wr data) * scRdRsp = slice to core fill l3 hit data * xcRdRsp = xi to core fill l3 miss data * scPrb = slice to core probe * scPull = slice to core pull * xsPull = xi to slice pull * xsRdRsp = xi to slice, fill ended ctrl packet * csPrbRsp = core to slice probe response * xsSysAck = xi to slice SysAck or done message * sxPrbRsp = slice to xi probe response * sxReq = slice to xi request * cxReq = core to xi request (Spec Dram Rd) * xsPrb = xi to slice system probe * xcPrb = xi to core system probe (broadcast system/local_mgmt) * csReq = core to slice request",
+      "instance": "_ccd0_lthree0; L3PMCx12",
+      "unit_masks": [
+        {
+          "bit": "6",
+          "mnemonic": "DV",
+          "description": "V: csData, sxData"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "DF",
+          "description": "D: scRdRsp (xcRdRsp)"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "PC",
+          "description": "P: scPrb, scPull"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "HC",
+          "description": "H: (xsPull, xsRdRsp), csPrbRsp"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "AC",
+          "description": "A: (xsSysAck), sxPrbRsp"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "XC",
+          "description": "X: sxReq, cxReq, (xsPrb, xcPrb)"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "RC",
+          "description": "R: csReq"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx13",
+      "name": "Coherence state to L2 on L3-miss",
+      "symbolic": "Core::X86::Pmc::L3::CoherStateFillResp",
+      "description": "Coherence state sent on fill response to L2 on L3-miss. Counts fill responses states sent to L2 on L3-miss (response from system).",
+      "instance": "_ccd0_lthree0; L3PMCx13",
+      "unit_masks": [
+        {
+          "bit": "4",
+          "mnemonic": "NC",
+          "description": "Response for sized reads. Sized read data are uncacheable. Counted for RdSized, RdSizedNC, RdSizedUnderLock commands. Counted regardless of whether they request was sent to DRAM or IO."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "S",
+          "description": "Count Shared responses. Counted for any RdBlk* or ChgToX commands."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "O",
+          "description": "Count Owned responses. Counted for any RdBlk* or ChgToX commands."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "D",
+          "description": "Count Dirty responses. Counted for any RdBlk* or ChgToX commands."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "E",
+          "description": "Count clean Exclusive responses. Counted for any RdBlk* or ChgToX commands."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx15",
+      "name": "L3 ChgToXSuccess",
+      "symbolic": "Core::X86::Pmc::L3::ChgToXSuccess",
+      "description": "Counts number of fill response returns to core (of selected core/thread based on PmcCfg settings) of ChgToXSuccess (no data returned to core on final system response. See Core::X86::Pmc::L3::XiCcxSdpReq1 perfmon to count system ChgToX).",
+      "instance": "_ccd0_lthree0; L3PMCx15",
+      "unit_masks": [
+        {
+          "bit": "0",
+          "mnemonic": "ChgToXSuccess",
+          "description": "Count ChgToXSuccess responses"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx16",
+      "name": "PC6 L3 Way Flush",
+      "symbolic": "Core::X86::Pmc::L3::Pc6L3WayFlush",
+      "description": "Ignores ThreadMask. PC6 L3 Way Flush. Counts L3 ways that are flushed (not skipped due to WayValid optimization), when entering PC6. Each bit tracks two ways.",
+      "instance": "_ccd0_lthree0; L3PMCx16",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "Way15_14",
+          "description": "Ways 15 and/or 14 flushed."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "Way13_12",
+          "description": "Ways 13 and/or 12 flushed."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Way11_10",
+          "description": "Ways 11 and/or 10 flushed."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "Way9_8",
+          "description": "Ways 9 and/or 8 flushed."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "Way7_6",
+          "description": "Ways 7 and/or 6 flushed."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "Way5_4",
+          "description": "Ways 5 and/or 4 flushed."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "Way3_2",
+          "description": "Ways 3 and/or 2 flushed."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Way1_0",
+          "description": "Ways 1 and/or 0 flushed."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx18",
+      "name": "L3 CoreCc1Events",
+      "symbolic": "Core::X86::Pmc::L3::L3_CoreCc1Events",
+      "description": "Core CC1 Entry events On a per-core basis count of the number of CC1 entry events. This counter is does not work properly in Zen5. Refer to PLAT-141302 L3PMCx19 and L3PMCx18 [umask 2] count incorrectly",
+      "instance": "_ccd0_lthree0; L3PMCx18",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "Cc1CommitTransition",
+          "description": "CC1 Commit Transition Count"
+        },
+        {
+          "bit": "6",
+          "mnemonic": "Cc1Transition",
+          "description": "CC1 L3CLK Transition Count"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Cc1ExitTransition",
+          "description": "CC1 Exit Transition Count"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "OperationalTransition",
+          "description": "Not in CC1 Transition Count"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "Cc1Commit",
+          "description": "CC1 Commit Count"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "Cc1L3Clk",
+          "description": "CC1 L3CLK Count"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "Cc1Exit",
+          "description": "CC1 Exit Count"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Operational",
+          "description": "Not in CC1 Count"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx19",
+      "name": "L3 CoreCc6Event",
+      "symbolic": "Core::X86::Pmc::L3::L3_CoreCc6Event",
+      "description": "Core CC6 Entry events On a per-core basis count of the number of CC6 entry events. This counter is does not work properly in Zen5. Refer to PLAT-141302 L3PMCx19 and L3PMCx18 [umask 2] count incorrectly",
+      "instance": "_ccd0_lthree0; L3PMCx19",
+      "unit_masks": [
+        {
+          "bit": "5",
+          "mnemonic": "Cc6PwrMgtIntr",
+          "description": "CC6 Power Management Interrupt Count"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "Cc6CacheFlush",
+          "description": "CC6 Cache Flush Count"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "Cc6Commit",
+          "description": "CC6 Commit Count"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "Cc6L3Clk",
+          "description": "CC6 L3CLK Count"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "Cc6Exit",
+          "description": "CC6 Exit Count"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Operational",
+          "description": "Not in CC6 Count"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx1A",
+      "name": "L3 CoreCc6TransitionEvent",
+      "symbolic": "Core::X86::Pmc::L3::L3_CoreCc6TransitionEvent",
+      "description": "Core CC6 Entry/Exit Transition events On a per-core basis count of the number of CC6 entry transition events. (count when the state transitions)",
+      "instance": "_ccd0_lthree0; L3PMCx1A",
+      "unit_masks": [
+        {
+          "bit": "5",
+          "mnemonic": "Cc6PwrMgtIntrTransition",
+          "description": "CC6 Power Management Interrupt Transition"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "Cc6CacheFlushTransition",
+          "description": "CC6 Cache Flush Transition"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "Cc6CommitTransition",
+          "description": "CC6 Commit Transition"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "Cc6Transition",
+          "description": "CC6 L3CLK Transition"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "Cc6ExitTransition",
+          "description": "CC6 Exit Transition"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "OperationalTransition",
+          "description": "Not in CC6 Transition"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx1C",
+      "name": "L3 AllCorePowerStateEvent",
+      "symbolic": "Core::X86::Pmc::L3::L3_AllCorePowerStateEvent",
+      "description": "Count of the number of L3CLK cycles that all cores are in the various states. ChL3SDebugBusCtl3[2] must be 0 (the default). Due to the design of the data capture this counter is approximate.",
+      "instance": "_ccd0_lthree0; L3PMCx1C",
+      "unit_masks": [
+        {
+          "bit": "3",
+          "mnemonic": "AllCoresInCc6",
+          "description": "All Cores in CC6 Cycle Count"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "AllCoresInCc1",
+          "description": "All Cores in CC1 Cycle Count"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "AllCoresCc6Entry",
+          "description": "All Cores CC6 Entry Count"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "AllCoresCc1Entry",
+          "description": "All Cores CC1 Entry Count"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx1F",
+      "name": "L3 Allocation",
+      "symbolic": "Core::X86::Pmc::L3::L3Allocation",
+      "description": "Age and other information for allocation of a cacheline into L3. Please note that the following are cycle aligned within a group but not across groups. Groups are: * Group 1 - UnitMask[7] * Group 2 - UnitMask[6:4] * Group 3 - UnitMask[3:0]",
+      "instance": "_ccd0_lthree0; L3PMCx1F",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "AaInfo_NoL3AllocCase",
+          "description": "Adaptive Allocation logic from L2 sent NoL3Alloc=1 to L3."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "UsedExtendedL2Age",
+          "description": "Age set from STM extended L2 information."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "UsedExtendedStmL3Age",
+          "description": "Age set from STM extended L3 information."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "UsedAaInfo_Age",
+          "description": "Age set from L2 to L3 information."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "InsertAge3",
+          "description": "Cacheline inserted with age=3 into L3."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "InsertAge2",
+          "description": "Cacheline inserted with age=2 into L3."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "InsertAge1",
+          "description": "Cacheline inserted with age=1 into L3."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "InsertAge0",
+          "description": "Cacheline inserted with age=0 into L3."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx20",
+      "name": "CDMA PrbStore",
+      "symbolic": "Core::X86::Pmc::L3::L3CDMAPrbStore",
+      "description": "CDMA Feature tracking PrbStore sent to an L2 within the CCX . NOTE: \"Focus state\" refers to the cache state hit and not whether the probe was marked as \"focus only\". NOTE: \"Focus only\" includes ChL3Cfg2[CdmaForceFocus]==1.",
+      "instance": "_ccd0_lthree0; L3PMCx20",
+      "unit_masks": [
+        {
+          "bit": "6",
+          "mnemonic": "CCX_FocusState_L2Hit",
+          "description": "PrbStore sent to an L2 - CCX focus state: L2 Hit"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "CCX_FocusState_L3Hit",
+          "description": "PrbStore sent to an L2 - CCX focus state: L3 Hit"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "CCX_NonFocusState_L2Hit",
+          "description": "PrbStore sent to an L2 - CCX non-focus state: L2 Hit"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "CCX_NonFocusState_L3Hit",
+          "description": "PrbStore sent to an L2 - CCX non-focus state: L3 only Hit"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "CCX_Miss",
+          "description": "PrbStore sent to an L2 - CCX miss."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "Dropped_FocusOnly",
+          "description": "PrbStore not sent to an L2 - focus only."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Dropped_NotFocusOnly",
+          "description": "PrbStore not sent to an L2 - not focus only."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx21",
+      "name": "CDMA Read Response",
+      "symbolic": "Core::X86::Pmc::L3::L3CDMAReadResponse",
+      "description": "This event tracks read response sent to a CDMA read. Bandwidth ( CDMA data placed into Cache/sec) = Successful_ CDMA _Reads*L3_frequency*64/1000 where The L3 Frequency is calculated as shown below using the value from Core::X86::Pmc::L3::XiClocks L3 Frequency in MHz = (L3 Clock Cycles)/ (TSC ticks) * (cpu frequency).",
+      "instance": "_ccd0_lthree0; L3PMCx21",
+      "unit_masks": [
+        {
+          "bit": "1",
+          "mnemonic": "NackedCDMARdResponse",
+          "description": "CDMA read response was Nacked."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "NonNackedCDMARdResponse",
+          "description": "CDMA read response was not Nacked."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx22",
+      "name": "Distributed Triggers",
+      "symbolic": "Core::X86::Pmc::L3::L3DistributedTriggers",
+      "description": "This event tracks distributed triggers generated by the DBMU_DT. Setting EnAllSources == 1 will count the events from Xi.",
+      "instance": "_ccd0_lthree0; L3PMCx22",
+      "unit_masks": [
+        {
+          "bit": "1",
+          "mnemonic": "LocalTrigger1",
+          "description": "Local Trigger 1."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "LocalTrigger0",
+          "description": "Local Trigger 0."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx23",
+      "name": "Alloc",
+      "symbolic": "Core::X86::Pmc::L3::Alloc",
+      "description": "Events relating to Alloc/RdBlkA/ValBlk commands",
+      "instance": "_ccd0_lthree0; L3PMCx23",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "RdBlkA_Backprobe_Core",
+          "description": "RdBlkA issued a backprobe to one core."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "RdBlkA_D2C",
+          "description": "RdBlkA sent a backprobe requesting a core-to-core data transfer."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "RdBlkA_Backprobe",
+          "description": "RdBlkA Hit in Complex, but needs to probe core(s)."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "RQ_RdBlkA",
+          "description": "Request installed in ReqQ is RdBlkA."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "MQ_L3WaysInUse",
+          "description": "ValBlk in MissQ blocked an L2 victim, converting it to L3 victim."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "MQ_ValBlkCCXHit",
+          "description": "ValBlk Request installed in MissQ had Complex Hit."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "MQ_ValBlkL3Hit",
+          "description": "ValBlk Request installed in MissQ had L3 Hit."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "MQ_ValBlk",
+          "description": "Request installed in MissQ is ValBlk."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx24",
+      "name": "Contended Events",
+      "symbolic": "Core::X86::Pmc::L3::ContendedEvents",
+      "description": "Events relating to special handling in contended line cases, e.g. contended lock Various config bits may be used to tune Contended behavior, including but not limited to the following: PQStarvedTrig - PrbQ Anti-Starve logic is the primary mechanism to ensure Probes are able to aqcuire a hotly-contested lock. Tune this value to adjust how quickly Probes gain the line. Default setting intended to hold off Probe 2 * (num_cores) times to allow each core to prefetch & then demand load. PqCdVsRqFastWake - Usually, when ReqQ and PrbQ are waiting for the same line, ReqQ Wakes first & grabs it. Setting this Wakes PrbQ first, such that PrbQ will always win. RQOnlyPrivilegeOldest - By default, the Oldest -unordered- Request is allowed to CdFail other requests for an Address reason to maintain better ordering. Setting this bit only allows the Oldest Request these privileges, which risks degraded ordering & consequent unfairness. RdBlkLConvertToRdBlkXDis - RdBlkL that misses in the Complex and found a RdBlkX ordered behind it upgrades to RdBlkX. This bit disables the behavior.",
+      "instance": "_ccd0_lthree0; L3PMCx24",
+      "unit_masks": [
+        {
+          "bit": "6",
+          "mnemonic": "RQVsRQAddrFail",
+          "description": "Request CdFailed against Request for Address reason."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "RQVsPQAddrFail",
+          "description": "Request CdFailed against Probe for Address reason."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "PQVsRQAddrFail",
+          "description": "Probe CdFailed against Request for Address reason."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "OldestAddrFailed",
+          "description": "Oldest Request CdFailed for Address reason."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "PrbTagLkStarved",
+          "description": "TagLk Picked from PrbQ was Starved."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "ReqTagLkStarved",
+          "description": "TagLk Picked from ReqQ was Starved."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "RdBlkLConvertToRdBlkX",
+          "description": "RdBlkL Request installed in MissQ upgraded to RdBlkX."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx25",
+      "name": "L3 Victimization",
+      "symbolic": "Core::X86::Pmc::L3::L3Victimization",
+      "description": "Events relating to L3 Victim choices",
+      "instance": "_ccd0_lthree0; L3PMCx25",
+      "unit_masks": [
+        {
+          "bit": "2",
+          "mnemonic": "CoreActiveReset",
+          "description": "CoreActive tracking structure reset."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "CoreActiveRollover",
+          "description": "CoreActive tracking structure rolled over."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "PlruTakenAndDiffers",
+          "description": "Plru information was used to select the L3 victim, and the selection was different from regular RRIP."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx26",
+      "name": "L3 Internal Fabric Off-Ramp Stalls",
+      "symbolic": "Core::X86::Pmc::L3::L3L3FOffRampStalls",
+      "description": "Ignores ThreadMask. L3s: L3 internal fabric off-ramp stalls Cycles when a transaction could not leave the L3 fabric due to backpressure * Traffic types starting with ‘s’ or ‘c’ are trying to get on here. * Traffic starting with ‘x’ enters at xi * csData = core to slice data (L2 victim, probe, wr data) * sxData = slice to xi data (L3 victim, probe, wr data) * scRdRsp = slice to core fill l3 hit data * xcRdRsp = xi to core fill l3 miss data * scPrb = slice to core probe * scPull = slice to core pull * xsPull = xi to slice pull * xsRdRsp = xi to slice, fill ended ctrl packet * csPrbRsp = core to slice probe response * xsSysAck = xi to slice SysAck or done message * sxPrbRsp = slice to xi probe response * sxReq = slice to xi request * cxReq = core to xi request (Spec Dram Rd) * xsPrb = xi to slice system probe * xcPrb = xi to core system probe (broadcast system/local_mgmt) * csReq = core to slice request",
+      "instance": "_ccd0_lthree0; L3PMCx26",
+      "unit_masks": [
+        {
+          "bit": "6",
+          "mnemonic": "V",
+          "description": "V: csData, sxData"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "D",
+          "description": "D: scRdRsp (xcRdRsp)"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "P",
+          "description": "P: scPrb, scPull"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "H",
+          "description": "H: (xsPull, xsRdRsp), csPrbRsp"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "Y",
+          "description": "Y: xsPrb, xcPrb"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "R",
+          "description": "R: csReq"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx90",
+      "name": "L3 Cache Miss Latency",
+      "symbolic": "Core::X86::Pmc::L3::XiSysFillLatency",
+      "description": "Ignores CoreID, EnAllCores, and ThreadMask. Each cycle, this event increments by the total number of read requests outstanding from the CCX divided by XiSysFillLatencyDivider. The user can calculate the average system fill latency in cycles by multiplying by XiSysFillLatencyDivider and dividing by the total number of fill requests over the same period (counted by event 0x9A UserMask 0x1F). XiSysFillLatencyDivider is 16 for this product, but may change for future products. XI keeps the counter precise by adjusting for the remainder when appropriate. This provides the average latency from when each request is sent across SDP until the response returns. Event 0x9A UserMask 0x1F counts only cacheable transactions (RdBlkL, RdBlkX, ChgToX, RdBlkC, RdBlkS, ValBlk). Use Event 0x91 to count ALL transactions tracked by 0x90. Mixing different types of read transactions and/or different types of memory can cause inconsistent results. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID.",
+      "instance": "_ccd0_lthree0; L3PMCx90",
+      "unit_masks": [],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx91",
+      "name": "System Fill Events",
+      "symbolic": "Core::X86::Pmc::L3::XiSysFillEvt",
+      "description": "Ignores CoreID, EnAllCores, and ThreadMask. Total number of fill requests considered by the System Fill Latency PMC (0x90). (RdBlkL, RdBlkS, RdBlkX, RdBlkC, ChgToX, RdSized, RdSizedNc, RdSizedDW, RdSizedNoWriter, ValBlk) Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID.",
+      "instance": "_ccd0_lthree0; L3PMCx91",
+      "unit_masks": [],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx92",
+      "name": "System Write Victim Latency",
+      "symbolic": "Core::X86::Pmc::L3::XiSysWriteVicLatency",
+      "description": "Ignores CoreID, EnAllCores, and ThreadMask. Each L3 cycle, this event increments by the total number of write and victim requests outstanding from XI divided by 16. XI keeps the counter precise by adjusting for the remainder when appropriate. This latency is measured at XI from the time the request is sent across SDP until the write response returns. Average latency may be measured by dividing this count times 16 by the total number of write/victim requests. Note: Mixing different types of read transactions and/or different types of memory can cause inconsistent results. Additionally, L3 reporting clean victims may skew the latency as well. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID.",
+      "instance": "_ccd0_lthree0; L3PMCx92",
+      "unit_masks": [],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx93",
+      "name": "Write/Victim Latency",
+      "symbolic": "Core::X86::Pmc::L3::XiSysWrtVictim",
+      "description": "Ignores CoreID, EnAllCores, and ThreadMask. Total number of fill requests considered by the System for the System Write Victim Latency PMC (0x92) (VicBlkFull, VicBlkCln, VicBlkClnD, VicBlkFullZero, VicBlkFullComp, WrSized, WrSizedNc, WrSizedFull, WrSizedFullNc, WrNoDataNc, WrSizedFullZero, WrSizedFullComp, ClnBlkAll, WbInvBlkAll, InvBlkAll). Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID.",
+      "instance": "_ccd0_lthree0; L3PMCx93",
+      "unit_masks": [],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx94",
+      "name": "Canceled SDP Ops",
+      "symbolic": "Core::X86::Pmc::L3::XiCanceledSdpOps",
+      "description": "Ignores CoreID, EnAllCores, and ThreadMask. Number of times the Cancel bit is set on an Ack packet. This occurs when a probe collides with a transaction inside the complex. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID.",
+      "instance": "_ccd0_lthree0; L3PMCx94",
+      "unit_masks": [],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx95",
+      "name": "SDP Credit Stall Cycles",
+      "symbolic": "Core::X86::Pmc::L3::XiSdpCreditStall",
+      "description": "Ignores CoreID, EnAllCores, and ThreadMask. The number of FCLK cycles the CPU complex was stalled from sending a transaction across the SDP interface due to lack of credits, by channel. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID.",
+      "instance": "_ccd0_lthree0; L3PMCx95",
+      "unit_masks": [
+        {
+          "bit": "3",
+          "mnemonic": "ProbeResp",
+          "description": "Out of credits for Probe Response"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "ResponseAck",
+          "description": "Out of credits for Response Ack"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "OriginatorData",
+          "description": "Out of credits for Originator Data"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Request",
+          "description": "Out of credits for Request"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx96",
+      "name": "XI Queue Full",
+      "symbolic": "Core::X86::Pmc::L3::XiQueueFull",
+      "description": "Ignores CoreID, EnAllCores, and ThreadMask. Number of cycles the selected queue is full. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID.",
+      "instance": "_ccd0_lthree0; L3PMCx96",
+      "unit_masks": [
+        {
+          "bit": "3",
+          "mnemonic": "PRspDQ",
+          "description": "XI Probe Responde Data Q"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "SRespDQ",
+          "description": "XI System Responde Data Q"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "RespDQ",
+          "description": "XI RespDQ"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Request",
+          "description": "XI Request queue"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx97",
+      "name": "XI Queue 3/4 Full",
+      "symbolic": "Core::X86::Pmc::L3::XiQueue3_4Full",
+      "description": "Ignores CoreID, EnAllCores, and ThreadMask. Number of cycles the selected queue is 3/4 full or more. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID.",
+      "instance": "_ccd0_lthree0; L3PMCx97",
+      "unit_masks": [
+        {
+          "bit": "3",
+          "mnemonic": "PRspDQ",
+          "description": "XI Probe Responde Data Q"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "SRespDQ",
+          "description": "XI System Responde Data Q"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "RespDQ",
+          "description": "XI RespDQ"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Request",
+          "description": "XI Request queue"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx98",
+      "name": "XI Queue Half Full",
+      "symbolic": "Core::X86::Pmc::L3::XiQueueHalfFull",
+      "description": "Ignores CoreID, EnAllCores, and ThreadMask. Number of cycles the selected queue is half full or more. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID.",
+      "instance": "_ccd0_lthree0; L3PMCx98",
+      "unit_masks": [
+        {
+          "bit": "3",
+          "mnemonic": "PRspDQ",
+          "description": "XI Probe Responde Data Q"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "SRespDQ",
+          "description": "XI System Responde Data Q"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "RespDQ",
+          "description": "XI RespDQ"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Request",
+          "description": "XI Request queue"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx99",
+      "name": "System Probe types",
+      "symbolic": "Core::X86::Pmc::L3::XiSysProbeTypes",
+      "description": "Ignores CoreID, EnAllCores, and ThreadMask. Number and type of coherent probes observed by XI. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID.",
+      "instance": "_ccd0_lthree0; L3PMCx99",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "CleanShare",
+          "description": "CleanShare probe"
+        },
+        {
+          "bit": "6",
+          "mnemonic": "Store",
+          "description": "Store probe"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Clean",
+          "description": "Clean probe"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "Invalidate",
+          "description": "Invalidate probe"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "Migrate",
+          "description": "Migrate probe"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "Fetch",
+          "description": "Fetch probe"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "Share",
+          "description": "share probe"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Nop",
+          "description": "No change probe"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx9A",
+      "name": "L3 Misses by Request Type",
+      "symbolic": "Core::X86::Pmc::L3::XiCcxSdpReq1",
+      "description": "Requests from the core complex to SDP. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID. Note: This PMC only counts events originating from the thread indicated by EnAllCores, CoreId, and ThreadMask in ChL3PmcCfg*. Set EnAllCores == 1 and ThreadMask == 3 to count events from all threads.",
+      "instance": "_ccd0_lthree0; L3PMCx9A",
+      "unit_masks": [
+        {
+          "bit": "5",
+          "mnemonic": "SpecDramRd",
+          "description": "Speculative DRAM Read"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "RdBlkS",
+          "description": "Miss request to get copy of cacheline in shared state."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "RdBlkC",
+          "description": "Miss request for instruction cacheline."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "ChgToX",
+          "description": "Request to make cacheline writeable."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "RdBlkX",
+          "description": "Miss request to obtain cacheline in writeable state."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "RdBlkL",
+          "description": "Miss request from load."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx9B",
+      "name": "SDP Requests Group 2",
+      "symbolic": "Core::X86::Pmc::L3::XiCcxSdpReq2",
+      "description": "Requests from the core complex to SDP. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID. Note: This PMC only counts events originating from the thread indicated by EnAllCores, CoreId, and ThreadMask in ChL3PmcCfg*. Set EnAllCores == 1 and ThreadMask == 3 to count events from all threads.",
+      "instance": "_ccd0_lthree0; L3PMCx9B",
+      "unit_masks": [
+        {
+          "bit": "6",
+          "mnemonic": "InvBlkAll",
+          "description": "Command to invalidate all copies of a cacheline from all caching agents."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "WbInvBlkAll",
+          "description": "Command to write dirty data back of cacheline from any caching agent and to invalidate all copies."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "ClnBlkAll",
+          "description": "Command to write dirty data back of cacheline from any caching agent while allowing a clean copy to be retained."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "RdSizedNoWriter",
+          "description": "Note that internal to CCX this is called RdSizedUnderLock"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "RdSizedNC",
+          "description": "Uncacheable non-coherent reads."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "RdSized",
+          "description": "Uncacheable coherent reads."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx9C",
+      "name": "SDP Requests Group 3",
+      "symbolic": "Core::X86::Pmc::L3::XiCcxSdpReq3",
+      "description": "Requests from the core complex to SDP. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID. Note: This PMC only counts events originating from the thread indicated by EnAllCores, CoreId, and ThreadMask in ChL3PmcCfg*. Set EnAllCores == 1 and ThreadMask == 3 to count events from all threads.",
+      "instance": "_ccd0_lthree0; L3PMCx9C",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "WrSizedFullComp",
+          "description": "Uncacheable coherent writes with compressed data."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "WrSizedFullZero",
+          "description": "Uncacheable coherent writes with all zero data."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "WrNoDataNC",
+          "description": "Uncacheable non-coherent writes with no data."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "WrSizedFullNC",
+          "description": "Uncacheable non-coherent writes to entire cacheline."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "WrSizedFull",
+          "description": "Uncacheable coherent writes to entire cacheline."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "WrSizedNC",
+          "description": "Uncacheable non-coherent writes."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "WrSizedInvalid",
+          "description": "Indicates that the complex does not have the address cached and does not need to be probed by the system."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "WrSizedUnknown",
+          "description": "Indicates that the complex could have a copy. The system must probe the complex if it does not know (via a probe filter, for example) that the complex has no copy of the line."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx9D",
+      "name": "SDP Requests Group 4",
+      "symbolic": "Core::X86::Pmc::L3::XiCcxSdpReq4",
+      "description": "Requests from the core complex to SDP. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID. Note: This PMC only counts events originating from the slice indicated by EnAllCores and CoreId in ChL3PmcCfg*. Set EnAllCores == 1 to count events from all slices.",
+      "instance": "_ccd0_lthree0; L3PMCx9D",
+      "unit_masks": [
+        {
+          "bit": "4",
+          "mnemonic": "VicblkFullComp",
+          "description": "Dirty victim with compressed data."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "VicBlkFullZero",
+          "description": "Dirty victim with all zero data."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "VicBlkClnD",
+          "description": "Clean victim with data. There are no known case of SoCs that use this command."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "VicBlkCln",
+          "description": "Clean victim without data."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "VicBlkFull",
+          "description": "Dirty victim with data."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx9E",
+      "name": "Count of L3 Clock Cycles While Perfmons Are Enabled",
+      "symbolic": "Core::X86::Pmc::L3::XiClocks",
+      "description": "Ignores CoreID, EnAllCores, ThreadMask, EnAlSlices, and SourceID. Count of L3 clock cycles while perfmons are enabled. L3 Frequency in MHz = (L3 Clock Cycles)/ (TSC ticks) * (cpu frequency). Count of L3 clock cycles while perfmons are enabled.",
+      "instance": "_ccd0_lthree0; L3PMCx9E",
+      "unit_masks": [],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCx9F",
+      "name": "System Probe Returned Data",
+      "symbolic": "Core::X86::Pmc::L3::SysProbeReturnData",
+      "description": "Ignores CoreID, EnAllCores, and ThreadMask. The number of probes which actually moved data. Note that this is not the same as the number of probes which requested a data move if hit. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID.",
+      "instance": "_ccd0_lthree0; L3PMCx9F",
+      "unit_masks": [
+        {
+          "bit": "0",
+          "mnemonic": "ProbeDataReturned",
+          "description": "Probe returned data"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxA0",
+      "name": "Speculative DRAM Read",
+      "symbolic": "Core::X86::Pmc::L3::XiSpecDramRd",
+      "description": "Ignores CoreID, EnAllCores and ThreadMask. Count Statistics about speculative DRAM reads. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count for UM(s) UM[2:0]. All other UM(s) ignore SourceID and EnAllSources.. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID.",
+      "instance": "_ccd0_lthree0; L3PMCxA0",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "Shutoff",
+          "description": "Number of L3 cycles the XI unit was commanding the cores not to issue any SpecDramRd (Ignores EnAllSources and SourceID configuration)"
+        },
+        {
+          "bit": "6",
+          "mnemonic": "DropWasteThresh",
+          "description": "Ignores EnAllSources and SourceID configuration"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "DropRateThresh",
+          "description": "Ignores EnAllSources and SourceID configuration"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "SdrReceivedByXi",
+          "description": "Spec DRAM read received by XI."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "SdrIssuedByXi",
+          "description": "Spec DRAM read issued by XI."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "SdrHits",
+          "description": "Spec DRAM read hits."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxA1",
+      "name": "VmGuard Statistics",
+      "symbolic": "Core::X86::Pmc::L3::VmGuard",
+      "description": "Ignores SourceID, EnAllSources, CoreID, EnAllCores,and ThreadMask. Statistics related to VmGuard",
+      "instance": "_ccd0_lthree0; L3PMCxA1",
+      "unit_masks": [
+        {
+          "bit": "6",
+          "mnemonic": "VmgFlushProbes",
+          "description": "Number of VmgFlush probes issued (For Key Reclaim). Note: There are two probes (and therefore two counts) for every Key Reclaim event."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "VmgFlushCycles",
+          "description": "Number of L3 cycles that VmgFlush is active."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "UnsuccessfulPgFlushReads",
+          "description": "Encrypted Page flush is no longer supported by the CH. Therefore, will always count 0."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "SuccessfulPgFlushReads",
+          "description": "Encrypted Page flush is no longer supported by the CH. Therefore, will always count 0."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "UnsuccessfulRemapReads",
+          "description": "Counts the number of unsuccessful Remap read requests serviced by XI."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "SuccessfulRempReadsOldKey",
+          "description": "Counts the number of successful Remap read requests serviced by XI that return a key already used by the thread."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "SuccessfulRemapReadsNewKey",
+          "description": "Counts the number of successful Remap read requests serviced by XI that return a new key for the calling thread. Note: This does not indicate it is a newly allocated key, only that it is the first time the mapping has been used by the thread."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxA2",
+      "name": "Statistics Related to GMI Retransmits",
+      "symbolic": "Core::X86::Pmc::L3::GmiRetransmit",
+      "description": "Ignores CoreID, EnAllCores and ThreadMask. Statistics Related GMI Link Interruptions which cause Manufactured GMI Retransmits. A \"GMI Link Interruption\" is any GMI link event that can cause more than three cycles between a RdRsp header and the corresponding RdRsp data beat. An \"Observed GMI Link Interruption\" is a GMI Link Interruption that triggers a Forced Retransmit Event. Observed GMI Link Interruptions are a subset of all GMI Link Interruptions. During each \"Forced Retransmit Event\", zero or more transactions will be marked as \"Retransmit,\" and re-issued when the GMI Link Interruption is resolved. A Forced Retransmit event will result in zero retransmitted transactions iff the GMI Link Interruption only interrupted responses with RdRspStatus == DF Error. In systems that do not use a GMI link, both of UM’s in this PMC are expected to be zero. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID.",
+      "instance": "_ccd0_lthree0; L3PMCxA2",
+      "unit_masks": [
+        {
+          "bit": "2",
+          "mnemonic": "SdpRdRspSeparationViolationInFClk",
+          "description": "Counts the number of times the SdpRdRsp was not following by SdpRdRspData with the proper cycle separation on the FCLK side of VDCI."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "ForcedRetransmitTransactions",
+          "description": "Counts the number of transactions that Xi will retransmit due to GMI Link Interruptions. This does NOT include Sdp RdRsp messages with DataStatus == RETRANSMIT unless such a response is impacted by an Observed GMI Link Interruption."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "ObservedGmiLinkInterruption",
+          "description": "Counts the number of Observed GMI Link Interruptions. See the PMC description for a full definition."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxA3",
+      "name": "Bandwidth Events observed by Bandwidth Monitoring Debug CLOS",
+      "symbolic": "Core::X86::Pmc::L3::QosBwMon",
+      "description": "Ignores SourceID, EnAllSources, CoreID, EnAllCores and ThreadMask. Identifies Bandwidth Events that are counted for the CLOS identified by ChL3QosCfg2.DebugClos and ChL3QosCfg2.DebugClosUseSlow. DebugClosUseSlow indicates whether to report BW events from the \"Slow Memory Bandwidth\" or the \"Total Memory Bandwidth\" trackers. Each UM will increment when the specified CLOS is incremented due to the specified bandwidth source. Only one bit of the UM should be set at a time to achieve accurate results. Victim Events must be scaled by the current value of ChL3QosCfg2.VictimQosThreshold to identify the actual number of CL's identified by the event The combined number of Bandwidth Events observed by a given CLOS can be identified by using the Bandwidth Monitoring ABMC feature, and dedicating tracking resources there.",
+      "instance": "_ccd0_lthree0; L3PMCxA3",
+      "unit_masks": [
+        {
+          "bit": "5",
+          "mnemonic": "VicQosInsensitive1",
+          "description": "Number of VicQos1 \"Insensitive\" Events counted for the Debug CLOS. Actual number of CL's identified by this event is based on ChL3QosCfg2.VictimQosThreshold. Could be a value from the \"Sensitive\" value to 2. ( http://adcweb03.amd.com/el/asciidoc/p4/spec/el/qos/qos.html#VictimQosThreshold_Definition)"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "VicQosSensitive1",
+          "description": "Number of VicQos1 \"Sensitive\" Events counted for the Debug CLOS. Actual number of CL's identified by this event is based on ChL3QosCfg2.VictimQosThreshold. ( http://adcweb03.amd.com/el/asciidoc/p4/spec/el/qos/qos.html#VictimQosThreshold_Definition)"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "VicQosInsensitive0",
+          "description": "Number of VicQos0 \"Insensitive\" Events counted for the Debug CLOS. Actual number of CL's identified by this event is based on ChL3QosCfg2.VictimQosThreshold. Could be a value from the \"Sensitive\" value to 2. ( http://adcweb03.amd.com/el/asciidoc/p4/spec/el/qos/qos.html#VictimQosThreshold_Definition)"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "VicQosSensitive0",
+          "description": "Number of VicQos0 \"Sensitive\" Events counted for the Debug CLOS. Actual number of CL's identified by this event is based on ChL3QosCfg2.VictimQosThreshold. ( http://adcweb03.amd.com/el/asciidoc/p4/spec/el/qos/qos.html#VictimQosThreshold_Definition)"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "SdpEvent1",
+          "description": "Number of Sdp1 Events Observed for the Debug CLOS. Each count corresponds to a single Cacheline."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "SdpEvent0",
+          "description": "Number of Sdp0 Events Observed for the Debug CLOS. Each count corresponds to a single Cacheline."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxA4",
+      "name": "Track the CCX Throttle Level generated by the Xi.",
+      "symbolic": "Core::X86::Pmc::L3::XiCcxThrottleLevel",
+      "description": "Ignores SourceID, EnAllSources, CoreID, EnAllCores and ThreadMask. Used to identify the average CCX throttle level generated by Xi. The User-Masks allow the target level of each source to be identified, along with the combined value sent to L2. Only one User-Mask should be set at a time. Each source comes in pairs: An \"Event\" mask and a \"Level\" mask. The average throttle level can be identified by dividing the \"Level\" value by the \"Event\" value when measured over the same time period. Note: The final value generated from Xi is not necessarily the level observed by each L2. Refer to http://adcweb03.amd.com/el/asciidoc/p4/spec/el/qos/qos.html#_l2_throttling_mechanisms . Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID.",
+      "instance": "_ccd0_lthree0; L3PMCxA4",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "QosMbmLevel",
+          "description": "Qos Memory Bandwidth Control: Level. CLOS to report is identified with ChL3QosCfg.DebugClos and ChL3Cfg.DebugClosUseSlow."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "QosMbmEvent",
+          "description": "Qos Memory Bandwith Control: Event. CLOS to report is identified with ChL3QosCfg.DebugClos and ChL3Cfg.DebugClosUseSlow."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "LulLevel",
+          "description": "Latency Under Load: Level"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "LulEvent",
+          "description": "Latency Under Load: Event"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "CptLevel",
+          "description": "Core Prefetch Throttling: Level"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "CptEvent",
+          "description": "Core Prefetch Throttling: Event"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "CombinedLevel",
+          "description": "Combined Level sent to the CCX for the CLOS identified by ChL3QosCfg.DebugClos."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "CombinedEvent",
+          "description": "Combined Message sent to the CCX for the CLOS identified by ChL3QosCfg.DebugClos."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxA5",
+      "name": "L3 Internal Fabric On-Ramp Stalls",
+      "symbolic": "Core::X86::Pmc::L3::XiL3FOnrampStalls",
+      "description": "Ignores CoreID, EnAllCores, and ThreadMask Cycles when a transaction could not be sent out on the L3 fabric due to backpressure (Traffic types starting with ‘x' are getting on here. Types with the 2nd letter ‘x' are getting off). See above the L3 0x11 event to see the traffic decoder. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID.",
+      "instance": "_ccd0_lthree0; L3PMCxA5",
+      "unit_masks": [
+        {
+          "bit": "6",
+          "mnemonic": "V_Offramp",
+          "description": "V channel: sxData"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "D",
+          "description": "D channel: xcRdRsp"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "H",
+          "description": "H channel: xsPull, xsRdRsp"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "Y",
+          "description": "Y channel: xsPrb, xcPrb"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxA8",
+      "name": "System Probe Types - Non-Coherent",
+      "symbolic": "Core::X86::Pmc::L3::XiSysProbeTypesNonCoh",
+      "description": "Ignores CoreID, EnAllCores, and ThreadMask. Number and type of coherent probes observed by XI. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID.",
+      "instance": "_ccd0_lthree0; L3PMCxA8",
+      "unit_masks": [
+        {
+          "bit": "2",
+          "mnemonic": "SysMgmt",
+          "description": "System management probe with response"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "SysMgmtNoResp",
+          "description": "System management probe without response"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "DVM",
+          "description": "DVM probe"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxA9",
+      "name": "L3 DataFabricPriority",
+      "symbolic": "Core::X86::Pmc::L3::L3_DataFabricPriority",
+      "description": "For DfPri Feature. Note: EnAllSources and SourceID configurations are ignored for this event",
+      "instance": "_ccd0_lthree0; L3PMCxA9",
+      "unit_masks": [
+        {
+          "bit": "2",
+          "mnemonic": "SetB_ReqHigherPri",
+          "description": "SetB Request: Higher Priority"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "SetB_ReqNormPriAndElig",
+          "description": "SetB Request: Normal Priority & L2/L3 eligible for Higher Priority. Sent to XI as eligible for higher priority, but changed Higher->Normal due to limits in XI."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "SetB_ReqNormPriNotElig",
+          "description": "SetB Request: Normal Priority & Not L2/L3 eligible for Higher Priority"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxAA",
+      "name": "L3 XiSampledSlowLatency",
+      "symbolic": "Core::X86::Pmc::L3::L3_XiSampledSlowLatency",
+      "description": "Sampled average memory latency (in 10ns increments) for a variety of Slow IBS sources of data from the system. Use L3_XiSampledSlowLatencyRequests with the same UM to identify the number of requests sampled and calculate the actual sampled latency using the equation below: Average Sampled Latency = L3_XiSampledSlowLatency/L3_XiSampledSlowLatencyRequests * 10ns The sampled latency includes the time queued in XSI. Used in conjunction with L3_XiSampledLatency/L3_XiSampledLatencyRequests, one can sample the latency of each Non-MMIO IBS identified source individually. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID. Note: This PMC only counts events originating from the thread indicated by EnAllCores, CoreId, and ThreadMask in ChL3PmcCfg*. Set EnAllCores == 1 and ThreadMask == 3 to count events from all threads.",
+      "instance": "_ccd0_lthree0; L3PMCxAA",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "NearCache_Far",
+          "description": "Requests that target another NUMA node and return from another CCX 's cache in the same NUMA node."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "NearCache_Near",
+          "description": "Requests that target the same NUMA node and return from another CCX 's cache in the same NUMA node."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Peer_Far",
+          "description": "Requests that target another NUMA node and return from coherent memory of a different processor type (e.g. GPU, accelerator) --> Past/future processors."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "Peer_Near",
+          "description": "Requests that target the same NUMA node and return from coherent memory of a different processor type (e.g. GPU, accelerator) --> Past/future processors."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "Ext_Far",
+          "description": "Requests that target another NUMA node and return from Extension Memory (CXL™)."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "Ext_Near",
+          "description": "Requests that target the same NUMA node and return from Extension Memory (CXL)."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "LongLat_Ext_Peer_Far",
+          "description": "Requests that target another NUMA node and return from alternate memories."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "LongLat_Ext_Peer_Near",
+          "description": "Requests that target the same NUMA node and return from alternate memories."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxAB",
+      "name": "L3 XiSampledSlowLatencyRequests",
+      "symbolic": "Core::X86::Pmc::L3::L3_XiSampledSlowLatencyRequests",
+      "description": "Number of fill requests sampled from a variety of IBS identified Slow data sources throughout the system. Use with L3_XiSampledSlowLatency to measure a sampled, average memory latency to the specified memory source(s). Average Sampled Latency = L3_XiSampledSlowLatency/L3_XiSampledSlowLatencyRequests * 10ns Used in conjunction with L3_XiSampledLatency/L3_XiSampledLatencyRequests, one can sample the latency of each Non-MMIO IBS identified source individually. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID. Note: This PMC only counts events originating from the thread indicated by EnAllCores, CoreId, and ThreadMask in ChL3PmcCfg*. Set EnAllCores == 1 and ThreadMask == 3 to count events from all threads.",
+      "instance": "_ccd0_lthree0; L3PMCxAB",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "NearCache_Far",
+          "description": "Requests that target another NUMA node and return from another CCX 's cache in the same NUMA node."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "NearCache_Near",
+          "description": "Requests that target the same NUMA node and return from another CCX 's cache in the same NUMA node."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Peer_Far",
+          "description": "Requests that target another NUMA node and return from coherent memory of a different processor type (e.g. GPU, accelerator) --> Past/future processors."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "Peer_Near",
+          "description": "Requests that target the same NUMA node and return from coherent memory of a different processor type (e.g. GPU, accelerator) --> Past/future processors."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "Ext_Far",
+          "description": "Requests that target another NUMA node and return from Extension Memory (CXL™)."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "Ext_Near",
+          "description": "Requests that target the same NUMA node and return from Extension Memory (CXL)."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "LongLat_Ext_Peer_Far",
+          "description": "Requests that target another NUMA node and return from alternate memories."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "LongLat_Ext_Peer_Near",
+          "description": "Requests that target the same NUMA node and return from alternate memories."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxAC",
+      "name": "L3 XiSampledLatency",
+      "symbolic": "Core::X86::Pmc::L3::L3_XiSampledLatency",
+      "description": "When used in conjunction with L3_XiSampledLatencyRequests, this PMC Event will measure the average memory latency (excluding MMIO ) observed by this CCX . Configure two PMCs with the L3_XiSampledLatency and L3_XiSampledLatencyRequests events and use the following equation to identify the observed latency. Average Sampled Latency = L3_XiSampledLatency/L3_XiSampledLatencyRequests * 10ns Some ChL3PmcCfg fields must be programmed as follows to ensure that these events accurately measure latency: ChL3PmcCfg[EnAllSources]=0x1. Other ChL3PmcCfg fields can be used to filter the measured latency based on originating thread (EnAllCores, CoreID) and Data Source (UnitMask). To measure average latency from all threads to all Data Sources, use the following configuration: ChL3PmcCfg[EnAllCores]=0x1, ChL3PmcCfg[ThreadMask]=0x3, and ChL3PmcCfg[UnitMask]=0xFF. The sampled latency includes the time queued in XSI. The sample begins 2 cycles after the axReq enters XSI. The sample ends 1 cycle after the xcRdRsp header exits XSI. This PMC only measures RdBlk* and ChgToX requests (WT, WP, and WB Memory Types) Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID. Note: This PMC only counts events originating from the thread indicated by EnAllCores, CoreId, and ThreadMask in ChL3PmcCfg*. Set EnAllCores == 1 and ThreadMask == 3 to count events from all threads.",
+      "instance": "_ccd0_lthree0; L3PMCxAC",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "LongLat_Ext_Peer_Far",
+          "description": "Requests that target another NUMA node and return from alternate memories"
+        },
+        {
+          "bit": "6",
+          "mnemonic": "LongLat_Ext_Peer_Near",
+          "description": "Requests that target the same NUMA node and return from alternate memories"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Ext_Far",
+          "description": "Requests that target another NUMA node and return from Extension Memory (CXL™)"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "Ext_Near",
+          "description": "Requests that target the same NUMA node and return from Extension Memory (CXL)"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "NearCache_FarCache_Far",
+          "description": "Requests that target another NUMA node and return from another CCX 's cache."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "NearCache_FarCache_Near",
+          "description": "Requests that target the same NUMA node and return from another CCX 's cache."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "Dram_Far",
+          "description": "Requests that target another NUMA node and return from DRAM"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Dram_Near",
+          "description": "Requests that target the same NUMA node and return from DRAM"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxAD",
+      "name": "L3 XiSampledLatencyRequests",
+      "symbolic": "Core::X86::Pmc::L3::L3_XiSampledLatencyRequests",
+      "description": "When used in conjunction with L3_XiSampledLatency, this PMC Event will measure the average memory latency (excluding MMIO ) observed by this CCX . Configure two PMCs with the L3_XiSampledLatency and L3_XiSampledLatencyRequests events and use the following equation to identify the observed latency. Average Sampled Latency = L3_XiSampledLatency/L3_XiSampledLatencyRequests * 10ns Some ChL3PmcCfg fields must be programmed as follows to ensure that these events accurately measure latency: ChL3PmcCfg[EnAllSources]=0x1. Other ChL3PmcCfg fields can be used to filter the measured latency based on originating thread (EnAllCores, CoreID) and Data Source (UnitMask). To measure average latency from all threads to all Data Sources, use the following configuration: ChL3PmcCfg[EnAllCores]=0x1, ChL3PmcCfg[ThreadMask]=0x3, and ChL3PmcCfg[UnitMask]=0xFF. This PMC only measures RdBlk* and ChgToX requests (WT, WP, and WB Memory Types) Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID. Note: This PMC only counts events originating from the thread indicated by EnAllCores, CoreId, and ThreadMask in ChL3PmcCfg*. Set EnAllCores == 1 and ThreadMask == 3 to count events from all threads.",
+      "instance": "_ccd0_lthree0; L3PMCxAD",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "LongLat_Ext_Peer_Far",
+          "description": "Requests that target another NUMA node and return from alternate memories"
+        },
+        {
+          "bit": "6",
+          "mnemonic": "LongLat_Ext_Peer_Near",
+          "description": "Requests that target the same NUMA node and return from alternate memories"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Ext_Far",
+          "description": "Requests that target another NUMA node and return from Extension Memory (CXL™)"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "Ext_Near",
+          "description": "Requests that target the same NUMA node and return from Extension Memory (CXL)"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "NearCache_FarCache_Far",
+          "description": "Requests that target another NUMA node and return from another CCX 's cache."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "NearCache_FarCache_Near",
+          "description": "Requests that target the same NUMA node and return from another CCX 's cache."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "Dram_Far",
+          "description": "Requests that target another NUMA node and return from DRAM"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Dram_Near",
+          "description": "Requests that target the same NUMA node and return from DRAM"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxAE",
+      "name": "L3 XiIoRequests",
+      "symbolic": "Core::X86::Pmc::L3::L3_XiIoRequests",
+      "description": "Counts the number of Sdp Requests targetting IO Memory. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID. Note: This PMC only counts events originating from the thread indicated by EnAllCores, CoreId, and ThreadMask in ChL3PmcCfg*. Set EnAllCores == 1 and ThreadMask == 3 to count events from all threads.",
+      "instance": "_ccd0_lthree0; L3PMCxAE",
+      "unit_masks": [
+        {
+          "bit": "3",
+          "mnemonic": "WeaklyOrderedReadsToIO",
+          "description": "RdSized* and RdBlk* Sdp Ops that have the Sdp_ReqIO bit set and Sdp_ReqBlockLevel == BLOCK_LEVEL_ADDRESS. (Caused by CD, WC, WC+, WP, WT Memory Types)"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "StronglyOrderedReadsToIO",
+          "description": "RdSized* and RdBlk* Sdp Ops that have the Sdp_ReqIO bit set and Sdp_ReqBlockLevel == BLOCK_LEVEL_UNIT (Caused by UC Memory Type)"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "WeaklyOrderedWritesToIO",
+          "description": "WrSized* Sdp Ops that have the Sdp_ReqIO bit set and Sdp_ReqBlockLevel == BLOCK_LEVEL_ADDRESS. (Caused by CD, WC, WC+, WP, WT Memory Types)"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "StronglyOrderedWritesToIO",
+          "description": "WrSized* Sdp Ops that have the Sdp_ReqIO bit set and Sdp_ReqBlockLevel == BLOCK_LEVEL_UNIT. (Caused by UC Memory Type)"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxAF",
+      "name": "L3 XiPcC2xCancel",
+      "symbolic": "Core::X86::Pmc::L3::L3_XiPcC2xCancel",
+      "description": "UM[1:0] - Counts the number of ChgToX requests canceled by a Probe Collision. Note: This PMC only counts events originating from the thread indicated by EnAllCores, CoreId, and ThreadMask in ChL3PmcCfg*. Set EnAllCores == 1 and ThreadMask == 3 to count events from all threads. This qualification only applies to UM[1:0]. UM[7:4] - Count the number of probes that collided with an outstanding transaction from the CCX . If bits in both UM[1:0] and UM[7:4] are set in the same PMC config, it may lead to inaccurate results. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID.",
+      "instance": "_ccd0_lthree0; L3PMCxAF",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "PrbCollisionVicOtherXi",
+          "description": "Probe Collision for a Victim on other Xi"
+        },
+        {
+          "bit": "6",
+          "mnemonic": "PrbCollisionVicThisXi",
+          "description": "Probe Collision for a Victim on this Xi"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "PrbCollisionC2xOtherXi",
+          "description": "Probe Collision for a ChgToX on other Xi"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "PrbCollisionC2xThisXi",
+          "description": "Probe Collision for a ChgToX on this Xi"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "C2xCancelNoRetry",
+          "description": "ChgToX Collieded with a Probe but did not need to retry as a RdBlkX"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "C2xCancelRetry",
+          "description": "ChgToX Collided with a Probe and issued a RdBlkX to complete the transaction."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxB0",
+      "name": "L3 XiVmgPrbMiss",
+      "symbolic": "Core::X86::Pmc::L3::L3_XiVmgPrbMiss",
+      "description": "Counts the number of probes that the Complex receives that are targeted to a VmGuard Key not present in the CCX . Xi responds to these probes with a \"Miss\" without passing them into the complex, so these probes don't show up in the L3 perfmons. Note: ChL3PmcCfg*.SourceID and ChL3PmcCfg*.EnAllSources identifies the Sdp interface from which to count. Setting ChL3PmcCfg.EnAllSources to 1 will enable counting for all CCX Interfaces. For products with multiple Sdp links enabled and connected on CCD (i.e. wide mode products), use the SourceID and EnAllSources to control which Sdp port the selected PME will count for. Setting EnAllSources will enable counting from all Sdp ports in the system. Clearing EnAllSources will only count events from the Sdp port specified by SourceID.",
+      "instance": "_ccd0_lthree0; L3PMCxB0",
+      "unit_masks": [
+        {
+          "bit": "0",
+          "mnemonic": "VmgPrbMiss",
+          "description": "Xi received a probe to a VmGuard key not used in the Complex and responded with a Miss."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxC0",
+      "name": "L3 DsmActionGrp0",
+      "symbolic": "Core::X86::Pmc::L3::L3_DsmActionGrp0",
+      "description": "Counts when DSM actions is high. Unit mask select DSM actions 0 thru 7.",
+      "instance": "_ccd0_lthree0; L3PMCxC0",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "DsmAction7",
+          "description": "DSM Action 7."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "DsmAction6",
+          "description": "DSM Action 6."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "DsmAction5",
+          "description": "DSM Action 5."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "DsmAction4",
+          "description": "DSM Action 4."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "DsmAction3",
+          "description": "DSM Action 3."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "DsmAction2",
+          "description": "DSM Action 2."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "DsmAction1",
+          "description": "DSM Action 1."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "DsmAction0",
+          "description": "DSM Action 0."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxC1",
+      "name": "L3 DsmActionGrp1",
+      "symbolic": "Core::X86::Pmc::L3::L3_DsmActionGrp1",
+      "description": "Counts when DSM actions is high. Unit mask select DSM actions 8 thru 15.",
+      "instance": "_ccd0_lthree0; L3PMCxC1",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "DsmAction15",
+          "description": "DSM Action 15."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "DsmAction14",
+          "description": "DSM Action 14."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "DsmAction13",
+          "description": "DSM Action 13."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "DsmAction12",
+          "description": "DSM Action 12."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "DsmAction11",
+          "description": "DSM Action 11."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "DsmAction10",
+          "description": "DSM Action 10."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "DsmAction9",
+          "description": "DSM Action 9."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "DsmAction8",
+          "description": "DSM Action 8."
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxC2",
+      "name": "Stretch events",
+      "symbolic": "Core::X86::Pmc::L3::L3XCapStretch",
+      "description": "Ignores SourceID, EnAllSources, CoreID, EnAllCores and ThreadMask. Statistics related to Stretch",
+      "instance": "_ccd0_lthree0; L3PMCxC2",
+      "unit_masks": [
+        {
+          "bit": "2",
+          "mnemonic": "OtherForceStretch",
+          "description": "increment the count each time other force stretch events happen"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "DroopStretch",
+          "description": "increment the count each time the Droop stretch happens"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "EdcStretch",
+          "description": "increment the count each time the EDC stretch happens"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxC3",
+      "name": "EDC set1 events",
+      "symbolic": "Core::X86::Pmc::L3::l3xcap_edc_set1",
+      "description": "Ignores SourceID, EnAllSources, CoreID, EnAllCores and ThreadMask. Statistics related to EDC",
+      "instance": "_ccd0_lthree0; L3PMCxC3",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "CCXViolation",
+          "description": "increment the count each time the CCXViolation happens"
+        },
+        {
+          "bit": "6",
+          "mnemonic": "CCXOverThreshold_2",
+          "description": "CCXOverThreshold bit 2"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "CCXOverThreshold_1",
+          "description": "CCXOverThreshold bit 1"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "CCXOverThreshold_0",
+          "description": "CCXOverThreshold bit 0"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "L3Violation",
+          "description": "increment the count each time l3 violation happens"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "L3OverThreshold_2",
+          "description": "L3OverThreshold bit 2"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "L3OverThreshold_1",
+          "description": "L3OverThreshold bit 1"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "L3OverThreshold_0",
+          "description": "L3OverThreshold bit 0"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxC4",
+      "name": "EDC set2 events",
+      "symbolic": "Core::X86::Pmc::L3::l3xcap_edc_set2",
+      "description": "Ignores SourceID, EnAllSources, CoreID, EnAllCores and ThreadMask. Statistics related to EDC",
+      "instance": "_ccd0_lthree0; L3PMCxC4",
+      "unit_masks": [
+        {
+          "bit": "1",
+          "mnemonic": "Pcc",
+          "description": "increment the count each time the Pcc happens"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "EdcThrottle",
+          "description": "increment the count each time the EdcThrottle happens"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxC5",
+      "name": "freqstat events",
+      "symbolic": "Core::X86::Pmc::L3::l3xcap_freqstat",
+      "description": "Ignores SourceID, EnAllSources, CoreID, EnAllCores and ThreadMask. Statistics related to Freq Stat",
+      "instance": "_ccd0_lthree0; L3PMCxC5",
+      "unit_masks": [
+        {
+          "bit": "5",
+          "mnemonic": "TargetDidBusy_rise",
+          "description": "TargetDidBusy count"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "TargetVidBusy_rise",
+          "description": "TargetVidBusy count"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "TargetFidBusy_rise",
+          "description": "TargetFidBusy count"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "TargetDidBusy",
+          "description": "TargetDidBusy"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "TargetVidBusy",
+          "description": "TargetVidBusy"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "TargetFidBusy",
+          "description": "TargetFidBusy"
+        }
+      ],
+      "category": "L3"
+    },
+    {
+      "code": "L3PMCxC6",
+      "name": "Distributed Triggers",
+      "symbolic": "Core::X86::Pmc::L3::L3l3xcap_distributed_triggers",
+      "description": "This event tracks distributed triggers generated by the DBMU_DT. Ignores SourceID, EnAllSources, CoreID, EnAllCores and ThreadMask.",
+      "instance": "_ccd0_lthree0; L3PMCxC6",
+      "unit_masks": [
+        {
+          "bit": "1",
+          "mnemonic": "LocalTrigger1",
+          "description": "Local Trigger 1."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "LocalTrigger0",
+          "description": "Local Trigger 0."
+        }
+      ],
+      "category": "L3"
+    }
+  ]
+}

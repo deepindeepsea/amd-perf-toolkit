@@ -1,0 +1,77 @@
+>>> MORNING QUEUE start Sun May 24 15:23:22 UTC 2026
+=== M8A NAIVE BASELINE (no optimizations) ===
+Output: /home/ubuntu/m8a_sweeps/naive_baseline_20260524_152323
+ruby 3.3.11 (2026-03-26 revision 1f2d15125a) [x86_64-linux]
+WEB_CONCURRENCY=(unset, Puma default=5)
+LD_PRELOAD=(unset)
+YJIT=(unset)
+--- wrk -t1 -c100 -d30s ---
+  wrk_t=1   RPS=3108.01      p99=33.45ms
+/tmp/m8a_naive_baseline.sh: line 20: 143717 Killed                  bundle exec puma -e production -b "tcp://0.0.0.0:3000?backlog=4096" > $OUT/puma_t${WRK_T}.log 2>&1
+--- wrk -t4 -c400 -d30s ---
+  wrk_t=4   RPS=3080.42      p99=184.83ms
+/tmp/m8a_naive_baseline.sh: line 20: 143937 Killed                  bundle exec puma -e production -b "tcp://0.0.0.0:3000?backlog=4096" > $OUT/puma_t${WRK_T}.log 2>&1
+--- wrk -t8 -c800 -d30s ---
+  wrk_t=8   RPS=2396.31      p99=360.86ms
+/tmp/m8a_naive_baseline.sh: line 20: 144461 Killed                  bundle exec puma -e production -b "tcp://0.0.0.0:3000?backlog=4096" > $OUT/puma_t${WRK_T}.log 2>&1
+=== NAIVE SWEEP DONE ===
+total 79092
+drwxrwxr-x 2 ubuntu ubuntu     4096 May 24 15:24 .
+drwxrwxr-x 6 ubuntu ubuntu     4096 May 24 15:23 ..
+-rw-rw-r-- 1 ubuntu ubuntu 29280788 May 24 15:23 puma_t1.log
+-rw-rw-r-- 1 ubuntu ubuntu 29058790 May 24 15:24 puma_t4.log
+-rw-rw-r-- 1 ubuntu ubuntu 22625244 May 24 15:25 puma_t8.log
+-rw-rw-r-- 1 ubuntu ubuntu      418 May 24 15:23 wrk_t1.log
+-rw-rw-r-- 1 ubuntu ubuntu      418 May 24 15:24 wrk_t4.log
+-rw-rw-r-- 1 ubuntu ubuntu      418 May 24 15:25 wrk_t8.log
+=== M8A OPTIMIZATION LADDER (at N=8 CCDs worth of load) ===
+Output: /home/ubuntu/m8a_sweeps/opt_ladder_20260524_152508
+
+================================================
+ STEP: step0_naive  (default Puma 5 workers, no opts)
+================================================
+  step0_naive               RPS=2477.18      p99=364.28ms
+/tmp/m8a_opt_ladder.sh: line 18: 145474 Killed                  "$@" > $OUT/puma_${TAG}.log 2>&1
+
+================================================
+ STEP: step1_workers64  (WEB_CONCURRENCY=64, threads=1)
+================================================
+  step1_workers64           RPS=145789.91    p99=18.00ms
+/tmp/m8a_opt_ladder.sh: line 18: 146333 Killed                  "$@" > $OUT/puma_${TAG}.log 2>&1
+
+================================================
+ STEP: step2_jemalloc  (+ jemalloc + MALLOC_ARENA_MAX=2)
+================================================
+  step2_jemalloc            RPS=148129.29    p99=14.18ms
+/tmp/m8a_opt_ladder.sh: line 18: 151867 Killed                  "$@" > $OUT/puma_${TAG}.log 2>&1
+
+================================================
+ STEP: step3_yjit  (+ YJIT)
+================================================
+  step3_yjit                RPS=146526.13    p99=14.25ms
+/tmp/m8a_opt_ladder.sh: line 18: 157506 Killed                  "$@" > $OUT/puma_${TAG}.log 2>&1
+
+================================================
+ STEP: step4_taskset  (+ taskset Puma 0-63, wrk 88-95)
+================================================
+  step4_taskset             RPS=157049.18    p99=18.20ms
+/tmp/m8a_opt_ladder.sh: line 18: 163130 Killed                  "$@" > $OUT/puma_${TAG}.log 2>&1
+
+================================================
+ STEP: step5_full_recipe  (+ sysctl tune + perf=−1 (Genoa-X recipe))
+================================================
+  step5_full_recipe         RPS=154634.91    p99=18.68ms
+/tmp/m8a_opt_ladder.sh: line 18: 168955 Killed                  "$@" > $OUT/puma_${TAG}.log 2>&1
+
+=== OPTIMIZATION LADDER SUMMARY ===
+  step0_naive            RPS=2477.18      p99=364.28ms
+  step1_workers64        RPS=145789.91    p99=18.00ms
+  step2_jemalloc         RPS=148129.29    p99=14.18ms
+  step3_yjit             RPS=146526.13    p99=14.25ms
+  step4_taskset          RPS=157049.18    p99=18.20ms
+  step5_full_recipe      RPS=154634.91    p99=18.68ms
+Logs: /home/ubuntu/m8a_sweeps/opt_ladder_20260524_152508
+=== 2-CCD WRK CLIENT SWEEP (lifts client ceiling for N=8, N=9) ===
+/tmp/m8a_morning_queue.sh: line 7: 174806 Killed                  bash /tmp/m8a_wrk_2ccd.sh
+WRK2CCD FAILED
+>>> DONE Sun May 24 15:28:49 UTC 2026

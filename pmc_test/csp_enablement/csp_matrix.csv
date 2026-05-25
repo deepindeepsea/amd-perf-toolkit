@@ -1,0 +1,224 @@
+code,ppr_name,symbolic,event,umask,severity,perfspect_uses,bare_metal_turin,aws_m8a,gcp_c4a,azure_hbv5,oci_e6,matrix_src
+PMCx002,FP retired x87 uops,Core::X86::Pmc::Core::Retired_x87_FP_Ops,0x2,-,P2,N,?,?,?,?,?,untested
+PMCx002,FP retired x87 uops,Core::X86::Pmc::Core::Retired_x87_FP_Ops,0x2,0x1,P2,N,Z,Z,?,?,?,exact
+PMCx002,FP retired x87 uops,Core::X86::Pmc::Core::Retired_x87_FP_Ops,0x2,0x2,P2,N,Z,Z,?,?,?,exact
+PMCx002,FP retired x87 uops,Core::X86::Pmc::Core::Retired_x87_FP_Ops,0x2,0x4,P2,N,Z,Z,?,?,?,exact
+PMCx003,FP retired SSE and AVX FLOPs,Core::X86::Pmc::Core::Retired_SSE_AVX_FLOPs,0x3,-,P2,N,?,?,?,?,?,untested
+PMCx003,FP retired SSE and AVX FLOPs,Core::X86::Pmc::Core::Retired_SSE_AVX_FLOPs,0x3,0x1,P2,N,Z,Z,?,?,?,exact
+PMCx003,FP retired SSE and AVX FLOPs,Core::X86::Pmc::Core::Retired_SSE_AVX_FLOPs,0x3,0x2,P2,N,Z,Z,?,?,?,exact
+PMCx003,FP retired SSE and AVX FLOPs,Core::X86::Pmc::Core::Retired_SSE_AVX_FLOPs,0x3,0x4,P2,N,Z,Z,?,?,?,exact
+PMCx003,FP retired SSE and AVX FLOPs,Core::X86::Pmc::Core::Retired_SSE_AVX_FLOPs,0x3,0x8,P2,N,Y,Y,?,?,?,exact
+PMCx003,FP retired SSE and AVX FLOPs,Core::X86::Pmc::Core::Retired_SSE_AVX_FLOPs,0x3,0x10,P2,N,?,?,?,?,?,untested
+PMCx008,FP uops retired by size,Core::X86::Pmc::Core::Retired_FP_uOps,0x8,-,P2,N,?,?,?,?,?,untested
+PMCx008,FP uops retired by size,Core::X86::Pmc::Core::Retired_FP_uOps,0x8,0x1,P2,N,Y,Y,?,?,?,exact
+PMCx008,FP uops retired by size,Core::X86::Pmc::Core::Retired_FP_uOps,0x8,0x2,P2,N,Y,Y,?,?,?,exact
+PMCx008,FP uops retired by size,Core::X86::Pmc::Core::Retired_FP_uOps,0x8,0x4,P2,N,Y,Y,?,?,?,exact
+PMCx008,FP uops retired by size,Core::X86::Pmc::Core::Retired_FP_uOps,0x8,0x8,P2,N,Y,Y,?,?,?,exact
+PMCx008,FP uops retired by size,Core::X86::Pmc::Core::Retired_FP_uOps,0x8,0x10,P2,N,Y,Y,?,?,?,exact
+PMCx008,FP uops retired by size,Core::X86::Pmc::Core::Retired_FP_uOps,0x8,0x20,P2,N,Y,Y,?,?,?,exact
+PMCx00A,FP uops retired sorted by vector or scalar,Core::X86::Pmc::Core::FP_Ops_Retired,0xa,-,P2,N,?,?,?,?,?,untested
+PMCx00B,FP executed integer type uops sorted by vector or scalar,Core::X86::Pmc::Core::INT_Ops_Retired,0xb,-,P2,N,?,?,?,?,?,untested
+PMCx00C,FP uops retired sorted by packed 128 or packed 256,,0xc,-,P2,N,?,?,?,?,?,untested
+PMCx00D,FP executed packed integer uops sorted by packed 128 or packed 256,,0xd,-,P2,N,?,?,?,?,?,untested
+PMCx00E,FP Dispatch Faults,Core::X86::Pmc::Core::FP_Dispatch_Faults,0xe,-,P2,N,?,?,?,?,?,untested
+PMCx00E,FP Dispatch Faults,Core::X86::Pmc::Core::FP_Dispatch_Faults,0xe,0x1,P2,N,Z,Z,?,?,?,exact
+PMCx00E,FP Dispatch Faults,Core::X86::Pmc::Core::FP_Dispatch_Faults,0xe,0x2,P2,N,Z,Z,?,?,?,exact
+PMCx00E,FP Dispatch Faults,Core::X86::Pmc::Core::FP_Dispatch_Faults,0xe,0x4,P2,N,Z,Z,?,?,?,exact
+PMCx00E,FP Dispatch Faults,Core::X86::Pmc::Core::FP_Dispatch_Faults,0xe,0x8,P2,N,Z,Z,?,?,?,exact
+PMCx024,Bad Status STLI,Core::X86::Pmc::Core::Bad_Status_STLI,0x24,-,P2,N,?,?,?,?,?,untested
+PMCx024,Bad Status STLI,Core::X86::Pmc::Core::Bad_Status_STLI,0x24,0x1,P2,N,Y,B,?,?,?,exact
+PMCx024,Bad Status STLI,Core::X86::Pmc::Core::Bad_Status_STLI,0x24,0x2,P2,N,Y,Y,?,?,?,exact
+PMCx025,Retired Lock Instructions,Core::X86::Pmc::Core::Retired_Lock_Instructions,0x25,-,P2,N,?,?,?,?,?,untested
+PMCx026,Retired CLFLUSH Instructions,Core::X86::Pmc::Core::CLFLUSH,0x26,-,P2,N,?,?,?,?,?,untested
+PMCx027,Retired CPUID Instructions,Core::X86::Pmc::Core::CPUID,0x27,-,P2,N,?,?,?,?,?,untested
+PMCx029,LS Dispatch,Core::X86::Pmc::Core::LS_Dispatch,0x29,-,P2,N,?,?,?,?,?,untested
+PMCx029,LS Dispatch,Core::X86::Pmc::Core::LS_Dispatch,0x29,0x1,P2,N,Y,Y,?,?,?,exact
+PMCx029,LS Dispatch,Core::X86::Pmc::Core::LS_Dispatch,0x29,0x2,P2,N,Y,Y,?,?,?,exact
+PMCx029,LS Dispatch,Core::X86::Pmc::Core::LS_Dispatch,0x29,0x4,P2,N,Y,Y,?,?,?,exact
+PMCx02B,SMIs Received,Core::X86::Pmc::Core::SMI,0x2b,-,P2,N,?,?,?,?,?,untested
+PMCx02C,Interrupts Taken,Core::X86::Pmc::Core::Interrupts_Taken,0x2c,-,P2,N,?,?,?,?,?,untested
+PMCx02C,Interrupts Taken,Core::X86::Pmc::Core::Interrupts_Taken,0x2c,0x1,P2,N,Y,B,?,?,?,exact
+PMCx035,Store to Load Forward,Core::X86::Pmc::Core::Store_to_Load_Forward,0x35,-,P2,N,?,?,?,?,?,untested
+PMCx037,Store Globally Visible Cancels Due To External Conditions,,0x37,-,P2,N,?,?,?,?,?,untested
+PMCx037,Store Globally Visible Cancels Due To External Conditions,,0x37,0x1,P2,N,Y,Y,?,?,?,exact
+PMCx041,LS MAB Allocates by Type,Core::X86::Pmc::Core::LS_MAB_Allocates_by_Type,0x41,-,P2,N,?,?,?,?,?,untested
+PMCx041,LS MAB Allocates by Type,Core::X86::Pmc::Core::LS_MAB_Allocates_by_Type,0x41,0x80,P2,N,?,?,?,?,?,untested
+PMCx043,Demand Data Cache Fills by Data Source,,0x43,-,P2,N,?,?,?,?,?,untested
+PMCx043,Demand Data Cache Fills by Data Source,,0x43,0x1,P2,Y,Y,Y,?,?,?,exact
+PMCx043,Demand Data Cache Fills by Data Source,,0x43,0x2,P2,Y,Y,B,?,?,?,exact
+PMCx043,Demand Data Cache Fills by Data Source,,0x43,0x4,P2,Y,Y,B,?,?,?,exact
+PMCx043,Demand Data Cache Fills by Data Source,,0x43,0x8,P2,Y,Y,B,?,?,?,exact
+PMCx043,Demand Data Cache Fills by Data Source,,0x43,0x10,P2,Y,Y,B,?,?,?,exact
+PMCx043,Demand Data Cache Fills by Data Source,,0x43,0x20,P2,N,Z,Z,?,?,?,exact
+PMCx043,Demand Data Cache Fills by Data Source,,0x43,0x40,P2,Y,Y,B,?,?,?,exact
+PMCx043,Demand Data Cache Fills by Data Source,,0x43,0x80,P2,N,Z,Z,?,?,?,exact
+PMCx044,Any Data Cache Fills by Data Source,Core::X86::Pmc::Core::Any_DC_Fills_by_Data_Source,0x44,-,P2,N,?,?,?,?,?,untested
+PMCx044,Any Data Cache Fills by Data Source,Core::X86::Pmc::Core::Any_DC_Fills_by_Data_Source,0x44,0x1,P2,Y,Y,Y,?,?,?,exact
+PMCx044,Any Data Cache Fills by Data Source,Core::X86::Pmc::Core::Any_DC_Fills_by_Data_Source,0x44,0x2,P2,Y,Y,B,?,?,?,exact
+PMCx044,Any Data Cache Fills by Data Source,Core::X86::Pmc::Core::Any_DC_Fills_by_Data_Source,0x44,0x4,P2,Y,Y,B,?,?,?,exact
+PMCx044,Any Data Cache Fills by Data Source,Core::X86::Pmc::Core::Any_DC_Fills_by_Data_Source,0x44,0x8,P2,Y,Y,B,?,?,?,exact
+PMCx044,Any Data Cache Fills by Data Source,Core::X86::Pmc::Core::Any_DC_Fills_by_Data_Source,0x44,0x10,P2,Y,Y,B,?,?,?,exact
+PMCx044,Any Data Cache Fills by Data Source,Core::X86::Pmc::Core::Any_DC_Fills_by_Data_Source,0x44,0x20,P2,N,Z,Z,?,?,?,exact
+PMCx044,Any Data Cache Fills by Data Source,Core::X86::Pmc::Core::Any_DC_Fills_by_Data_Source,0x44,0x40,P2,Y,Y,B,?,?,?,exact
+PMCx044,Any Data Cache Fills by Data Source,Core::X86::Pmc::Core::Any_DC_Fills_by_Data_Source,0x44,0x80,P2,N,Z,Z,?,?,?,exact
+PMCx045,L1 DTLB Reloads,Core::X86::Pmc::Core::L1_DTLB_Reloads,0x45,-,P1,N,?,?,?,?,?,untested
+PMCx045,L1 DTLB Reloads,Core::X86::Pmc::Core::L1_DTLB_Reloads,0x45,0x1,P2,Y,Y,Y,?,?,?,exact
+PMCx045,L1 DTLB Reloads,Core::X86::Pmc::Core::L1_DTLB_Reloads,0x45,0x2,P2,Y,Y,Y,?,?,?,exact
+PMCx045,L1 DTLB Reloads,Core::X86::Pmc::Core::L1_DTLB_Reloads,0x45,0x4,P2,Y,Y,Y,?,?,?,exact
+PMCx045,L1 DTLB Reloads,Core::X86::Pmc::Core::L1_DTLB_Reloads,0x45,0x8,P2,N,Y,Y,?,?,?,exact
+PMCx045,L1 DTLB Reloads,Core::X86::Pmc::Core::L1_DTLB_Reloads,0x45,0x10,P2,Y,Y,Y,?,?,?,exact
+PMCx045,L1 DTLB Reloads,Core::X86::Pmc::Core::L1_DTLB_Reloads,0x45,0x20,P2,Y,Y,Y,?,?,?,exact
+PMCx045,L1 DTLB Reloads,Core::X86::Pmc::Core::L1_DTLB_Reloads,0x45,0x40,P2,Y,Y,Y,?,?,?,exact
+PMCx045,L1 DTLB Reloads,Core::X86::Pmc::Core::L1_DTLB_Reloads,0x45,0x80,P2,N,Y,Y,?,?,?,exact
+PMCx047,Misaligned Load Flows,Core::X86::Pmc::Core::Misaligned_Load_Flows,0x47,-,P2,N,?,?,?,?,?,untested
+PMCx047,Misaligned Load Flows,Core::X86::Pmc::Core::Misaligned_Load_Flows,0x47,0x1,P2,N,Y,Y,?,?,?,exact
+PMCx047,Misaligned Load Flows,Core::X86::Pmc::Core::Misaligned_Load_Flows,0x47,0x2,P2,N,Y,Y,?,?,?,exact
+PMCx04B,Prefetch Instructions Dispatched,Core::X86::Pmc::Core::Software_Prefetch_Dispatched,0x4b,-,P2,N,?,?,?,?,?,untested
+PMCx04B,Prefetch Instructions Dispatched,Core::X86::Pmc::Core::Software_Prefetch_Dispatched,0x4b,0x1,P2,N,Y,B,?,?,?,exact
+PMCx04B,Prefetch Instructions Dispatched,Core::X86::Pmc::Core::Software_Prefetch_Dispatched,0x4b,0x2,P2,N,Y,B,?,?,?,exact
+PMCx04B,Prefetch Instructions Dispatched,Core::X86::Pmc::Core::Software_Prefetch_Dispatched,0x4b,0x4,P2,N,Z,Z,?,?,?,exact
+PMCx050,Write Combining Buffer Close,Core::X86::Pmc::Core::WCB_Close,0x50,-,P2,N,?,?,?,?,?,untested
+PMCx050,Write Combining Buffer Close,Core::X86::Pmc::Core::WCB_Close,0x50,0x1,P2,Y,Y,Y,?,?,?,exact
+PMCx052,Ineffective Software Prefetches,Core::X86::Pmc::Core::Ineffective_Software_Prefetches,0x52,-,P2,N,?,?,?,?,?,untested
+PMCx052,Ineffective Software Prefetches,Core::X86::Pmc::Core::Ineffective_Software_Prefetches,0x52,0x1,P2,N,Y,B,?,?,?,exact
+PMCx052,Ineffective Software Prefetches,Core::X86::Pmc::Core::Ineffective_Software_Prefetches,0x52,0x2,P2,N,Y,B,?,?,?,exact
+PMCx059,Software Prefetch Data Cache Fills by Data Source,,0x59,-,P2,N,?,?,?,?,?,untested
+PMCx059,Software Prefetch Data Cache Fills by Data Source,,0x59,0x1,P2,N,Y,Y,?,?,?,exact
+PMCx059,Software Prefetch Data Cache Fills by Data Source,,0x59,0x2,P2,N,Y,B,?,?,?,exact
+PMCx059,Software Prefetch Data Cache Fills by Data Source,,0x59,0x4,P2,N,Y,B,?,?,?,exact
+PMCx059,Software Prefetch Data Cache Fills by Data Source,,0x59,0x8,P2,N,Y,B,?,?,?,exact
+PMCx059,Software Prefetch Data Cache Fills by Data Source,,0x59,0x10,P2,N,Z,Z,?,?,?,exact
+PMCx059,Software Prefetch Data Cache Fills by Data Source,,0x59,0x20,P2,N,Z,Z,?,?,?,exact
+PMCx059,Software Prefetch Data Cache Fills by Data Source,,0x59,0x40,P2,N,Z,Z,?,?,?,exact
+PMCx059,Software Prefetch Data Cache Fills by Data Source,,0x59,0x80,P2,N,Z,Z,?,?,?,exact
+PMCx05A,Hardware Prefetch Data Cache Fills by Data Source,,0x5a,-,P2,N,?,?,?,?,?,untested
+PMCx05A,Hardware Prefetch Data Cache Fills by Data Source,,0x5a,0x1,P2,N,Y,Y,?,?,?,exact
+PMCx05A,Hardware Prefetch Data Cache Fills by Data Source,,0x5a,0x2,P2,N,Y,B,?,?,?,exact
+PMCx05A,Hardware Prefetch Data Cache Fills by Data Source,,0x5a,0x4,P2,N,Y,B,?,?,?,exact
+PMCx05A,Hardware Prefetch Data Cache Fills by Data Source,,0x5a,0x8,P2,N,Y,B,?,?,?,exact
+PMCx05A,Hardware Prefetch Data Cache Fills by Data Source,,0x5a,0x10,P2,N,Y,B,?,?,?,exact
+PMCx05A,Hardware Prefetch Data Cache Fills by Data Source,,0x5a,0x20,P2,N,Z,Z,?,?,?,exact
+PMCx05A,Hardware Prefetch Data Cache Fills by Data Source,,0x5a,0x40,P2,N,Y,B,?,?,?,exact
+PMCx05A,Hardware Prefetch Data Cache Fills by Data Source,,0x5a,0x80,P2,N,Z,Z,?,?,?,exact
+PMCx05F,Allocated DC misses,Core::X86::Pmc::Core::Allocated_DC_misses,0x5f,-,P2,N,?,?,?,?,?,untested
+PMCx076,Cycles Not in Halt,Core::X86::Pmc::Core::Cycles_Not_in_Halt,0x76,-,P0,Y,?,?,?,?,?,untested
+PMCx078,All TLB Flushes,Core::X86::Pmc::Core::TLB_Flush_Events,0x78,-,P2,N,?,?,?,?,?,untested
+PMCx120,P0 Freq Cycles not in Halt,Core::X86::Pmc::Core::P0_frequency_Cycles_Not_in_Halt,0x120,-,P2,N,?,?,?,?,?,untested
+PMCx120,P0 Freq Cycles not in Halt,Core::X86::Pmc::Core::P0_frequency_Cycles_Not_in_Halt,0x120,0x1,P2,Y,Y,Y,?,?,?,exact
+PMCx082,Instruction Cache Refills From L2,Core::X86::Pmc::Core::Instruction_Cache_Refills_from_L2,0x82,-,P2,N,?,?,?,?,?,untested
+PMCx083,Instruction Cache Refills from System,,0x83,-,P2,N,?,?,?,?,?,untested
+PMCx084,"L1 ITLB Miss, L2ITLB Hit",Core::X86::Pmc::Core::L1_ITLB_Miss_L2_ITLB_Hit,0x84,-,P2,Y,?,?,?,?,?,untested
+PMCx085,"L1 ITLB Miss, L2 ITLB Miss",Core::X86::Pmc::Core::ITLB_Reload_from_Page_Table_walk,0x85,-,P1,N,?,?,?,?,?,untested
+PMCx085,"L1 ITLB Miss, L2 ITLB Miss",Core::X86::Pmc::Core::ITLB_Reload_from_Page_Table_walk,0x85,0x1,P2,N,Y,Y,?,?,?,exact
+PMCx085,"L1 ITLB Miss, L2 ITLB Miss",Core::X86::Pmc::Core::ITLB_Reload_from_Page_Table_walk,0x85,0x2,P2,N,Y,B,?,?,?,exact
+PMCx085,"L1 ITLB Miss, L2 ITLB Miss",Core::X86::Pmc::Core::ITLB_Reload_from_Page_Table_walk,0x85,0x4,P2,N,Z,Z,?,?,?,exact
+PMCx085,"L1 ITLB Miss, L2 ITLB Miss",Core::X86::Pmc::Core::ITLB_Reload_from_Page_Table_walk,0x85,0x8,P2,N,Y,Y,?,?,?,exact
+PMCx08B,BP Pipe Correction or Cancel,Core::X86::Pmc::Core::BP_Correct,0x8b,-,P2,N,?,?,?,?,?,untested
+PMCx08E,Variable Target Predictions,Core::X86::Pmc::Core::Variable_Target_Predictions,0x8e,-,P2,N,?,?,?,?,?,untested
+PMCx091,Early Redirects,,0x91,-,P2,N,?,?,?,?,?,untested
+PMCx094,ITLB Instruction Fetch Hits,Core::X86::Pmc::Core::ITLB_Hits,0x94,-,P1,N,?,?,?,?,?,untested
+PMCx094,ITLB Instruction Fetch Hits,Core::X86::Pmc::Core::ITLB_Hits,0x94,0x1,P2,N,Y,Y,?,?,?,exact
+PMCx094,ITLB Instruction Fetch Hits,Core::X86::Pmc::Core::ITLB_Hits,0x94,0x2,P2,N,Y,Y,?,?,?,exact
+PMCx094,ITLB Instruction Fetch Hits,Core::X86::Pmc::Core::ITLB_Hits,0x94,0x4,P2,N,Z,Z,?,?,?,exact
+PMCx09F,BP Redirects,Core::X86::Pmc::Core::BP_redirects,0x9f,-,P2,N,?,?,?,?,?,untested
+PMCx09F,BP Redirects,Core::X86::Pmc::Core::BP_redirects,0x9f,0x1,P2,Y,Y,Y,?,?,?,exact
+PMCx09F,BP Redirects,Core::X86::Pmc::Core::BP_redirects,0x9f,0x2,P2,N,Y,Y,?,?,?,exact
+PMCx188,Fetch IBS events,Core::X86::Pmc::Core::Fetch_IBS_events,0x188,-,P2,N,?,?,?,?,?,untested
+PMCx188,Fetch IBS events,Core::X86::Pmc::Core::Fetch_IBS_events,0x188,0x1,P2,N,Z,Z,?,?,?,exact
+PMCx188,Fetch IBS events,Core::X86::Pmc::Core::Fetch_IBS_events,0x188,0x2,P2,N,Z,Z,?,?,?,exact
+PMCx188,Fetch IBS events,Core::X86::Pmc::Core::Fetch_IBS_events,0x188,0x4,P2,N,Z,Z,?,?,?,exact
+PMCx188,Fetch IBS events,Core::X86::Pmc::Core::Fetch_IBS_events,0x188,0x8,P2,N,Z,Z,?,?,?,exact
+PMCx188,Fetch IBS events,Core::X86::Pmc::Core::Fetch_IBS_events,0x188,0x10,P2,N,Z,Z,?,?,?,exact
+PMCx18E,IC Tag Hit and Miss Events,Core::X86::Pmc::Core::IC_Tag_Hit_Miss_events,0x18e,-,P2,N,?,?,?,?,?,untested
+PMCx28F,Op Cache Hit or Miss,Core::X86::Pmc::Core::Op_Cache_hit_miss,0x28f,-,P2,N,?,?,?,?,?,untested
+PMCx0A9,Op Queue Empty,Core::X86::Pmc::Core::Dispatch_Empty,0xa9,-,P2,N,?,?,?,?,?,untested
+PMCx0AA,Source of Op Dispatched From Decoder,,0xaa,-,P2,N,?,?,?,?,?,untested
+PMCx0AA,Source of Op Dispatched From Decoder,,0xaa,0x1,P2,N,Y,Y,?,?,?,exact
+PMCx0AA,Source of Op Dispatched From Decoder,,0xaa,0x2,P2,N,Y,Y,?,?,?,exact
+PMCx0AB,Types of Ops Dispatched From Decoder,,0xab,-,P2,N,?,?,?,?,?,untested
+PMCx0AE,Dynamic Tokens Dispatch Stall Cycles 1,,0xae,-,P2,N,?,?,?,?,?,untested
+PMCx0AE,Dynamic Tokens Dispatch Stall Cycles 1,,0xae,0x1,P2,N,Y,Y,?,?,?,exact
+PMCx0AE,Dynamic Tokens Dispatch Stall Cycles 1,,0xae,0x2,P2,N,Y,Y,?,?,?,exact
+PMCx0AE,Dynamic Tokens Dispatch Stall Cycles 1,,0xae,0x4,P2,N,Y,Y,?,?,?,exact
+PMCx0AE,Dynamic Tokens Dispatch Stall Cycles 1,,0xae,0x8,P2,N,Z,Z,?,?,?,exact
+PMCx0AE,Dynamic Tokens Dispatch Stall Cycles 1,,0xae,0x10,P2,N,Y,B,?,?,?,exact
+PMCx0AE,Dynamic Tokens Dispatch Stall Cycles 1,,0xae,0x20,P2,N,?,?,?,?,?,untested
+PMCx0AE,Dynamic Tokens Dispatch Stall Cycles 1,,0xae,0x40,P2,N,Y,Y,?,?,?,exact
+PMCx0AE,Dynamic Tokens Dispatch Stall Cycles 1,,0xae,0x80,P2,N,?,?,?,?,?,untested
+PMCx0AF,Dynamic Tokens Dispatch Stall Cycles 2,,0xaf,-,P2,N,?,?,?,?,?,untested
+PMCx0AF,Dynamic Tokens Dispatch Stall Cycles 2,,0xaf,0x1,P2,N,Y,Y,?,?,?,exact
+PMCx0AF,Dynamic Tokens Dispatch Stall Cycles 2,,0xaf,0x2,P2,N,Y,Y,?,?,?,exact
+PMCx0AF,Dynamic Tokens Dispatch Stall Cycles 2,,0xaf,0x4,P2,N,?,Y,?,?,?,exact
+PMCx0AF,Dynamic Tokens Dispatch Stall Cycles 2,,0xaf,0x20,P2,N,Y,Y,?,?,?,exact
+PMCx1A0,No_Dispatch_per_Slot,Core::X86::Pmc::Core::No_Dispatch_per_Slot,0x1a0,-,P2,N,?,?,?,?,?,untested
+PMCx1A2,Dispatch Additional Resource Stalls,Core::X86::Pmc::Core::Additional_Resource_Stalls,0x1a2,-,P2,N,?,?,?,?,?,untested
+PMCx0C0,Retired Instructions,Core::X86::Pmc::Core::Retired_Instructions,0xc0,-,P2,N,?,?,?,?,?,untested
+PMCx0C1,Retired Macro-Ops,Core::X86::Pmc::Core::Retired_Macro_Ops,0xc1,-,P0,Y,?,?,?,?,?,untested
+PMCx0C2,Retired Branch Instructions,Core::X86::Pmc::Core::Retired_Branch_Instructions,0xc2,-,P0,Y,?,?,?,?,?,untested
+PMCx0C3,Retired Branch Instructions Mispredicted.,,0xc3,-,P0,Y,?,?,?,?,?,untested
+PMCx0C4,Retired Taken Branch Instructions,Core::X86::Pmc::Core::Retired_Taken_Branch_Instructions,0xc4,-,P2,N,?,?,?,?,?,untested
+PMCx0C5,Retired Taken Branch Instructions Mispredicted.,,0xc5,-,P2,N,?,?,?,?,?,untested
+PMCx0C6,Retired Far Control Transfers,Core::X86::Pmc::Core::Retired_Far_Control_Transfers,0xc6,-,P2,N,?,?,?,?,?,untested
+PMCx0C8,Retired Near Return Branch Instructions,,0xc8,-,P2,N,?,?,?,?,?,untested
+PMCx0C9,Retired Near Return Branch Instructions Mispredicted,,0xc9,-,P2,N,?,?,?,?,?,untested
+PMCx0CA,Retired Indirect Branch Instructions Mispredicted,,0xca,-,P2,N,?,?,?,?,?,untested
+PMCx0CB,Retired MMX FP Instructions,Core::X86::Pmc::Core::Retired_MMX_FP_Instructions,0xcb,-,P2,N,?,?,?,?,?,untested
+PMCx0CB,Retired MMX FP Instructions,Core::X86::Pmc::Core::Retired_MMX_FP_Instructions,0xcb,0x1,P2,N,Y,B,?,?,?,exact
+PMCx0CB,Retired MMX FP Instructions,Core::X86::Pmc::Core::Retired_MMX_FP_Instructions,0xcb,0x2,P2,N,Z,Z,?,?,?,exact
+PMCx0CB,Retired MMX FP Instructions,Core::X86::Pmc::Core::Retired_MMX_FP_Instructions,0xcb,0x4,P2,N,Y,Y,?,?,?,exact
+PMCx0CC,Retired Indirect Branch Instructions,,0xcc,-,P2,N,?,?,?,?,?,untested
+PMCx0D1,Retired Conditional Branch Instructions,,0xd1,-,P2,N,?,?,?,?,?,untested
+PMCx0D3,Div Cycles Busy count,Core::X86::Pmc::Core::Div_Cycles_Busy_count,0xd3,-,P2,N,?,?,?,?,?,untested
+PMCx0D4,Div Op Count,Core::X86::Pmc::Core::Div_Op_Count,0xd4,-,P2,N,?,?,?,?,?,untested
+PMCx0D6,Cycles with no retire,Core::X86::Pmc::Core::Cycles_With_No_Retire,0xd6,-,P2,N,?,?,?,?,?,untested
+PMCx0D6,Cycles with no retire,Core::X86::Pmc::Core::Cycles_With_No_Retire,0xd6,0x1,P2,N,Y,Y,?,?,?,exact
+PMCx0D6,Cycles with no retire,Core::X86::Pmc::Core::Cycles_With_No_Retire,0xd6,0x2,P0,Y,Y,Y,?,?,?,exact
+PMCx0D6,Cycles with no retire,Core::X86::Pmc::Core::Cycles_With_No_Retire,0xd6,0x4,P2,N,Z,Z,?,?,?,exact
+PMCx0D6,Cycles with no retire,Core::X86::Pmc::Core::Cycles_With_No_Retire,0xd6,0x8,P2,N,Y,Y,?,?,?,exact
+PMCx0D6,Cycles with no retire,Core::X86::Pmc::Core::Cycles_With_No_Retire,0xd6,0x10,P2,N,Y,B,?,?,?,exact
+PMCx1C1,Retired Microcoded Instructions,Core::X86::Pmc::Core::Retired_Microcoded_Instructions,0x1c1,-,P2,N,?,?,?,?,?,untested
+PMCx1C2,Retired Microcode Ops,Core::X86::Pmc::Core::Retired_Microcode_Ops,0x1c2,-,P0,Y,?,?,?,?,?,untested
+PMCx1C7,Retired Conditional Branch Instructions Mispredicted,,0x1c7,-,P2,N,?,?,?,?,?,untested
+PMCx1C8,Retired Unconditional Branch Instructions Mispredicted,,0x1c8,-,P2,N,?,?,?,?,?,untested
+PMCx1C9,Retired Unconditional Branch Instructions,,0x1c9,-,P2,N,?,?,?,?,?,untested
+PMCx1CF,Tagged IBS Ops,Core::X86::Pmc::Core::Tagged_IBS_Ops,0x1cf,-,P2,N,?,?,?,?,?,untested
+PMCx1CF,Tagged IBS Ops,Core::X86::Pmc::Core::Tagged_IBS_Ops,0x1cf,0x1,P2,N,Z,Z,?,?,?,exact
+PMCx1CF,Tagged IBS Ops,Core::X86::Pmc::Core::Tagged_IBS_Ops,0x1cf,0x2,P2,N,Z,Z,?,?,?,exact
+PMCx1CF,Tagged IBS Ops,Core::X86::Pmc::Core::Tagged_IBS_Ops,0x1cf,0x4,P2,N,Z,Z,?,?,?,exact
+PMCx1D0,Retired Fused Instructions,Core::X86::Pmc::Core::Retired_fused_instructions,0x1d0,-,P2,N,?,?,?,?,?,untested
+PMCx060,Requests to L2 Group1,Core::X86::Pmc::L2::L2RequestG1,0x60,-,P2,N,?,?,?,?,?,untested
+PMCx060,Requests to L2 Group1,Core::X86::Pmc::L2::L2RequestG1,0x60,0x1,P2,N,?,?,?,?,?,untested
+PMCx060,Requests to L2 Group1,Core::X86::Pmc::L2::L2RequestG1,0x60,0x2,P2,N,?,?,?,?,?,untested
+PMCx060,Requests to L2 Group1,Core::X86::Pmc::L2::L2RequestG1,0x60,0x4,P2,N,?,?,?,?,?,untested
+PMCx060,Requests to L2 Group1,Core::X86::Pmc::L2::L2RequestG1,0x60,0x8,P2,N,?,?,?,?,?,untested
+PMCx060,Requests to L2 Group1,Core::X86::Pmc::L2::L2RequestG1,0x60,0x10,P1,Y,?,?,?,?,?,untested
+PMCx060,Requests to L2 Group1,Core::X86::Pmc::L2::L2RequestG1,0x60,0x20,P2,N,?,?,?,?,?,untested
+PMCx060,Requests to L2 Group1,Core::X86::Pmc::L2::L2RequestG1,0x60,0x40,P2,N,?,?,?,?,?,untested
+PMCx060,Requests to L2 Group1,Core::X86::Pmc::L2::L2RequestG1,0x60,0x80,P2,N,?,?,?,?,?,untested
+PMCx061,Requests to L2 Group2,Core::X86::Pmc::L2::L2RequestG2,0x61,-,P2,N,?,?,?,?,?,untested
+PMCx061,Requests to L2 Group2,Core::X86::Pmc::L2::L2RequestG2,0x61,0x20,P2,N,?,?,?,?,?,untested
+PMCx061,Requests to L2 Group2,Core::X86::Pmc::L2::L2RequestG2,0x61,0x40,P2,N,?,?,?,?,?,untested
+PMCx061,Requests to L2 Group2,Core::X86::Pmc::L2::L2RequestG2,0x61,0x80,P2,N,?,?,?,?,?,untested
+PMCx063,Write Combining Buffer Requests,Core::X86::Pmc::L2::L2WcbReq,0x63,-,P2,N,?,?,?,?,?,untested
+PMCx063,Write Combining Buffer Requests,Core::X86::Pmc::L2::L2WcbReq,0x63,0x20,P2,Y,?,?,?,?,?,untested
+PMCx064,Core to L2 Cacheable Request Access Status,Core::X86::Pmc::L2::L2CacheReqStat,0x64,-,P2,N,?,?,?,?,?,untested
+PMCx064,Core to L2 Cacheable Request Access Status,Core::X86::Pmc::L2::L2CacheReqStat,0x64,0x1,P1,Y,?,?,?,?,?,untested
+PMCx064,Core to L2 Cacheable Request Access Status,Core::X86::Pmc::L2::L2CacheReqStat,0x64,0x2,P2,N,?,?,?,?,?,untested
+PMCx064,Core to L2 Cacheable Request Access Status,Core::X86::Pmc::L2::L2CacheReqStat,0x64,0x4,P2,N,?,?,?,?,?,untested
+PMCx064,Core to L2 Cacheable Request Access Status,Core::X86::Pmc::L2::L2CacheReqStat,0x64,0x8,P2,Y,?,?,?,?,?,untested
+PMCx064,Core to L2 Cacheable Request Access Status,Core::X86::Pmc::L2::L2CacheReqStat,0x64,0x10,P2,N,?,?,?,?,?,untested
+PMCx064,Core to L2 Cacheable Request Access Status,Core::X86::Pmc::L2::L2CacheReqStat,0x64,0x20,P2,N,?,?,?,?,?,untested
+PMCx064,Core to L2 Cacheable Request Access Status,Core::X86::Pmc::L2::L2CacheReqStat,0x64,0x40,P2,N,?,?,?,?,?,untested
+PMCx064,Core to L2 Cacheable Request Access Status,Core::X86::Pmc::L2::L2CacheReqStat,0x64,0x80,P2,N,?,?,?,?,?,untested
+PMCx070,L2 Prefetch Hit in L2,Core::X86::Pmc::L2::L2PfHitL2,0x70,-,P2,N,?,?,?,?,?,untested
+PMCx071,L2 Prefetcher Hits in L3,Core::X86::Pmc::L2::L2PfMissL2HitL3,0x71,-,P2,N,?,?,?,?,?,untested
+PMCx072,L2 Prefetcher Misses in L3,Core::X86::Pmc::L2::L2PfMissL2L3,0x72,-,P2,N,?,?,?,?,?,untested
+PMCx165,L2 Fill Response Source,Core::X86::Pmc::L2::L2FillRspSrc,0x165,-,P2,N,?,?,?,?,?,untested
+PMCx165,L2 Fill Response Source,Core::X86::Pmc::L2::L2FillRspSrc,0x165,0x1,P2,N,?,?,?,?,?,untested
+PMCx165,L2 Fill Response Source,Core::X86::Pmc::L2::L2FillRspSrc,0x165,0x2,P2,N,?,?,?,?,?,untested
+PMCx165,L2 Fill Response Source,Core::X86::Pmc::L2::L2FillRspSrc,0x165,0x4,P2,N,?,?,?,?,?,untested
+PMCx165,L2 Fill Response Source,Core::X86::Pmc::L2::L2FillRspSrc,0x165,0x8,P2,N,?,?,?,?,?,untested
+PMCx165,L2 Fill Response Source,Core::X86::Pmc::L2::L2FillRspSrc,0x165,0x10,P2,N,?,?,?,?,?,untested
+PMCx165,L2 Fill Response Source,Core::X86::Pmc::L2::L2FillRspSrc,0x165,0x20,P2,N,?,?,?,?,?,untested
+PMCx165,L2 Fill Response Source,Core::X86::Pmc::L2::L2FillRspSrc,0x165,0x40,P2,N,?,?,?,?,?,untested
+PMCx165,L2 Fill Response Source,Core::X86::Pmc::L2::L2FillRspSrc,0x165,0x80,P2,N,?,?,?,?,?,untested

@@ -1,0 +1,571 @@
+{
+  "ppr_total": 103,
+  "perfspect_referenced": 180,
+  "in_ppr_not_in_perfspect": [
+    {
+      "perf": "bp_de_re_direct",
+      "amd": "Core::X86::Pmc::Core::BpDeReDirect",
+      "category": "IC_BP"
+    },
+    {
+      "perf": "bp_dyn_ind_pred",
+      "amd": "Core::X86::Pmc::Core::BpDynIndPred",
+      "category": "IC_BP"
+    },
+    {
+      "perf": "bp_l1_btb_hit",
+      "amd": "Core::X86::Pmc::Core::BpL1BtbHit",
+      "category": "IC_BP"
+    },
+    {
+      "perf": "bp_l1_tlb_fetch_hit",
+      "amd": "Core::X86::Pmc::Core::BpL1TlbFetchHit",
+      "category": "IC_BP"
+    },
+    {
+      "perf": "bp_l2_b_t_b_correct",
+      "amd": "Core::X86::Pmc::Core::BpL2BTBCorrect",
+      "category": "IC_BP"
+    },
+    {
+      "perf": "bp_pred_flush",
+      "amd": "Core::X86::Pmc::Core::BpPredFlush",
+      "category": "IC_BP"
+    },
+    {
+      "perf": "bp_tlb_rel",
+      "amd": "Core::X86::Pmc::Core::BpTlbRel",
+      "category": "IC_BP"
+    },
+    {
+      "perf": "de_additional_resource_stalls",
+      "amd": "Core::X86::Pmc::Core::DeAdditionalResourceStalls",
+      "category": "DE"
+    },
+    {
+      "perf": "de_dis_dispatch_token_stalls1",
+      "amd": "Core::X86::Pmc::Core::DeDisDispatchTokenStalls1",
+      "category": "DE"
+    },
+    {
+      "perf": "de_dis_dispatch_token_stalls2",
+      "amd": "Core::X86::Pmc::Core::DeDisDispatchTokenStalls2",
+      "category": "DE"
+    },
+    {
+      "perf": "de_dis_ops_from_decoder",
+      "amd": "Core::X86::Pmc::Core::DeDisOpsFromDecoder",
+      "category": "DE"
+    },
+    {
+      "perf": "de_op_queue_empty",
+      "amd": "Core::X86::Pmc::Core::DeOpQueueEmpty",
+      "category": "DE"
+    },
+    {
+      "perf": "ex_div_busy",
+      "amd": "Core::X86::Pmc::Core::ExDivBusy",
+      "category": "EX"
+    },
+    {
+      "perf": "ex_div_count",
+      "amd": "Core::X86::Pmc::Core::ExDivCount",
+      "category": "EX"
+    },
+    {
+      "perf": "ex_ret_brn_far",
+      "amd": "Core::X86::Pmc::Core::ExRetBrnFar",
+      "category": "EX"
+    },
+    {
+      "perf": "ex_ret_brn_ind_misp",
+      "amd": "Core::X86::Pmc::Core::ExRetBrnIndMisp",
+      "category": "EX"
+    },
+    {
+      "perf": "ex_ret_brn_tkn",
+      "amd": "Core::X86::Pmc::Core::ExRetBrnTkn",
+      "category": "EX"
+    },
+    {
+      "perf": "ex_ret_brn_tkn_misp",
+      "amd": "Core::X86::Pmc::Core::ExRetBrnTknMisp",
+      "category": "EX"
+    },
+    {
+      "perf": "ex_ret_cond",
+      "amd": "Core::X86::Pmc::Core::ExRetCond",
+      "category": "EX"
+    },
+    {
+      "perf": "ex_ret_fused_instr",
+      "amd": "Core::X86::Pmc::Core::ExRetFusedInstr",
+      "category": "EX"
+    },
+    {
+      "perf": "ex_ret_ind_brch_instr",
+      "amd": "Core::X86::Pmc::Core::ExRetIndBrchInstr",
+      "category": "EX"
+    },
+    {
+      "perf": "ex_ret_instr",
+      "amd": "Core::X86::Pmc::Core::ExRetInstr",
+      "category": "EX"
+    },
+    {
+      "perf": "ex_ret_mmx_fp_instr",
+      "amd": "Core::X86::Pmc::Core::ExRetMmxFpInstr",
+      "category": "EX"
+    },
+    {
+      "perf": "ex_ret_msprd_brnch_instr_dir_msmtch",
+      "amd": "Core::X86::Pmc::Core::ExRetMsprdBrnchInstrDirMsmtch",
+      "category": "EX"
+    },
+    {
+      "perf": "ex_ret_near_ret",
+      "amd": "Core::X86::Pmc::Core::ExRetNearRet",
+      "category": "EX"
+    },
+    {
+      "perf": "ex_ret_near_ret_mispred",
+      "amd": "Core::X86::Pmc::Core::ExRetNearRetMispred",
+      "category": "EX"
+    },
+    {
+      "perf": "ex_ret_ops",
+      "amd": "Core::X86::Pmc::Core::ExRetOps",
+      "category": "EX"
+    },
+    {
+      "perf": "ex_ret_ucode_instr",
+      "amd": "Core::X86::Pmc::Core::ExRetUcodeInstr",
+      "category": "EX"
+    },
+    {
+      "perf": "ex_ret_uncond_brnch_instr",
+      "amd": "Core::X86::Pmc::Core::ExRetUncondBrnchInstr",
+      "category": "EX"
+    },
+    {
+      "perf": "ex_ret_uncond_brnch_instr_mispred",
+      "amd": "Core::X86::Pmc::Core::ExRetUncondBrnchInstrMispred",
+      "category": "EX"
+    },
+    {
+      "perf": "ex_tagged_ibs_ops",
+      "amd": "Core::X86::Pmc::Core::ExTaggedIbsOps",
+      "category": "EX"
+    },
+    {
+      "perf": "fp_ops_retired_by_type",
+      "amd": "Core::X86::Pmc::Core::FpOpsRetiredByType",
+      "category": "FP"
+    },
+    {
+      "perf": "fp_ops_retired_by_width",
+      "amd": "Core::X86::Pmc::Core::FpOpsRetiredByWidth",
+      "category": "FP"
+    },
+    {
+      "perf": "fp_pack_ops_retired",
+      "amd": "Core::X86::Pmc::Core::FpPackOpsRetired",
+      "category": "FP"
+    },
+    {
+      "perf": "fp_ret_sse_avx_ops",
+      "amd": "Core::X86::Pmc::Core::FpRetSseAvxOps",
+      "category": "FP"
+    },
+    {
+      "perf": "fp_retired_ser_ops",
+      "amd": "Core::X86::Pmc::Core::FpRetiredSerOps",
+      "category": "FP"
+    },
+    {
+      "perf": "fp_retx87_fp_ops",
+      "amd": "Core::X86::Pmc::Core::FpRetx87FpOps",
+      "category": "FP"
+    },
+    {
+      "perf": "ic_any_fills_from_sys",
+      "amd": "Core::X86::Pmc::Core::IcAnyFillsFromSys",
+      "category": "IC_BP"
+    },
+    {
+      "perf": "ic_any_fills_from_sys2",
+      "amd": "Core::X86::Pmc::Core::IcAnyFillsFromSys2",
+      "category": "IC_BP"
+    },
+    {
+      "perf": "ic_cache_fill_l2",
+      "amd": "Core::X86::Pmc::Core::IcCacheFillL2",
+      "category": "IC_BP"
+    },
+    {
+      "perf": "ic_cache_fill_sys",
+      "amd": "Core::X86::Pmc::Core::IcCacheFillSys",
+      "category": "IC_BP"
+    },
+    {
+      "perf": "ic_cache_inval",
+      "amd": "Core::X86::Pmc::Core::IcCacheInval",
+      "category": "IC_BP"
+    },
+    {
+      "perf": "ic_fetch_ibs",
+      "amd": "Core::X86::Pmc::Core::IcFetchIbs",
+      "category": "IC_BP"
+    },
+    {
+      "perf": "ic_fw32",
+      "amd": "Core::X86::Pmc::Core::IcFw32",
+      "category": "IC_BP"
+    },
+    {
+      "perf": "ic_fw32_miss",
+      "amd": "Core::X86::Pmc::Core::IcFw32Miss",
+      "category": "IC_BP"
+    },
+    {
+      "perf": "ic_oc_mode_switch",
+      "amd": "Core::X86::Pmc::Core::IcOcModeSwitch",
+      "category": "IC_BP"
+    },
+    {
+      "perf": "l2_request_g2",
+      "amd": "Core::X86::Pmc::L2::L2RequestG2",
+      "category": "L2"
+    },
+    {
+      "perf": "l2_wcb_req",
+      "amd": "Core::X86::Pmc::L2::L2WcbReq",
+      "category": "L2"
+    },
+    {
+      "perf": "ls_alloc_mab_count",
+      "amd": "Core::X86::Pmc::Core::LsAllocMabCount",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_any_fills_from_sys2",
+      "amd": "Core::X86::Pmc::Core::LsAnyFillsFromSys2",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_bad_status2",
+      "amd": "Core::X86::Pmc::Core::LsBadStatus2",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_dc_accesses",
+      "amd": "Core::X86::Pmc::Core::LsDcAccesses",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_hw_pf_alocated",
+      "amd": "Core::X86::Pmc::Core::LsHwPfAlocated",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_hw_pf_dc_fills",
+      "amd": "Core::X86::Pmc::Core::LsHwPfDcFills",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_hw_pf_hit",
+      "amd": "Core::X86::Pmc::Core::LsHwPfHit",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_hw_pf_mab_alloc",
+      "amd": "Core::X86::Pmc::Core::LsHwPfMabAlloc",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_hw_pf_mab_match",
+      "amd": "Core::X86::Pmc::Core::LsHwPfMabMatch",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_inef_sw_pref",
+      "amd": "Core::X86::Pmc::Core::LsInefSwPref",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_int_taken",
+      "amd": "Core::X86::Pmc::Core::LsIntTaken",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_l1_tlb_rel_lat",
+      "amd": "Core::X86::Pmc::Core::LsL1TlbRelLat",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_locks",
+      "amd": "Core::X86::Pmc::Core::LsLocks",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_mab_alloc",
+      "amd": "Core::X86::Pmc::Core::LsMabAlloc",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_mab_mch_cnt",
+      "amd": "Core::X86::Pmc::Core::LsMabMchCnt",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_misal_loads",
+      "amd": "Core::X86::Pmc::Core::LsMisalLoads",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_not_halted_cyc",
+      "amd": "Core::X86::Pmc::Core::LsNotHaltedCyc",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_pref_instr_disp",
+      "amd": "Core::X86::Pmc::Core::LsPrefInstrDisp",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_rd_tsc",
+      "amd": "Core::X86::Pmc::Core::LsRdTsc",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_ret_cl_clush",
+      "amd": "Core::X86::Pmc::Core::LsRetClClush",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_ret_cpuid",
+      "amd": "Core::X86::Pmc::Core::LsRetCpuid",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_s_t_l_f",
+      "amd": "Core::X86::Pmc::Core::LsSTLF",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_smi_rx",
+      "amd": "Core::X86::Pmc::Core::LsSmiRx",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_st_commit_cancel2",
+      "amd": "Core::X86::Pmc::Core::LsStCommitCancel2",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_sw_pf_dc_fills",
+      "amd": "Core::X86::Pmc::Core::LsSwPfDcFills",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_tablewalker",
+      "amd": "Core::X86::Pmc::Core::LsTablewalker",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_tw_dc_fills",
+      "amd": "Core::X86::Pmc::Core::LsTwDcFills",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_tw_init_level",
+      "amd": "Core::X86::Pmc::Core::LsTwInitLevel",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_tw_return_types",
+      "amd": "Core::X86::Pmc::Core::LsTwReturnTypes",
+      "category": "LS"
+    },
+    {
+      "perf": "ls_wcb_close_flush",
+      "amd": "Core::X86::Pmc::Core::LsWcbCloseFlush",
+      "category": "LS"
+    },
+    {
+      "perf": "merge",
+      "amd": "Core::X86::Pmc::Core::Merge",
+      "category": ""
+    },
+    {
+      "perf": "packed_int_op_type",
+      "amd": "Core::X86::Pmc::Core::PackedIntOpType",
+      "category": "FP"
+    },
+    {
+      "perf": "sse_avx_ops_retired",
+      "amd": "Core::X86::Pmc::Core::SseAvxOpsRetired",
+      "category": "FP"
+    }
+  ],
+  "in_perfspect_not_in_ppr": [
+    "cpu",
+    "cycles",
+    "de_no_dispatch_per_cycle",
+    "energy",
+    "ex_ret_ops0",
+    "ex_ret_ops1",
+    "ex_ret_ops2",
+    "instructions",
+    "k",
+    "l2_pf_miss_l2_l3",
+    "l3_lookup_state",
+    "l3_xi_sampled_latency",
+    "l3_xi_sampled_latency_requests",
+    "local_processor_read_data_beats_cs0",
+    "local_processor_read_data_beats_cs1",
+    "local_processor_read_data_beats_cs10",
+    "local_processor_read_data_beats_cs11",
+    "local_processor_read_data_beats_cs2",
+    "local_processor_read_data_beats_cs3",
+    "local_processor_read_data_beats_cs4",
+    "local_processor_read_data_beats_cs5",
+    "local_processor_read_data_beats_cs6",
+    "local_processor_read_data_beats_cs7",
+    "local_processor_read_data_beats_cs8",
+    "local_processor_read_data_beats_cs9",
+    "local_processor_write_data_beats_cs0",
+    "local_processor_write_data_beats_cs1",
+    "local_processor_write_data_beats_cs10",
+    "local_processor_write_data_beats_cs11",
+    "local_processor_write_data_beats_cs2",
+    "local_processor_write_data_beats_cs3",
+    "local_processor_write_data_beats_cs4",
+    "local_processor_write_data_beats_cs5",
+    "local_processor_write_data_beats_cs6",
+    "local_processor_write_data_beats_cs7",
+    "local_processor_write_data_beats_cs8",
+    "local_processor_write_data_beats_cs9",
+    "local_socket_inf0_inbound_data_beats_ccm0",
+    "local_socket_inf0_inbound_data_beats_ccm1",
+    "local_socket_inf0_inbound_data_beats_ccm2",
+    "local_socket_inf0_inbound_data_beats_ccm3",
+    "local_socket_inf0_inbound_data_beats_ccm4",
+    "local_socket_inf0_inbound_data_beats_ccm5",
+    "local_socket_inf0_inbound_data_beats_ccm6",
+    "local_socket_inf0_inbound_data_beats_ccm7",
+    "local_socket_inf0_outbound_data_beats_ccm0",
+    "local_socket_inf0_outbound_data_beats_ccm1",
+    "local_socket_inf0_outbound_data_beats_ccm2",
+    "local_socket_inf0_outbound_data_beats_ccm3",
+    "local_socket_inf0_outbound_data_beats_ccm4",
+    "local_socket_inf0_outbound_data_beats_ccm5",
+    "local_socket_inf0_outbound_data_beats_ccm6",
+    "local_socket_inf0_outbound_data_beats_ccm7",
+    "local_socket_inf1_inbound_data_beats_ccm0",
+    "local_socket_inf1_inbound_data_beats_ccm1",
+    "local_socket_inf1_inbound_data_beats_ccm2",
+    "local_socket_inf1_inbound_data_beats_ccm3",
+    "local_socket_inf1_inbound_data_beats_ccm4",
+    "local_socket_inf1_inbound_data_beats_ccm5",
+    "local_socket_inf1_inbound_data_beats_ccm6",
+    "local_socket_inf1_inbound_data_beats_ccm7",
+    "local_socket_inf1_outbound_data_beats_ccm0",
+    "local_socket_inf1_outbound_data_beats_ccm1",
+    "local_socket_inf1_outbound_data_beats_ccm2",
+    "local_socket_inf1_outbound_data_beats_ccm3",
+    "local_socket_inf1_outbound_data_beats_ccm4",
+    "local_socket_inf1_outbound_data_beats_ccm5",
+    "local_socket_inf1_outbound_data_beats_ccm6",
+    "local_socket_inf1_outbound_data_beats_ccm7",
+    "local_socket_outbound_data_beats_link0",
+    "local_socket_outbound_data_beats_link1",
+    "local_socket_outbound_data_beats_link2",
+    "local_socket_outbound_data_beats_link3",
+    "local_socket_outbound_data_beats_link4",
+    "local_socket_outbound_data_beats_link5",
+    "local_socket_outbound_data_beats_link6",
+    "local_socket_outbound_data_beats_link7",
+    "local_socket_upstream_read_beats_iom0",
+    "local_socket_upstream_read_beats_iom1",
+    "local_socket_upstream_read_beats_iom2",
+    "local_socket_upstream_read_beats_iom3",
+    "local_socket_upstream_write_beats_iom0",
+    "local_socket_upstream_write_beats_iom1",
+    "local_socket_upstream_write_beats_iom2",
+    "local_socket_upstream_write_beats_iom3",
+    "ls_l2_d_tlb_4k_activity",
+    "ls_l2_d_tlb_hit",
+    "ls_l2_d_tlb_miss",
+    "ls_not_halted_cyc0",
+    "ls_not_halted_cyc1",
+    "ls_not_halted_cyc2",
+    "ls_not_halted_cyc3",
+    "pkg",
+    "power",
+    "remote_processor_read_data_beats_cs0",
+    "remote_processor_read_data_beats_cs1",
+    "remote_processor_read_data_beats_cs10",
+    "remote_processor_read_data_beats_cs11",
+    "remote_processor_read_data_beats_cs2",
+    "remote_processor_read_data_beats_cs3",
+    "remote_processor_read_data_beats_cs4",
+    "remote_processor_read_data_beats_cs5",
+    "remote_processor_read_data_beats_cs6",
+    "remote_processor_read_data_beats_cs7",
+    "remote_processor_read_data_beats_cs8",
+    "remote_processor_read_data_beats_cs9",
+    "remote_processor_write_data_beats_cs0",
+    "remote_processor_write_data_beats_cs1",
+    "remote_processor_write_data_beats_cs10",
+    "remote_processor_write_data_beats_cs11",
+    "remote_processor_write_data_beats_cs2",
+    "remote_processor_write_data_beats_cs3",
+    "remote_processor_write_data_beats_cs4",
+    "remote_processor_write_data_beats_cs5",
+    "remote_processor_write_data_beats_cs6",
+    "remote_processor_write_data_beats_cs7",
+    "remote_processor_write_data_beats_cs8",
+    "remote_processor_write_data_beats_cs9",
+    "remote_socket_inf0_inbound_data_beats_ccm0",
+    "remote_socket_inf0_inbound_data_beats_ccm1",
+    "remote_socket_inf0_inbound_data_beats_ccm2",
+    "remote_socket_inf0_inbound_data_beats_ccm3",
+    "remote_socket_inf0_inbound_data_beats_ccm4",
+    "remote_socket_inf0_inbound_data_beats_ccm5",
+    "remote_socket_inf0_inbound_data_beats_ccm6",
+    "remote_socket_inf0_inbound_data_beats_ccm7",
+    "remote_socket_inf0_outbound_data_beats_ccm0",
+    "remote_socket_inf0_outbound_data_beats_ccm1",
+    "remote_socket_inf0_outbound_data_beats_ccm2",
+    "remote_socket_inf0_outbound_data_beats_ccm3",
+    "remote_socket_inf0_outbound_data_beats_ccm4",
+    "remote_socket_inf0_outbound_data_beats_ccm5",
+    "remote_socket_inf0_outbound_data_beats_ccm6",
+    "remote_socket_inf0_outbound_data_beats_ccm7",
+    "remote_socket_inf1_inbound_data_beats_ccm0",
+    "remote_socket_inf1_inbound_data_beats_ccm1",
+    "remote_socket_inf1_inbound_data_beats_ccm2",
+    "remote_socket_inf1_inbound_data_beats_ccm3",
+    "remote_socket_inf1_inbound_data_beats_ccm4",
+    "remote_socket_inf1_inbound_data_beats_ccm5",
+    "remote_socket_inf1_inbound_data_beats_ccm6",
+    "remote_socket_inf1_inbound_data_beats_ccm7",
+    "remote_socket_inf1_outbound_data_beats_ccm0",
+    "remote_socket_inf1_outbound_data_beats_ccm1",
+    "remote_socket_inf1_outbound_data_beats_ccm2",
+    "remote_socket_inf1_outbound_data_beats_ccm3",
+    "remote_socket_inf1_outbound_data_beats_ccm4",
+    "remote_socket_inf1_outbound_data_beats_ccm5",
+    "remote_socket_inf1_outbound_data_beats_ccm6",
+    "remote_socket_inf1_outbound_data_beats_ccm7",
+    "remote_socket_upstream_read_beats_iom0",
+    "remote_socket_upstream_read_beats_iom1",
+    "remote_socket_upstream_read_beats_iom2",
+    "remote_socket_upstream_read_beats_iom3",
+    "remote_socket_upstream_write_beats_iom0",
+    "remote_socket_upstream_write_beats_iom1",
+    "remote_socket_upstream_write_beats_iom2",
+    "remote_socket_upstream_write_beats_iom3"
+  ]
+}

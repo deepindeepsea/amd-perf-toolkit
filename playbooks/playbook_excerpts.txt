@@ -1,0 +1,1036 @@
+=== PAGE 3 ===
+CONTENTS:
+1 GettingStarted 3
+1.1 HowtoUseThisDocument . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+1.2 GlossaryofTerms . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+1.3 ComplementaryTuningDocuments . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+1.4 ReferencedTools . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+2 SystemChecks 9
+2.1 AccessLevel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+2.2 CPUProperties . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+2.3 SystemSoftwareChecks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+2.4 PerformanceVariabilityChecks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+2.5 CheckingandSettingCPUAffinity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+3 PerformanceAnalysisMotivators 15
+3.1 ChangesAcrossSystemStacks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+3.2 EPYCCross-GenerationalPerformance . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+3.3 DifferentBehaviorsRelativetoNon-EPYCSystems . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+3.4 PerformanceVariability . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+3.5 LatencyandTailLatency. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+3.6 ApplicationPerformanceScaling . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+3.7 EvenBetterPerformanceand/orPower . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+=== PAGE 4 ===
+10 Processor-SpecificSolutions 43
+10.1 AdaptiveAllocation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 43
+10.2 SpeculativeStoresModeConfiguration . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 43
+11 ExternalReferences 45
+12 AdditionalResourcesandLegalNotices 47
+12.1 RevisionHistory . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47
+12.2 Notices . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47
+12.3 Trademarks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47
+ii
+
+=== PAGE 7 ===
+CHAPTER
+ONE
+GETTING STARTED
+Note: ThisisapreviewoftheAMDEPYCProcessorPerformancePlaybook.ItillustratesthePlaybookmethodology
+byfocusingonasubsetoftheoptimizationspace,specifically,performanceoptimizationopportunitiesinthepresence
+ofmultipleL3cachedomains.
+1.1 How to Use This Document
+Strong performance analysis and debug practices often consist of establishing a reproducible run-time environment,
+settingperformanceexpectations,andthenidentifyingwheretheunderlyingassumptionsandexpectationsarediverg-
+ingfromreality.
+ThisAMDEPYCProcessorPerformancePlaybookworksthroughtheaboveprocesssystematically,withmanyspe-
+cificandcommonexamplesforaccomplishingeachstep. Byfollowingthesesteps,manyperformanceoptimization
+opportunitieswillbediscovered. Thegoalis,inthebestcase,forallperformancequestionstoberesolved,andinthe
+worstcase,theperformanceengineerispointedinabetterdirectionthanwhentheystarted.
+Itisnotrequiredtoreadthedocumentcover-to-cover,ortoattempteverydescribedsystemtweak. Theapproachisto
+collectafocusedsetofindicatorsandtousethatinformationalongwiththeuser’sunderstandingoftheirapplication
+tofindfocused,intuitiveoptimizationopportunities.
+Fig.1: Figure: PlaybookPerformanceOptimizationFlow
+Theperformanceoptimizationmethodologyunderlyingthisdocumentisbasedonthefollowingmainsteps(illustrated
+inFigure: PlaybookPerformanceOptimizationFlow):
+3
+
+=== PAGE 8 ===
+AMDEPYCProcessorPerformancePlaybook
+• SystemChecks: Generateaperformanceunderstandingofthesystemunderdebugthroughabasicsetofsystem
+checks. Thisincludesconfirmingavarietyofcriticalsoftwareandhardwareattributes.
+• PerformanceAnalysisMotivators: Categorizetheperformanceobservationthatismotivatingtheperformance
+optimization. Thesearereferredtoasmotivatorsinthisdocument.
+• PerformanceIndicators: Collectakeysetofindicatorsspanningsystemhardware,software,andprocessormi-
+croarchitecturethathelpindicatewhichaspectsofthesystemaremostlikelydriving,constraining,orimpacting
+thedeliveredorexpectedperformance. Thissectioncanbetraversedinwhateverordermakesthemostsense
+to the user. The section provides guidance on what can be considered extreme behaviors for these indicators,
+and user can begin attempting focused optimizations. In this document indicators can serve as a “thread” of
+performanceoptimization. Forexample,searchingthedocumentforLow Per-CPU Utilization %will
+revealhowtomeasureit,it’slikelycausesandassociatedtrade-offs,possiblesolutionsthathelpoptimizeit,and
+areasforfurtherinvestigation.
+• UsetheSystemChecks,PerformanceAnalysisMotivatorsandPerformanceIndicatorstofindthemostcommon
+optimizationopportunitiesfortheapplicationunderanalysis. Thefocusedoptimizationscoverthefollowing:
+– Common Application-Aware Tuning Opportunities: These include hardware and software optimizations
+that take advantage of an application’s characteristics, and are applicable to x86 server performance in
+general.
+– EPYC-Specific Behaviors and Opportunities: This section covers hardware and software optimizations
+thatspecificallytakeadvantageoffeaturesofAMDEPYCprocessors.
+– CPUPipeline-BasedOpportunities:Thissectioncoversoptimizationopportunitiesgleanedfrommicroar-
+chitecturalindicators,whichmayleadtogene
+
+=== PAGE 9 ===
+AMDEPYCProcessorPerformancePlaybook
+provided. Possible solutions will typically involve altering an established system parameter, such as a BIOS
+value,anOSparameter,compileroption,orsourcecodechanges.
+• FurtherInvestigation:Thesearedirectionalsuggestionstocontinuethedebuggingprocess.ThePlaybookwill
+haveguidedtheoptimizationprocesstoamorefocusedareaandprovidedresourcesthatmayassistwiththese
+furtherinvestigations.
+Theintentisforthestrategiesandguidanceinthisdocumenttoapplyto3rd Gen,4th Gen,and5th GenEPYC.Ifand
+whengeneration-specificdirectionsarerequired,thatwillbestatedexplicitly.
+1.2 Glossary of Terms
+Term Definition
+PhysicalCores ThebasiccomputeengineofanAMDEPYCSeriesProcessor.Forexample,anAMD
+GenoaCPUmayhaveuptoamaximumof96physicalcores). Aphysicalcoremay
+appeartosoftwareasoneortwologicalCPUs, dependingonwhetherSimultaneous
+Multi-threading(SMT)isenabled.
+HardwareThreads AhardwarethreadisthesameasaphysicalcoreifSMTisdisabled. WhenSMTis
+enabled the number of available hardware threads on the CPU is 2x the number of
+physicalcores.
+LogicalCPUs Numericallythisisthesameasthenumberofhardwarethreadsavailableinthesystem
+andismorecommonlyusedwhendiscussingsystemresourcesfromtheperspective
+of software. So each physical core can be viewed as having one hardware thread or
+logicalCPU(whenSMTisoff)ortwohardwarethreadsorlogicalCPUswhenSMT
+ison.
+For example, on an SMT enabled, single-socket top-of-the stack (96 core) AMD
+Genoasystem,theOSwillsee192logicalCPUs.
+Ifrunninginsideavirtualmachineonasingle-socketAMDGenoahostthathasSMT
+enabled,dependingonhowtheVirtualMachineissetup,theguestoperatingsystem
+mayseeanywherefrom1to192logicalCPUs.
+Alternatively, if SMT is not enabled on the host, the virtual machine could see any-
+wherefrom1to96logicalCPUs.
+NUMANode Whendifferentpartsofmainmemoryha
+
+=== PAGE 10 ===
+AMDEPYCProcessorPerformancePlaybook
+Processor AMD EPYC Link
+Family Series
+Turin EPYC9005 BIOSandWorkloadTuningGuideforAMDEPYC9005SeriesProcessors
+Genoa EPYC9004 BIOSandWorkloadTuningGuideforAMDEPYC9004SeriesProcessors
+Milan EPYC7003 WorkloadTuningGuideforAMDEPYC7003SeriesProcessors
+Siena EPYC8004 BIOS&WorkloadTuningGuideforAMDEPYC8004SeriesProcessors
+1.3.2 Architecture Programmer’s Manual (APM)
+This volume is intended for programmers writing application programs, compilers, or assemblers. This volume de-
+scribesresourcesandfunctionsoftheAMD64architecturethatareaccessibletoapplicationsoftware,includingmem-
+ory, registers, instructions, operands, I/O facilities, and application-software aspects of control transfers (including
+interruptsandexceptions)andperformanceoptimization.
+AMD64ArchitectureProgrammer’sManual,Volumes1-5
+1.4 Referenced Tools
+1.4.1 Linux Perf Utility
+“perf”isaprofilingtoolforLinuxbasedsystemsthatabstractsawayCPUhardwaredifferencesinLinuxperformance
+measurementsandpresentsasimplecommandlineinterface. Perfisbasedontheperf_eventsinterfaceexportedby
+recentversionsoftheLinuxkernel.
+TheminimumupstreamLinuxkernelversionneededtotrycommandsinthisdocumentisLinuxv6.2+. Sincedistri-
+butionstendtobackportupstreampatchespiecemealtothelevelthedistributionshipsat,unlessthedistributionkernel
+provided is v6.2+, your mileage may vary with the commands, even if the distribution claims they have backported
+thepatches. Thereareplentyofonlineresourcestoexploreforlinuxperfusage(See:PerfWiki)
+1.4.2 Linux hwloc
+“lstopo”basedcommandsarereferencefrequentlyinthisdocument. Lstopoisavailableaspartofhwloc,whichisa
+valuableutilityforexaminingthecores,cache,memory,andI/OarchitectureofanyCPU-basedsystem,butmayneed
+tobeinstalled. ItispartofthePortableHardwareLocalitylibrary,andapackageisav
+
+=== PAGE 11 ===
+AMDEPYCProcessorPerformancePlaybook
+1.4.5 numactl
+NUMA is a computer architecture design that separates memory into multiple domains that are directly attached to
+a subset of processors. System architectures with NUMA tend to have better scalability, but efficient use of mem-
+ory requires a conscious effort to affinity scheduling and allocating memory in the correct domain. Linux offers a
+command-lineutilitycallednumactlthatprovidesausercontrolof
+NUMA(Non-UniformMemoryAccess)policies,process–CPUaffinities,andprocess-memoryaffinities.Developers
+andsystemadministratorsusenumactltoachievethisbetteraffiliation. (See: numactl).
+Numactl enables processes or tasks to be restricted to specific CPU and memory areas and decreases traffic in the
+system memory. This results in a reduction in cache misses, performance degradation, and latency. Additionally,
+withtheusageofnumactl,moreefficientuseofCPU,memory,andI/Odevicescanbeobtained,andhelptoresolve
+memorysharingissues.
+1.4.6 bpftrace
+eBPF(enhancedBerkeleyPacketFilter)(See: eBPF)enablesausertoextendthefunctionalityofthekernelwithout
+actuallymakingchangestoit. bpftrace(See: bpftrace)isahigh-leveltracinglanguageforeBPFavailableinrecent
+Linuxkernels(4.xonwards)andcanhelpprovidedetailedinformationaboutkernelorhypervisorbehaviorstohelp
+driveperformanceoptimization.
+1.4. ReferencedTools 7
+
+=== PAGE 13 ===
+CHAPTER
+TWO
+SYSTEM CHECKS
+Note: ThisisapreviewoftheAMDEPYCProcessorPerformancePlaybook.ItillustratesthePlaybookmethodology
+byfocusingonasubsetoftheoptimizationspace,specifically,performanceoptimizationopportunitiesinthepresence
+ofmultipleL3cachedomains.
+2.1 Access Level
+Attheoutset,itisimportanttobeawareoftheaccessleveltheuserhasoversystemresources,asthismayinfluence
+whichspecificperformanceanalysistechniquesareavailable. Indecreasingorderofaccesslevel:
+Completeaccess: Onabare-metalsystemthisimpliesrootaccess,ortheabilitytorunspecificcommandswithroot-
+levelprivileges(example: sudoinLinux). Inahostrunningoneormorevirtualmachinesthisimpliesrootaccessin
+theGuestOperatingSystemrunningontheVirtualMachine,aswellasrootaccesstothehostsystemandhypervisor
+Limitedaccess: Thiscouldimplyvariouslevelsofaccess.
+1. Userlevelaccessinaguestoperatingsystemwithnoaccesstothehost
+2. Rootlevelaccessinaguestoperatingsystemwithnoaccesstothehost
+3. Userlevelaccessinabare-metalsystem
+ThisdocumentprovidesnumerousHOWTOsforcollectingcertainperformanceindicators,detectingunderlyingsys-
+temconfigurations,andapplyingtweakstochangethoseconfigurations. Dependingonyoursystemadministrator,the
+accesslevelyouneedforexecutingthesecommandsmayvary.
+If running with Limited Access, it may be necessary to inspect and adjust kernel.perf_event_paranoid,
+workingwithyouradministrator.
+2.2 CPU Properties
+ItisimportanttobeawareofthevariousattributesoftheCPUlistedinthissection.
+2.2.1 CPU Model and Number
+Tostartwith,runthefollowingcommandtoobtaintheCPUModelNumber. Thisisparticularlyimportantifrunning
+onavirtualmachine. CheckwiththehostsystemadministratortoensurethatthevirtualizedCPUenablesthelatest
+ISA features offered by the host CPU. Otherwise, application software will not be able to use all the performance
+9
+
+=== PAGE 14 ===
+AMDEPYCProcessorPerformancePlaybook
+featuresoftheunderlyinghardware. ThesamecommandalsoprovidesthenumberoflogicalCPUsavailableonthe
+system. ThisisreferredtoasMax Available CPUsinthisdocument.
+Tools lscpu
+Commands lscpu | grep "Model name:"
+2.2.2 SMT
+Usethefollowingcommandtodeterminethenumberofcores,threads(logicalCPUs),andsocketsinthesystem. On
+a bare metal system, the number of threads (or logical CPUs) per core will be either 1 or 2, depending on whether
+SMTisenabledintheBIOS.Onavirtualmachine, thismaybe1or2, dependingontheCPUtopologyexposedto
+theguestbythehypervisor. UsethebelowtodetermineifSMTisenabledonthesystem. Inmostcases,SMTwillbe
+beneficialforperformance.
+Tools lscpu
+Commands % lscpu | grep -E '^Thread|^Core|^Socket|^CPU\('
+Attributes SMT enabled/SMT disabled
+2.2.3 Sockets
+Determine the number of sockets on the system. Multi-socket systems can significantly increase throughput, while
+cross-socketactivitycaninfluenceperformance.
+Tools lstopo
+Commands % lstopo-no-graphics | grep Package
+KeyAttributes Number of Sockets
+2.2.4 NUMA Domains Per Socket
+DeterminethenumberofNUMAnodesperSocket(NPS)andassociatedCPUsandmemory. Eveninasinglesocket
+system,AMDEPYC™SeriesProcessorssupportmultipleNUMAdomainsperCPUeachofwhichhavehighperfor-
+mance. However,cross-NUMAdomainactivitycaninfluenceperformanceoftheapplication.
+Tools numactl, lstopo
+Commands % numactl --hardware
+% lstopo-no-graphics
+KeyAttributes TheabovenumactlcommanddisplaysonstdoutforeachNUMAnode,alistofCPU
+numbersandmemorycapacityassociatedwitheachNUMAnode.
+Total Available NUMA Nodescanbemeasuredusing
+% numactl --hardware | grep size | wc -l
+lstopo-no-graphics prints system topology information to stdout. From this
+infer:
+Nodes Per Socket (NPS)=Total available NUMA nodes/Number
+of Sockets
+TheoptimumchoiceofhowmanyNU
+
+=== PAGE 15 ===
+AMDEPYCProcessorPerformancePlaybook
+2.2.5 L3 Domains
+Determine the number of L3 domains & logical CPUs per domain. AMD EPYC processors support the notion of
+anL3domainwhichenablesveryhighCPUcountsandexcellentTCObenefits. Forperformanceoptimization,itis
+importanttohaveL3topologyinformationathandbecausecross-domaininteractions(analogoustoNUMA)canhave
+animpactonapplicationperformance.
+Tools lstopo, lscpu
+Commands % lstopo-no-graphics | grep L3 | wc -l
+ShowsthenumberofL3cachedomainsinthesystem.
+% lscpu | grep "^CPU(s):"
+ShowstheMax Available CPUsinthesystem
+% lstopo-no-graphics
+Lists a view of CPUs, Threads, L1 and L2 Caches under each L3 domain, NUMA
+domainandsocketdomain.
+DeterminetheamountofL3cachepersocketandperL3domain. TheamountofL3cacheperdomainandpersocket
+can vary depending on the specific AMD EPYC™ Series Processor. It is important to be aware of these properties
+becauseofhowtheyinfluenceapplicationperformance.
+Usinglscpu
+Tools lscpu
+Commands % lscpu | grep "L3 cache:"
+ShowsthesizeofoneL3cache.
+% sudo lshw -C memory | grep -A 4 'L3 cache'
+ShowsthetotalL3sizeoneachnode
+Usinglstopo
+Note: Thismightrequirethehwlocpackagetobeinstalled.
+Tools lstopo
+Commands % lstopo
+(mightbeavailableaslstopo,lstopo-no-graphics,orhwloc-ls)
+KeyAttributes Showsthemachinetopologyandhierarchy.
+Usingsysfs
+Tools sysfs
+Commands % cat /sys/devices/system/cpu/cpu*/cache/index3/
+shared_cpu_list | sort | uniq
+KeyAttributes EachlinecorrespondstoauniqueL3domainandshowstheCPUsassociatedwiththe
+saidL3domain.
+2.3 System Software Checks
+Here is a system software checklist to merit review before detailed performance analysis. These are fundamental
+configurationsandsettingsthatmaynotalwaysbeenabledbydefaultbutcanhavemeaningfulimpactonperformance.
+Thisdocumentgenerallyassumesthatthesehavealreadybeenchecked
+
+=== PAGE 16 ===
+AMDEPYCProcessorPerformancePlaybook
+2.3.1 Kernel Version
+Determinetheversionofthelinuxkernelonthesystem,irrespectiveofwhethertheoperatingsystemisrunningona
+virtualmachineorbaremetal.
+Tools uname
+Commands %uname-a
+Check how far ahead the upstream kernel is (see: *The Linux Kernel Archives*), what major performance features
+interimkernelsmayhave. Ifupgradingthekernelisnotanoption,checkifyourdistributionhasback-portedperfor-
+mancerelatedpatches.
+2.4 Performance Variability Checks
+Animportantchecktoperformbeforeembarkingonadetailedperformanceoptimizationinitiative,istostartfroma
+repeatablebaselinelevelofperformance.Performancedebugandoptimizationtypicallyinvolvesiteratingonhypothe-
+ses and making “A vs. B” comparisons. It’s important that the phenomena being evaluated and tuned are relatively
+constant.
+Afterdeterminingthesystemconfigurationandensuringthesystemissetuptobeperformantasdescribedintheprior
+sections,runarepeatedsetofperformancemeasurementsoftheapplicationtoassesshowstablethereportedscores
+are,andwhattypeofperformancevariability,ifany,theypresent. Repeatabilityacrossrebootsandotheridentically
+builtsystemsisalsoexpected.
+Examplesofthetypesofperformancevariabilitythatapplicationsmayexhibitinclude:
+• Bimodalvariability: somerunsproduceasetofhighscores,othersasetoflowscores.
+• Outliers: mostrunshavethesamescore,butoccasionalrunsshowmuchbetterand/orworse.
+• Monotonic: consistentgainorlossofperformanceoverruns.
+• Random: scoresvarytoalargedegreewithnodiscerniblepattern.
+• Jitter/TailLatencies: asmallnumberofiterations/operationshavemuchhigherlatencythanothers.
+Belowarecommonfactorsknowntointroducevariabilityinmeasuredperformance.
+• CPU-External Factors (notably networking and storage): If non-CPU components may be introducing the
+observedvariability, trytoeliminatethese
+
+=== PAGE 17 ===
+AMDEPYCProcessorPerformancePlaybook
+2.5 Checking and Setting CPU Affinity
+For performance analysis, debug, and optimization, in many parts of this document recommend setting affinities to
+controlwhereinthesystemtheprocessesrun,andwherememoryisallocated. Thisleadstomuchhighercontrolla-
+bility of system performance to understand the performance context of an application. This is done by constraining
+theapplicationtousealimitedsetoflogicalCPUsandportionsofphysicalmemorysothatdownstreammeasuresof
+performance indicators and what-if analysis can be limited to them. This may also be a valid technique to improve
+performance and performance predictability in production environments (example: HPC workloads). Also consult
+on-lineresourcesonthistopic(see: Affinity).
+HowtocheckCPUaffinityforapplicationprocesses
+Tools numactl, taskset, ps
+Commands % grep cpus_allowed /proc/<pid>/status
+% taskset -c -p <PID>
+TocheckwherethePIDisactuallyrunning,checkunderCPUID:
+% ps -o pid,cpuid,comm -p <PID>
+HowtosetCPUaffinity
+Tools numactl, taskset
+Commands LinuxnumactlprovidesnumerousoptionstocontrolCPUsandMemorybeingused
+byaworkload:
+% numactl -C <list of cpus to limit the workload to> --
+<process command>
+% numactl -C <list of cpus to limit the workload to>
+--localalloc --<process command>
+% numactl -C <list of cpus to limit the workload to> --M
+<NUMA node numbers> --<process command>
+Using flavours of numactl, one can limit the workload to an L3 domain, a few L3
+domains,aspecificNUMAnode,asocket,etc.
+% taskset --cpu-list <list of cpus> <process command>
+or,iftheprocessisalreadyrunning:
+% taskset -pc <list of cpus> <pid>
+2.5. CheckingandSettingCPUAffinity 13
+
+=== PAGE 19 ===
+CHAPTER
+THREE
+PERFORMANCE ANALYSIS MOTIVATORS
+Note: ThisisapreviewoftheAMDEPYCProcessorPerformancePlaybook.ItillustratesthePlaybookmethodology
+byfocusingonasubsetoftheoptimizationspace,specifically,performanceoptimizationopportunitiesinthepresence
+ofmultipleL3cachedomains.
+Many observations and situations can motivate the analysis, debug, and optimization of system performance. This
+sectiondiscussesafewcommonmotivators. Thepurposeistohelpfocustheoptimizationprocess. Theperformance
+motivatorsdefinedheremaybereferencedinthelatersectionsthatfocusonspecificsystemoptimizationsteps. Look
+forthemotivatorsbelowunderthe“PossibleMotivator”headerintheoptimizationsubsections.
+3.1 Changes Across System Stacks
+Motivator: Changes Across System Stacks
+Itiscommontoobserveachangeinperformanceforthesameprocessorwhenthesystemstackchanges. Someexam-
+plesincludeupdatesorchangestotheOS,firmwareBIOS,usingdifferentI/Odevices,andintroducingvirtualization.
+Performancewilloftenremainneutralorimproveasthestackischanging,butitmayalsoregress. Thesourcesand
+reasonbehindaperformanceregressioncanbedifficulttoisolate,asthehardwareandsoftwareinteractionscanchange
+extensively. Thisguidewillcoversomeofthesereasons.
+3.2 EPYC Cross-Generational Performance
+Motivator: Cross-Generation Performance Delta
+WhencomparingperformanceacrossEPYCprocessorgenerations,theexpectationisthatperformancegoesupwith
+thenewerprocessor,allotherthingsbeingequal. However,asthearchitectureevolvesovertime,theinteractionswith
+thesystemsoftwareorotherhardwarecomponentsmaysubtlychangeandresultinaperformanceregression. These
+regressionsaretypicallyrecoverable. Thisguidewillcoversomeofthecommonscenariosthatcanleadtothis,and
+howtoresolvethem.
+3.3 Different Behaviors Relative to Non-EPYC Systems
+Motivator: Non-EPYC Behavior Differences
+There
+
+=== PAGE 21 ===
+CHAPTER
+FOUR
+PERFORMANCE INDICATORS
+Note: ThisisapreviewoftheAMDEPYCProcessorPerformancePlaybook.ItillustratesthePlaybookmethodology
+byfocusingonasubsetoftheoptimizationspace,specifically,performanceoptimizationopportunitiesinthepresence
+ofmultipleL3cachedomains.
+Thissectiondescribesasetofperformanceindicatorstocollectatrun-timewithinstructionsonhowtocollectthem
+usingvarioustools. Thefirsttwosections, High-LevelSoftwareIndicatorsandHigh-LevelHardwareIndicatorsre-
+spectivelyassessifbasicsoftwarebehaviorsandutilizationofhardwareresourcesaresane. Eachindicatorisqualified
+by threshold levels that provide indication of whether performance optimization opportunities exist. If so, there are
+pointerstoothersectionsofthisdocumentthatdescribetheopportunitiesindetailandhowtoexploitthem.
+This is followed by a section on CPU Performance Indicators which cover indicators that measure first-order and
+detailedbottlenecksintheCPUpipeline.
+Before performing any measurements, review System Checks to ensure that the system is set up for performance.
+In particular, determine the Access Level, since this will impact which measurements can and can’t be performed.
+Example:inaguestoperatingsysteminacloudenvironment,thesetofavailableindicatorswillgreatlydependonthe
+cloudserviceprovider.
+Next, ensure the application is invoked in a representative manner with realistic inputs, data sets or problem sizes.
+Third, scores and performance indicators (whether they be software or hardware), should be measured during the
+“steadystate”oftheapplication.Thatis,theyshouldnotbecorruptedbybehaviorspeculiartoapplicationstartupand
+teardownphases. Thegoalshouldbetocollectindicatorsinregionsofcodeexecutionthatwillresultinreal-world
+performanceimprovement.
+4.1 Collecting High-Quality Performance Indicators
+Severalof
+
+=== PAGE 22 ===
+AMDEPYCProcessorPerformancePlaybook
+overhead. Usually, the tool defaults should work fine, but it is useful to keep an eye on the total number of
+samplescollected,andtheoverheadofdatacollectionontheperformanceoftheapplication.
+4.2 High-Level Software Indicators
+This section describes a basic set of indicators about software behavior that can provide hints about performance
+opportunities.
+4.2.1 Code Profiling
+The starting point for software indicators is typically a Code Profile. A Code Profile provides a view of
+which code is exercised most often across the application, libraries and operating system. This profile typically
+highlightswheretheapplicationisspendingmostofitstime,andhenceshouldguidewhereoptimizationeffortshould
+befocused. Often,thisstepaloneprovidesenoughcluestooptimizeanapplication.
+It should be kept in mind however, that many modern server applications have dynamic behavior. In general, the
+pathstakenbycodeisnotguaranteedtobeidenticalacrossruns. Therearevariousreasonsthiscouldhappen, such
+asasynchronousevents,threadscheduling,work-stealingworkerthreads,timing-dependentcodepaths,polling,syn-
+chronizationetc. Thesesoftwarebehaviorsmaybeinfluencedbyhardwareperformance.
+This means that the same application may exhibit different instruction level behaviors across different systems and
+processors.
+FormostofthePerformanceAnalysisMotivatorsdescribedearlieritisusefultocheckifsoftwareisbehaving(func-
+tionallyspeaking)inthesamewayacrosstwoexperiments. Thisisespeciallyimportantgivenmanyofthehardware
+indicatorsdescribedinthisdocumentareexpressedintermsofahardwareevent(example:cachemissratesorbranch
+mispredictsperthousandinstructions(PTI))KnowingifandwhenPTIindicatorsarecomparableisimportant. Hence
+beingabletocollectandevaluateaCode Profilebasedon“instructions”inadditi
+
+=== PAGE 23 ===
+AMDEPYCProcessorPerformancePlaybook
+LaterpartsofthissectiondiscussspecificindicatorsthatcanbeextractedfromaCode Profile. Indicatorsare%
+timeor% instructionsspentinspecificprocessesandfunctions.
+4.2.2 Synchronization Overheads
+A common source of performance overhead in server applications is software synchronization. It is useful to pay
+specific attention to and quantify these overheads explicitly. Check if the Code Profile reveals high overheads
+arisingfromsynchronizationrelatedroutines. Thiscouldbeuserspacesynchronization(example: pthread_mutexes,
+OpenMPbarriers)and/orkernelspacesynchronization(example: spinlocks,queuedspinlocks). Note,somesoftware
+synchronizationprimitivesforcewaitingthreadstoconsumeCPUcycles,andinscenarioswheretheycontributetothe
+overhead, they will naturally appear in the Code Profile (example: spinlocks). Other types of primitives could
+be blocking in nature, and force the waiting thread to relinquish the CPU, freeing the CPU up to do other work. In
+suchcases,thepercentagecontributionofsuchroutinesbythemselves(suchasablockingpthread_mutex)toaCode
+Profilemaynotprovideanaccurateviewoftheoverhead.
+Howtomeasuresynchronizationoverheads
+Tools perf
+Commands From the Code Profile collected above, accumulate the % time
+spent in routines that are synchronization related. Examples provided
+below.
+• pthread_mutex_lock
+• gomp_barrier_wait_end
+• gomp_team_barrier_wait_end
+• futex_wake
+• futex_cleanup
+• futex_wait
+• native_queued_spin_lock_slowpath
+• pv_queued_spin_lock_slowpath
+• _raw_qspin_lock
+• _raw_qspin_lock_irq
+• _raw_spin_lock
+• _raw_spin_lock_bh
+• _raw_spin_lock_irq
+• _raw_spin_lock_irqsave
+• _raw_spin_trylock
+• _raw_spin_unlock_bh
+• _raw_spin_unlock_irqrestore
+• rcu_read_lock
+Key Indicators and Synchronization Overhead: Accumulate % time spent in
+Thresh
+
+=== PAGE 24 ===
+AMDEPYCProcessorPerformancePlaybook
+4.3 High-Level Hardware Indicators
+This section describes a set of high-level performance indicators that capture how the application is using various
+hardware resources at a high level, and how to collect them. These indicators provide first level indication of what
+is limiting the performance the application, and an initial characterization of how the hardware is responding to its
+demands. These indicators can be used as guidance for next level performance analysis or optimization. Unless
+otherwiseindicated,hardwareindicatorsareexpressedinPTIunits(PerThousandInstructions).
+4.3.1 Logical CPU Usage and Utilization
+The number of active logical CPUs (see Glossary of Terms for what this refers to) and their utilization levels are
+importantperformanceindicators. ThisdistinctionbetweenthepercentageofactiveCPUs(CPU Usage %)andhow
+activeeachofthoseCPUsare(Per-CPU Utilization %)isimportant,andthesetermscanbeeasilyoverloaded
+orconflated.
+AparticularlogicalCPUiseitherhaltedorexecutinginstructions. Thepercentageoftimethatitisexecutinginstruc-
+tions(i.e. nothalted)willbereferredtoasPer-CPU Utilization %. Ifthisutilizationisbelow2%, alogical
+CPU can be considered inactive and otherwise it is active. The percentage of logical CPUs that are active will be
+referredtoasCPU Usage %. TheabsoluteCPU UsageissimplyCPU Usage %xMax Available CPUs.
+NotethatHigh Per-CPU Utilization %byitselfdoesnotalwaysmeanusefulworkisbeingdone(i.e. soft-
+warethreadsmaybebusywaitingonaspinlockorabarrier). Utilizationisanincompleteindicatoronitsownbutis
+usefulwhencombinedwithotherdata.
+HowtomeasurePer-CPUUtilization%
+Tools htoporAMDuProf
+Commands UseanyCPUorsystemloadmonitoringtool(suchashtop)togeneratePer-CPU
+Utilization %foralltheCPUsinthesystem.
+Alternatively,seeCapturingIn
+
+=== PAGE 25 ===
+AMDEPYCProcessorPerformancePlaybook
+AnyheadroominCPU usage %orPer-CPU Utilization %representscomputeresourcesthatarenotbeing
+used efficiently. Note that, while maximizing these indicators may help improve throughput-oriented application-
+level performance metrics, it may come at the cost of Latency and Tail Latency metrics. Care must be exercised in
+determininganddrivingtowardsanappropriatelevelofCPU Usage %andPer-CPU Utilization %forthe
+applicationunderconsiderationwhileexperimentingwithtechniquesforoptimizingCPUusagedescribedinCommon
+Application-AwareTuningOpportunities.
+4.3.2 Instructions Per Cycle (Without Halt)
+IPC w/o haltisthenumberofinstructionsretiredpercyclebyalogicalCPUwhileitisactive,i.e. itisnotinan
+idlestate.Thisisafundamentalindicatorofitsperformance.Infact,Per-CPU-Utilization,CPU Frequency
+Mhz,andIPC w/o haltwhenmultipliedoutprovideameasureoftheachievedPer-CPU Throughput. Mul-
+tiplyingthisbythenumberofactivelogicalCPUs(CPU Usage)providesameasureoftheTotal Instruction
+Throughputseenbytheapplication.
+Notethatthisistrueforthemostpart,wheninstructionsrepresentusefulworkperformedinanapplicationcontext.
+Therecanbeexceptionswherethreadsmaybe“busy-waiting”aresource(SeeSynchronizationOverheads). Insuch
+cases, an improvement in Total Instruction Throughput may not translate to improved application-level
+performancemetrics.
+The absolute value of IPC w/o halt by itself is often less valuable as a performance indicator compared with
+relativevalues,inthecontextofacertainchangetothesystem. Forexample,formanyofthesuggestedperformance
+optimizationsinthisdocument,thefirstorderimpactwillbeseenonIPC w/ o halt.
+HowtomeasureIPCw/ohalt
+ConsultCapturingIndicatorsUsingAMDuProfPcmforinstructions.
+4.3.3 L3 Cache Domain Usage
+A distinguishing property of many AMD EPYCTM Series Proc
+
+=== PAGE 26 ===
+AMDEPYCProcessorPerformancePlaybook
+NextSteps
+If Moderate CPU Cross-L3 Domain Data Sharing % or High CPU Cross-L3 Domain Data
+Sharing % is detected, performance optimization can be high impact, especially for software that may have been
+developed for non-EPYC systems. For guidance targeting efficient use of the L3 domains in AMD EPYC™ Series
+Processors,consultOptimizingL3DomainUsage.
+4.4 CPU Performance Indicators
+4.4.1 Pipeline Utilization
+StartingwithZen4basedCPUs,toolslikeLinuxPerfUtilityandAMDuProf cangenerateasetofspecialindicators
+thatprovidea“PipelineUtilization”viewofthemicroarchitectureoftheZenCorepipeline.
+This view provides, at a high level, what microarchitectural bottlenecks in the core pipeline each logical CPU is
+experiencing.
+On every clock cycle, the Zen core can retire a certain number of “operations”, the exact number depending on the
+“width”ofthecore(example:Zen4candispatchandretire6opssimultaneously).Thetotalnumberofpipelineslotsis
+thiswidth,multipliedbynumberofclockcyclesinameasurementwindow. Pipelineutilizationshowsusthefraction
+ofslotsusedtoretiretheoperations,andthefractionthatwasun-utilizedduetovarioustypesofstalls,attributedto
+commonmicroarchitecturalfactors.
+HowtogeneratePipelineUtilizationIndicators
+Tools AMDuProfPcm
+Commands ConsultCapturingIndicatorsUsingAMDuProfPcm
+Key Indicators and ExpectedRangesofPipelineUtilizationforVariousApplicationDomains
+Thresholds PipelineUtilizationIndicatorThresholdRanges
+Interpreting“PipelineUtilization”Indicators
+Next, expected ranges are provided for these indicators, as well as information on what to do if the results for the
+applicationfalloutsidethoseranges.
+ThetablebelowprovidestheexpectedrangesforthePipelineUtilizationindicatorsacrossafewapplicationdomains
+on AMD 4th Generation EPYC (code-named “Genoa”
+
+=== PAGE 27 ===
+AMDEPYCProcessorPerformancePlaybook
+Table2: PipelineUtilizationIndicatorThresholdRanges
+PipelineUtilization Low Moderate High
+%frontend_bound <10% 10-20% >20%
+%bad_speculation_mispredicts <5% 5-10% >10%
+%smt_contention <10% 10-20% >20%
+%backend_bound <25% 25-50% >50%
+%backend_bound_memory <20% 20-50% >50%
+%backend_bound_cpu <5% 5-20% >20%
+%retiring <10% 10-25% >25%
+High % frontend_bound indicates the application is bottlenecked by the beginning, or front, of the CPU’s
+pipeline(responsibleforcodefetches,instructiondecode,branchprediction,andpagetranslationsforcodeaccesses)
+did not supply instructions fast enough to keep the later stages, or back, of the pipeline (responsible for instruction
+execution,memoryhierarchyaccesses,andretirement)busy.
+High % bad_speculationindicatesthatasubstantialnumberofpipelineslotswerewastedbyoperationsthat
+arespeculativelydispatchedbutneverretired(i.e. owingtothemispredictedbranches).
+High % smt_contentionindicatesthatasubstantialnumberofpipelineslotswerelosttoaninabilitytoselect
+anSMTthreadthathadinstructionsreadyfordispatch.
+High % backend_bound indicates that a large fraction of slots were lost to stalls introduced by the later
+stages, or back, of the pipeline. Determine if the primary contributor to High % backend_bound is High %
+backend_bound_memoryorHigh % backend_bound_cpu.
+High % backend_bound_memory or Moderate % backend_bound_memory indicates that the bottle-
+necks are related to long latency memory access operations. For solutions consult the following sections of the
+playbook:
+• OptimizingMainMemoryBandwidth
+• OptimizingMainMemoryAccessLatency
+• OptimizingL3DomainUsage
+• TuningDataCachePrefetchers
+• TuningCacheReplacementStrategies
+• Cross-SocketTraffic
+High % backend_bound_cpu indicates resource contention in the execution unit
+
+=== PAGE 29 ===
+CHAPTER
+FIVE
+COMMON APPLICATION-AWARE TUNING OPPORTUNITIES
+Note: ThisisapreviewoftheAMDEPYCProcessorPerformancePlaybook.ItillustratesthePlaybookmethodology
+byfocusingonasubsetoftheoptimizationspace,specifically,performanceoptimizationopportunitiesinthepresence
+ofmultipleL3cachedomains.
+ThedefaultconfigurationofEPYCprocessorsaerdesignedtoprovidegreatperformanceforallapplications.However,
+there are commonly utilized options that can potentially deliver better performance for a specific application. This
+chapterwilldiscusssuchopportunities.
+25
+
+=== PAGE 31 ===
+CHAPTER
+SIX
+EPYC-SPECIFIC BEHAVIORS AND OPPORTUNITIES
+Note: ThisisapreviewoftheAMDEPYCProcessorPerformancePlaybook.ItillustratesthePlaybookmethodology
+byfocusingonasubsetoftheoptimizationspace,specifically,performanceoptimizationopportunitiesinthepresence
+ofmultipleL3cachedomains.
+Software optimizations developed with or targeted toward other processor architectures typically translate well to
+EPYC.However, thereareadditionalscenarioswhereAMDEPYCcandeliverdifferentiatedperformancethanksto
+novel architecture tradeoffs. Therefore, there are common scenarios where modifying software specifically for the
+architectureofAMDEPYC™SeriesProcessorsmayprovidenoticeableefficiencyincreases.
+6.1 Optimizing L3 Domain Usage
+High-LevelIndicators
+• High % backend_bound_memoryORModerate % backend_bound_memory
+• High CPU Cross-L3 Domain Data Sharing % OR Moderate CPU Cross-L3 Domain
+Data Sharing %
+• High L3 Cache MissORModerate L3 Cache Miss
+• High Per-CPU Utilization %ORModerate Per-CPU Utilization %
+• High Synchronization Overhead
+• High System Time %ORModerate System Time %
+PossibleMotivators
+• Performance Variability
+• Unexpected Application Scaling
+• Non-EPYC Behavior Differences
+• Cross-Generation Performance Delta
+Before going further, note that the trade-offs and optimizations that will be discussed for interactions across L3 do-
+mains are analogous to cross-socket data sharing for traditional multi-socket processors. Therefore, much of this
+discussioninvolvesapplyingthesamemindsetandtechniquestoadifferentprocessororganizationlayer.
+Note that, in this section, “domain” will refer to an L3 domain and “cross-domain” will refer to interactions across
+thoseL3domains.
+L3domainperformanceoptimizationopportunitieswillbebasedontheamountoffine-graindataaddresssharingthat
+occursbetweendiffer
+
+=== PAGE 32 ===
+AMDEPYCProcessorPerformancePlaybook
+thecachehierarchy(L1,L2,orL3cache)ofadifferentL3domain,thenthelatencytoaccessthedataissignificantly
+higher–ontheorderofaDRAMmainmemoryrequest–thanacachehierarchyhitinthesameL3domain. Thepeak
+cross-domainbandwidthisalsolowerthanthebandwidthtothelocalcachehierarchy.
+Infrequentcross-domaindatasharingisnottypicallyaperformanceconstraint,andthelatencyismitigatedbystandard
+processortechniques,likeout-of-orderexecutionanddataprefetching. However,frequentcross-domainactivitycan
+becomeafirst-orderperformancelimiterandispreventable.
+Animportantnoteisthat“clean”datacontinuestobecacheableacrossmultiplecaches–andthereforemultipleL3
+domains – concurrently. Clean data means that the cacheline (aligned at a 64B granularity) is effectively read-only.
+Dirtydatasharingreferstocachelinesthatareexpectedtobewritten,evenoccasionally. Ingeneral,cleandatasharing
+islesslikelytoimpactperformancethandirtydatasharing.
+Therestofthissectiondiscussesdifferentconditionsunderwhichdataaddressescanbesharedandtheoptimization
+opportunitiesforeachscenario.
+PossibleSolutions
+The first solutions set of solutions may be helpful regardless of the underlying reason for the cross-domain sharing.
+Solutionsrelatedtospecificsourcesofcross-domaininteractionsaredescribedlaterinthissection.
+• ModifytheSpeculativeStoreMode: TheSpeculativeStoreModeschangehowaggressively/speculativelythe
+processortriestowritetoacacheline. Moreaggressivecanhelpwhenthereislessmis-speculationand/orless
+contention. Lessaggressivecanhelpwhenthereismoremis-speculationand/orhighcontention.
+BIOS options exist starting on Zen4 and may change across processor generations. This type of guidance is typi-
+callyavailableingeneration-specificBIOStuningguides[SeeBIOSandWorkloadTuningGuides]. Inthisinstance,
+instructions
+
+=== PAGE 33 ===
+AMDEPYCProcessorPerformancePlaybook
+Tools perf
+Commands % perf c2c record -- <cmd>
+Or
+% perf record -e ls_any_fills_from_sys.near_cache -c
+1000% perf report -i perf.data
+Analyzetheannotationtodeterminewhichspecificoperationsanddatastructuresare
+responsiblefortheL3domaininteractions.
+Iftheabovedoesnotyieldenoughinformation,thefollowingisalessdirect,butoften
+usefulmethodforthesamepurpose.
+Runtheapplicationintwoways:
+• Use a low number of logical CPUs (say 8) to contain threads inside one L3
+domain.
+• RerunusingtwoL3domainsbutusinghalftheavailableLogicalCPUs/domain
+(say2x4).
+Note,thesecondconfigcanprovidesomeperformancebenefits(CPUSchedulingto
+L3 Domains: Spreading vs. Packing) but if the application has a large number of
+updatestoshareddata,performancedegradationfromspreadingwillbemeasurable,
+andattributabletospecificcodeanddataasfollows:
+% perf record -C <list of CPUs> -F 99 -e cycles
+% perf record -C <list of CPUs> -F 99 -e instructions
+% perf report #after each instance of perf record
+Postprocessthedatacollectedasfollows:
+• Identifythehottestfunctions(usingthe“cycles”profile)
+• CalculateIPCforthesefunctions(using“instructions”profile)
+• CompareIPCofthesefunctionsinthespreadvpackedconfig
+• DeterminefunctionswiththelargestIPClossinthespreadconfig.
+AnyfunctionseeinganIPCdropof>5%maybeofinterest.
+Runthefollowingonthespreadconfigforfurtheranalysis:
+% perf record -C <list of CPUs> -F 99 -e ibs_op// % perf
+report
+Fromthisprofile,findthefunctionswiththemostsignificantIPCdropidentifiedpre-
+viously. Usethisprofiletofindthehottestinstructionsinthosefunctions. Theywill
+yieldthecodeandaddressoftheshareddatastructureresponsibleforcross-domain
+activity.
+Occasionally,theoffendingfunctionsmaybeinthekernel. UsecallstacktracingorcollectaFlameGraphtodeter-
+minethemostfrequentcallsitesthat
+
+=== PAGE 34 ===
+AMDEPYCProcessorPerformancePlaybook
+• LimitsharingofdatastructurestoL3domaingranularity.
+• Userthread-localorCPU-localdatastructuresandalgorithmswheneverpossible(example: preferentiallyuse
+the ThreadLocalRandom class in Java which does not depend on globally shared data for generating random
+numbers,unliketheRandomClass.
+6.1.2 Inter-Thread Synchronization
+Theindicatorsandmotivatorslistedatthebeginningofthissectionapply(SeeOptimizingL3DomainUsage),espe-
+ciallyModerate Synchronization OverheadorHigh Synchronization Overhead.
+Synchronization between software threads involves some form of agreement to decide on a future course of action.
+This can be implemented using a variety of primitives, based on the programming language, programming model,
+expected behavior of the synchronizing threads, etc. At the most basic level inter-thread synchronization involves
+one or more cache lines that are read (potentially many times). Once it reads an expected value a thread will then
+writeavaluetothesamelocation. Sincemultiplethreadswillaccessthesamelocationsinmainmemory(whichare
+cacheable),inter-threadsynchronizationcanresultininteractionsacrossL3andevenNUMAdomains.
+Typically, optimized code will have limited synchronization, and it is unlikely to be a performance limiting factor.
+However, as synchronization accesses increase in frequency and the number of software threads participating in the
+synchronization increase, it’s more likely to impact performance. This is true regardless of L3 domains, but it can
+becomemoreexaggeratedifmultipleL3domainsareinvolved.
+Evenwhenthereisnoexplicitsynchronizationattheapplicationlevel,accessestokernel-controlledresources(exam-
+ple: files,networkinterfaces)anddatastructurescanresultinsynchronizationoverheads.
+Evidenceofthiswillbethepresenceofsynchroniz
+
+=== PAGE 35 ===
+AMDEPYCProcessorPerformancePlaybook
+• For OpenMP applications, evaluate policies for thread placement and barrier behavior (OMP_PLACES,
+OMP_SCHEDULE,OMP_PROC_BIND,OMP_WAIT_POLICY)[See: openmp]
+• Considerrunningmultiplesmallerinstancesoftheapplicationandusescale-outmethodologies(TypesofPer-
+formanceScaling)ratherthatasinglelargeinstance,toreducelikelihoodofcrossdomaininteractionsbetween
+synchronizingthreads.
+• Ifsynchronizationisbeingenforcedusingspinloops(i.eHighSpinlock%isdetected),afewspecificoptimiza-
+tionopportunitiesexist.
+– Identify the source of the spinlocks using Code Profiling (with call graph tracing enabled) or a Flame
+Graph and examine if spinlocks can be avoided (example: by using user space blocking primitives like
+pthread_mutex)
+– Checkthat“Test-and-Test-And-Set”disciplineisfollowedintheimplementationofthespinlock(seeex-
+amplebelow)andPAUSEinstructionsareused(illustratedbelowusingthe_mm_pause()intrinsic)
+– ImplementtechniquestorelinquishtheCPUonlongwaits(example: sched_yield()).
+– ConsiderusingtheMONITORX/MWAITXinstructionsonthewaitingthreadtopotentiallyfreeuppower
+forotherthreads
+/* LOCKED = 1; UNLOCKED = 0*/
+// acquire lock
+while (1) {
+while (*lock != UNLOCKED)
+__mm_pause();
+if (__sync_bool_compare_and_swap(lock, UNLOCKED, LOCKED)
+break;
+}
+FurtherInvestigation
+Numerous well-defined practices exist to optimize the performance of parallel software [Art of Multiprocessor Pro-
+gramming]. AMDEPYC™SeriesProcessorswiththeirindustryleadingcorecountsandmodulardesignmakeitall
+themorecrucialthatparallelapplicationswithsynchronizingthreadsbedevelopedwithscalabilityinmind.
+Consider standard practices for architecting high-performance concurrent software. For example, ensure the use of
+fine-grained locks (implying that the resources being protected are at the smalle
+
+=== PAGE 36 ===
+AMDEPYCProcessorPerformancePlaybook
+Tools libvirt
+Commands Addthefollowinginlibvirtdomainxml.
+<features>
+<pvspinlock state='on'/>
+</features>
+6.1.3 Producer and Consumer
+Theindicatorsandmotivatorslistedatthebeginningofthissectionapply(OptimizingL3DomainUsage).
+Producer/consumer is a planned sharing relationship between two software threads, which typically involves both
+threadsaccessingthesamemainmemorylocationsviaasoftware-allocatedbuffer.
+Onethreadwillwritethelocations(producer)andthentheotherthreadwilllaterreadthelocations(consumer). For
+peakperformance,thesecomponentsshouldtakeplacebetweenthreadsinthesameL3domain. Thisallowscached
+datatobesharedatlowlatency.
+However, producer/consumerrelationshipscanbedifficulttopredictandthereforedifficulttoco-scheduletoanL3
+domain. In other cases, the relationship may not just be one-to-one. Certain algorithms will rely on, say, 1-to-N
+relationships,whereoneproducerthreadshareswithuptoNconsumerthreads. Ifthe‘consumer’componentendsup
+ontheperformancecriticalpath, thenperformancecanbeimpactediftheparticipatingthreadsspanacrossmultiple
+L3domains.
+Therearealternatemodesinthehardwarethatcanbebeneficialtocriticalcross-domainproducer/consumerscenarios.
+PossibleSolutions
+• Modify the Adaptive Allocation Caching Mode: The CPU caches may dynamically change polices depend-
+ing on observed application behaviors. The goal is to increase cache hit rates. However, sometimes it may
+decrease cache hit rates or an increase in cache hits is not better for an application. The latter can happen in
+producer/consumerscenarios.
+BIOSoptionsexiststartingonZen5andmaychangeacrossprocessorgenerations. Thistypeofguidanceistypically
+availableingeneration-specificBIOStuningguides[SeeBIOSandWorkloadTuningGuides].Inthisinstance,instruc-
+tionsonhowtomanipulatethisf
+
+=== PAGE 37 ===
+AMDEPYCProcessorPerformancePlaybook
+6.1.4 Thread Scheduling Effects
+Theindicatorsandmotivatorslistedatthebeginningofthissectionapply(OptimizingL3DomainUsage).
+ThreadschedulingchoicescaninfluencetheamountofdatasharingamongstL3domains.
+ThreadmigrationreferstotheoperatingsystemscheduleractivityofpausingathreadononeCPUandresumingiton
+adifferentCPU.OneperformanceimplicationisthatcodeanddatacachedontheoriginalCPUmaystillresidethere
+andcouldbeaccessedfromthenewCPU.Eventhoughitisthesamethread,thiswillcausedatasharingbetweentwo
+coresandpotentiallybetweentwoL3domains.
+Processesthatfrequentlycreateshort-livedthreadsareanotherpotentialhiddensourceofcross-domaintraffic. Since
+eachnewthreadbelongstothesameprocessandvirtualmemoryspace,it’scommontoreuseexistingcodeanddata
+structuresacrossthreadsthatdonotoverlapintime.
+HowtoIdentifyThreadMigration
+Tools perf
+Commands This is an example. Adjust as necessary. While the workload is running, measure
+threadmigrationsfor30seconds:
+%sudoperfrecord-a-esched:sched_migrate_task–sleep30
+%sudoperfscript>raw_migr.txt
+%grep“comm=<insertprocessnameofinteresthere>”migr.txt>my_migr.txt
+PostprocessthisfilelinebylinetoextractoriginalanddestinationCPUnumbersfor
+eachmigration. UsetheCPUnumberingonthesystemtodeterminewhichmigration
+iscrossL3domainandintraL3domain. [SeeSystemCheckson*L3Domains*]An
+exampleoutputcouldlooklike:
+origin=7 destin=103 Intra L3 domain
+origin=103 destin=7 Intra L3 domain
+origin=100 destin=4 Intra L3 domain
+origin=4 destin=16 Cross L3 domain
+origin=18 destin=22 Intra L3 domain
+Cross L3 domain migrations=countoflinescontaining“CrossL3”
+Intra L3 domain migrations=countoflinescontaining“IntraL3”
+Note, thesameapproachcanbeusedtomeasureCross-NUMAorCross-Socketmi-
+grationsaswell.
+Key Indicators and Cross L3 Domain migrations/usefulwork
+Thres
+
+=== PAGE 38 ===
+AMDEPYCProcessorPerformancePlaybook
+• ManyofthetechniquesdescribedforoptimizingInter-ThreadSynchronizationviamorecontrolledscheduling
+mayapplyhere.
+6.1.5 Code Sharing
+Theindicatorsandmotivatorslistedatthebeginingofthissectionapply(OptimizingL3DomainUsage). Inaddition,
+thefollowingindicatorshelpidentifythisspecializedcaseofL3domaininteractions.
+High-LevelIndicators
+• High % frontend_bound
+• High CPU Cross-L3 Domain Code Sharing %
+The code segment of a process is shared across its threads. In addition, operating systems can detect if multiple
+identicalprocessesarerunning,andhavethemsharecodepagesaswell. Dependingonhowthethreadsarescheduled
+tounderlyingCPUsandL3domains,inter-domaininteractionsmightarisefromcodesharing. However,codepages
+aretypicallyread-onlyandmoreover,thefootprintofmostapplicationissuchthatcodeusuallyfitswithinthecaches
+ofanL3domain. Hence,cross-domainperformanceinefficienciesaregenerallynotexpectedduetothis. However,if
+theabovepairofhigh-levelindicatorsaredetected,itisworthassessingpossiblesolutions.
+PossibleSolution
+• Techniquestooptimizecodefootprintandmaximizeintra-domainsharingarediscussedinCPUPipeline-Based
+Opportunities
+6.1.6 CPU Scheduling to L3 Domains: Spreading vs. Packing
+Theindicatorsandmotivatorslistedatthebeginingofthissectionapply(OptimizingL3DomainUsage). Inaddition,
+thefollowingindicatorshelpidentifythismorespecializedcaseofL3domaininteractions.
+High-levelIndicators
+• Low CPU Usage %
+• Low Per-CPU Utilization %
+• High CPU Frequency Mhz
+IfLow CPU Usage %isdetected, thereisnotenoughworkfortheprocessorasawholeanditisunder-utilized.
+Ifthisislegitimateandnoneoftherelatedtechniquesdescribedearlier(CommonApplication-AwareTuningOppor-
+tunities) apply, the application and operating system have many options on how and where to schedule threads. In
+
+=== PAGE 39 ===
+AMDEPYCProcessorPerformancePlaybook
+Eitheroutcomecanbebeneficialdependingontheapplication,whileanin-betweenoutcomeofnon-uniformspread-
+ing/packingislikelytoproducepoorperformancebehaviors.
+PossibleSolutions
+• If the default scheduling choice does not match expectations and/or is impacting performance negatively, the
+behaviorcanbemodified. UsetechniquesforsettingCPUaffinities(CPUModelandNumber)tooptimizethis.
+6.1. OptimizingL3DomainUsage 35
+
+=== PAGE 41 ===
+CHAPTER
+SEVEN
+CPU PIPELINE-BASED OPPORTUNITIES
+Note: ThisisapreviewoftheAMDEPYCProcessorPerformancePlaybook.ItillustratesthePlaybookmethodology
+byfocusingonasubsetoftheoptimizationspace,specifically,performanceoptimizationopportunitiesinthepresence
+ofmultipleL3cachedomains.
+This section will cover optimization opportunities gleaned from microarchitectural indicators, which may lead to
+generalorEPYC-specificopportunities.
+37
+
+=== PAGE 42 ===
+AMDEPYCProcessorPerformancePlaybook
+38 Chapter7. CPUPipeline-BasedOpportunities
+
+=== PAGE 43 ===
+CHAPTER
+EIGHT
+APPLICATION SCALING OPPORTUNITIES
+Note: ThisisapreviewoftheAMDEPYCProcessorPerformancePlaybook.ItillustratesthePlaybookmethodology
+byfocusingonasubsetoftheoptimizationspace,specifically,performanceoptimizationopportunitiesinthepresence
+ofmultipleL3cachedomains.
+High-LevelIndicators
+• Low Per-CPU Utilization %ORModerate Per-CPU Utilization %
+• High CPU Usage %
+PossibleMotivator
+Unexpected Application Scaling
+A common objective of performance optimization is to ensure that applications scale to take advantage of the de-
+greeofparallelismandthroughputcapabilitiesofferedbythehighcorecountsofAMDEPYC™SeriesProcessors.
+This section describes how to detect factors that may limit such performance scalability, and possible solutions for
+optimization. Thiswilloftenpointtoscenariosthathavealreadybeendiscussedelsewhereinthisdocument.
+8.1 Types of Performance Scaling
+TherearetwowaysapplicationstakeadvantageofthehighlogicalCPUcountsofferedbymodernsystems.
+Scale-UpPerformance:Thisistheperformanceresponseobtainedbygivinganapplicationincreaseddegreeofparal-
+lelismofunderlyingcomputeresourcesbyincreasingthenumberofavailablelogicalCPUs.Thisscalingmethodology
+isoftenassociatedwithhighlyperformance-tunedapplications,commonlyencounteredinenterpriseorHPCdeploy-
+ments,whereit’sreferredtoas“StrongScaling”.
+Scale-OutPerformance: Thisistheperformanceresponseobtainedbyscalingthenumberofinstancesofanappli-
+cation(ortheamountofworkwithcompute). Insuchadeployment,instancesworkrelativelyindependentlyofeach
+other,eachlimitedtoafixednumberoflogicalCPUs(usingcontainersoraVirtualMachine). Thisscalingmethodol-
+ogyiscommonlyseenincloudenvironmentsandHPCenvironments. Inthelatter,it’sreferredtoas“WeakScaling”,
+whereMPIranksareanalogoustoworkloadinstances.
+8.2 Scaling Efficiency
+Regardlessofwhichm
+
+=== PAGE 44 ===
+AMDEPYCProcessorPerformancePlaybook
+Inascale-outcontext,overallperformanceistheproductofperformanceperapplicationinstanceandthenumberof
+instances. Inascale-upcontext,overallperformanceissimplytheperformanceseenbythesingle(andonly)instance
+oftheapplication.
+Therestofthissectionassumesapplication-levelconsiderationshavebeenusedtodeterminetheperformancemetric
+underscalingandassumesahypotheticalthroughput-orientedapplicationasanexample.
+HowtocalculateScalingEfficiencywhenscalingthenumberofCPUsfromXtoY(increasedCPUUsage%)
+Tools End-applicationperformancemeasurement
+Commands, Indica- Scaling Efficiency %=((ThroughputatYCPUs/ThroughputatXCPUs)/
+tors,andThresholds (Y/X)-1)x100
+Hence, a 2X improvement in throughput with a 2X increase in CPUs represents a
+100%scalingefficiency. IfnoperformancewasgainedbydoublingtheCPUcount,
+thatrepresentsa50%scalingefficiency. WhichimpliesthatremovinghalftheCPUs
+wouldnothurtperformance.
+• High Scaling Efficiency %: >90%
+• Moderate Scaling Efficiency %: 80%-90%
+• Low Scaling Efficiency %: 50%-80%
+• Negative Scaling Efficiency %: <50%
+If Low Scaling Efficiency is detected at a target examine the following high level indicators (see: Perfor-
+manceIndicators)atthoseCPUcounts,consideringonlytheactivelogicalCPUs:
+• Per-CPU Utilization %
+• IPC w/o halt
+PossibleSolution
+• If Per-CPU Utilization % falls off with increasing CPU Usage %, investigate techniques for
+opt_cpu_usageandInter-ThreadSynchronization.
+• IfIPC w/o haltdecreasesatHighCPU Usage %,itneedsfurtheranalysis. Thiscouldbeduetomultiple
+factors. Examine the CPU Performance Indicators view at any two chosen points of interest and determine
+whichindicatorhasworsened,Often,thisturnsouttobe% backend_bound_memory. Commonindicators
+thataccompanyworseningofIPC w/o haltwithCPU Usage %areprovidedbelow,al
+
+=== PAGE 45 ===
+CHAPTER
+NINE
+CAPTURING INDICATORS USING AMD UPROFPCM
+Note: ThisisapreviewoftheAMDEPYCProcessorPerformancePlaybook.ItillustratesthePlaybookmethodology
+byfocusingonasubsetoftheoptimizationspace,specifically,performanceoptimizationopportunitiesinthepresence
+ofmultipleL3cachedomains.
+ThefollowingtableliststhevariousperformanceindicatorsthathavebeenreferredtointhedocumentandtheAMD
+uProfPcm commands that produce them. It also provides a way to map the indicator name, as referred to in this
+document,totherawmetricnames(surroundedby[])generatedbyuProfPcm.
+Note,theseindividualuProfPcmcommandscanbecombinedintofewercommandstoeasecollectionoftheseindica-
+tors. Forexample,thefollowingsinglecommandwillproducealltheindicatorslistedinthetablebelow.
+Finally,thecommandsbelowprofileallthelogicalCPUsinthesystem. Whenusingthese,careshouldbeexcercised
+toprofileonlytheCPUsonwhichtheapplicationisrunning. SeeAMDuProf)forfurtherdetails.
+% AMDuProfPcm -m ipc,pipeline_util,l1,tlb,dc,l2,l3,cache_miss, -O <output_dir> -A
+system -a -d <duration>
+˓→
+41
+
+=== PAGE 46 ===
+AMDEPYCProcessorPerformancePlaybook
+Indicator Command
+Per-CPU Utilization % AMDuProfPcm -m ipc -O <output_dir> -A system -a
+-d <duration>
+[Utilization(%)]
+CPU Frequency Mhz AMDuProfPcm -m ipc -O <output_dir> -A system -a
+-d <duration>
+[EffFreq(MHz)]
+% frontend_bound AMDuProfPcm -m pipeline_util -O <output_dir> -a
+-d <duration>
+[Frontend_Bound]
+% backend_bound_memory AMDuProfPcm -m pipeline_util -O <output_dir> -a
+-d <duration>
+[Backend_Bound.Memory]
+% backend_bound_cpu AMDuProfPcm -m pipeline_util -O <output_dir> -a
+-d <duration>
+[Backend_Bound.CPU]
+% smt_contention AMDuProfPcm -m pipeline_util -O <output_dir> -a
+-d <duration>
+[SMT_Disp_contention]
+Instruction Cache Miss AMDuProfPcm -m l1 -O <output\_dir> -A system -a
+-d <duration>
+[L1ICMiss(pti)]
+Branch Mispredicts AMDuProfPcm -m ipc -O <output_dir> -A system -a
+-d <duration>
+[RetiredBranchesMispredicted(pti)]
+Data Cache Miss AMDuProfPcm -m cache_miss -O <output_dir> -A
+system -a -d <duration>
+[L1DCMiss(pti)]
+L2 ITLB Miss AMDuProfPcm -m tlb -O <output\_dir> -A system
+-a -d <duration>
+[L2ITLBMiss(pti)]
+L2 DTLB Miss AMDuProfPcm -m tlb -O <output\_dir> -A system
+-a -d <duration>
+[L2DTLBMiss(pti)]
+L2 Cache Miss AMDuProfPcm -m l2 -O <output\_dir> -A system -a
+-d <duration>
+[L2Miss(pti)]
+L3 Cache Miss AMDuProfPcm -m l3 -O <output_dir> -A system -a
+-d <duration>
+[L3Miss(pti)](PlannedinuProf5.1)
+CPU Cross L3 Domain AMDuProfPcm -m dc -O <output_dir> -A system -a
+Data Sharing % -d <duration>
+[DC Fills From Remote CCX Cache (pti) + DC Fills From different
+CCXinsamenode(pti)/AllDCFills(pti)]
+42 Chapter9. CapturingIndicatorsUsingAMDuProfPcm
+
+=== PAGE 47 ===
+CHAPTER
+TEN
+PROCESSOR-SPECIFIC SOLUTIONS
+Note: ThisisapreviewoftheAMDEPYCProcessorPerformancePlaybook.ItillustratesthePlaybookmethodology
+byfocusingonasubsetoftheoptimizationspace,specifically,performanceoptimizationopportunitiesinthepresence
+ofmultipleL3cachedomains.
+10.1 Adaptive Allocation
+Scenarios where manipulating this feature may deliver performance are discussed under techniques to optimize L3
+domainusage[SeeProducerandConsumer].
+10.1.1 3rd-Gen EPYC (Milan, Milan-X)
+OptionstomanipulateAdaptiveAllocationareavailableunderNDA.
+10.1.2 4th-Gen EPYC (Genoa, Genoa-X, Bergamo, Siena)
+OptionstomanipulateAdaptiveAllocationareavailableunderNDA.
+10.1.3 5th-Gen EPYC (Turin)
+StartingwithTurin,BIOSoptionsexisttoenable/disableAdaptiveAllocation.
+Tools BIOS
+Commands CPUCommonOptions→AdaptiveAllocation(AA)→[Auto/Enabled/Disabled]
+10.2 Speculative Stores Mode Configuration
+Thetrade-offsrelatedtothisfeaturearediscussedinOptimizingL3DomainUsage. Generation-specificguidancefor
+howtomanipulatethisfeatureisprovidedbelow.
+10.2.1 3rd-Gen EPYC (Milan, Milan-X)
+Thisfeatureisnotavailableon3rd-GenEPYC.
+43
+
+=== PAGE 48 ===
+AMDEPYCProcessorPerformancePlaybook
+10.2.2 4th-Gen EPYC (Genoa, Genoa-X, Bergamo, Siena)
+The4th-Gendefaultis‘Balanced’. Settingto‘MoreSpeculative’willproducebehaviorsthataresimilarto3rd-Gen
+EPYC.
+ConfigureSpeculativeStoreMode
+Tools BIOS
+Commands CPUSpeculativeStoreModes{Balance,MoreSpeculative,LessSpeculative}
+Balanced:
+Storeinstructionsmaydelaysendingouttheirinvalidationstoremotecachelinecopies
+whenthecachelineispresentbutnotinawritablestateinthelocalcache.
+MoreSpeculative:
+Store instructions will send out invalidations to remote cacheline copies as soon as
+possible.
+LessSpeculative:
+Storeinstructionsmaydelaysendingouttheirinvalidationstoremotecachelinecopies
+when the cacheline is not present in the local cache or not in a writable state in the
+localcache.
+10.2.3 5th-Gen EPYC (Turin)
+5th-Genaddsan“Aggressive”optioninadditiontotheoneslistedabove[FIXME].
+44 Chapter10. Processor-SpecificSolutions
+
+=== PAGE 49 ===
+CHAPTER
+ELEVEN
+EXTERNAL REFERENCES
+1. TheArtofMultiprocessorProgramming,HerlihyandShavit,MorganKauffman,2ndEdition,2020.
+2. Lam, Monica D., Edward E. Rothberg, and Michael E. Wolf. “The cache performance and optimizations of
+blockedalgorithms.”ACMSIGOPSOperatingSystemsReview25,no. SpecialIssue(1991): 63-74.
+3. OptimizingCompilersforModernArchitectures:ADependence-BasedApproach,KenKennedy,JohnR.Allen
+MorganKaufmannPublishersInc. 2001.
+4. *Ding-KaiChen,Hong-MenSu,Pen-ChungYew*,“Theimpactofsynchronizationandgranularityonparallel
+systems”,ACMSIGARCHComputerArchitectureNews,Volume18,Issue2SI,1990.
+5. *VladimirVlassov,OscarSierraMerino,CsabaAndrasMoritz,KonstantinPopov*,“Supportforfine-grained
+synchronizationinshared-memorymultiprocessors”,*PaCT’07: Proceedingsofthe9th**internationalconfer-
+enceonParallelComputingTechnologies,Sep. 2007*.
+45
+

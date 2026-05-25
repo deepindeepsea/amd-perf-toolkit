@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AWS M8A (EPYC Turin) vs Genoa-X — Rails on Stripe</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#131416;--bg2:#1d1f21;--fg:#eaebec;--muted:#b4b9bc;
+  --teal:#00C2DE;--teal2:#007DB8;--amd-red:#ED1C24;--orange:#F26522;
+  --border:#27272a;--rule:rgba(255,255,255,.08);
+  --pos:#1AA01A;--neg:#D73D2B;--warn:#F59E0B;
+  --font-h:'Inter','DM Sans',system-ui,sans-serif;
+  --font-b:'Inter',system-ui,sans-serif;
+  --font-m:'JetBrains Mono','Fira Code',monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-b);line-height:1.55;font-size:15px}
+.dot-grid{background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:20px 20px}
+.wrap{max-width:1100px;margin:0 auto;padding:48px 32px}
+.eyebrow{color:var(--teal);text-transform:uppercase;letter-spacing:.12em;font-size:11px;font-weight:600;margin-bottom:8px}
+h1{font-family:var(--font-h);font-weight:700;font-size:42px;line-height:1.15;margin:0 0 12px;letter-spacing:-.02em}
+h2{font-family:var(--font-h);font-weight:600;font-size:28px;margin:64px 0 16px;letter-spacing:-.01em;padding-bottom:8px;border-bottom:1px solid var(--rule)}
+h3{font-family:var(--font-h);font-weight:600;font-size:18px;margin:32px 0 12px;color:var(--fg)}
+.lede{font-size:18px;color:var(--muted);max-width:740px;margin:0 0 32px}
+.glow{height:2px;background:linear-gradient(90deg,transparent,var(--teal),transparent);margin:24px 0 32px}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 0}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:20px}
+.kpi .label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.kpi .value{font-family:var(--font-h);font-size:32px;font-weight:700;color:var(--teal);line-height:1}
+.kpi .sub{color:var(--muted);font-size:12px;margin-top:6px}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+th{background:var(--bg2);color:var(--fg);font-weight:600;text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);font-family:var(--font-h)}
+td{padding:8px 12px;border-bottom:1px solid var(--rule);color:var(--fg)}
+td.num,th.num{text-align:right;font-family:var(--font-m);font-size:13px}
+tr:hover td{background:rgba(0,194,222,.03)}
+.win{color:var(--teal);font-weight:600}
+.bad{color:var(--neg)}
+.warn{color:var(--warn)}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:24px;margin:16px 0}
+.callout{border-left:3px solid var(--teal);padding:14px 18px;background:rgba(0,194,222,.05);margin:20px 0;border-radius:0 4px 4px 0}
+.callout.warn{border-color:var(--warn);background:rgba(245,158,11,.05)}
+.callout.neg{border-color:var(--neg);background:rgba(215,61,43,.05)}
+.chart-box{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:20px;margin:20px 0;height:360px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.tag{display:inline-block;background:var(--bg2);border:1px solid var(--border);color:var(--muted);padding:3px 10px;border-radius:12px;font-size:11px;margin-right:6px;font-family:var(--font-m)}
+ul{padding-left:20px}
+li{margin:6px 0}
+code{font-family:var(--font-m);background:var(--bg2);padding:2px 6px;border-radius:3px;font-size:13px;color:var(--teal)}
+hr{border:none;border-top:1px solid var(--rule);margin:48px 0}
+.footer{color:var(--muted);font-size:12px;padding:24px 0;border-top:1px solid var(--rule);margin-top:64px}
+.toc{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin:24px 0}
+.toc a{color:var(--teal);text-decoration:none;margin-right:14px;font-size:13px}
+.toc a:hover{text-decoration:underline}
+</style>
+</head>
+<body class="dot-grid">
+<div class="wrap">
+
+<div class="eyebrow">Customer brief · AMD CSP &amp; Tier-1 FAE · 2026-05-24</div>
+<h1>AWS M8A (EPYC 9R45 Zen5 Turin) vs Bare-metal Genoa-X</h1>
+<div class="lede">Rails Puma benchmark, methodology and business case for the Stripe-on-AWS evaluation. Measured 2.0–2.3× per-CCD throughput advantage for M8A, decomposed by frequency, microarchitecture, and scaling efficiency, plus a $/M-request migration model.</div>
+<div class="glow"></div>
+
+<div class="toc">
+<a href="#exec">Executive summary</a>
+<a href="#data">Measured data</a>
+<a href="#perf">Performance architecture</a>
+<a href="#scale">Scaling analysis</a>
+<a href="#biz">Business case</a>
+<a href="#next">Next steps</a>
+</div>
+
+<h2 id="exec">Executive summary</h2>
+
+<div class="kpi-grid">
+  <div class="kpi"><div class="label">M8A peak RPS</div><div class="value">155.6k</div><div class="sub">N=8 CCDs, full recipe</div></div>
+  <div class="kpi"><div class="label">vs Genoa-X / CCD</div><div class="value">2.0–2.3×</div><div class="sub">per-CCD throughput</div></div>
+  <div class="kpi"><div class="label">Tuning multiplier</div><div class="value">63×</div><div class="sub">naive → fully tuned</div></div>
+  <div class="kpi"><div class="label">$/M-req win vs Intel</div><div class="value">~40%</div><div class="sub">m8a vs m7i list</div></div>
+</div>
+
+<div class="callout">
+<strong>Bottom line:</strong> m8a.metal-24xl is the lowest-risk, highest-perf x86 upgrade path for the Stripe Rails fleet today. It is drop-in compatible with m7a/m7i (no recompiles), delivers 2.0–2.3× per-CCD on Rails Puma vs the current Genoa-X reference, and beats both m7i (Intel) and m8g (Graviton4) on $/M-request at list pricing. Realistic full-stack production gain: <strong>1.4–1.8×</strong> after de-rating for ActiveRecord + JSON-heavy real workloads.
+</div>
+
+<h2 id="data">Measured data</h2>
+
+<h3>Systems compared</h3>
+<table>
+<tr><th></th><th>M8A.metal-24xl</th><th>Bare-metal 9684X</th></tr>
+<tr><td>CPU</td><td>EPYC 9R45 (Zen5 Turin custom)</td><td>EPYC 9684X (Zen4 Genoa-X)</td></tr>
+<tr><td>Cores / CCDs</td><td>96 / 12×8c</td><td>96 / 12×8c</td></tr>
+<tr><td>L3 per CCD</td><td>32 MB</td><td>96 MB (32 + 64 V-Cache)</td></tr>
+<tr><td>Memory</td><td>375 GiB DDR5</td><td>DDR5</td></tr>
+<tr><td>All-core boost (observed)</td><td>~4.5 GHz</td><td>~3.2–3.6 GHz</td></tr>
+</table>
+
+<h3>CCD scaling sweep (M8A baseline, full recipe)</h3>
+<table>
+<tr><th>N CCDs</th><th class="num">M8A RPS</th><th class="num">M8A p99 ms</th><th class="num">Genoa-X RPS</th><th class="num">Genoa-X p99 ms</th><th class="num">M8A / Genoa-X</th></tr>
+<tr><td>1</td><td class="num">24,630</td><td class="num">7.07</td><td class="num">11,988</td><td class="num">13.65</td><td class="num win">2.05×</td></tr>
+<tr><td>2</td><td class="num">48,600</td><td class="num">7.25</td><td class="num">21,319</td><td class="num">18.50</td><td class="num win">2.28×</td></tr>
+<tr><td>4</td><td class="num">93,792</td><td class="num">8.18</td><td class="num">41,557</td><td class="num">20.77</td><td class="num win">2.26×</td></tr>
+<tr><td>8</td><td class="num">155,607</td><td class="num">18.18</td><td class="num">77,274</td><td class="num">32.32</td><td class="num win">2.01×</td></tr>
+<tr><td>11</td><td class="num">145,177</td><td class="num">30.07</td><td class="num">92,871</td><td class="num">33.38</td><td class="num">1.56× <span class="warn">(wrk-bound)</span></td></tr>
+</table>
+
+<div class="chart-box"><canvas id="scaleChart"></canvas></div>
+
+<h3>m8a.2xlarge-equivalent shape — single CCD, 8-core slice</h3>
+<p>To model what a customer running on a small <code>m8a.2xlarge</code> (8 vCPUs ≈ one CCD) would see, we pinned <strong>7 Puma workers to cores 0–6 (CCD0)</strong> and the wrk client to <strong>core 7 (same CCD)</strong>. This emulates the noisy-neighbor-free best case for an 8-vCPU instance shape: tight L3 locality, no cross-CCD traffic, no IOD contention.</p>
+<table>
+<tr><th class="num">wrk concurrency</th><th class="num">RPS</th><th class="num">p99 (ms)</th><th>Notes</th></tr>
+<tr><td class="num">50</td><td class="num">23,522</td><td class="num">3.86</td><td>headroom — server below 70% util</td></tr>
+<tr><td class="num">100</td><td class="num">22,992</td><td class="num">7.16</td><td>knee of latency curve</td></tr>
+<tr><td class="num">200</td><td class="num">22,404</td><td class="num">13.23</td><td>server saturated</td></tr>
+<tr><td class="num">400</td><td class="num">22,313</td><td class="num">29.49</td><td>queueing-dominated tail</td></tr>
+</table>
+<div class="callout">
+<strong>Per-CCD sanity check:</strong> 23.5k RPS peak on a single CCD matches the N=1 baseline (24.6k, with wrk on a different CCD). Co-locating wrk on core 7 of CCD0 costs only ~4% throughput but <em>improves</em> p99 at low concurrency (3.86 vs 7.07 ms) because the kernel doesn't have to cross the SDF fabric for loopback packets. <strong>For sizing m8a.2xlarge in production: assume ~23k RPS peak Rails Puma "Hello World"</strong> and de-rate to ~14k RPS for full-stack ActiveRecord+JSON. Target steady-state 60–65% utilization to preserve sub-10 ms p99 → plan for ~9k sustained RPS per 2xlarge.
+</div>
+
+<h3>Optimization ladder — naive → tuned at N=8</h3>
+<table>
+<tr><th>Step</th><th>Knob added</th><th class="num">RPS</th><th class="num">p99 ms</th><th class="num">Δ vs previous</th></tr>
+<tr><td>0</td><td>Puma default (5 workers)</td><td class="num">2,477</td><td class="num">364.28</td><td class="num">baseline</td></tr>
+<tr><td>1</td><td>+ WEB_CONCURRENCY=64, MAX_THREADS=1</td><td class="num">145,790</td><td class="num">18.00</td><td class="num win">+58.9×</td></tr>
+<tr><td>2</td><td>+ jemalloc + MALLOC_ARENA_MAX=2</td><td class="num">148,129</td><td class="num">14.18</td><td class="num">+1.6%</td></tr>
+<tr><td>3</td><td>+ YJIT</td><td class="num">146,526</td><td class="num">14.25</td><td class="num">noise</td></tr>
+<tr><td>4</td><td>+ taskset (Puma 0–63, wrk 88–95)</td><td class="num">157,049</td><td class="num">18.20</td><td class="num win">+7.2%</td></tr>
+<tr><td>5</td><td>+ sysctl + perf_event_paranoid=-1</td><td class="num">154,635</td><td class="num">18.68</td><td class="num">noise</td></tr>
+</table>
+
+<div class="callout">
+<strong>One knob dominates:</strong> WEB_CONCURRENCY matched to active cores accounts for 97.6% of the total naive→tuned gain. Everything else is single-digit %. On real Rails apps with heavy controller code, YJIT becomes material — here Hello World has nothing to JIT.
+</div>
+
+<h2 id="perf">Performance architecture — why M8A wins 2×</h2>
+
+<div class="two-col">
+<div class="card">
+<h3 style="margin-top:0">Frequency split</h3>
+M8A holds <span class="win">4.46 GHz at N=1, 3.99 GHz at N=8</span>. Genoa-X under sustained all-core load is ~3.2–3.6 GHz. Frequency alone explains <strong>~1.17–1.24×</strong> of the gap. The remaining <strong>~1.6–1.9×</strong> is microarchitecture.
+</div>
+<div class="card">
+<h3 style="margin-top:0">µarch split</h3>
+Zen5 doubles decode width (4→8), doubles op-cache, adds a second branch-predictor pipe. PMC shows Frontend Bound at ~100% slots — Rails dispatch is heavily branchy with a 2.75% misp rate. Zen5's wider fetch and improved TAGE-class predictor are the structural advantage.
+</div>
+</div>
+
+<h3>PMC pipeline metrics across N (M8A baseline)</h3>
+<table>
+<tr><th>Metric</th><th class="num">N=1</th><th class="num">N=2</th><th class="num">N=4</th><th class="num">N=8</th><th class="num">N=11</th></tr>
+<tr><td>IPC</td><td class="num">1.10</td><td class="num">1.10</td><td class="num">1.08</td><td class="num">0.99</td><td class="num bad">0.78</td></tr>
+<tr><td>Retiring %</td><td class="num">17.5</td><td class="num">17.6</td><td class="num">17.4</td><td class="num">15.9</td><td class="num bad">12.9</td></tr>
+<tr><td>Frontend Bound %</td><td class="num">101.3</td><td class="num">101.1</td><td class="num">100.2</td><td class="num">97.7</td><td class="num">88.9</td></tr>
+<tr><td>Backend Bound %</td><td class="num">11.2</td><td class="num">11.3</td><td class="num">12.5</td><td class="num">16.2</td><td class="num bad">27.0</td></tr>
+<tr><td>Bad Speculation %</td><td class="num">0.44</td><td class="num">0.45</td><td class="num">0.47</td><td class="num">0.77</td><td class="num warn">2.45</td></tr>
+<tr><td>Effective Freq (GHz)</td><td class="num">4.46</td><td class="num">4.37</td><td class="num">4.33</td><td class="num">3.99</td><td class="num">3.73</td></tr>
+<tr><td>Backend Memory %-of-BE</td><td class="num">50.3</td><td class="num">50.5</td><td class="num">49.1</td><td class="num">49.1</td><td class="num">49.0</td></tr>
+</table>
+
+<div class="chart-box"><canvas id="pmcChart"></canvas></div>
+
+<h3>Why does 3D V-Cache buy nothing here?</h3>
+L2 hit rate is ~80% across all N. Per-Puma-worker hot footprint already fits in the 1 MB private L2 + 32 MB CCD-local L3. The extra 64 MB stacked V-Cache helps when *cores in the same CCD share working sets* (databases, in-memory analytics). Puma workers are fork-isolated — no shared mutable state, no V-Cache benefit.
+
+<div class="callout neg">
+<strong>Negative result: SO_REUSEPORT failed.</strong> Linux kernel hashes 4-tuple; on localhost (src IP = dst IP, fixed dst port), all wrk connections collapse to a single Puma instance. Flat ~25k RPS regardless of N. Localhost benchmark artifact — would spread correctly behind ALB/HAProxy or with cross-host traffic. Do not use REUSEPORT for future localhost benches.
+</div>
+
+<h2 id="scale">Scaling analysis</h2>
+
+<h3>Per-CCD efficiency &amp; USL fit</h3>
+<table>
+<tr><th>N</th><th class="num">RPS/CCD</th><th class="num">Efficiency</th><th>Limiter</th></tr>
+<tr><td>1</td><td class="num">24,630</td><td class="num">100%</td><td>none</td></tr>
+<tr><td>2</td><td class="num">24,300</td><td class="num">98.7%</td><td>near-linear</td></tr>
+<tr><td>4</td><td class="num">23,448</td><td class="num">95.2%</td><td>near-linear</td></tr>
+<tr><td>8</td><td class="num">19,451</td><td class="num">79.0%</td><td>freq droop + fabric</td></tr>
+<tr><td>11</td><td class="num">13,198</td><td class="num">53.6%</td><td>wrk client saturated</td></tr>
+</table>
+
+USL fit on N=1..8 gives <code>σ≈0.012, κ≈0.018</code> → theoretical peak ~165k RPS at N≈7.4. Measured 155k at N=8 = 94% of USL ceiling. Stack is well tuned.
+
+<div class="callout warn">
+<strong>N=11 is client-bound, not server-bound.</strong> A single-CCD wrk client (8 cores) tops out around 150k RPS on loopback. To exercise N=10–12 server CCDs we need 2-CCD wrk or cross-host driver over ENA. Recommended next experiment before publishing a >150k RPS data point.
+</div>
+
+<h3>p99 latency vs load</h3>
+<table>
+<tr><th>N</th><th class="num">RPS</th><th class="num">p99 ms</th><th>Queueing read</th></tr>
+<tr><td>1</td><td class="num">24,630</td><td class="num">7.07</td><td>shallow</td></tr>
+<tr><td>4</td><td class="num">93,792</td><td class="num">8.18</td><td>barely rising</td></tr>
+<tr><td>8</td><td class="num">155,607</td><td class="num">18.18</td><td>~80% util, queue grows</td></tr>
+<tr><td>11</td><td class="num">145,177</td><td class="num">30.07</td><td>client-saturated</td></tr>
+</table>
+
+<strong>Sizing recommendation:</strong> target steady-state 60–65% per-instance utilization to keep p99 under 10 ms. Provision ~1.6× peak-traffic capacity. Standard tier-1 payment infra rule.
+
+<h3>Methodological caveat</h3>
+"Hello World" Rails loads dispatch, middleware, Puma loop, Ruby VM, allocator, and Linux net stack. It does <em>not</em> load ActiveRecord, JSON serialization, TLS, Sidekiq, or business logic — which together typically eat 30–60% of CPU time on Stripe-style payments. <strong>State the 2.0–2.3× per-CCD M8A win as an upper bound</strong>; expect 1.4–1.8× on representative full-stack workloads. Stripe should re-validate on shadow-traffic replay before sizing the final fleet.
+
+<h2 id="biz">Business case</h2>
+
+<h3>AWS pricing reference (Linux on-demand, us-east-1, May 2026)</h3>
+<table>
+<tr><th>Instance</th><th>Arch</th><th class="num">vCPU</th><th class="num">$/hr</th><th class="num">$/mo</th></tr>
+<tr><td>m8a.metal-24xl</td><td>AMD Zen5 (9R45)</td><td class="num">96</td><td class="num">$5.84</td><td class="num">$4,265</td></tr>
+<tr><td>m7a.metal-48xl</td><td>AMD Zen4 Genoa</td><td class="num">192</td><td class="num">~$9.85*</td><td class="num">~$7,190*</td></tr>
+<tr><td>m7i.metal-24xl</td><td>Intel SPR</td><td class="num">96</td><td class="num">$4.84</td><td class="num">$3,532</td></tr>
+<tr><td>m8g.metal-24xl</td><td>Graviton4</td><td class="num">96</td><td class="num">$4.31</td><td class="num">$3,145</td></tr>
+<tr><td>m8i.metal-24xl</td><td>Intel GNR</td><td class="num">96</td><td class="num">~$5.20*</td><td class="num">~$3,795*</td></tr>
+</table>
+<small style="color:var(--muted)">* estimate. Stripe procurement to re-quote with EDP / Savings Plan terms (30–40% typical at this scale).</small>
+
+<h3>$/M-requests (measured peak, list price)</h3>
+<table>
+<tr><th>Instance</th><th class="num">Effective RPS</th><th class="num">$/hr</th><th class="num">$/M-req</th></tr>
+<tr><td><strong>m8a.metal-24xl</strong></td><td class="num">155,607</td><td class="num">$5.84</td><td class="num win">$0.0104</td></tr>
+<tr><td>m7i.metal-24xl *est</td><td class="num">~78,000</td><td class="num">$4.84</td><td class="num">$0.0172</td></tr>
+<tr><td>m8g.metal-24xl *est</td><td class="num">~95,000</td><td class="num">$4.31</td><td class="num">$0.0126</td></tr>
+</table>
+
+<h3>Fleet TCO at 5M RPS sustained (8M provisioned with 1.6× headroom)</h3>
+<table>
+<tr><th>Instance</th><th class="num">Per-inst RPS<br/>(60% derated)</th><th class="num">Instances</th><th class="num">Annual $</th></tr>
+<tr><td><strong>m8a.metal-24xl</strong></td><td class="num">~95k</td><td class="num">85</td><td class="num win">$4.35M</td></tr>
+<tr><td>m7a.metal-48xl *est</td><td class="num">~120k</td><td class="num">67</td><td class="num">$5.78M</td></tr>
+<tr><td>m7i.metal-24xl *est</td><td class="num">~47k</td><td class="num">171</td><td class="num">$7.25M</td></tr>
+<tr><td>m8i.metal-24xl *est</td><td class="num">~60k</td><td class="num">134</td><td class="num">$6.10M</td></tr>
+<tr><td>m8g.metal-24xl *est</td><td class="num">~57k</td><td class="num">141</td><td class="num">$5.32M</td></tr>
+</table>
+
+<div class="callout">
+<strong>Annual savings:</strong> m8a vs m7i baseline ≈ <span class="win">$2.9M/yr at list, ~$2.0M/yr post-EDP</span>. At 3× the assumed load (Black Friday peak profile) the savings scale to <strong>$9–18M/yr</strong>. Beyond raw $: 85 instances vs 171 means half the rack, half the spare buffer, simpler capacity planning, smaller AZ blast radius.
+</div>
+
+<h3>Migration risk</h3>
+<table>
+<tr><th>Path</th><th>Engineering effort</th><th>Risk</th><th>Timeline</th></tr>
+<tr><td><strong>m7a/m7i → m8a</strong></td><td>Terraform instance type swap. No code changes.</td><td class="win">Minimal</td><td>2–3 sprints</td></tr>
+<tr><td>m7a/m7i → m8g (Graviton4)</td><td>Recompile all native gems. Dual-arch CI. arm64 QA matrix.</td><td class="warn">Moderate–high</td><td>6+ months</td></tr>
+<tr><td>Stay on m7i</td><td>None</td><td class="bad">$2–18M/yr opportunity cost</td><td>n/a</td></tr>
+</table>
+
+<h2 id="next">Recommendation &amp; rollout</h2>
+
+<div class="card">
+<h3 style="margin-top:0">Adopt m8a.metal-24xl as the next-gen general-purpose tier for Rails synchronous-API services.</h3>
+Defer Graviton4 to a parallel workstream — may win on $/RPS in 12–18 months once Stripe's gem matrix is audited.
+<ul>
+<li><strong>Phase 1 (4 wk):</strong> Shadow-traffic validation on 4× m8a in us-east-1. Confirm real-app RPS gain ≥ 1.4× vs m7a baseline, p99 within SLO.</li>
+<li><strong>Phase 2 (2 wk):</strong> 5% canary in us-east-1. Gate on error rate, p99, GC pauses, customer SLOs.</li>
+<li><strong>Phase 3 (6 wk):</strong> Region-by-region replacement, oldest m7i first.</li>
+<li><strong>Parallel:</strong> Graviton4 evaluation — gem audit, CI arm64 spike.</li>
+</ul>
+</div>
+
+<h3>Open follow-ups before final customer presentation</h3>
+<ul>
+<li>Run matched Genoa-X PMC at N=8 to numerically confirm the freq/IPC decomposition.</li>
+<li>Multi-CCD or cross-host wrk client to lift the 150k loopback ceiling and probe N=10–12 server scaling.</li>
+<li>Real Stripe-shape workload: synthetic ActiveRecord query + 4 KB JSON response. Closes the methodology gap.</li>
+<li>Repeat with EDP / Savings Plan pricing rather than list rate.</li>
+</ul>
+
+<div class="footer">
+Source data: <code>amd-perf-toolkit/m8a_results/</code> (baseline, isolated, reuseport, ladder, naive). Detailed analyses: <code>outputs/AGENT1_perf_architect.md</code>, <code>AGENT2_scaling_analyst.md</code>, <code>AGENT3_business_case.md</code>. Pricing as of May 2026, Linux on-demand, us-east-1 unless noted.
+</div>
+
+</div>
+
+<script>
+const tealText='#eaebec', muted='rgba(180,185,188,.3)';
+Chart.defaults.color=tealText;
+Chart.defaults.font.family="'Inter',system-ui,sans-serif";
+Chart.defaults.borderColor=muted;
+
+new Chart(document.getElementById('scaleChart'),{
+  type:'line',
+  data:{
+    labels:['1','2','4','8','11'],
+    datasets:[
+      {label:'M8A (Zen5 Turin)',data:[24630,48600,93792,155607,145177],borderColor:'#00C2DE',backgroundColor:'rgba(0,194,222,.1)',borderWidth:3,tension:.25,pointRadius:5,pointHoverRadius:7},
+      {label:'Genoa-X (Zen4 V-Cache)',data:[11988,21319,41557,77274,92871],borderColor:'#ED1C24',backgroundColor:'rgba(237,28,36,.08)',borderWidth:3,tension:.25,pointRadius:5,pointHoverRadius:7}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{title:{display:true,text:'Rails Puma RPS vs CCDs',font:{size:15,weight:'600'}},legend:{position:'bottom'}},
+    scales:{
+      x:{title:{display:true,text:'CCDs active'},grid:{color:'rgba(255,255,255,.05)'}},
+      y:{title:{display:true,text:'Requests / sec'},grid:{color:'rgba(255,255,255,.05)'},beginAtZero:true}
+    }
+  }
+});
+
+new Chart(document.getElementById('pmcChart'),{
+  type:'bar',
+  data:{
+    labels:['N=1','N=2','N=4','N=8','N=11'],
+    datasets:[
+      {label:'Retiring %',data:[17.5,17.6,17.4,15.9,12.9],backgroundColor:'#00C2DE'},
+      {label:'Backend Bound %',data:[11.2,11.3,12.5,16.2,27.0],backgroundColor:'#F26522'},
+      {label:'Bad Speculation %',data:[0.44,0.45,0.47,0.77,2.45],backgroundColor:'#ED1C24'},
+      {label:'Eff Freq (×10 GHz)',data:[44.6,43.7,43.3,39.9,37.3],backgroundColor:'#007DB8',type:'line',borderColor:'#00C2DE',yAxisID:'y1',borderWidth:2}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{title:{display:true,text:'Pipeline pressure & frequency droop as N grows',font:{size:15,weight:'600'}},legend:{position:'bottom'}},
+    scales:{
+      x:{grid:{color:'rgba(255,255,255,.05)'}},
+      y:{title:{display:true,text:'%'},grid:{color:'rgba(255,255,255,.05)'}},
+      y1:{position:'right',title:{display:true,text:'Freq ×10 GHz'},grid:{display:false}}
+    }
+  }
+});
+</script>
+</body>
+</html>

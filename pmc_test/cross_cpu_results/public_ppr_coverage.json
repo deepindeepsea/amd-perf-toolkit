@@ -1,0 +1,580 @@
+{
+  "n_events": 81,
+  "n_tuples": 223,
+  "by_class": {
+    "UNTESTED": 113,
+    "BOTH_ZERO": 34,
+    "BOTH": 47,
+    "BM_ONLY": 28,
+    "AWS_ONLY": 1
+  },
+  "per_event": {
+    "PMCx002": {
+      "name": "FP retired x87 uops",
+      "tuples": 4,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx003": {
+      "name": "FP retired SSE and AVX FLOPs",
+      "tuples": 6,
+      "bm_ok": 1,
+      "aws_ok": 1,
+      "untested": 2
+    },
+    "PMCx008": {
+      "name": "FP uops retired by size",
+      "tuples": 7,
+      "bm_ok": 6,
+      "aws_ok": 6,
+      "untested": 1
+    },
+    "PMCx00A": {
+      "name": "FP uops retired sorted by vector or scalar",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx00B": {
+      "name": "FP executed integer type uops sorted by vector or scalar",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx00C": {
+      "name": "FP uops retired sorted by packed 128 or packed 256",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx00D": {
+      "name": "FP executed packed integer uops sorted by packed 128 or packed 256",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx00E": {
+      "name": "FP Dispatch Faults",
+      "tuples": 5,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx024": {
+      "name": "Bad Status STLI",
+      "tuples": 3,
+      "bm_ok": 2,
+      "aws_ok": 1,
+      "untested": 1
+    },
+    "PMCx025": {
+      "name": "Retired Lock Instructions",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx026": {
+      "name": "Retired CLFLUSH Instructions",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx027": {
+      "name": "Retired CPUID Instructions",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx029": {
+      "name": "LS Dispatch",
+      "tuples": 4,
+      "bm_ok": 3,
+      "aws_ok": 3,
+      "untested": 1
+    },
+    "PMCx02B": {
+      "name": "SMIs Received",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx02C": {
+      "name": "Interrupts Taken",
+      "tuples": 2,
+      "bm_ok": 1,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx035": {
+      "name": "Store to Load Forward",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx037": {
+      "name": "Store Globally Visible Cancels Due To External Conditions",
+      "tuples": 2,
+      "bm_ok": 1,
+      "aws_ok": 1,
+      "untested": 1
+    },
+    "PMCx041": {
+      "name": "LS MAB Allocates by Type",
+      "tuples": 2,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 2
+    },
+    "PMCx043": {
+      "name": "Demand Data Cache Fills by Data Source",
+      "tuples": 9,
+      "bm_ok": 6,
+      "aws_ok": 1,
+      "untested": 1
+    },
+    "PMCx044": {
+      "name": "Any Data Cache Fills by Data Source",
+      "tuples": 9,
+      "bm_ok": 6,
+      "aws_ok": 1,
+      "untested": 1
+    },
+    "PMCx045": {
+      "name": "L1 DTLB Reloads",
+      "tuples": 9,
+      "bm_ok": 8,
+      "aws_ok": 8,
+      "untested": 1
+    },
+    "PMCx047": {
+      "name": "Misaligned Load Flows",
+      "tuples": 3,
+      "bm_ok": 2,
+      "aws_ok": 2,
+      "untested": 1
+    },
+    "PMCx04B": {
+      "name": "Prefetch Instructions Dispatched",
+      "tuples": 4,
+      "bm_ok": 2,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx050": {
+      "name": "Write Combining Buffer Close",
+      "tuples": 2,
+      "bm_ok": 1,
+      "aws_ok": 1,
+      "untested": 1
+    },
+    "PMCx052": {
+      "name": "Ineffective Software Prefetches",
+      "tuples": 3,
+      "bm_ok": 2,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx059": {
+      "name": "Software Prefetch Data Cache Fills by Data Source",
+      "tuples": 9,
+      "bm_ok": 4,
+      "aws_ok": 1,
+      "untested": 1
+    },
+    "PMCx05A": {
+      "name": "Hardware Prefetch Data Cache Fills by Data Source",
+      "tuples": 9,
+      "bm_ok": 6,
+      "aws_ok": 1,
+      "untested": 1
+    },
+    "PMCx05F": {
+      "name": "Allocated DC misses",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx076": {
+      "name": "Cycles Not in Halt",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx078": {
+      "name": "All TLB Flushes",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx120": {
+      "name": "P0 Freq Cycles not in Halt",
+      "tuples": 2,
+      "bm_ok": 1,
+      "aws_ok": 1,
+      "untested": 1
+    },
+    "PMCx082": {
+      "name": "Instruction Cache Refills From L2",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx083": {
+      "name": "Instruction Cache Refills from System",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx084": {
+      "name": "L1 ITLB Miss, L2ITLB Hit",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx085": {
+      "name": "L1 ITLB Miss, L2 ITLB Miss",
+      "tuples": 5,
+      "bm_ok": 3,
+      "aws_ok": 2,
+      "untested": 1
+    },
+    "PMCx08B": {
+      "name": "BP Pipe Correction or Cancel",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx08E": {
+      "name": "Variable Target Predictions",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx091": {
+      "name": "Early Redirects",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx094": {
+      "name": "ITLB Instruction Fetch Hits",
+      "tuples": 4,
+      "bm_ok": 2,
+      "aws_ok": 2,
+      "untested": 1
+    },
+    "PMCx09F": {
+      "name": "BP Redirects",
+      "tuples": 3,
+      "bm_ok": 2,
+      "aws_ok": 2,
+      "untested": 1
+    },
+    "PMCx188": {
+      "name": "Fetch IBS events",
+      "tuples": 6,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx18E": {
+      "name": "IC Tag Hit and Miss Events",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx28F": {
+      "name": "Op Cache Hit or Miss",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx0A9": {
+      "name": "Op Queue Empty",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx0AA": {
+      "name": "Source of Op Dispatched From Decoder",
+      "tuples": 3,
+      "bm_ok": 2,
+      "aws_ok": 2,
+      "untested": 1
+    },
+    "PMCx0AB": {
+      "name": "Types of Ops Dispatched From Decoder",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx0AE": {
+      "name": "Dynamic Tokens Dispatch Stall Cycles 1",
+      "tuples": 9,
+      "bm_ok": 5,
+      "aws_ok": 4,
+      "untested": 3
+    },
+    "PMCx0AF": {
+      "name": "Dynamic Tokens Dispatch Stall Cycles 2",
+      "tuples": 5,
+      "bm_ok": 3,
+      "aws_ok": 4,
+      "untested": 1
+    },
+    "PMCx1A0": {
+      "name": "No_Dispatch_per_Slot",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx1A2": {
+      "name": "Dispatch Additional Resource Stalls",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx0C0": {
+      "name": "Retired Instructions",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx0C1": {
+      "name": "Retired Macro-Ops",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx0C2": {
+      "name": "Retired Branch Instructions",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx0C3": {
+      "name": "Retired Branch Instructions Mispredicted.",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx0C4": {
+      "name": "Retired Taken Branch Instructions",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx0C5": {
+      "name": "Retired Taken Branch Instructions Mispredicted.",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx0C6": {
+      "name": "Retired Far Control Transfers",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx0C8": {
+      "name": "Retired Near Return Branch Instructions",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx0C9": {
+      "name": "Retired Near Return Branch Instructions Mispredicted",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx0CA": {
+      "name": "Retired Indirect Branch Instructions Mispredicted",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx0CB": {
+      "name": "Retired MMX FP Instructions",
+      "tuples": 4,
+      "bm_ok": 2,
+      "aws_ok": 1,
+      "untested": 1
+    },
+    "PMCx0CC": {
+      "name": "Retired Indirect Branch Instructions",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx0D1": {
+      "name": "Retired Conditional Branch Instructions",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx0D3": {
+      "name": "Div Cycles Busy count",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx0D4": {
+      "name": "Div Op Count",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx0D6": {
+      "name": "Cycles with no retire",
+      "tuples": 6,
+      "bm_ok": 4,
+      "aws_ok": 3,
+      "untested": 1
+    },
+    "PMCx1C1": {
+      "name": "Retired Microcoded Instructions",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx1C2": {
+      "name": "Retired Microcode Ops",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx1C7": {
+      "name": "Retired Conditional Branch Instructions Mispredicted",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx1C8": {
+      "name": "Retired Unconditional Branch Instructions Mispredicted",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx1C9": {
+      "name": "Retired Unconditional Branch Instructions",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx1CF": {
+      "name": "Tagged IBS Ops",
+      "tuples": 4,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx1D0": {
+      "name": "Retired Fused Instructions",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx060": {
+      "name": "Requests to L2 Group1",
+      "tuples": 9,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 9
+    },
+    "PMCx061": {
+      "name": "Requests to L2 Group2",
+      "tuples": 4,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 4
+    },
+    "PMCx063": {
+      "name": "Write Combining Buffer Requests",
+      "tuples": 2,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 2
+    },
+    "PMCx064": {
+      "name": "Core to L2 Cacheable Request Access Status",
+      "tuples": 9,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 9
+    },
+    "PMCx070": {
+      "name": "L2 Prefetch Hit in L2",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx071": {
+      "name": "L2 Prefetcher Hits in L3",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx072": {
+      "name": "L2 Prefetcher Misses in L3",
+      "tuples": 1,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 1
+    },
+    "PMCx165": {
+      "name": "L2 Fill Response Source",
+      "tuples": 9,
+      "bm_ok": 0,
+      "aws_ok": 0,
+      "untested": 9
+    }
+  }
+}

@@ -1,0 +1,588 @@
+{
+  "meta": {
+    "ts": "20260525T083036Z",
+    "host": "host-ruby-de91",
+    "ncpu": 96,
+    "ccd_topology": [
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      [
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      [
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
+      ],
+      [
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71
+      ],
+      [
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79
+      ],
+      [
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87
+      ],
+      [
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95
+      ]
+    ],
+    "mode": "sanity"
+  },
+  "sanity": [
+    {
+      "event": "cpu-cycles",
+      "workload": "all",
+      "value": 0.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12467122077941895
+    },
+    {
+      "event": "instructions",
+      "workload": "all",
+      "value": 0.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12467122077941895
+    },
+    {
+      "event": "ex_ret_ops",
+      "workload": "all",
+      "value": 0.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12467122077941895
+    },
+    {
+      "event": "ex_ret_brn",
+      "workload": "all",
+      "value": 0.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12467122077941895
+    },
+    {
+      "event": "ex_ret_brn_tkn",
+      "workload": "all",
+      "value": 0.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12467122077941895
+    },
+    {
+      "event": "ex_ret_cond",
+      "workload": "all",
+      "value": 0.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12467122077941895
+    },
+    {
+      "event": "ex_ret_near_ret",
+      "workload": "all",
+      "value": 0.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12467122077941895
+    },
+    {
+      "event": "ex_div_busy",
+      "workload": "all",
+      "value": 0.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12467122077941895
+    },
+    {
+      "event": "ex_no_retire.not_complete",
+      "workload": "all",
+      "value": 0.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12583446502685547
+    },
+    {
+      "event": "de_src_op_disp.all",
+      "workload": "all",
+      "value": 0.0,
+      "category": "DE",
+      "ok": false,
+      "duration_s": 0.12583446502685547
+    },
+    {
+      "event": "de_no_dispatch_per_slot.no_ops_from_frontend",
+      "workload": "all",
+      "value": 0.0,
+      "category": "DE",
+      "ok": false,
+      "duration_s": 0.12583446502685547
+    },
+    {
+      "event": "de_no_dispatch_per_slot.backend_stalls",
+      "workload": "all",
+      "value": 0.0,
+      "category": "DE",
+      "ok": false,
+      "duration_s": 0.12583446502685547
+    },
+    {
+      "event": "de_dis_dispatch_token_stalls1.load_queue_rsrc_stall",
+      "workload": "all",
+      "value": 0.0,
+      "category": "DE",
+      "ok": false,
+      "duration_s": 0.12583446502685547
+    },
+    {
+      "event": "de_op_queue_empty",
+      "workload": "all",
+      "value": 0.0,
+      "category": "DE",
+      "ok": false,
+      "duration_s": 0.12583446502685547
+    },
+    {
+      "event": "fp_ret_x87_fp_ops.all",
+      "workload": "all",
+      "value": 0.0,
+      "category": "FP",
+      "ok": false,
+      "duration_s": 0.12583446502685547
+    },
+    {
+      "event": "fp_disp_faults.all",
+      "workload": "all",
+      "value": 0.0,
+      "category": "FP",
+      "ok": false,
+      "duration_s": 0.12583446502685547
+    },
+    {
+      "event": "ls_dispatch.ld_st_dispatch",
+      "workload": "all",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.13011884689331055
+    },
+    {
+      "event": "all_data_cache_accesses",
+      "workload": "all",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.13011884689331055
+    },
+    {
+      "event": "ls_locks.bus_lock",
+      "workload": "all",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.13011884689331055
+    },
+    {
+      "event": "ls_int_taken",
+      "workload": "all",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.13011884689331055
+    },
+    {
+      "event": "ls_misal_loads.ma64",
+      "workload": "all",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.13011884689331055
+    },
+    {
+      "event": "ls_sw_pf_dc_fills.all",
+      "workload": "all",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.13011884689331055
+    },
+    {
+      "event": "ls_pref_instr_disp.all",
+      "workload": "all",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.13011884689331055
+    },
+    {
+      "event": "ls_not_halted_cyc",
+      "workload": "all",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.13011884689331055
+    },
+    {
+      "event": "ls_stlf",
+      "workload": "all",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.12817621231079102
+    },
+    {
+      "event": "ls_tlb_flush.all",
+      "workload": "all",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.12817621231079102
+    },
+    {
+      "event": "ic_tag_hit_miss.all_instruction_cache_accesses",
+      "workload": "all",
+      "value": 0.0,
+      "category": "IC_BP",
+      "ok": false,
+      "duration_s": 0.12817621231079102
+    },
+    {
+      "event": "ic_tag_hit_miss.instruction_cache_miss",
+      "workload": "all",
+      "value": 0.0,
+      "category": "IC_BP",
+      "ok": false,
+      "duration_s": 0.12817621231079102
+    },
+    {
+      "event": "ic_cache_fill_l2",
+      "workload": "all",
+      "value": 0.0,
+      "category": "IC_BP",
+      "ok": false,
+      "duration_s": 0.12817621231079102
+    },
+    {
+      "event": "ic_cache_fill_sys",
+      "workload": "all",
+      "value": 0.0,
+      "category": "IC_BP",
+      "ok": false,
+      "duration_s": 0.12817621231079102
+    },
+    {
+      "event": "bp_l1_tlb_miss_l2_tlb_hit",
+      "workload": "all",
+      "value": 0.0,
+      "category": "IC_BP",
+      "ok": false,
+      "duration_s": 0.12817621231079102
+    },
+    {
+      "event": "bp_l1_tlb_miss_l2_tlb_miss.if4k",
+      "workload": "all",
+      "value": 0.0,
+      "category": "IC_BP",
+      "ok": false,
+      "duration_s": 0.12817621231079102
+    },
+    {
+      "event": "bp_dyn_ind_pred",
+      "workload": "all",
+      "value": 0.0,
+      "category": "IC_BP",
+      "ok": false,
+      "duration_s": 0.1259312629699707
+    },
+    {
+      "event": "op_cache_hit_miss.op_cache_hit",
+      "workload": "all",
+      "value": 0.0,
+      "category": "IC_BP",
+      "ok": false,
+      "duration_s": 0.1259312629699707
+    },
+    {
+      "event": "op_cache_hit_miss.op_cache_miss",
+      "workload": "all",
+      "value": 0.0,
+      "category": "IC_BP",
+      "ok": false,
+      "duration_s": 0.1259312629699707
+    },
+    {
+      "event": "l2_request_g1.all_no_prefetch",
+      "workload": "all",
+      "value": 0.0,
+      "category": "L2",
+      "ok": false,
+      "duration_s": 0.1259312629699707
+    },
+    {
+      "event": "l2_cache_req_stat.ic_hit_in_l2",
+      "workload": "all",
+      "value": 0.0,
+      "category": "L2",
+      "ok": false,
+      "duration_s": 0.1259312629699707
+    },
+    {
+      "event": "l2_cache_req_stat.ic_fill_miss",
+      "workload": "all",
+      "value": 0.0,
+      "category": "L2",
+      "ok": false,
+      "duration_s": 0.1259312629699707
+    },
+    {
+      "event": "ex_ret_brn_misp",
+      "workload": "branch_random",
+      "value": 0.0,
+      "category": "EX",
+      "ok": false,
+      "duration_s": 0.4559197425842285
+    },
+    {
+      "event": "bp_de_redirect",
+      "workload": "branch_random",
+      "value": 0.0,
+      "category": "IC_BP",
+      "ok": false,
+      "duration_s": 0.4559197425842285
+    },
+    {
+      "event": "ex_no_retire.load_not_complete",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "category": "EX",
+      "ok": false,
+      "duration_s": 0.2123575210571289
+    },
+    {
+      "event": "ls_l1_d_tlb_miss.all",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.2123575210571289
+    },
+    {
+      "event": "ls_mab_alloc.all_allocations",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.2123575210571289
+    },
+    {
+      "event": "ls_any_fills_from_sys.all",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.2123575210571289
+    },
+    {
+      "event": "ls_dmnd_fills_from_sys.all",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.2123575210571289
+    },
+    {
+      "event": "ls_hw_pf_dc_fills.all",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.2123575210571289
+    },
+    {
+      "event": "l2_cache_req_stat.dc_hit_in_l2",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "category": "L2",
+      "ok": false,
+      "duration_s": 0.2123575210571289
+    },
+    {
+      "event": "l2_cache_req_stat.ls_rd_blk_c",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "category": "L2",
+      "ok": false,
+      "duration_s": 0.2123575210571289
+    },
+    {
+      "event": "l2_pf_hit_l2.all",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "category": "L2",
+      "ok": false,
+      "duration_s": 0.20532822608947754
+    },
+    {
+      "event": "fp_ret_sse_avx_ops.all",
+      "workload": "fp_avx",
+      "value": 0.0,
+      "category": "FP",
+      "ok": false,
+      "duration_s": 0.23273611068725586
+    },
+    {
+      "event": "fp_pack_ops_retired.all",
+      "workload": "fp_avx",
+      "value": 0.0,
+      "category": "FP",
+      "ok": false,
+      "duration_s": 0.23273611068725586
+    },
+    {
+      "event": "sse_avx_ops_retired.all",
+      "workload": "fp_avx",
+      "value": 0.0,
+      "category": "FP",
+      "ok": false,
+      "duration_s": 0.23273611068725586
+    },
+    {
+      "event": "fp_ret_sse_avx_ops.all",
+      "workload": "openssl",
+      "value": 0.0,
+      "category": "FP",
+      "ok": false,
+      "duration_s": 18.019428730010986
+    },
+    {
+      "event": "sse_avx_ops_retired.all",
+      "workload": "openssl",
+      "value": 0.0,
+      "category": "FP",
+      "ok": false,
+      "duration_s": 18.019428730010986
+    },
+    {
+      "event": "ls_l1_d_tlb_miss.all",
+      "workload": "tlb_thrash",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.015725374221801758
+    },
+    {
+      "event": "ls_tablewalker.iside_l1",
+      "workload": "tlb_thrash",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.015725374221801758
+    },
+    {
+      "event": "l2_cache_req_stat.dc_hit_in_l2",
+      "workload": "l2_pressure",
+      "value": 0.0,
+      "category": "L2",
+      "ok": false,
+      "duration_s": 0.17391014099121094
+    }
+  ]
+}

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>AWS m8a.24xlarge Pre-flight Predictions</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style>body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 980px; margin: 2em auto; padding: 0 2em; color: #1f2328; line-height: 1.55; background: #fff; }
+  h1, h2, h3, h4 { color: #0b0f14; margin-top: 1.6em; }
+  h1 { border-bottom: 2px solid #00C2DE; padding-bottom: .3em; }
+  h2 { border-bottom: 1px solid #d0d7de; padding-bottom: .2em; }
+  h3 { color: #00738a; }
+  code { background: #f6f8fa; padding: 2px 6px; border-radius: 4px; font-size: .9em; font-family: "SF Mono", Consolas, monospace; }
+  pre { background: #f6f8fa; padding: 14px; border-radius: 6px; overflow-x: auto; border-left: 3px solid #00C2DE; }
+  pre code { background: transparent; padding: 0; }
+  table { border-collapse: collapse; margin: 1em 0; width: 100%; font-size: .92em; }
+  th, td { border: 1px solid #d0d7de; padding: 8px 12px; text-align: left; vertical-align: top; }
+  th { background: #f6f8fa; font-weight: 600; }
+  tr:nth-child(even) td { background: #fafbfc; }
+  blockquote { border-left: 4px solid #00C2DE; padding-left: 1em; color: #57606a; margin: 1em 0; }
+  hr { border: 0; border-top: 1px solid #d0d7de; margin: 2em 0; }
+  a { color: #00738a; }
+  strong { color: #0b0f14; }</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">AWS m8a.24xlarge Pre-flight Predictions</h1>
+</header>
+<h1 id="aws-m8a.24xlarge-pre-flight-predictions">AWS m8a.24xlarge Pre-flight Predictions</h1>
+<p><strong>Source:</strong> AMD EPYC Processor Performance Playbook v1.2 (Feb 2025, Netflix-released preview, 198 pages). Local copy: <code>outputs/epyc_playbook_v12.pdf</code>. <strong>Bare-metal baseline:</strong> <code>amd-perf-toolkit/sweep_plots/SCALING_FINAL_REPORT.md</code> — EPYC 9684X Genoa-X, 12 CCDs × 8 cores, <strong>96 MB L3/CCD</strong> (3D V-Cache). <strong>Target:</strong> AWS m8a.24xlarge — Turin (Zen5), 96 physical cores, <strong>SMT off by default</strong>, expected <strong>32 MB L3/CCD</strong>, EC2 Nitro hypervisor, ENA networking, no deterministic boost control. <strong>Validated recipe to port:</strong> (1) Ruby 3.3.11 + YJIT, (2) jemalloc + <code>MALLOC_ARENA_MAX=2</code>, (3) per-CCD Puma master per port (SO_REUSEPORT workaround), (4) <code>taskset</code> per CCD. <strong>Author:</strong> Pradeep (with Cowork) — 2026-05-23</p>
+<hr />
+<h2 id="recipe-component-shifts-on-turinm8a">1. Recipe component shifts on Turin/m8a</h2>
+<p>The Playbook §6.1 framing is that anything causing <strong>cross-L3-domain interactions</strong> becomes more punishing when each domain is smaller and frequency headroom is lower. Genoa-X’s 96 MB L3 was masking some cross-CCD traffic that fit in cache; Turin’s 32 MB L3 per CCD strips that buffer away. Three of four components get <em>more</em> important; one stays neutral.</p>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 28%" />
+<col style="width: 28%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Component</th>
+<th style="text-align: right;">Bare-metal lift</th>
+<th style="text-align: right;">m8a prediction</th>
+<th>Mechanism (with Playbook citation)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>(3) Per-CCD Puma isolation</strong></td>
+<td style="text-align: right;">+21.6% @ N=10</td>
+<td style="text-align: right;"><strong>+28-35% @ N=10</strong></td>
+<td>The shared listen socket / accept queue is a §6.1.2 <em>Inter-Thread Synchronization</em> hotspot on cache lines shared across L3 domains. With 3× smaller L3 per CCD, those lines spill from L3 more often → cross-CCD coherence misses become more expensive in cycles and more frequent. The Playbook explicitly recommends “multiple smaller instances of the application… rather than a single large instance” (§6.1.2). This is exactly per-CCD Puma.</td>
+</tr>
+<tr class="even">
+<td><strong>(2) jemalloc + MALLOC_ARENA_MAX=2</strong></td>
+<td style="text-align: right;">+3.4% uniform</td>
+<td style="text-align: right;"><strong>+8-12% uniform</strong></td>
+<td>glibc per-thread arenas are a §6.1.1 <em>Concurrent Data Modification</em> pattern — arena metadata is read-modify-write across threads, classic cross-domain coherence load. The 32 MB L3 cannot absorb as many idle arena pages as 96 MB could, so cross-CCD heap walks happen earlier. Playbook §6.1.1 fix: “limit sharing of data structures to L3 domain granularity” → exactly what jemalloc + arena cap delivers.</td>
+</tr>
+<tr class="odd">
+<td><strong>(1) YJIT</strong></td>
+<td style="text-align: right;">+58% @ N=1</td>
+<td style="text-align: right;"><strong>+45-55% @ N=1</strong> (slightly less)</td>
+<td>YJIT addresses §4.4.1 Pipeline Utilization — replaces interpreter dispatch loads (Backend Memory %) with native code (Retiring %). The mechanism is per-core and L3-size-independent, but the <em>absolute</em> per-CCD ceiling is lower on m8a because EC2 frequency is lower (~3.0 GHz all-core vs 3.66 GHz observed on bare-metal Genoa-X N=1). So the <strong>percentage</strong> lift is comparable; the <strong>absolute</strong> RPS-per-CCD is lower.</td>
+</tr>
+<tr class="even">
+<td><strong>(4) taskset per CCD</strong></td>
+<td style="text-align: right;">n/a (rig requirement)</td>
+<td style="text-align: right;"><strong>Critical, but verify CCD visibility first</strong></td>
+<td>Playbook §2.2.5 <em>L3 Domains</em> requires <code>lstopo</code> / <code>lscpu</code>/sysfs <code>index3/shared_cpu_list</code> to identify domain boundaries. If Nitro doesn’t expose them faithfully (see §3 below), the pins become meaningless. <strong>First-5-minute check.</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Net headline prediction (cumulative): full recipe lift on m8a vs vanilla Ruby 3.2/single Puma cluster should be larger than on Genoa-X</strong>, because the recipe attacks an enlarged bottleneck (cross-CCD coherence on smaller L3) and adds a fresh one (jemalloc matters more). Expect cumulative N=10 lift in the <strong>+45 to +55%</strong> band vs +36% on Genoa-X.</p>
+<hr />
+<h2 id="turinm8a-additions-on-top-of-the-genoa-x-recipe">2. Turin/m8a additions on top of the Genoa-X recipe</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Addition</th>
+<th>Playbook citation</th>
+<th>Why it’s Turin/m8a-specific</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Adaptive Allocation BIOS knob</strong></td>
+<td>§6.1.3 <em>Producer and Consumer</em>: “BIOS options exist starting on Zen5”. Cache dynamically changes policies based on observed behavior.</td>
+<td>New on Zen5. We can’t flip BIOS knobs in an EC2 guest, but we can detect via <code>dmidecode</code> and ask AWS support about the m8a default. Worth filing as a “ask AWS / Turin team” follow-up rather than blocking the run.</td>
+</tr>
+<tr class="even">
+<td><strong>Speculative Stores Mode</strong></td>
+<td>§6.1 “Modify the Speculative Store Mode… BIOS options exist starting on Zen4.”</td>
+<td>Same constraint — not user-tunable on EC2. Document the m8a default if discoverable.</td>
+</tr>
+<tr class="odd">
+<td><strong>2 MB Transparent Huge Pages</strong></td>
+<td>Playbook silent on hugepages directly, but §6.1.4 <em>Thread Scheduling Effects</em> on TLB pressure.</td>
+<td>First-principles: smaller L3 → more DRAM touches → TLB misses bite harder. Verify <code>cat /sys/kernel/mm/transparent_hugepage/enabled</code> is <code>[always]</code> or at minimum <code>[madvise]</code>. Nitro / Ubuntu 24.04 default is <code>[madvise]</code> — fine for Ruby’s slab-allocated objects via jemalloc. <strong>No action expected, but verify.</strong></td>
+</tr>
+<tr class="even">
+<td><strong><code>pvspinlock</code> feature on VMs</strong></td>
+<td>§6.1.2 fragment + libvirt example: <code>&lt;features&gt;&lt;pvspinlock state='on'/&gt;&lt;/features&gt;</code></td>
+<td>This is a <em>host-side</em> hint for guest spinlock yielding. AWS Nitro should have it enabled by default; we can’t change it. Mention in the report if <code>native_queued_spin_lock_slowpath</code> shows up high in <code>perf top</code> during the run — that’s the symptom Playbook §6.1.2 describes.</td>
+</tr>
+<tr class="odd">
+<td><strong><code>net.core.busy_poll</code> / <code>busy_read</code> = 50</strong></td>
+<td>Playbook silent (out of scope for the L3-domains preview).</td>
+<td>Our prior <code>SCALING_DIAGNOSIS.md</code> Tier-3 recommendation. ENA on Nitro is a software NIC — busy polling can help at the high RPS we’re chasing. Apply if N=10 hits a wall &lt; 100k RPS.</td>
+</tr>
+<tr class="even">
+<td><strong>Confirm <code>cpufreq</code> governor is <code>performance</code></strong></td>
+<td>§3.4 Performance Variability — drift is a variability source.</td>
+<td>EC2 doesn’t always honor governor changes (Nitro may enforce schedutil). Document what’s actually set; don’t assume.</td>
+</tr>
+<tr class="odd">
+<td><strong>NUMA policy <code>--interleave=all</code> for Puma master is NOT recommended</strong></td>
+<td>§6.1 — interleave defeats domain-locality, which is the whole point of the per-CCD recipe.</td>
+<td>Explicit anti-recommendation. Stay with default localalloc + per-CCD pin.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="aws-guest-gotchas-verify-in-the-first-5-minutes">3. AWS-guest gotchas — verify in the first 5 minutes</h2>
+<p>The Playbook §2.2.4–§2.2.5 commands all rely on <code>lstopo</code> / <code>numactl --hardware</code> / sysfs faithfully reporting hardware topology. Inside Nitro, this is hypervisor-dependent. <strong>Run these first; the rest of the plan is conditional on the answers:</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co"># 1. CCD visibility — the single most important check</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="ex">lscpu</span> <span class="kw">|</span> <span class="fu">grep</span> -E <span class="st">&quot;Model name|^CPU\(s\)|Thread\(s\)|Socket\(s\)|NUMA&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="ex">lstopo-no-graphics</span> <span class="kw">|</span> <span class="fu">grep</span> -E <span class="st">&quot;L3|Package|NUMA&quot;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="fu">cat</span> /sys/devices/system/cpu/cpu*/cache/index3/shared_cpu_list <span class="kw">|</span> <span class="fu">sort</span> -u</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="co"># Expected on m8a.24xlarge (Turin, no V-Cache): 12 unique L3 lists,</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="co"># each covering 8 contiguous CPUs (cpu0-7, cpu8-15, ...).</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="co"># If instead we see one giant list covering all 96 CPUs → Nitro is hiding CCD topology,</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="co"># and the entire per-CCD recipe degrades to &quot;pin to any 8 cores&quot;.</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="co"># 2. NUMA exposure</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="ex">numactl</span> --hardware</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="co"># Expected: 1 NUMA node (single-socket m8a). NPS=1 unless AWS has done something unusual.</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a><span class="co"># 3. L3 size confirmation</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a><span class="ex">lscpu</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&quot;L3 cache&quot;</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a><span class="co"># Expected: ~32 MB per instance (Turin without V-Cache). If we see 96 MB → it&#39;s Turin-X</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a><span class="co"># (3D V-Cache Turin variant) and the whole &quot;smaller L3&quot; prediction is wrong — flag immediately</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true"></a><span class="co"># and the lift table in §1 needs revision.</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true"></a><span class="co"># 4. CPU model</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true"></a><span class="fu">cat</span> /proc/cpuinfo <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&quot;model name&quot;</span> <span class="kw">|</span> <span class="fu">head</span> -1</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true"></a><span class="co"># Expected: &quot;AMD EPYC 9V64H&quot; or similar 9005-series Turin SKU.</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true"></a><span class="co"># 5. ENA IRQ steering — known cross-CCD risk</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true"></a><span class="fu">cat</span> /proc/interrupts <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;/ena|nvme/{print $1, $NF}&#39;</span> <span class="kw">|</span> <span class="fu">head</span> -20</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true"></a><span class="kw">for</span> <span class="ex">irq</span> in <span class="va">$(</span><span class="fu">awk</span> <span class="st">&#39;/ena/{gsub(&quot;:&quot;,&quot;&quot;); print $1}&#39;</span> /proc/interrupts<span class="va">)</span><span class="kw">;</span> <span class="kw">do</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true"></a>  <span class="bu">echo</span> <span class="st">&quot;IRQ </span><span class="va">$irq</span><span class="st">: </span><span class="va">$(</span><span class="fu">cat</span> /proc/irq/<span class="va">$irq</span>/smp_affinity_list<span class="va">)</span><span class="st">&quot;</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true"></a><span class="kw">done</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true"></a><span class="co"># Risk: if all ENA queues are pinned to CPUs 0-7 (CCD 0), every Puma worker on CCDs 1-9</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true"></a><span class="co"># receives packets via cross-CCD softirq handoff. Spread or move IRQs to the client CCDs</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true"></a><span class="co"># (cores 80-95) so the kernel handoff stays inside the same CCD as wrk.</span></span></code></pre></div>
+<p><strong>Honest uncertainty:</strong> - <strong>CCD visibility on m8a is the open question.</strong> AWS has been good about exposing topology on m7a/m8a (vs hiding it like some Azure SKUs). I expect it works, but I haven’t personally validated it on m8a.24xlarge. - <strong>Nitro can rate-limit network packets per-flow.</strong> Even if Puma scales linearly, wrk-to-Puma over the in-instance loopback should bypass ENA, so this should not affect the co-located rig. Flag if it does. - <strong>EC2 enforces a ~3.0 GHz all-core boost cap</strong> without exposing thermal headroom. Effective frequency will be much flatter across N than the 3.66→3.22 GHz curve we saw bare-metal.</p>
+<hr />
+<h2 id="pmc-events-zen4-zen5">4. PMC events Zen4 → Zen5</h2>
+<p>The toolkit’s CLAUDE.md lists confirmed-working Zen4 events. Most are stable across Zen3/4/5 because they’re core-pipeline indicators that have existed since Zen2. <strong>Predicted Zen5 status:</strong></p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Event</th>
+<th>Predicted on Zen5</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>de_no_dispatch_per_slot.no_ops_from_frontend</code></td>
+<td>Works</td>
+<td>Same name in PPR Family 1Ah (Turin). Pipeline width still 6 ops/cycle.</td>
+</tr>
+<tr class="even">
+<td><code>de_no_dispatch_per_slot.backend_stalls</code></td>
+<td>Works</td>
+<td>Same.</td>
+</tr>
+<tr class="odd">
+<td><code>de_src_op_disp.all</code></td>
+<td>Works</td>
+<td>Stable.</td>
+</tr>
+<tr class="even">
+<td><code>ex_ret_ops</code></td>
+<td>Works</td>
+<td>Stable.</td>
+</tr>
+<tr class="odd">
+<td><code>ls_not_halted_cyc</code></td>
+<td>Works</td>
+<td>Stable since Zen2.</td>
+</tr>
+<tr class="even">
+<td><code>ex_no_retire.load_not_complete</code></td>
+<td>Likely renamed</td>
+<td>Zen5 may expose this as <code>ex_no_retire.load_not_complete</code> (same) OR split into a finer set. Verify via <code>perf list ex_no_retire</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>ex_no_retire.not_complete</code></td>
+<td>Same risk</td>
+<td>Same as above.</td>
+</tr>
+<tr class="even">
+<td><code>ex_ret_brn_misp</code>, <code>ex_ret_brn</code></td>
+<td>Works</td>
+<td>Stable.</td>
+</tr>
+<tr class="odd">
+<td><code>l2_cache_req_stat.{dc_hit_in_l2,ls_rd_blk_c,ic_fill_miss,ic_hit_in_l2}</code></td>
+<td>Likely renamed/expanded</td>
+<td>Zen5 L2 PMC event group was reorganized — naming convention shifted to <code>ls_l2_*</code> and <code>ic_l2_*</code> umasks. Check <code>perf list l2_cache</code> and <code>perf list ls_l2</code>.</td>
+</tr>
+<tr class="even">
+<td><code>l3_lookup_state.*</code></td>
+<td>Already broken on Zen4 9684X</td>
+<td>Not expected to work on m8a either. Don’t add it back.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Zen5-only events worth adding</strong> (per Family 1Ah PPR if accessible, or <code>perf list</code>): - A more granular cross-CCX/CCD data-sharing event — Zen5 added telemetry around remote L3 fills. Look for <code>ls_any_fills_from_sys.*</code> umasks; specifically <code>near_cache</code> and <code>far_cache</code> distinguish same-CCX vs cross-CCX fills, which <strong>directly measures the §6.1 bottleneck</strong>. Already mentioned in Playbook §6.1.1. - IBS sampling (<code>ibs_op//</code>) per §6.1.2 — works on both, but more useful at scale.</p>
+<p><strong>Sanity-check command to run first on m8a (before the sweep):</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="fu">sudo</span> perf list <span class="op">2&gt;</span>/dev/null <span class="kw">|</span> <span class="fu">grep</span> -E <span class="st">&quot;^  (de_no_dispatch_per_slot|de_src_op_disp|ex_ret_ops|ex_no_retire|ex_ret_brn|l2_cache_req_stat|ls_l2_|ls_any_fills_from_sys)&quot;</span> <span class="kw">|</span> <span class="fu">sort</span> -u</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="co"># Pipe to events_zen5_available.txt. Diff against the Zen4 confirmed list.</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="co"># Any missing event → either rename it or drop it from the per-CPU collector.</span></span></code></pre></div>
+<p>If <code>ex_no_retire.load_not_complete</code> doesn’t work, the Backend Memory % decomposition (§4.4.1 Playbook) breaks and we’d report only the aggregate Backend %. That would still be a valid story but loses the “load vs cpu” split. <strong>High priority to verify before the sweep.</strong></p>
+<hr />
+<h2 id="predicted-absolute-numbers">5. Predicted absolute numbers</h2>
+<p><strong>Per-CCD ceiling on m8a:</strong> EC2 frequency penalty alone is roughly 3.66 → 3.0 GHz (~18% reduction). Zen5 IPC gain over Zen4 on Ruby workload is in the +5 to +10% range (frontend-bound workload, modest gain). Net per-CCD ceiling ≈ 0.82 × 1.07 ≈ <strong>0.88× of Genoa-X</strong>.</p>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 28%" />
+<col style="width: 28%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th style="text-align: right;">Genoa-X observed</th>
+<th style="text-align: right;">m8a.24xlarge prediction</th>
+<th>Reasoning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>RPS @ N=1 (full recipe)</strong></td>
+<td style="text-align: right;">19,649</td>
+<td style="text-align: right;"><strong>15,000 – 18,000</strong></td>
+<td>0.88× Genoa-X N=1; jemalloc lift slightly larger on smaller L3 partially offsets.</td>
+</tr>
+<tr class="even">
+<td><strong>RPS @ N=10 (full recipe)</strong></td>
+<td style="text-align: right;">122,582</td>
+<td style="text-align: right;"><strong>105,000 – 130,000</strong></td>
+<td>Per-CCD eff prediction below × N × per-CCD ceiling. Range reflects uncertainty in whether CCD topology is exposed cleanly.</td>
+</tr>
+<tr class="odd">
+<td><strong>Per-CCD efficiency @ N=10</strong></td>
+<td style="text-align: right;">91%</td>
+<td style="text-align: right;"><strong>88 – 94%</strong></td>
+<td>Recipe attacks cross-CCD coherence directly. Smaller L3 means <em>easier</em> to overflow into cross-CCD misses, but the fix (per-CCD isolation) addresses exactly that, so efficiency should hold.</td>
+</tr>
+<tr class="even">
+<td><strong>Backend Memory % @ N=1</strong></td>
+<td style="text-align: right;">8.2% (Round C)</td>
+<td style="text-align: right;"><strong>9 – 12%</strong></td>
+<td>Smaller L3 → more L3 misses → slightly higher BE_mem%. Still in §4.4.1 <em>Low</em> band (&lt;20%).</td>
+</tr>
+<tr class="odd">
+<td><strong>Backend Memory % @ N=10</strong></td>
+<td style="text-align: right;">14.6% (Round C)</td>
+<td style="text-align: right;"><strong>15 – 19%</strong></td>
+<td>If recipe holds, the N delta over N=1 stays small (≤7 pp), per §6.1 endpoint. If we see &gt;25% at N=10, cross-CCD chatter has not been suppressed → CCD topology likely hidden by Nitro (§3 check failed).</td>
+</tr>
+<tr class="even">
+<td><strong>IPC @ N=1</strong></td>
+<td style="text-align: right;">1.153</td>
+<td style="text-align: right;"><strong>1.10 – 1.25</strong></td>
+<td>Zen5 +5-10% IPC over Zen4 on similar workload.</td>
+</tr>
+<tr class="odd">
+<td><strong>Effective frequency</strong></td>
+<td style="text-align: right;">3.22 GHz @ N=10</td>
+<td style="text-align: right;"><strong>2.8 – 3.0 GHz, flatter across N</strong></td>
+<td>EC2 governance; no thermal headroom we control.</td>
+</tr>
+<tr class="even">
+<td><strong>p99 latency @ N=10</strong></td>
+<td style="text-align: right;">~30 ms</td>
+<td style="text-align: right;"><strong>35 – 50 ms</strong></td>
+<td>Lower per-CCD ceiling → similar absolute queueing depth at similar offered load. Hypervisor jitter is the wildcard; if Nitro steal time is non-trivial, p99 blows up.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Falsifiable headline claim:</strong> <em>“Applying the validated Genoa-X Rails recipe to AWS m8a.24xlarge with no changes will deliver ≥88% per-CCD efficiency at N=10 — confirming the recipe is microarchitecture-portable across Zen4-X and Zen5.”</em> If we land below 80%, the recipe didn’t carry over and we need to identify which assumption broke (likely §3 topology visibility or §4 PMC availability).</p>
+<hr />
+<h2 id="post-run-validation-checklist-before-publishing">6. Post-run validation checklist (before publishing)</h2>
+<p>Run these against the m8a result set before the comparative report goes out:</p>
+<ol type="1">
+<li><strong>§2.2.5 L3 Domains:</strong> Confirm <code>lstopo</code> reports 12 L3 domains. Attach the topology dump as appendix. If &lt;12, explain.</li>
+<li><strong>§4.4.1 Pipeline Utilization thresholds:</strong> All four Pipeline Util values at N=10 fall in expected bands (FE 20-50%, BE_mem &lt;20%, Retiring &gt;15%). Anything in the <em>High</em> column (&gt;50% FE or BE_mem, &lt;10% Retiring) triggers a §6.1 cross-domain drill-down.</li>
+<li><strong>§6.1 endpoint:</strong> Backend Memory % at N=10 ≤ N=1 value + 5pp. This is <em>the</em> indicator that the L3-domain optimization landed. Same pass/fail criterion as the bare-metal report.</li>
+<li><strong>§6.1.4 Thread Migration:</strong> <code>perf record -e sched:sched_migrate_task</code> for 30s during steady-state, count Cross-L3 migrations. Should be near zero with <code>taskset</code> pinning. If non-zero, our pins are leaking — investigate.</li>
+<li><strong>§4.3.1 Per-CPU Utilization %:</strong> All pinned server CPUs &gt;90% during steady-state. &lt;90% → recipe isn’t saturating, look for upstream (kernel, ENA, wrk) bottleneck.</li>
+<li><strong>§3.4 Performance Variability:</strong> Run each (N, round) point 3× and report median + range. Bare-metal was single-run.</li>
+<li><strong>Diff predicted-vs-actual</strong> table from this document. Predictions that miss by &gt;20% should be examined; either the prediction was wrong (update mental model) or something on m8a is genuinely surprising (investigate).</li>
+<li><strong>Confirm <code>perf list</code> Zen5 PMC delta</strong> is documented in the comparative report so future runs on Zen5 know what’s available.</li>
+<li><strong>Capture <code>dmidecode -t processor</code>, <code>cpupower frequency-info</code>, <code>cat /proc/cmdline</code>, <code>aws ec2 describe-instances</code> JSON</strong> as appendix — proof of run conditions.</li>
+<li><strong>One non-Playbook check:</strong> confirm <code>cat /proc/sys/kernel/numa_balancing</code> is <code>0</code> for the run. Auto-NUMA balancing fights <code>taskset</code> pinning.</li>
+</ol>
+<hr />
+<h2 id="notes-caveats">Notes &amp; caveats</h2>
+<ul>
+<li><strong>Playbook v1.2 is a preview</strong> focused on the L3 Domain Usage subset. Sections on memory bandwidth, prefetcher tuning, and full pipeline-based opportunities are mentioned but not expanded. Where this document says “Playbook silent — first-principles estimate,” the full Playbook (NABU agent ID <code>9c936425-8ba1-4c7f-b5fe-dbcd1d8c5f9c</code>, 198-page version) may have more detail. NABU returned 403 for me today; falling back to PDF excerpts was the right call.</li>
+<li>The “Zen5 IPC +5-10% over Zen4” estimate is generic-workload; Ruby/Puma on a stateless <code>/hello</code> is mostly dispatch + branch + L2 hit traffic, which is the regime where Zen5’s frontend improvements help least. <strong>Don’t be surprised if the IPC gain is closer to 0-5%.</strong></li>
+<li>If the AWS run lands in the predicted bands, the Genoa-X → m8a comparative report becomes a much stronger artifact than either standalone report — it validates the methodology, the recipe, and the playbook as portable across one generation and one execution mode (bare-metal → cloud).</li>
+</ul>
+</body>
+</html>

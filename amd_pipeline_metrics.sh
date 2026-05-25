@@ -435,7 +435,22 @@ hdr() { echo "========================================================"; }
 # Total wall time = workload duration + ~2 s overhead.
 # =============================================================================
 
-ALL_EVENTS="\
+# Microarch auto-detect: Zen3/Zen4 = 0x19, Zen5 = 0x1A
+# Source: PerfSpect Turin events confirm core PMC names are stable Zen4->Zen5.
+# Zen5 extension events probed individually; silently dropped if unsupported.
+CPU_FAMILY_HEX=$(awk '/^cpu family/ {printf "0x%x", $4; exit}' /proc/cpuinfo)
+case "$CPU_FAMILY_HEX" in
+    0x1a) UARCH="Zen5 (Turin)";          DISPATCH_WIDTH=8 ;;
+    0x19) UARCH="Zen3/Zen4 (Genoa)";     DISPATCH_WIDTH=6 ;;
+    *)    UARCH="unknown (fam=$CPU_FAMILY_HEX)"; DISPATCH_WIDTH=6 ;;
+esac
+echo "  CPU family: $CPU_FAMILY_HEX -> $UARCH, dispatch=${DISPATCH_WIDTH} slots/cycle"
+
+probe_event() {
+    perf stat -e "$1" -- true 2>&1 | grep -E "^\s*[0-9,]+\s+$1" -q
+}
+
+CORE_EVENTS="\
 task-clock,\
 cpu-cycles,\
 instructions,\
@@ -452,6 +467,39 @@ l2_cache_req_stat.dc_hit_in_l2,\
 l2_cache_req_stat.ls_rd_blk_c,\
 l2_cache_req_stat.ic_fill_miss,\
 l2_cache_req_stat.ic_hit_in_l2"
+
+# Zen5-era extension candidates. ls_any_fills_from_sys.* is the cross-CCD
+# smoking gun for Playbook section 6.1 (Optimizing L3 Domain Usage).
+EXT_CANDIDATES=(
+    ls_any_fills_from_sys.local_l2
+    ls_any_fills_from_sys.local_ccx
+    ls_any_fills_from_sys.near_cache
+    ls_any_fills_from_sys.far_cache
+    ls_any_fills_from_sys.dram_io_near
+    ls_any_fills_from_sys.dram_io_far
+    op_cache_hit_miss.miss
+    op_cache_hit_miss.all
+    ic_tag_hit_miss.miss
+    ic_tag_hit_miss.all
+    ex_ret_ucode_ops
+    resyncs_or_nc_redirects
+    ex_ret_brn_stalled
+    de_no_dispatch_per_slot.smt_contention
+)
+
+EXT_ENABLED=()
+for ev in "${EXT_CANDIDATES[@]}"; do
+    probe_event "$ev" && EXT_ENABLED+=("$ev")
+done
+
+if [ ${#EXT_ENABLED[@]} -gt 0 ]; then
+    EXT_EVENTS=$(IFS=,; echo "${EXT_ENABLED[*]}")
+    ALL_EVENTS="${CORE_EVENTS},${EXT_EVENTS}"
+    echo "  Extension events enabled: ${#EXT_ENABLED[@]} / ${#EXT_CANDIDATES[@]}"
+else
+    ALL_EVENTS="$CORE_EVENTS"
+    echo "  Extension events: none supported (using core set only)"
+fi
 
 PERF_OUTPUT=$(mktemp /tmp/amd_perf_XXXXXX.txt)
 WL_PID_FILE=$(mktemp /tmp/amd_wlpid_XXXXXX)
@@ -904,14 +952,15 @@ DISPATCHED=${E["de_src_op_disp.all"]:-0}
 RETIRED=${E["ex_ret_ops"]:-0}
 CYCLES=${E["ls_not_halted_cyc"]:-1}
 
-TOTAL_SLOTS=$(calc "$CYCLES * 6")
-FRONTEND_PCT=$(calc "($FRONTEND / ($CYCLES * 6)) * 100")
-BACKEND_PCT=$(calc "($BACKEND / ($CYCLES * 6)) * 100")
-BADSPEC_PCT=$(calc "(($DISPATCHED - $RETIRED) / ($CYCLES * 6)) * 100")
-RETIRING_PCT=$(calc "($RETIRED / ($CYCLES * 6)) * 100")
+# Slot divisor: Zen3/Zen4 = 6, Zen5 = 8 (PerfSpect Turin metrics confirm)
+TOTAL_SLOTS=$(calc "$CYCLES * $DISPATCH_WIDTH")
+FRONTEND_PCT=$(calc "($FRONTEND / ($CYCLES * $DISPATCH_WIDTH)) * 100")
+BACKEND_PCT=$(calc "($BACKEND / ($CYCLES * $DISPATCH_WIDTH)) * 100")
+BADSPEC_PCT=$(calc "(($DISPATCHED - $RETIRED) / ($CYCLES * $DISPATCH_WIDTH)) * 100")
+RETIRING_PCT=$(calc "($RETIRED / ($CYCLES * $DISPATCH_WIDTH)) * 100")
 
 printf "  %-40s %15.0f\n" "Active CPU Cycles"              $CYCLES
-printf "  %-40s %15.0f\n" "Total Dispatch Slots (6x)"      $TOTAL_SLOTS
+printf "  %-40s %15.0f\n" "Total Dispatch Slots (${DISPATCH_WIDTH}x)"      $TOTAL_SLOTS
 sep
 printf "  %-40s %14s%%\n" "Frontend Bound"                  "$FRONTEND_PCT"
 printf "    %-38s %15.0f\n" "--- Unused Slots (Frontend)"  $FRONTEND
@@ -938,8 +987,8 @@ CYCLES2=${E["ls_not_halted_cyc"]:-1}
 
 MEM_RATIO=$(calc "($LOAD_NOT_COMPLETE / $NOT_COMPLETE) * 100")
 CPU_RATIO=$(calc "((1 - ($LOAD_NOT_COMPLETE / $NOT_COMPLETE)) * 100)")
-BACKEND_MEM_PCT=$(calcf "(($BACKEND / ($CYCLES2 * 6)) * ($LOAD_NOT_COMPLETE / $NOT_COMPLETE)) * 100" 2)
-BACKEND_CPU_PCT=$(calcf "(($BACKEND / ($CYCLES2 * 6)) * (1 - ($LOAD_NOT_COMPLETE / $NOT_COMPLETE))) * 100" 2)
+BACKEND_MEM_PCT=$(calcf "(($BACKEND / ($CYCLES2 * $DISPATCH_WIDTH)) * ($LOAD_NOT_COMPLETE / $NOT_COMPLETE)) * 100" 2)
+BACKEND_CPU_PCT=$(calcf "(($BACKEND / ($CYCLES2 * $DISPATCH_WIDTH)) * (1 - ($LOAD_NOT_COMPLETE / $NOT_COMPLETE))) * 100" 2)
 
 printf "  %-40s %14s%%\n" "Backend Memory Bound"     "$BACKEND_MEM_PCT"
 printf "    %-38s %14s%%\n" "--- Memory/Load ratio"   "$MEM_RATIO"
@@ -1074,6 +1123,63 @@ try:
 except Exception:
     pass
 " 2>/dev/null
+    echo ""
+fi
+
+# =============================================================================
+# SECTION 4b: L1D fill sources -- cross-CCD coherence (Playbook section 6.1)
+# Renders only if ls_any_fills_from_sys.* probed successfully (Zen5 + recent
+# Zen4 kernels). High .near_cache or .far_cache = cachelines crossing L3
+# domains; recipe is per-CCD pinning (e.g. per-CCD Puma+SO_REUSEPORT for Rails).
+# =============================================================================
+LOC_L2_F=${E["ls_any_fills_from_sys.local_l2"]:-}
+LOC_CCX_F=${E["ls_any_fills_from_sys.local_ccx"]:-}
+NEAR_CACHE_F=${E["ls_any_fills_from_sys.near_cache"]:-}
+FAR_CACHE_F=${E["ls_any_fills_from_sys.far_cache"]:-}
+DRAM_NEAR_F=${E["ls_any_fills_from_sys.dram_io_near"]:-}
+DRAM_FAR_F=${E["ls_any_fills_from_sys.dram_io_far"]:-}
+
+if [ -n "${LOC_L2_F}${LOC_CCX_F}${NEAR_CACHE_F}${FAR_CACHE_F}" ]; then
+    hdr
+    echo "  SECTION 4b: L1D Fill Sources (cross-CCD coherence)"
+    hdr
+    echo ""
+    FILL_TOTAL=$(calc "${LOC_L2_F:-0} + ${LOC_CCX_F:-0} + ${NEAR_CACHE_F:-0} + ${FAR_CACHE_F:-0} + ${DRAM_NEAR_F:-0} + ${DRAM_FAR_F:-0}")
+    if [ "$FILL_TOTAL" != "0" ] && [ "$FILL_TOTAL" != "N/A" ]; then
+        PCT_L2=$(calcf "(${LOC_L2_F:-0} / $FILL_TOTAL) * 100" 2)
+        PCT_CCX=$(calcf "(${LOC_CCX_F:-0} / $FILL_TOTAL) * 100" 2)
+        PCT_NEAR=$(calcf "(${NEAR_CACHE_F:-0} / $FILL_TOTAL) * 100" 2)
+        PCT_FAR=$(calcf "(${FAR_CACHE_F:-0} / $FILL_TOTAL) * 100" 2)
+        PCT_DN=$(calcf "(${DRAM_NEAR_F:-0} / $FILL_TOTAL) * 100" 2)
+        PCT_DF=$(calcf "(${DRAM_FAR_F:-0} / $FILL_TOTAL) * 100" 2)
+        printf "  %-40s %14s%%\n" "Local L2 (same core)"        "$PCT_L2"
+        printf "  %-40s %14s%%\n" "Local L3 / same CCX"         "$PCT_CCX"
+        printf "  %-40s %14s%%\n" "Cross-CCD, same NUMA (near)" "$PCT_NEAR"
+        printf "  %-40s %14s%%\n" "Cross-NUMA cache (far)"      "$PCT_FAR"
+        printf "  %-40s %14s%%\n" "Local DRAM/MMIO"             "$PCT_DN"
+        printf "  %-40s %14s%%\n" "Remote DRAM/MMIO"            "$PCT_DF"
+        sep
+        XCCD=$(calcf "($PCT_NEAR + $PCT_FAR)" 2)
+        printf "  %-40s %14s%%\n" "TOTAL CROSS-CCD (near+far)" "$XCCD"
+        echo ""
+    fi
+fi
+
+# Op cache / microcode (Zen5 extension)
+OPC_M=${E["op_cache_hit_miss.miss"]:-}
+OPC_A=${E["op_cache_hit_miss.all"]:-}
+UCODE=${E["ex_ret_ucode_ops"]:-}
+if [ -n "$OPC_M" ] && [ -n "$OPC_A" ] && [ "$OPC_A" != "0" ]; then
+    OPC_HIT=$(calcf "((1 - $OPC_M / $OPC_A) * 100)" 2)
+    hdr
+    echo "  SECTION 4c: Op Cache / Microcode (Zen5 extension)"
+    hdr
+    echo ""
+    printf "  %-40s %14s%%\n" "Op Cache Hit Rate" "$OPC_HIT"
+    if [ -n "$UCODE" ] && [ "$RETIRED" != "0" ]; then
+        UCP=$(calcf "($UCODE / $RETIRED) * 100" 2)
+        printf "  %-40s %14s%%\n" "Microcoded Ops (of retired)" "$UCP"
+    fi
     echo ""
 fi
 

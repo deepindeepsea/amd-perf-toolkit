@@ -1,0 +1,224 @@
+code,event,umask,ppr_name,symbolic,bm_ok,aws_ok,matrix_src,class
+PMCx002,0x2,-,FP retired x87 uops,Core::X86::Pmc::Core::Retired_x87_FP_Ops,,,untested,UNTESTED
+PMCx002,0x2,0x1,FP retired x87 uops,Core::X86::Pmc::Core::Retired_x87_FP_Ops,False,False,exact,BOTH_ZERO
+PMCx002,0x2,0x2,FP retired x87 uops,Core::X86::Pmc::Core::Retired_x87_FP_Ops,False,False,exact,BOTH_ZERO
+PMCx002,0x2,0x4,FP retired x87 uops,Core::X86::Pmc::Core::Retired_x87_FP_Ops,False,False,exact,BOTH_ZERO
+PMCx003,0x3,-,FP retired SSE and AVX FLOPs,Core::X86::Pmc::Core::Retired_SSE_AVX_FLOPs,,,untested,UNTESTED
+PMCx003,0x3,0x1,FP retired SSE and AVX FLOPs,Core::X86::Pmc::Core::Retired_SSE_AVX_FLOPs,False,False,exact,BOTH_ZERO
+PMCx003,0x3,0x2,FP retired SSE and AVX FLOPs,Core::X86::Pmc::Core::Retired_SSE_AVX_FLOPs,False,False,exact,BOTH_ZERO
+PMCx003,0x3,0x4,FP retired SSE and AVX FLOPs,Core::X86::Pmc::Core::Retired_SSE_AVX_FLOPs,False,False,exact,BOTH_ZERO
+PMCx003,0x3,0x8,FP retired SSE and AVX FLOPs,Core::X86::Pmc::Core::Retired_SSE_AVX_FLOPs,True,True,exact,BOTH
+PMCx003,0x3,0x10,FP retired SSE and AVX FLOPs,Core::X86::Pmc::Core::Retired_SSE_AVX_FLOPs,,,untested,UNTESTED
+PMCx008,0x8,-,FP uops retired by size,Core::X86::Pmc::Core::Retired_FP_uOps,,,untested,UNTESTED
+PMCx008,0x8,0x1,FP uops retired by size,Core::X86::Pmc::Core::Retired_FP_uOps,True,True,exact,BOTH
+PMCx008,0x8,0x2,FP uops retired by size,Core::X86::Pmc::Core::Retired_FP_uOps,True,True,exact,BOTH
+PMCx008,0x8,0x4,FP uops retired by size,Core::X86::Pmc::Core::Retired_FP_uOps,True,True,exact,BOTH
+PMCx008,0x8,0x8,FP uops retired by size,Core::X86::Pmc::Core::Retired_FP_uOps,True,True,exact,BOTH
+PMCx008,0x8,0x10,FP uops retired by size,Core::X86::Pmc::Core::Retired_FP_uOps,True,True,exact,BOTH
+PMCx008,0x8,0x20,FP uops retired by size,Core::X86::Pmc::Core::Retired_FP_uOps,True,True,exact,BOTH
+PMCx00A,0xa,-,FP uops retired sorted by vector or scalar,Core::X86::Pmc::Core::FP_Ops_Retired,,,untested,UNTESTED
+PMCx00B,0xb,-,FP executed integer type uops sorted by vector or scalar,Core::X86::Pmc::Core::INT_Ops_Retired,,,untested,UNTESTED
+PMCx00C,0xc,-,FP uops retired sorted by packed 128 or packed 256,,,,untested,UNTESTED
+PMCx00D,0xd,-,FP executed packed integer uops sorted by packed 128 or packed 256,,,,untested,UNTESTED
+PMCx00E,0xe,-,FP Dispatch Faults,Core::X86::Pmc::Core::FP_Dispatch_Faults,,,untested,UNTESTED
+PMCx00E,0xe,0x1,FP Dispatch Faults,Core::X86::Pmc::Core::FP_Dispatch_Faults,False,False,exact,BOTH_ZERO
+PMCx00E,0xe,0x2,FP Dispatch Faults,Core::X86::Pmc::Core::FP_Dispatch_Faults,False,False,exact,BOTH_ZERO
+PMCx00E,0xe,0x4,FP Dispatch Faults,Core::X86::Pmc::Core::FP_Dispatch_Faults,False,False,exact,BOTH_ZERO
+PMCx00E,0xe,0x8,FP Dispatch Faults,Core::X86::Pmc::Core::FP_Dispatch_Faults,False,False,exact,BOTH_ZERO
+PMCx024,0x24,-,Bad Status STLI,Core::X86::Pmc::Core::Bad_Status_STLI,,,untested,UNTESTED
+PMCx024,0x24,0x1,Bad Status STLI,Core::X86::Pmc::Core::Bad_Status_STLI,True,False,exact,BM_ONLY
+PMCx024,0x24,0x2,Bad Status STLI,Core::X86::Pmc::Core::Bad_Status_STLI,True,True,exact,BOTH
+PMCx025,0x25,-,Retired Lock Instructions,Core::X86::Pmc::Core::Retired_Lock_Instructions,,,untested,UNTESTED
+PMCx026,0x26,-,Retired CLFLUSH Instructions,Core::X86::Pmc::Core::CLFLUSH,,,untested,UNTESTED
+PMCx027,0x27,-,Retired CPUID Instructions,Core::X86::Pmc::Core::CPUID,,,untested,UNTESTED
+PMCx029,0x29,-,LS Dispatch,Core::X86::Pmc::Core::LS_Dispatch,,,untested,UNTESTED
+PMCx029,0x29,0x1,LS Dispatch,Core::X86::Pmc::Core::LS_Dispatch,True,True,exact,BOTH
+PMCx029,0x29,0x2,LS Dispatch,Core::X86::Pmc::Core::LS_Dispatch,True,True,exact,BOTH
+PMCx029,0x29,0x4,LS Dispatch,Core::X86::Pmc::Core::LS_Dispatch,True,True,exact,BOTH
+PMCx02B,0x2b,-,SMIs Received,Core::X86::Pmc::Core::SMI,,,untested,UNTESTED
+PMCx02C,0x2c,-,Interrupts Taken,Core::X86::Pmc::Core::Interrupts_Taken,,,untested,UNTESTED
+PMCx02C,0x2c,0x1,Interrupts Taken,Core::X86::Pmc::Core::Interrupts_Taken,True,False,exact,BM_ONLY
+PMCx035,0x35,-,Store to Load Forward,Core::X86::Pmc::Core::Store_to_Load_Forward,,,untested,UNTESTED
+PMCx037,0x37,-,Store Globally Visible Cancels Due To External Conditions,,,,untested,UNTESTED
+PMCx037,0x37,0x1,Store Globally Visible Cancels Due To External Conditions,,True,True,exact,BOTH
+PMCx041,0x41,-,LS MAB Allocates by Type,Core::X86::Pmc::Core::LS_MAB_Allocates_by_Type,,,untested,UNTESTED
+PMCx041,0x41,0x80,LS MAB Allocates by Type,Core::X86::Pmc::Core::LS_MAB_Allocates_by_Type,,,untested,UNTESTED
+PMCx043,0x43,-,Demand Data Cache Fills by Data Source,,,,untested,UNTESTED
+PMCx043,0x43,0x1,Demand Data Cache Fills by Data Source,,True,True,exact,BOTH
+PMCx043,0x43,0x2,Demand Data Cache Fills by Data Source,,True,False,exact,BM_ONLY
+PMCx043,0x43,0x4,Demand Data Cache Fills by Data Source,,True,False,exact,BM_ONLY
+PMCx043,0x43,0x8,Demand Data Cache Fills by Data Source,,True,False,exact,BM_ONLY
+PMCx043,0x43,0x10,Demand Data Cache Fills by Data Source,,True,False,exact,BM_ONLY
+PMCx043,0x43,0x20,Demand Data Cache Fills by Data Source,,False,False,exact,BOTH_ZERO
+PMCx043,0x43,0x40,Demand Data Cache Fills by Data Source,,True,False,exact,BM_ONLY
+PMCx043,0x43,0x80,Demand Data Cache Fills by Data Source,,False,False,exact,BOTH_ZERO
+PMCx044,0x44,-,Any Data Cache Fills by Data Source,Core::X86::Pmc::Core::Any_DC_Fills_by_Data_Source,,,untested,UNTESTED
+PMCx044,0x44,0x1,Any Data Cache Fills by Data Source,Core::X86::Pmc::Core::Any_DC_Fills_by_Data_Source,True,True,exact,BOTH
+PMCx044,0x44,0x2,Any Data Cache Fills by Data Source,Core::X86::Pmc::Core::Any_DC_Fills_by_Data_Source,True,False,exact,BM_ONLY
+PMCx044,0x44,0x4,Any Data Cache Fills by Data Source,Core::X86::Pmc::Core::Any_DC_Fills_by_Data_Source,True,False,exact,BM_ONLY
+PMCx044,0x44,0x8,Any Data Cache Fills by Data Source,Core::X86::Pmc::Core::Any_DC_Fills_by_Data_Source,True,False,exact,BM_ONLY
+PMCx044,0x44,0x10,Any Data Cache Fills by Data Source,Core::X86::Pmc::Core::Any_DC_Fills_by_Data_Source,True,False,exact,BM_ONLY
+PMCx044,0x44,0x20,Any Data Cache Fills by Data Source,Core::X86::Pmc::Core::Any_DC_Fills_by_Data_Source,False,False,exact,BOTH_ZERO
+PMCx044,0x44,0x40,Any Data Cache Fills by Data Source,Core::X86::Pmc::Core::Any_DC_Fills_by_Data_Source,True,False,exact,BM_ONLY
+PMCx044,0x44,0x80,Any Data Cache Fills by Data Source,Core::X86::Pmc::Core::Any_DC_Fills_by_Data_Source,False,False,exact,BOTH_ZERO
+PMCx045,0x45,-,L1 DTLB Reloads,Core::X86::Pmc::Core::L1_DTLB_Reloads,,,untested,UNTESTED
+PMCx045,0x45,0x1,L1 DTLB Reloads,Core::X86::Pmc::Core::L1_DTLB_Reloads,True,True,exact,BOTH
+PMCx045,0x45,0x2,L1 DTLB Reloads,Core::X86::Pmc::Core::L1_DTLB_Reloads,True,True,exact,BOTH
+PMCx045,0x45,0x4,L1 DTLB Reloads,Core::X86::Pmc::Core::L1_DTLB_Reloads,True,True,exact,BOTH
+PMCx045,0x45,0x8,L1 DTLB Reloads,Core::X86::Pmc::Core::L1_DTLB_Reloads,True,True,exact,BOTH
+PMCx045,0x45,0x10,L1 DTLB Reloads,Core::X86::Pmc::Core::L1_DTLB_Reloads,True,True,exact,BOTH
+PMCx045,0x45,0x20,L1 DTLB Reloads,Core::X86::Pmc::Core::L1_DTLB_Reloads,True,True,exact,BOTH
+PMCx045,0x45,0x40,L1 DTLB Reloads,Core::X86::Pmc::Core::L1_DTLB_Reloads,True,True,exact,BOTH
+PMCx045,0x45,0x80,L1 DTLB Reloads,Core::X86::Pmc::Core::L1_DTLB_Reloads,True,True,exact,BOTH
+PMCx047,0x47,-,Misaligned Load Flows,Core::X86::Pmc::Core::Misaligned_Load_Flows,,,untested,UNTESTED
+PMCx047,0x47,0x1,Misaligned Load Flows,Core::X86::Pmc::Core::Misaligned_Load_Flows,True,True,exact,BOTH
+PMCx047,0x47,0x2,Misaligned Load Flows,Core::X86::Pmc::Core::Misaligned_Load_Flows,True,True,exact,BOTH
+PMCx04B,0x4b,-,Prefetch Instructions Dispatched,Core::X86::Pmc::Core::Software_Prefetch_Dispatched,,,untested,UNTESTED
+PMCx04B,0x4b,0x1,Prefetch Instructions Dispatched,Core::X86::Pmc::Core::Software_Prefetch_Dispatched,True,False,exact,BM_ONLY
+PMCx04B,0x4b,0x2,Prefetch Instructions Dispatched,Core::X86::Pmc::Core::Software_Prefetch_Dispatched,True,False,exact,BM_ONLY
+PMCx04B,0x4b,0x4,Prefetch Instructions Dispatched,Core::X86::Pmc::Core::Software_Prefetch_Dispatched,False,False,exact,BOTH_ZERO
+PMCx050,0x50,-,Write Combining Buffer Close,Core::X86::Pmc::Core::WCB_Close,,,untested,UNTESTED
+PMCx050,0x50,0x1,Write Combining Buffer Close,Core::X86::Pmc::Core::WCB_Close,True,True,exact,BOTH
+PMCx052,0x52,-,Ineffective Software Prefetches,Core::X86::Pmc::Core::Ineffective_Software_Prefetches,,,untested,UNTESTED
+PMCx052,0x52,0x1,Ineffective Software Prefetches,Core::X86::Pmc::Core::Ineffective_Software_Prefetches,True,False,exact,BM_ONLY
+PMCx052,0x52,0x2,Ineffective Software Prefetches,Core::X86::Pmc::Core::Ineffective_Software_Prefetches,True,False,exact,BM_ONLY
+PMCx059,0x59,-,Software Prefetch Data Cache Fills by Data Source,,,,untested,UNTESTED
+PMCx059,0x59,0x1,Software Prefetch Data Cache Fills by Data Source,,True,True,exact,BOTH
+PMCx059,0x59,0x2,Software Prefetch Data Cache Fills by Data Source,,True,False,exact,BM_ONLY
+PMCx059,0x59,0x4,Software Prefetch Data Cache Fills by Data Source,,True,False,exact,BM_ONLY
+PMCx059,0x59,0x8,Software Prefetch Data Cache Fills by Data Source,,True,False,exact,BM_ONLY
+PMCx059,0x59,0x10,Software Prefetch Data Cache Fills by Data Source,,False,False,exact,BOTH_ZERO
+PMCx059,0x59,0x20,Software Prefetch Data Cache Fills by Data Source,,False,False,exact,BOTH_ZERO
+PMCx059,0x59,0x40,Software Prefetch Data Cache Fills by Data Source,,False,False,exact,BOTH_ZERO
+PMCx059,0x59,0x80,Software Prefetch Data Cache Fills by Data Source,,False,False,exact,BOTH_ZERO
+PMCx05A,0x5a,-,Hardware Prefetch Data Cache Fills by Data Source,,,,untested,UNTESTED
+PMCx05A,0x5a,0x1,Hardware Prefetch Data Cache Fills by Data Source,,True,True,exact,BOTH
+PMCx05A,0x5a,0x2,Hardware Prefetch Data Cache Fills by Data Source,,True,False,exact,BM_ONLY
+PMCx05A,0x5a,0x4,Hardware Prefetch Data Cache Fills by Data Source,,True,False,exact,BM_ONLY
+PMCx05A,0x5a,0x8,Hardware Prefetch Data Cache Fills by Data Source,,True,False,exact,BM_ONLY
+PMCx05A,0x5a,0x10,Hardware Prefetch Data Cache Fills by Data Source,,True,False,exact,BM_ONLY
+PMCx05A,0x5a,0x20,Hardware Prefetch Data Cache Fills by Data Source,,False,False,exact,BOTH_ZERO
+PMCx05A,0x5a,0x40,Hardware Prefetch Data Cache Fills by Data Source,,True,False,exact,BM_ONLY
+PMCx05A,0x5a,0x80,Hardware Prefetch Data Cache Fills by Data Source,,False,False,exact,BOTH_ZERO
+PMCx05F,0x5f,-,Allocated DC misses,Core::X86::Pmc::Core::Allocated_DC_misses,,,untested,UNTESTED
+PMCx076,0x76,-,Cycles Not in Halt,Core::X86::Pmc::Core::Cycles_Not_in_Halt,,,untested,UNTESTED
+PMCx078,0x78,-,All TLB Flushes,Core::X86::Pmc::Core::TLB_Flush_Events,,,untested,UNTESTED
+PMCx120,0x120,-,P0 Freq Cycles not in Halt,Core::X86::Pmc::Core::P0_frequency_Cycles_Not_in_Halt,,,untested,UNTESTED
+PMCx120,0x120,0x1,P0 Freq Cycles not in Halt,Core::X86::Pmc::Core::P0_frequency_Cycles_Not_in_Halt,True,True,exact,BOTH
+PMCx082,0x82,-,Instruction Cache Refills From L2,Core::X86::Pmc::Core::Instruction_Cache_Refills_from_L2,,,untested,UNTESTED
+PMCx083,0x83,-,Instruction Cache Refills from System,,,,untested,UNTESTED
+PMCx084,0x84,-,"L1 ITLB Miss, L2ITLB Hit",Core::X86::Pmc::Core::L1_ITLB_Miss_L2_ITLB_Hit,,,untested,UNTESTED
+PMCx085,0x85,-,"L1 ITLB Miss, L2 ITLB Miss",Core::X86::Pmc::Core::ITLB_Reload_from_Page_Table_walk,,,untested,UNTESTED
+PMCx085,0x85,0x1,"L1 ITLB Miss, L2 ITLB Miss",Core::X86::Pmc::Core::ITLB_Reload_from_Page_Table_walk,True,True,exact,BOTH
+PMCx085,0x85,0x2,"L1 ITLB Miss, L2 ITLB Miss",Core::X86::Pmc::Core::ITLB_Reload_from_Page_Table_walk,True,False,exact,BM_ONLY
+PMCx085,0x85,0x4,"L1 ITLB Miss, L2 ITLB Miss",Core::X86::Pmc::Core::ITLB_Reload_from_Page_Table_walk,False,False,exact,BOTH_ZERO
+PMCx085,0x85,0x8,"L1 ITLB Miss, L2 ITLB Miss",Core::X86::Pmc::Core::ITLB_Reload_from_Page_Table_walk,True,True,exact,BOTH
+PMCx08B,0x8b,-,BP Pipe Correction or Cancel,Core::X86::Pmc::Core::BP_Correct,,,untested,UNTESTED
+PMCx08E,0x8e,-,Variable Target Predictions,Core::X86::Pmc::Core::Variable_Target_Predictions,,,untested,UNTESTED
+PMCx091,0x91,-,Early Redirects,,,,untested,UNTESTED
+PMCx094,0x94,-,ITLB Instruction Fetch Hits,Core::X86::Pmc::Core::ITLB_Hits,,,untested,UNTESTED
+PMCx094,0x94,0x1,ITLB Instruction Fetch Hits,Core::X86::Pmc::Core::ITLB_Hits,True,True,exact,BOTH
+PMCx094,0x94,0x2,ITLB Instruction Fetch Hits,Core::X86::Pmc::Core::ITLB_Hits,True,True,exact,BOTH
+PMCx094,0x94,0x4,ITLB Instruction Fetch Hits,Core::X86::Pmc::Core::ITLB_Hits,False,False,exact,BOTH_ZERO
+PMCx09F,0x9f,-,BP Redirects,Core::X86::Pmc::Core::BP_redirects,,,untested,UNTESTED
+PMCx09F,0x9f,0x1,BP Redirects,Core::X86::Pmc::Core::BP_redirects,True,True,exact,BOTH
+PMCx09F,0x9f,0x2,BP Redirects,Core::X86::Pmc::Core::BP_redirects,True,True,exact,BOTH
+PMCx188,0x188,-,Fetch IBS events,Core::X86::Pmc::Core::Fetch_IBS_events,,,untested,UNTESTED
+PMCx188,0x188,0x1,Fetch IBS events,Core::X86::Pmc::Core::Fetch_IBS_events,False,False,exact,BOTH_ZERO
+PMCx188,0x188,0x2,Fetch IBS events,Core::X86::Pmc::Core::Fetch_IBS_events,False,False,exact,BOTH_ZERO
+PMCx188,0x188,0x4,Fetch IBS events,Core::X86::Pmc::Core::Fetch_IBS_events,False,False,exact,BOTH_ZERO
+PMCx188,0x188,0x8,Fetch IBS events,Core::X86::Pmc::Core::Fetch_IBS_events,False,False,exact,BOTH_ZERO
+PMCx188,0x188,0x10,Fetch IBS events,Core::X86::Pmc::Core::Fetch_IBS_events,False,False,exact,BOTH_ZERO
+PMCx18E,0x18e,-,IC Tag Hit and Miss Events,Core::X86::Pmc::Core::IC_Tag_Hit_Miss_events,,,untested,UNTESTED
+PMCx28F,0x28f,-,Op Cache Hit or Miss,Core::X86::Pmc::Core::Op_Cache_hit_miss,,,untested,UNTESTED
+PMCx0A9,0xa9,-,Op Queue Empty,Core::X86::Pmc::Core::Dispatch_Empty,,,untested,UNTESTED
+PMCx0AA,0xaa,-,Source of Op Dispatched From Decoder,,,,untested,UNTESTED
+PMCx0AA,0xaa,0x1,Source of Op Dispatched From Decoder,,True,True,exact,BOTH
+PMCx0AA,0xaa,0x2,Source of Op Dispatched From Decoder,,True,True,exact,BOTH
+PMCx0AB,0xab,-,Types of Ops Dispatched From Decoder,,,,untested,UNTESTED
+PMCx0AE,0xae,-,Dynamic Tokens Dispatch Stall Cycles 1,,,,untested,UNTESTED
+PMCx0AE,0xae,0x1,Dynamic Tokens Dispatch Stall Cycles 1,,True,True,exact,BOTH
+PMCx0AE,0xae,0x2,Dynamic Tokens Dispatch Stall Cycles 1,,True,True,exact,BOTH
+PMCx0AE,0xae,0x4,Dynamic Tokens Dispatch Stall Cycles 1,,True,True,exact,BOTH
+PMCx0AE,0xae,0x8,Dynamic Tokens Dispatch Stall Cycles 1,,False,False,exact,BOTH_ZERO
+PMCx0AE,0xae,0x10,Dynamic Tokens Dispatch Stall Cycles 1,,True,False,exact,BM_ONLY
+PMCx0AE,0xae,0x20,Dynamic Tokens Dispatch Stall Cycles 1,,,,untested,UNTESTED
+PMCx0AE,0xae,0x40,Dynamic Tokens Dispatch Stall Cycles 1,,True,True,exact,BOTH
+PMCx0AE,0xae,0x80,Dynamic Tokens Dispatch Stall Cycles 1,,,,untested,UNTESTED
+PMCx0AF,0xaf,-,Dynamic Tokens Dispatch Stall Cycles 2,,,,untested,UNTESTED
+PMCx0AF,0xaf,0x1,Dynamic Tokens Dispatch Stall Cycles 2,,True,True,exact,BOTH
+PMCx0AF,0xaf,0x2,Dynamic Tokens Dispatch Stall Cycles 2,,True,True,exact,BOTH
+PMCx0AF,0xaf,0x4,Dynamic Tokens Dispatch Stall Cycles 2,,False,True,exact,AWS_ONLY
+PMCx0AF,0xaf,0x20,Dynamic Tokens Dispatch Stall Cycles 2,,True,True,exact,BOTH
+PMCx1A0,0x1a0,-,No_Dispatch_per_Slot,Core::X86::Pmc::Core::No_Dispatch_per_Slot,,,untested,UNTESTED
+PMCx1A2,0x1a2,-,Dispatch Additional Resource Stalls,Core::X86::Pmc::Core::Additional_Resource_Stalls,,,untested,UNTESTED
+PMCx0C0,0xc0,-,Retired Instructions,Core::X86::Pmc::Core::Retired_Instructions,,,untested,UNTESTED
+PMCx0C1,0xc1,-,Retired Macro-Ops,Core::X86::Pmc::Core::Retired_Macro_Ops,,,untested,UNTESTED
+PMCx0C2,0xc2,-,Retired Branch Instructions,Core::X86::Pmc::Core::Retired_Branch_Instructions,,,untested,UNTESTED
+PMCx0C3,0xc3,-,Retired Branch Instructions Mispredicted.,,,,untested,UNTESTED
+PMCx0C4,0xc4,-,Retired Taken Branch Instructions,Core::X86::Pmc::Core::Retired_Taken_Branch_Instructions,,,untested,UNTESTED
+PMCx0C5,0xc5,-,Retired Taken Branch Instructions Mispredicted.,,,,untested,UNTESTED
+PMCx0C6,0xc6,-,Retired Far Control Transfers,Core::X86::Pmc::Core::Retired_Far_Control_Transfers,,,untested,UNTESTED
+PMCx0C8,0xc8,-,Retired Near Return Branch Instructions,,,,untested,UNTESTED
+PMCx0C9,0xc9,-,Retired Near Return Branch Instructions Mispredicted,,,,untested,UNTESTED
+PMCx0CA,0xca,-,Retired Indirect Branch Instructions Mispredicted,,,,untested,UNTESTED
+PMCx0CB,0xcb,-,Retired MMX FP Instructions,Core::X86::Pmc::Core::Retired_MMX_FP_Instructions,,,untested,UNTESTED
+PMCx0CB,0xcb,0x1,Retired MMX FP Instructions,Core::X86::Pmc::Core::Retired_MMX_FP_Instructions,True,False,exact,BM_ONLY
+PMCx0CB,0xcb,0x2,Retired MMX FP Instructions,Core::X86::Pmc::Core::Retired_MMX_FP_Instructions,False,False,exact,BOTH_ZERO
+PMCx0CB,0xcb,0x4,Retired MMX FP Instructions,Core::X86::Pmc::Core::Retired_MMX_FP_Instructions,True,True,exact,BOTH
+PMCx0CC,0xcc,-,Retired Indirect Branch Instructions,,,,untested,UNTESTED
+PMCx0D1,0xd1,-,Retired Conditional Branch Instructions,,,,untested,UNTESTED
+PMCx0D3,0xd3,-,Div Cycles Busy count,Core::X86::Pmc::Core::Div_Cycles_Busy_count,,,untested,UNTESTED
+PMCx0D4,0xd4,-,Div Op Count,Core::X86::Pmc::Core::Div_Op_Count,,,untested,UNTESTED
+PMCx0D6,0xd6,-,Cycles with no retire,Core::X86::Pmc::Core::Cycles_With_No_Retire,,,untested,UNTESTED
+PMCx0D6,0xd6,0x1,Cycles with no retire,Core::X86::Pmc::Core::Cycles_With_No_Retire,True,True,exact,BOTH
+PMCx0D6,0xd6,0x2,Cycles with no retire,Core::X86::Pmc::Core::Cycles_With_No_Retire,True,True,exact,BOTH
+PMCx0D6,0xd6,0x4,Cycles with no retire,Core::X86::Pmc::Core::Cycles_With_No_Retire,False,False,exact,BOTH_ZERO
+PMCx0D6,0xd6,0x8,Cycles with no retire,Core::X86::Pmc::Core::Cycles_With_No_Retire,True,True,exact,BOTH
+PMCx0D6,0xd6,0x10,Cycles with no retire,Core::X86::Pmc::Core::Cycles_With_No_Retire,True,False,exact,BM_ONLY
+PMCx1C1,0x1c1,-,Retired Microcoded Instructions,Core::X86::Pmc::Core::Retired_Microcoded_Instructions,,,untested,UNTESTED
+PMCx1C2,0x1c2,-,Retired Microcode Ops,Core::X86::Pmc::Core::Retired_Microcode_Ops,,,untested,UNTESTED
+PMCx1C7,0x1c7,-,Retired Conditional Branch Instructions Mispredicted,,,,untested,UNTESTED
+PMCx1C8,0x1c8,-,Retired Unconditional Branch Instructions Mispredicted,,,,untested,UNTESTED
+PMCx1C9,0x1c9,-,Retired Unconditional Branch Instructions,,,,untested,UNTESTED
+PMCx1CF,0x1cf,-,Tagged IBS Ops,Core::X86::Pmc::Core::Tagged_IBS_Ops,,,untested,UNTESTED
+PMCx1CF,0x1cf,0x1,Tagged IBS Ops,Core::X86::Pmc::Core::Tagged_IBS_Ops,False,False,exact,BOTH_ZERO
+PMCx1CF,0x1cf,0x2,Tagged IBS Ops,Core::X86::Pmc::Core::Tagged_IBS_Ops,False,False,exact,BOTH_ZERO
+PMCx1CF,0x1cf,0x4,Tagged IBS Ops,Core::X86::Pmc::Core::Tagged_IBS_Ops,False,False,exact,BOTH_ZERO
+PMCx1D0,0x1d0,-,Retired Fused Instructions,Core::X86::Pmc::Core::Retired_fused_instructions,,,untested,UNTESTED
+PMCx060,0x60,-,Requests to L2 Group1,Core::X86::Pmc::L2::L2RequestG1,,,untested,UNTESTED
+PMCx060,0x60,0x1,Requests to L2 Group1,Core::X86::Pmc::L2::L2RequestG1,,,untested,UNTESTED
+PMCx060,0x60,0x2,Requests to L2 Group1,Core::X86::Pmc::L2::L2RequestG1,,,untested,UNTESTED
+PMCx060,0x60,0x4,Requests to L2 Group1,Core::X86::Pmc::L2::L2RequestG1,,,untested,UNTESTED
+PMCx060,0x60,0x8,Requests to L2 Group1,Core::X86::Pmc::L2::L2RequestG1,,,untested,UNTESTED
+PMCx060,0x60,0x10,Requests to L2 Group1,Core::X86::Pmc::L2::L2RequestG1,,,untested,UNTESTED
+PMCx060,0x60,0x20,Requests to L2 Group1,Core::X86::Pmc::L2::L2RequestG1,,,untested,UNTESTED
+PMCx060,0x60,0x40,Requests to L2 Group1,Core::X86::Pmc::L2::L2RequestG1,,,untested,UNTESTED
+PMCx060,0x60,0x80,Requests to L2 Group1,Core::X86::Pmc::L2::L2RequestG1,,,untested,UNTESTED
+PMCx061,0x61,-,Requests to L2 Group2,Core::X86::Pmc::L2::L2RequestG2,,,untested,UNTESTED
+PMCx061,0x61,0x20,Requests to L2 Group2,Core::X86::Pmc::L2::L2RequestG2,,,untested,UNTESTED
+PMCx061,0x61,0x40,Requests to L2 Group2,Core::X86::Pmc::L2::L2RequestG2,,,untested,UNTESTED
+PMCx061,0x61,0x80,Requests to L2 Group2,Core::X86::Pmc::L2::L2RequestG2,,,untested,UNTESTED
+PMCx063,0x63,-,Write Combining Buffer Requests,Core::X86::Pmc::L2::L2WcbReq,,,untested,UNTESTED
+PMCx063,0x63,0x20,Write Combining Buffer Requests,Core::X86::Pmc::L2::L2WcbReq,,,untested,UNTESTED
+PMCx064,0x64,-,Core to L2 Cacheable Request Access Status,Core::X86::Pmc::L2::L2CacheReqStat,,,untested,UNTESTED
+PMCx064,0x64,0x1,Core to L2 Cacheable Request Access Status,Core::X86::Pmc::L2::L2CacheReqStat,,,untested,UNTESTED
+PMCx064,0x64,0x2,Core to L2 Cacheable Request Access Status,Core::X86::Pmc::L2::L2CacheReqStat,,,untested,UNTESTED
+PMCx064,0x64,0x4,Core to L2 Cacheable Request Access Status,Core::X86::Pmc::L2::L2CacheReqStat,,,untested,UNTESTED
+PMCx064,0x64,0x8,Core to L2 Cacheable Request Access Status,Core::X86::Pmc::L2::L2CacheReqStat,,,untested,UNTESTED
+PMCx064,0x64,0x10,Core to L2 Cacheable Request Access Status,Core::X86::Pmc::L2::L2CacheReqStat,,,untested,UNTESTED
+PMCx064,0x64,0x20,Core to L2 Cacheable Request Access Status,Core::X86::Pmc::L2::L2CacheReqStat,,,untested,UNTESTED
+PMCx064,0x64,0x40,Core to L2 Cacheable Request Access Status,Core::X86::Pmc::L2::L2CacheReqStat,,,untested,UNTESTED
+PMCx064,0x64,0x80,Core to L2 Cacheable Request Access Status,Core::X86::Pmc::L2::L2CacheReqStat,,,untested,UNTESTED
+PMCx070,0x70,-,L2 Prefetch Hit in L2,Core::X86::Pmc::L2::L2PfHitL2,,,untested,UNTESTED
+PMCx071,0x71,-,L2 Prefetcher Hits in L3,Core::X86::Pmc::L2::L2PfMissL2HitL3,,,untested,UNTESTED
+PMCx072,0x72,-,L2 Prefetcher Misses in L3,Core::X86::Pmc::L2::L2PfMissL2L3,,,untested,UNTESTED
+PMCx165,0x165,-,L2 Fill Response Source,Core::X86::Pmc::L2::L2FillRspSrc,,,untested,UNTESTED
+PMCx165,0x165,0x1,L2 Fill Response Source,Core::X86::Pmc::L2::L2FillRspSrc,,,untested,UNTESTED
+PMCx165,0x165,0x2,L2 Fill Response Source,Core::X86::Pmc::L2::L2FillRspSrc,,,untested,UNTESTED
+PMCx165,0x165,0x4,L2 Fill Response Source,Core::X86::Pmc::L2::L2FillRspSrc,,,untested,UNTESTED
+PMCx165,0x165,0x8,L2 Fill Response Source,Core::X86::Pmc::L2::L2FillRspSrc,,,untested,UNTESTED
+PMCx165,0x165,0x10,L2 Fill Response Source,Core::X86::Pmc::L2::L2FillRspSrc,,,untested,UNTESTED
+PMCx165,0x165,0x20,L2 Fill Response Source,Core::X86::Pmc::L2::L2FillRspSrc,,,untested,UNTESTED
+PMCx165,0x165,0x40,L2 Fill Response Source,Core::X86::Pmc::L2::L2FillRspSrc,,,untested,UNTESTED
+PMCx165,0x165,0x80,L2 Fill Response Source,Core::X86::Pmc::L2::L2FillRspSrc,,,untested,UNTESTED

@@ -1,0 +1,297 @@
+{
+  "meta": {
+    "ts": "20260525T083146Z",
+    "host": "host-ruby-de91",
+    "ncpu": 96,
+    "ccd_topology": [
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      [
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      [
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
+      ],
+      [
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71
+      ],
+      [
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79
+      ],
+      [
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87
+      ],
+      [
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95
+      ]
+    ],
+    "mode": "metrics"
+  },
+  "metrics": [
+    {
+      "metric": "ipc",
+      "workload": "openssl",
+      "value": NaN,
+      "bounds": [
+        0.5,
+        4.0
+      ],
+      "ok": false,
+      "formula": "instructions / cpu-cycles"
+    },
+    {
+      "metric": "ipc",
+      "workload": "fp_avx",
+      "value": NaN,
+      "bounds": [
+        0.2,
+        4.0
+      ],
+      "ok": false,
+      "formula": "instructions / cpu-cycles"
+    },
+    {
+      "metric": "ipc",
+      "workload": "branch_random",
+      "value": NaN,
+      "bounds": [
+        0.5,
+        4.0
+      ],
+      "ok": false,
+      "formula": "instructions / cpu-cycles"
+    },
+    {
+      "metric": "ipc",
+      "workload": "dram_stream",
+      "value": NaN,
+      "bounds": [
+        0.05,
+        2.0
+      ],
+      "ok": false,
+      "formula": "instructions / cpu-cycles"
+    },
+    {
+      "metric": "branch_misp_rate_pct",
+      "workload": "branch_random",
+      "value": NaN,
+      "bounds": [
+        5.0,
+        50.0
+      ],
+      "ok": false,
+      "formula": "100 * ex_ret_brn_misp / ex_ret_brn"
+    },
+    {
+      "metric": "branch_misp_rate_pct",
+      "workload": "openssl",
+      "value": NaN,
+      "bounds": [
+        0.0,
+        10.0
+      ],
+      "ok": false,
+      "formula": "100 * ex_ret_brn_misp / ex_ret_brn"
+    },
+    {
+      "metric": "frontend_bound_pct",
+      "workload": "openssl",
+      "value": NaN,
+      "bounds": [
+        0.0,
+        80.0
+      ],
+      "ok": false,
+      "formula": "100 * de_no_dispatch_per_slot.no_ops_from_frontend / (ls_not_halted_cyc * 6)"
+    },
+    {
+      "metric": "backend_bound_pct",
+      "workload": "openssl",
+      "value": NaN,
+      "bounds": [
+        0.0,
+        100.0
+      ],
+      "ok": false,
+      "formula": "100 * de_no_dispatch_per_slot.backend_stalls / (ls_not_halted_cyc * 6)"
+    },
+    {
+      "metric": "backend_memory_pct",
+      "workload": "dram_stream",
+      "value": NaN,
+      "bounds": [
+        10.0,
+        100.0
+      ],
+      "ok": false,
+      "formula": "(100 * de_no_dispatch_per_slot.backend_stalls / (ls_not_halted_cyc * 6)) * (ex_no_retire.load_not_complete / ex_no_retire.not_complete)"
+    },
+    {
+      "metric": "backend_memory_pct",
+      "workload": "openssl",
+      "value": NaN,
+      "bounds": [
+        0.0,
+        100.0
+      ],
+      "ok": false,
+      "formula": "(100 * de_no_dispatch_per_slot.backend_stalls / (ls_not_halted_cyc * 6)) * (ex_no_retire.load_not_complete / ex_no_retire.not_complete)"
+    },
+    {
+      "metric": "l2_dc_hit_rate_pct",
+      "workload": "l2_pressure",
+      "value": NaN,
+      "bounds": [
+        10.0,
+        100.0
+      ],
+      "ok": false,
+      "formula": "100 * l2_cache_req_stat.dc_hit_in_l2 / (l2_cache_req_stat.dc_hit_in_l2 + l2_cache_req_stat.ls_rd_blk_c)"
+    },
+    {
+      "metric": "l2_dc_hit_rate_pct",
+      "workload": "dram_stream",
+      "value": NaN,
+      "bounds": [
+        0.0,
+        100.0
+      ],
+      "ok": false,
+      "formula": "100 * l2_cache_req_stat.dc_hit_in_l2 / (l2_cache_req_stat.dc_hit_in_l2 + l2_cache_req_stat.ls_rd_blk_c)"
+    },
+    {
+      "metric": "l1_dtlb_mpki",
+      "workload": "tlb_thrash",
+      "value": NaN,
+      "bounds": [
+        1.0,
+        1000.0
+      ],
+      "ok": false,
+      "formula": "1000 * ls_l1_d_tlb_miss.all / instructions"
+    },
+    {
+      "metric": "l1_dtlb_mpki",
+      "workload": "openssl",
+      "value": NaN,
+      "bounds": [
+        0.0,
+        10.0
+      ],
+      "ok": false,
+      "formula": "1000 * ls_l1_d_tlb_miss.all / instructions"
+    },
+    {
+      "metric": "ic_miss_per_inst_pct",
+      "workload": "openssl",
+      "value": NaN,
+      "bounds": [
+        0.0,
+        100.0
+      ],
+      "ok": false,
+      "formula": "100 * ic_tag_hit_miss.instruction_cache_miss / ic_tag_hit_miss.all_instruction_cache_accesses"
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "method": "umask-aware match: every set bit of PerfSpect umask must be documented in PPR",
+  "perfspect_entries": 77,
+  "matched_in_public_ppr": 57,
+  "matched_in_internal_ppr": 77,
+  "internal_only_perfspect_entries": [
+    {
+      "name": "'l2_pf_hit_l2.all'",
+      "event": "0x70",
+      "umask": "0x1f"
+    },
+    {
+      "name": "'l2_pf_miss_l2_hit_l3.all'",
+      "event": "0x71",
+      "umask": "0x1f"
+    },
+    {
+      "name": "'l2_pf_miss_l2_l3.all'",
+      "event": "0x72",
+      "umask": "0x1f"
+    },
+    {
+      "name": "'l2_pf_miss_l2_hit_l3.all'",
+      "event": "0x71",
+      "umask": "0x1f"
+    },
+    {
+      "name": "'l2_pf_miss_l2_l3.all'",
+      "event": "0x72",
+      "umask": "0x1f"
+    },
+    {
+      "name": "'l2_pf_hit_l2.all'",
+      "event": "0x70",
+      "umask": "0x1f"
+    },
+    {
+      "name": "'op_cache_hit_miss.miss'",
+      "event": "0x28f",
+      "umask": "0x4"
+    },
+    {
+      "name": "'op_cache_hit_miss.all'",
+      "event": "0x28f",
+      "umask": "0x7"
+    },
+    {
+      "name": "'ic_tag_hit_miss.miss'",
+      "event": "0x18e",
+      "umask": "0x18"
+    },
+    {
+      "name": "'ic_tag_hit_miss.all'",
+      "event": "0x18e",
+      "umask": "0x1f"
+    },
+    {
+      "name": "'ls_tlb_flush.all'",
+      "event": "0x78",
+      "umask": "0x8f"
+    },
+    {
+      "name": "'ls_tlb_flush.tlbi_asid'",
+      "event": "0x78",
+      "umask": "0x50"
+    },
+    {
+      "name": "'de_src_op_disp.all'",
+      "event": "0xaa",
+      "umask": "0x7"
+    },
+    {
+      "name": "'de_no_dispatch_per_slot.no_ops_from_frontend'",
+      "event": "0x1a0",
+      "umask": "0x1"
+    },
+    {
+      "name": "'de_no_dispatch_per_cycle.no_ops_from_frontend'",
+      "event": "0x1a0",
+      "umask": "0x1"
+    },
+    {
+      "name": "'de_no_dispatch_per_slot.smt_contention'",
+      "event": "0x1a0",
+      "umask": "0x60"
+    },
+    {
+      "name": "'de_src_op_disp.all1'",
+      "event": "0xaa",
+      "umask": "0x7"
+    },
+    {
+      "name": "'ex_ret_brn_stalled'",
+      "event": "0x96",
+      "umask": "0x7"
+    },
+    {
+      "name": "'de_no_dispatch_per_slot.backend_stalls'",
+      "event": "0x1a0",
+      "umask": "0x1e"
+    },
+    {
+      "name": "'ex_no_retire.load_not_complete'",
+      "event": "0xd6",
+      "umask": "0xa2"
+    }
+  ],
+  "unmatched_perfspect_entries": [],
+  "event_code_level": {
+    "perfspect_codes": 28,
+    "public_codes": 81,
+    "internal_codes": 299,
+    "public_subset_of_internal": true,
+    "perfspect_codes_in_public": 27,
+    "perfspect_codes_internal_only": 1,
+    "perfspect_codes_outside_both": 0
+  }
+}

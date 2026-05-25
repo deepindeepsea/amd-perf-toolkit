@@ -1,0 +1,436 @@
+{
+  "meta": {
+    "ts": "20260525T083337Z",
+    "host": "host-ruby-de91",
+    "ncpu": 96,
+    "ccd_topology": [
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      [
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      [
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
+      ],
+      [
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71
+      ],
+      [
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79
+      ],
+      [
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87
+      ],
+      [
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95
+      ]
+    ],
+    "mode": "ccd-scale"
+  },
+  "ccd_scale": [
+    {
+      "event": "cpu-cycles",
+      "category": "EX",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "instructions",
+      "category": "EX",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ex_ret_ops",
+      "category": "EX",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ex_ret_brn",
+      "category": "EX",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ex_ret_brn_misp",
+      "category": "EX",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ex_ret_brn_tkn",
+      "category": "EX",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ex_ret_cond",
+      "category": "EX",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ex_ret_near_ret",
+      "category": "EX",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ex_div_busy",
+      "category": "EX",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ex_no_retire.not_complete",
+      "category": "EX",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ex_no_retire.load_not_complete",
+      "category": "EX",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "de_src_op_disp.all",
+      "category": "DE",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "de_no_dispatch_per_slot.no_ops_from_frontend",
+      "category": "DE",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "de_no_dispatch_per_slot.backend_stalls",
+      "category": "DE",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "de_dis_dispatch_token_stalls1.load_queue_rsrc_stall",
+      "category": "DE",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "de_op_queue_empty",
+      "category": "DE",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ls_dispatch.ld_st_dispatch",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "all_data_cache_accesses",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ls_l1_d_tlb_miss.all",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ls_tablewalker.iside_l1",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ls_locks.bus_lock",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ls_int_taken",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ls_mab_alloc.all_allocations",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ls_any_fills_from_sys.all",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ls_dmnd_fills_from_sys.all",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ls_misal_loads.ma64",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ls_hw_pf_dc_fills.all",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ls_sw_pf_dc_fills.all",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ls_pref_instr_disp.all",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ls_not_halted_cyc",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ls_stlf",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ls_tlb_flush.all",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "l2_request_g1.all_no_prefetch",
+      "category": "L2",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "l2_cache_req_stat.dc_hit_in_l2",
+      "category": "L2",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "l2_cache_req_stat.ls_rd_blk_c",
+      "category": "L2",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "l2_cache_req_stat.ic_hit_in_l2",
+      "category": "L2",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "l2_cache_req_stat.ic_fill_miss",
+      "category": "L2",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "l2_pf_hit_l2.all",
+      "category": "L2",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    }
+  ]
+}

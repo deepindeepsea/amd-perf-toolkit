@@ -1,0 +1,29 @@
+# Zen4 (Genoa Family 19h) Pipeline Utilization — 6-slot dispatch model
+# Events confirmed in amd-perf-toolkit/CLAUDE.md. All core, AWS-safe.
+# Zen4 primary; mnemonics also resolve on Zen5 so --metrics auto can fall back here.
+requires:
+  cpu_family: [25, 26]     # 0x19 Zen4 Genoa primary; 0x1A Zen5 compatible
+
+events:
+  - {name: fe_stalls,         perf: "de_no_dispatch_per_slot.no_ops_from_frontend"}
+  - {name: be_stalls,         perf: "de_no_dispatch_per_slot.backend_stalls"}
+  - {name: ops_dispatched,    perf: "de_src_op_disp.all"}
+  - {name: ops_retired,       perf: "ex_ret_ops"}
+  - {name: cycles,            perf: "ls_not_halted_cyc"}
+  - {name: load_not_complete, perf: "ex_no_retire.load_not_complete"}
+  - {name: not_complete,      perf: "ex_no_retire.not_complete"}
+  - {name: br_misp,           perf: "ex_ret_brn_misp"}
+  - {name: br_total,          perf: "ex_ret_brn"}
+  - {name: instructions,      perf: "instructions"}
+  - {name: cpu_cycles,        perf: "cpu-cycles"}
+
+metrics:
+  total_slots:          "cycles * 6"
+  frontend_bound_pct:   "100 * fe_stalls / total_slots"
+  backend_bound_pct:    "100 * be_stalls / total_slots"
+  bad_spec_pct:         "100 * (ops_dispatched - ops_retired) / total_slots"
+  retiring_pct:         "100 * ops_retired / total_slots"
+  backend_mem_pct:      "backend_bound_pct * load_not_complete / not_complete"
+  backend_cpu_pct:      "backend_bound_pct - backend_mem_pct"
+  branch_misp_rate_pct: "100 * br_misp / br_total"
+  ipc:                  "instructions / cpu_cycles"

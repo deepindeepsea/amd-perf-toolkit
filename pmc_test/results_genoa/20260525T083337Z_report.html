@@ -1,0 +1,71 @@
+<!doctype html><meta charset=utf-8>
+<title>PMC Test Report — 20260525T083337Z</title>
+<style>
+body{font:14px/1.4 -apple-system,Inter,Arial;color:#222;background:#fafafa;margin:24px}
+h1,h2{color:#000}
+.grid{display:grid;grid-template-columns:1fr 80px 80px 80px 80px;gap:2px;margin:8px 0 24px}
+.grid>div{padding:4px 8px;background:#fff;border:1px solid #eee}
+.grid>div.head{font-weight:600;background:#eee}
+.ok{background:#d4f4d4}
+.fail{background:#f8c8c8}
+.skip{background:#eee;color:#999}
+.extra{box-shadow:inset 0 0 0 2px #f80}
+.legend span{display:inline-block;padding:2px 8px;margin-right:6px;border:1px solid #ccc}
+table{border-collapse:collapse;margin:8px 0 24px;background:#fff;width:100%}
+td,th{border:1px solid #ddd;padding:4px 8px;font-size:13px;text-align:left}
+th{background:#eef}
+.muted{color:#888;font-size:12px}
+</style>
+<h1>AMD Zen4/5 PMC Test Report</h1>
+<p class=muted>Generated 20260525T083337Z UTC · Host host-ruby-de91 · CPU AMD EPYC 9684X 96-Core Processor · Cores 96 · CCDs 12</p>
+<div class=legend>
+  <span class=ok>pass</span><span class=fail>fail</span><span class=skip>skip</span>
+  <span class=extra>orange border = PPR-only (not in PerfSpect)</span>
+</div>
+<h2>Per-event matrix</h2>
+<div class=grid>
+<div class=head>event</div><div class=head>prog</div><div class=head>sanity</div><div class=head>bounds</div><div class=head>ppr-only</div>
+</div>
+<h2>Derived metric bounds</h2><table><tr><th>metric</th><th>workload</th><th>value</th><th>bounds</th><th>ok</th></tr>
+</table>
+<h2>CCD scaling (1 core → 1 CCD → 2 CCDs)</h2>
+<table><tr><th>event</th><th>cat</th><th>1c</th><th>1 CCD</th><th>2 CCD</th><th>class</th></tr>
+<tr><td>cpu-cycles</td><td>EX</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>instructions</td><td>EX</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ex_ret_ops</td><td>EX</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ex_ret_brn</td><td>EX</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ex_ret_brn_misp</td><td>EX</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ex_ret_brn_tkn</td><td>EX</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ex_ret_cond</td><td>EX</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ex_ret_near_ret</td><td>EX</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ex_div_busy</td><td>EX</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ex_no_retire.not_complete</td><td>EX</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ex_no_retire.load_not_complete</td><td>EX</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>de_src_op_disp.all</td><td>DE</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>de_no_dispatch_per_slot.no_ops_from_frontend</td><td>DE</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>de_no_dispatch_per_slot.backend_stalls</td><td>DE</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>de_dis_dispatch_token_stalls1.load_queue_rsrc_stall</td><td>DE</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>de_op_queue_empty</td><td>DE</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ls_dispatch.ld_st_dispatch</td><td>LS</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>all_data_cache_accesses</td><td>LS</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ls_l1_d_tlb_miss.all</td><td>LS</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ls_tablewalker.iside_l1</td><td>LS</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ls_locks.bus_lock</td><td>LS</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ls_int_taken</td><td>LS</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ls_mab_alloc.all_allocations</td><td>LS</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ls_any_fills_from_sys.all</td><td>LS</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ls_dmnd_fills_from_sys.all</td><td>LS</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ls_misal_loads.ma64</td><td>LS</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ls_hw_pf_dc_fills.all</td><td>LS</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ls_sw_pf_dc_fills.all</td><td>LS</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ls_pref_instr_disp.all</td><td>LS</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ls_not_halted_cyc</td><td>LS</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ls_stlf</td><td>LS</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>ls_tlb_flush.all</td><td>LS</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>l2_request_g1.all_no_prefetch</td><td>L2</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>l2_cache_req_stat.dc_hit_in_l2</td><td>L2</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>l2_cache_req_stat.ls_rd_blk_c</td><td>L2</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>l2_cache_req_stat.ic_hit_in_l2</td><td>L2</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>l2_cache_req_stat.ic_fill_miss</td><td>L2</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+<tr><td>l2_pf_hit_l2.all</td><td>L2</td><td>0</td><td>0</td><td>0</td><td>always_zero</td></tr>
+</table>

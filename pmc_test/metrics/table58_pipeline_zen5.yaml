@@ -1,0 +1,57 @@
+# BRH PPR Table 58 — Pipeline Utilization Analysis (CORE-ONLY → AWS-safe)
+# Raw perf codes derived from Event[0xVVUUEE]:
+#   ev_lo = value & 0xFF; umask = (value>>8) & 0xFF; ev_hi = (value>>32) & 0xF
+#   event = (ev_hi<<8) | ev_lo
+# All counters use task-clock at the same time for normalization.
+
+# ZEN5-ONLY. Events 0x1A0/0x1A2/0x1C2 silently return 0 on Zen4 — runner refuses
+# to execute this yaml on Family 19h to avoid producing a misleading 100%-retiring
+# report. Use metrics/pipeline_zen4_genoa.yaml on Zen4 boxes instead.
+requires:
+  cpu_family: [0x1A]            # AMD Family 1Ah = Zen5 (Turin/BRH)
+
+events:
+  - name: ops_dispatched          # Event[0x4307AA]  → ev=0xAA umask=0x07
+    perf: "cpu/event=0xaa,umask=0x07,name=ops_dispatched/"
+  - name: frontend_stalls         # Event[0x1004301A0] → ev=0x1A0 umask=0x01
+    perf: "cpu/event=0x1a0,umask=0x01,name=fe_stalls/"
+  - name: backend_stalls          # Event[0x100431EA0] → ev=0x1A0 umask=0x1E
+    perf: "cpu/event=0x1a0,umask=0x1e,name=be_stalls/"
+  - name: smt_stalls              # Event[0x1004360A0] → ev=0x1A0 umask=0x60
+    perf: "cpu/event=0x1a0,umask=0x60,name=smt_stalls/"
+  - name: ops_retired             # Event[0x4300C1] → ev=0xC1 umask=0x00
+    perf: "cpu/event=0xc1,name=ops_retired/"
+  - name: smt_other_thread_active # Event[0x1004330A2] → ev=0x1A2 umask=0x30 (CmpToDispatch SMT)
+    perf: "cpu/event=0x1a2,umask=0x30,name=smt_other/"
+  - name: dispatch_cycles         # Event[0x430076] → ev=0x76 umask=0x00 (cpu cycles not halted)
+    perf: "cpu/event=0x76,name=cyc_not_halt/"
+  - name: fe_latency_stalls       # Event[0x1084301A0] → ev=0x1A0 umask=0x01 (with PerfCtlExt? high byte 0x108) — treat as same umask, edge bit set
+    perf: "cpu/event=0x1a0,umask=0x01,name=fe_lat,edge/"
+  - name: branch_mispred          # Event[0x4300C3]
+    perf: "cpu/event=0xc3,name=br_misp/"
+  - name: pipeline_restarts       # Event[0x43019F] → ev=0x9F umask=0x01
+    perf: "cpu/event=0x9f,umask=0x01,name=pipe_restart/"
+  - name: load_not_complete       # Event[0x43A2D6] → ev=0xD6 umask=0xA2
+    perf: "cpu/event=0xd6,umask=0xa2,name=load_nc/"
+  - name: not_complete            # Event[0x4302D6] → ev=0xD6 umask=0x02
+    perf: "cpu/event=0xd6,umask=0x02,name=not_complete/"
+  - name: microcode_ops_retired   # Event[0x1004300C2] → ev=0x1C2 umask=0x00
+    perf: "cpu/event=0x1c2,name=mc_ret/"
+
+metrics:
+  # Level 1
+  total_slots:        "ops_dispatched + frontend_stalls + backend_stalls + smt_stalls"
+  frontend_bound_pct: "100 * frontend_stalls / total_slots"
+  bad_spec_pct:       "100 * (ops_dispatched - ops_retired) / total_slots"
+  backend_bound_pct:  "100 * (backend_stalls / total_slots + (smt_stalls/total_slots) * (smt_other_thread_active/dispatch_cycles))"
+  smt_contention_pct: "100 * (smt_stalls / total_slots) * (1 - smt_other_thread_active/dispatch_cycles)"
+  retiring_pct:       "100 * ops_retired / total_slots"
+  # Level 2
+  fe_latency_pct:     "frontend_bound_pct * (8 * fe_latency_stalls / frontend_stalls)"
+  fe_bw_pct:          "frontend_bound_pct - fe_latency_pct"
+  bad_spec_pipe_pct:  "bad_spec_pct * pipeline_restarts / (branch_mispred + pipeline_restarts)"
+  backend_mem_pct:    "backend_bound_pct * load_nc / not_complete"
+  backend_cpu_pct:    "backend_bound_pct - backend_mem_pct"
+  retiring_fast_pct:  "retiring_pct * (1 - mc_ret/ops_retired)"
+  retiring_mc_pct:    "retiring_pct * (mc_ret/ops_retired)"
+  branch_misp_rate_pct: "100 * branch_mispred / branch_retired"

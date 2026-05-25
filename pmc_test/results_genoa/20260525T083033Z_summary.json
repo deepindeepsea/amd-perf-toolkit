@@ -1,0 +1,503 @@
+{
+  "meta": {
+    "ts": "20260525T083033Z",
+    "host": "host-ruby-de91",
+    "ncpu": 96,
+    "ccd_topology": [
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      [
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      [
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
+      ],
+      [
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71
+      ],
+      [
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79
+      ],
+      [
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87
+      ],
+      [
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95
+      ]
+    ],
+    "mode": "programmability"
+  },
+  "programmability": [
+    {
+      "event": "cpu-cycles",
+      "amd": "Core::X86::Pmc::Core::LsNotHaltedCyc",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "instructions",
+      "amd": "Core::X86::Pmc::Core::ExRetInstr",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_ret_ops",
+      "amd": "Core::X86::Pmc::Core::ExRetOps",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_ret_brn",
+      "amd": "Core::X86::Pmc::Core::ExRetBrn",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_ret_brn_misp",
+      "amd": "Core::X86::Pmc::Core::ExRetBrnMisp",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_ret_brn_tkn",
+      "amd": "Core::X86::Pmc::Core::ExRetBrnTkn",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_ret_cond",
+      "amd": "Core::X86::Pmc::Core::ExRetCond",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_ret_near_ret",
+      "amd": "Core::X86::Pmc::Core::ExRetNearRet",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_div_busy",
+      "amd": "Core::X86::Pmc::Core::ExDivBusy",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_no_retire.not_complete",
+      "amd": "Core::X86::Pmc::Core::ExNoRetire",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_no_retire.load_not_complete",
+      "amd": "Core::X86::Pmc::Core::ExNoRetire",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "de_src_op_disp.all",
+      "amd": "Core::X86::Pmc::Core::DeSrcOpDisp",
+      "category": "DE",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "de_no_dispatch_per_slot.no_ops_from_frontend",
+      "amd": "Core::X86::Pmc::Core::DeNoDispatchPerSlot",
+      "category": "DE",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "de_no_dispatch_per_slot.backend_stalls",
+      "amd": "Core::X86::Pmc::Core::DeNoDispatchPerSlot",
+      "category": "DE",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "de_dis_dispatch_token_stalls1.load_queue_rsrc_stall",
+      "amd": "Core::X86::Pmc::Core::DeDisDispatchTokenStalls1",
+      "category": "DE",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "de_op_queue_empty",
+      "amd": "Core::X86::Pmc::Core::DeOpQueueEmpty",
+      "category": "DE",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "fp_ret_sse_avx_ops.all",
+      "amd": "Core::X86::Pmc::Core::FpRetSseAvxOps",
+      "category": "FP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "fp_ret_x87_fp_ops.all",
+      "amd": "Core::X86::Pmc::Core::FpRetx87FpOps",
+      "category": "FP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "fp_disp_faults.all",
+      "amd": "Core::X86::Pmc::Core::FpDispFaults",
+      "category": "FP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "fp_pack_ops_retired.all",
+      "amd": "Core::X86::Pmc::Core::FpPackOpsRetired",
+      "category": "FP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "sse_avx_ops_retired.all",
+      "amd": "Core::X86::Pmc::Core::SseAvxOpsRetired",
+      "category": "FP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_dispatch.ld_st_dispatch",
+      "amd": "Core::X86::Pmc::Core::LsDispatch",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "all_data_cache_accesses",
+      "amd": "Core::X86::Pmc::Core::LsDcAccesses",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_l1_d_tlb_miss.all",
+      "amd": "Core::X86::Pmc::Core::LsL1DTlbMiss",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_tablewalker.iside_l1",
+      "amd": "Core::X86::Pmc::Core::LsTablewalker",
+      "category": "LS",
+      "ok": null,
+      "error": "skipped: linux_perf_unavailable"
+    },
+    {
+      "event": "ls_locks.bus_lock",
+      "amd": "Core::X86::Pmc::Core::LsLocks",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_int_taken",
+      "amd": "Core::X86::Pmc::Core::LsIntTaken",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_mab_alloc.all_allocations",
+      "amd": "Core::X86::Pmc::Core::LsMabAlloc",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_any_fills_from_sys.all",
+      "amd": "Core::X86::Pmc::Core::LsAnyFillsFromSys",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_dmnd_fills_from_sys.all",
+      "amd": "Core::X86::Pmc::Core::LsDmndFillsFromSys",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_misal_loads.ma64",
+      "amd": "Core::X86::Pmc::Core::LsMisalLoads",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_hw_pf_dc_fills.all",
+      "amd": "Core::X86::Pmc::Core::LsHwPfDcFills",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_sw_pf_dc_fills.all",
+      "amd": "Core::X86::Pmc::Core::LsSwPfDcFills",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_pref_instr_disp.all",
+      "amd": "Core::X86::Pmc::Core::LsPrefInstrDisp",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_not_halted_cyc",
+      "amd": "Core::X86::Pmc::Core::LsNotHaltedCyc",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_stlf",
+      "amd": "Core::X86::Pmc::Core::LsSTLF",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_tlb_flush.all",
+      "amd": "Core::X86::Pmc::Core::LsTlbFlush",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ic_tag_hit_miss.all_instruction_cache_accesses",
+      "amd": "Core::X86::Pmc::Core::IcFw32",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ic_tag_hit_miss.instruction_cache_miss",
+      "amd": "Core::X86::Pmc::Core::IcFw32Miss",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ic_cache_fill_l2",
+      "amd": "Core::X86::Pmc::Core::IcCacheFillL2",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ic_cache_fill_sys",
+      "amd": "Core::X86::Pmc::Core::IcCacheFillSys",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "bp_l1_tlb_miss_l2_tlb_hit",
+      "amd": "Core::X86::Pmc::Core::BpL1TlbMissL2TlbHit",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "bp_l1_tlb_miss_l2_tlb_miss.if4k",
+      "amd": "Core::X86::Pmc::Core::BpL1TlbMissL2TlbMiss",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "bp_dyn_ind_pred",
+      "amd": "Core::X86::Pmc::Core::BpDynIndPred",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "bp_de_redirect",
+      "amd": "Core::X86::Pmc::Core::BpDeReDirect",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "op_cache_hit_miss.op_cache_hit",
+      "amd": "Core::X86::Pmc::Core::OpCacheHitMiss",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "op_cache_hit_miss.op_cache_miss",
+      "amd": "Core::X86::Pmc::Core::OpCacheHitMiss",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "l2_request_g1.all_no_prefetch",
+      "amd": "Core::X86::Pmc::L2::L2RequestG1",
+      "category": "L2",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "l2_cache_req_stat.dc_hit_in_l2",
+      "amd": "Core::X86::Pmc::L2::L2CacheReqStat",
+      "category": "L2",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "l2_cache_req_stat.ls_rd_blk_c",
+      "amd": "Core::X86::Pmc::L2::L2CacheReqStat",
+      "category": "L2",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "l2_cache_req_stat.ic_hit_in_l2",
+      "amd": "Core::X86::Pmc::L2::L2CacheReqStat",
+      "category": "L2",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "l2_cache_req_stat.ic_fill_miss",
+      "amd": "Core::X86::Pmc::L2::L2CacheReqStat",
+      "category": "L2",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "l2_pf_hit_l2.all",
+      "amd": "Core::X86::Pmc::L2::L2PfHitL2",
+      "category": "L2",
+      "ok": true,
+      "error": ""
+    }
+  ]
+}

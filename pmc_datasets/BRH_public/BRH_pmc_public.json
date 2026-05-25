@@ -1,0 +1,1792 @@
+{
+  "chip": "BRH-public",
+  "source": "ppr_BRH_C1_pub_050",
+  "event_count": 84,
+  "core_events": [
+    {
+      "code": "PMCx002",
+      "name": "FP retired x87 uops",
+      "symbolic": "Core::X86::Pmc::Core::Retired_x87_FP_Ops",
+      "unit_masks": [
+        {
+          "bit": "7:3",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "2",
+          "mnemonic": "DivSqrROps",
+          "description": "Read-write. x87 Divide or square root uops."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "MulOps",
+          "description": "Read-write. x87 Multiply uops."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "AddSubOps",
+          "description": "Read-write. x87 Add/subtract uops."
+        }
+      ]
+    },
+    {
+      "code": "PMCx003",
+      "name": "FP retired SSE and AVX FLOPs",
+      "symbolic": "Core::X86::Pmc::Core::Retired_SSE_AVX_FLOPs",
+      "unit_masks": [
+        {
+          "bit": "7:5",
+          "mnemonic": "FlopTypeSel",
+          "description": "Read-write. Mask for specifying FLOP type."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "3",
+          "mnemonic": "MacFLOPs",
+          "description": "Read-write. Each MAC operation count as 2 FLOPs. bfloat MAC operations are not included in this"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "DivFLOPs",
+          "description": "Read-write. Divide/square root FLOPs. Does not provide a useful count without use of the"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "MultFLOPs",
+          "description": "Read-write. Multiply FLOPs. Does not provide a useful count without use of the MergeEvent"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "AddSubFLOPs",
+          "description": "Read-write. Add/subtract FLOPs. Does not provide a useful count without use of the"
+        }
+      ]
+    },
+    {
+      "code": "PMCx008",
+      "name": "FP uops retired by size",
+      "symbolic": "Core::X86::Pmc::Core::Retired_FP_uOps",
+      "unit_masks": [
+        {
+          "bit": "7:6",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Pack512uOpsRetired",
+          "description": "Read-write. Packed 512-bit uops retired."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "Pack256uOpsRetired",
+          "description": "Read-write. Packed 256-bit uops retired."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "Pack128uOpsRetired",
+          "description": "Read-write. Packed 128-bit uops retired."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "ScalaruOpsRetired",
+          "description": "Read-write. Scalar uops retired."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "MMXuOpsRetired",
+          "description": "Read-write. MMX uops retired."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "x87uOpsRetired",
+          "description": "Read-write. x87 uops retired."
+        }
+      ]
+    },
+    {
+      "code": "PMCx00A",
+      "name": "FP uops retired sorted by vector or scalar",
+      "symbolic": "Core::X86::Pmc::Core::FP_Ops_Retired",
+      "unit_masks": [
+        {
+          "bit": "7:4",
+          "mnemonic": "VectorFpOpType",
+          "description": "Read-write. select a vector FP uop type to count or 0 for none."
+        },
+        {
+          "bit": "3:0",
+          "mnemonic": "ScalarFpOpType",
+          "description": "Read-write. select scalar FP uop type to count or 0 for none."
+        }
+      ]
+    },
+    {
+      "code": "PMCx00B",
+      "name": "FP executed integer type uops sorted by vector or scalar",
+      "symbolic": "Core::X86::Pmc::Core::INT_Ops_Retired",
+      "unit_masks": [
+        {
+          "bit": "7:4",
+          "mnemonic": "SseAvxOpType",
+          "description": "Read-write. select SSE/AVX vector INT uop type to count or 0 for none."
+        },
+        {
+          "bit": "3:0",
+          "mnemonic": "MmxOpType",
+          "description": "Read-write. select MMX INT scalar uop type to count or 0 for none."
+        }
+      ]
+    },
+    {
+      "code": "PMCx00C",
+      "name": "FP uops retired sorted by packed 128 or packed 256",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7:4",
+          "mnemonic": "Fp256OpType",
+          "description": "Read-write. select a 256-bit packed FP uop type to count or 0 for none."
+        },
+        {
+          "bit": "3:0",
+          "mnemonic": "Fp128OpType",
+          "description": "Read-write. select 128-bit packed FP uop type to count or 0 for none."
+        }
+      ]
+    },
+    {
+      "code": "PMCx00D",
+      "name": "FP executed packed integer uops sorted by packed 128 or packed 256",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7:4",
+          "mnemonic": "Int256OpType",
+          "description": "Read-write. select a 256-bit packed INT uop type to count or 0 for none."
+        },
+        {
+          "bit": "3:0",
+          "mnemonic": "Int128OpType",
+          "description": "Read-write. select 128-bit packed INT uop type to count or 0 for none."
+        }
+      ]
+    },
+    {
+      "code": "PMCx00E",
+      "name": "FP Dispatch Faults",
+      "symbolic": "Core::X86::Pmc::Core::FP_Dispatch_Faults",
+      "unit_masks": [
+        {
+          "bit": "7:4",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "3",
+          "mnemonic": "YmmSpillFault",
+          "description": "Read-write. YMM spill fault"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "YmmFillFault",
+          "description": "Read-write. YMM fill fault"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "XmmFillFault",
+          "description": "Read-write. XMM Fill fault"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "x87FillFault",
+          "description": "Read-write. x87 Fill fault"
+        }
+      ]
+    },
+    {
+      "code": "PMCx024",
+      "name": "Bad Status STLI",
+      "symbolic": "Core::X86::Pmc::Core::Bad_Status_STLI",
+      "unit_masks": [
+        {
+          "bit": "7:2",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "1",
+          "mnemonic": "StliOther",
+          "description": "Read-write. Store-to-load conflicts: A load was unable to complete due to a non-forwardable conflict"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx025",
+      "name": "Retired Lock Instructions",
+      "symbolic": "Core::X86::Pmc::Core::Retired_Lock_Instructions",
+      "unit_masks": [
+        {
+          "bit": "7:5",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "4:0",
+          "mnemonic": "LockInstructions",
+          "description": "Read-write. Specifies type of lock instructions counted"
+        }
+      ]
+    },
+    {
+      "code": "PMCx026",
+      "name": "Retired CLFLUSH Instructions",
+      "symbolic": "Core::X86::Pmc::Core::CLFLUSH",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx027",
+      "name": "Retired CPUID Instructions",
+      "symbolic": "Core::X86::Pmc::Core::CPUID",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx029",
+      "name": "LS Dispatch",
+      "symbolic": "Core::X86::Pmc::Core::LS_Dispatch",
+      "unit_masks": [
+        {
+          "bit": "7:3",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "2",
+          "mnemonic": "LdOpSt",
+          "description": "Read-write. Dispatch of a single op that performs a load from and store to the same memory address."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "PureSt",
+          "description": "Read-write. Dispatch of a single op that performs a memory store."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "PureLd",
+          "description": "Read-write. Dispatch of a single op that performs a memory load."
+        }
+      ]
+    },
+    {
+      "code": "PMCx02B",
+      "name": "SMIs Received",
+      "symbolic": "Core::X86::Pmc::Core::SMI",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx02C",
+      "name": "Interrupts Taken",
+      "symbolic": "Core::X86::Pmc::Core::Interrupts_Taken",
+      "unit_masks": [
+        {
+          "bit": "7:1",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "0",
+          "mnemonic": "NumInterrupts",
+          "description": "Read-write. Number of interrupts taken. This event is also counted when UnitMask[7:0]=0."
+        }
+      ]
+    },
+    {
+      "code": "PMCx035",
+      "name": "Store to Load Forward",
+      "symbolic": "Core::X86::Pmc::Core::Store_to_Load_Forward",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx037",
+      "name": "Store Globally Visible Cancels Due To External Conditions",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7:1",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "0",
+          "mnemonic": "OlderStVisibleDepCancel",
+          "description": "Read-write. An older store, that the thread was waiting on to become globally visible,"
+        }
+      ]
+    },
+    {
+      "code": "PMCx041",
+      "name": "LS MAB Allocates by Type",
+      "symbolic": "Core::X86::Pmc::Core::LS_MAB_Allocates_by_Type",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "6:0",
+          "mnemonic": "LsMabAllocation",
+          "description": "Read-write."
+        }
+      ]
+    },
+    {
+      "code": "PMCx043",
+      "name": "Demand Data Cache Fills by Data Source",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "AlternateMemories_NearFar",
+          "description": "Read-write. Requests that return from Alternate Memories, a group of less"
+        },
+        {
+          "bit": "6",
+          "mnemonic": "DramIO_Far",
+          "description": "Read-write. Data returned from different node's DRAM/MMIO."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "4",
+          "mnemonic": "NearFarCache_Far",
+          "description": "Read-write. Data belonging to a different NUMA node returned from cache of a different"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "DramIO_Near",
+          "description": "Read-write. Data returned from local node's DRAM/MMIO."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "NearFarCache_Near",
+          "description": "Read-write. Data belonging to the local NUMA node returned from cache of a different"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "LocalCcx",
+          "description": "Read-write. Data returned from L3 or different L2 in the same CCX."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "LocalL2",
+          "description": "Read-write. Data returned from local L2."
+        }
+      ]
+    },
+    {
+      "code": "PMCx044",
+      "name": "Any Data Cache Fills by Data Source",
+      "symbolic": "Core::X86::Pmc::Core::Any_DC_Fills_by_Data_Source",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "AlternateMemories_NearFar",
+          "description": "Read-write. Requests that return fom Alternate Memories, a group of less"
+        },
+        {
+          "bit": "6",
+          "mnemonic": "DramIO_Far",
+          "description": "Read-write. Data returned from different node's DRAM/MMIO."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "4",
+          "mnemonic": "NearFarCache_Far",
+          "description": "Read-write. Data belonging to a different NUMA node returned from cache of a different"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "DramIO_Near",
+          "description": "Read-write. Data returned from local node's DRAM/MMIO."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "NearFarCache_Near",
+          "description": "Read-write. Data belonging to the local NUMA node returned from cache of a different"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "LocalCcx",
+          "description": "Read-write. Data returned from L3 or different L2 in the same CCX."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "LocalL2",
+          "description": "Read-write. Data returned from local L2."
+        }
+      ]
+    },
+    {
+      "code": "PMCx045",
+      "name": "L1 DTLB Reloads",
+      "symbolic": "Core::X86::Pmc::Core::L1_DTLB_Reloads",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "TlbReload1GL2Miss",
+          "description": "Read-write. DTLB reload to a 1G page that missed in the L2DTLB."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "TlbReload2ML2Miss",
+          "description": "Read-write. DTLB reload to a 2M page that missed in the L2DTLB."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "TlbReloadCoalescedPageMiss",
+          "description": "Read-write. DTLB reload to a coalesced page that missed in the L2DTLB."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "TlbReload4KL2Miss",
+          "description": "Read-write. DTLB reload to a 4K page that missed in the L2DTLB."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "TlbReload1GL2Hit",
+          "description": "Read-write. DTLB reload to a 1G page that hit in the L2DTLB."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "TlbReload2ML2Hit",
+          "description": "Read-write. DTLB reload to a 2M page that hit in the L2DTLB."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "TlbReloadCoalescedPageHit",
+          "description": "Read-write. DTLB reload to a coalesced page that hit in the L2DTLB."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "TlbReload4KL2Hit",
+          "description": "Read-write. DTLB reload to a 4K page that hit in the L2DTLB."
+        }
+      ]
+    },
+    {
+      "code": "PMCx047",
+      "name": "Misaligned Load Flows",
+      "symbolic": "Core::X86::Pmc::Core::Misaligned_Load_Flows",
+      "unit_masks": [
+        {
+          "bit": "7:2",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "1",
+          "mnemonic": "MA4K",
+          "description": "Read-write. The number of 4KB misaligned (i.e., page crossing) loads or LdOpSt."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "MA64",
+          "description": "Read-write. The number of 64B misaligned (i.e., cacheline crossing) loads or LdOpSt."
+        }
+      ]
+    },
+    {
+      "code": "PMCx04B",
+      "name": "Prefetch Instructions Dispatched",
+      "symbolic": "Core::X86::Pmc::Core::Software_Prefetch_Dispatched",
+      "unit_masks": [
+        {
+          "bit": "7:3",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "2",
+          "mnemonic": "PREFETCHNTA",
+          "description": "Read-write. PrefetchNTA instruction. See docAPM3 PREFETCHlevel."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "PREFETCHW",
+          "description": "Read-write. PrefetchW instruction. See docAPM3 PREFETCHlevel."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "PREFETCH",
+          "description": "Read-write. PrefetchT0, T1, and T2 instructions. See docAPM3 PREFETCHlevel."
+        }
+      ]
+    },
+    {
+      "code": "PMCx050",
+      "name": "Write Combining Buffer Close",
+      "symbolic": "Core::X86::Pmc::Core::WCB_Close",
+      "unit_masks": [
+        {
+          "bit": "7:1",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "0",
+          "mnemonic": "FullLine64B",
+          "description": "Read-write. All 64 bytes of the WCB entry have been written."
+        }
+      ]
+    },
+    {
+      "code": "PMCx052",
+      "name": "Ineffective Software Prefetches",
+      "symbolic": "Core::X86::Pmc::Core::Ineffective_Software_Prefetches",
+      "unit_masks": [
+        {
+          "bit": "7:2",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "1",
+          "mnemonic": "MabHit",
+          "description": "Read-write. Software PREFETCH instruction saw a match on an already-allocated miss request."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "DcHit",
+          "description": "Read-write. Software PREFETCH instruction saw a DC hit."
+        }
+      ]
+    },
+    {
+      "code": "PMCx059",
+      "name": "Software Prefetch Data Cache Fills by Data Source",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "AlternateMemories_NearFar",
+          "description": "Read-write. Requests that return from Alternate Memories, a group of less"
+        },
+        {
+          "bit": "6",
+          "mnemonic": "DramIO_Far",
+          "description": "Read-write. Data returned from different node's DRAM/MMIO."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "4",
+          "mnemonic": "NearFarCache_Far",
+          "description": "Read-write. Data belonging to a different NUMA node returned from cache of a different"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "DramIO_Near",
+          "description": "Read-write. Data returned from local node's DRAM/MMIO."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "NearFarCache_Near",
+          "description": "Read-write. Data belonging to the local NUMA node returned from cache of a different"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "LocalCcx",
+          "description": "Read-write. Data returned from L3 or different L2 in the same CCX."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "LocalL2",
+          "description": "Read-write. Data returned from local L2."
+        }
+      ]
+    },
+    {
+      "code": "PMCx05A",
+      "name": "Hardware Prefetch Data Cache Fills by Data Source",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "AlternateMemories_NearFar",
+          "description": "Read-write. Requests that return from Alternate Memories, a group of less"
+        },
+        {
+          "bit": "6",
+          "mnemonic": "DramIO_Far",
+          "description": "Read-write. Data returned from different node's DRAM/MMIO."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "4",
+          "mnemonic": "NearFarCache_Far",
+          "description": "Read-write. Data belonging to a different NUMA node returned from cache of a different"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "DramIO_Near",
+          "description": "Read-write. Data returned from local node's DRAM/MMIO."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "NearFarCache_Near",
+          "description": "Read-write. Data belonging to the local NUMA node returned from cache of a different"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "LocalCcx",
+          "description": "Read-write. Data returned from L3 or different L2 in the same CCX."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "LocalL2",
+          "description": "Read-write. Data returned from local L2."
+        }
+      ]
+    },
+    {
+      "code": "PMCx05F",
+      "name": "Allocated DC misses",
+      "symbolic": "Core::X86::Pmc::Core::Allocated_DC_misses",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx076",
+      "name": "Cycles Not in Halt",
+      "symbolic": "Core::X86::Pmc::Core::Cycles_Not_in_Halt",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx078",
+      "name": "All TLB Flushes",
+      "symbolic": "Core::X86::Pmc::Core::TLB_Flush_Events",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "All",
+          "description": "Read-write. All TLB Flushes"
+        }
+      ]
+    },
+    {
+      "code": "PMCx120",
+      "name": "P0 Freq Cycles not in Halt",
+      "symbolic": "Core::X86::Pmc::Core::P0_frequency_Cycles_Not_in_Halt",
+      "unit_masks": [
+        {
+          "bit": "7:1",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "0",
+          "mnemonic": "P0_frequency_Cycles_Not_in_Halt",
+          "description": "Read-write. Counts at the P0 frequency (same as Core::X86::Msr::MPERF)"
+        }
+      ]
+    },
+    {
+      "code": "PMCx082",
+      "name": "Instruction Cache Refills From L2",
+      "symbolic": "Core::X86::Pmc::Core::Instruction_Cache_Refills_from_L2",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx083",
+      "name": "Instruction Cache Refills from System",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx084",
+      "name": "L1 ITLB Miss, L2ITLB Hit",
+      "symbolic": "Core::X86::Pmc::Core::L1_ITLB_Miss_L2_ITLB_Hit",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx085",
+      "name": "L1 ITLB Miss, L2 ITLB Miss",
+      "symbolic": "Core::X86::Pmc::Core::ITLB_Reload_from_Page_Table_walk",
+      "unit_masks": [
+        {
+          "bit": "7:4",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "3",
+          "mnemonic": "Coalesced_4k",
+          "description": "Read-write. Walk for >4k Coalesced page (implemented as 16k)"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "walk_1G",
+          "description": "Read-write. Walk for 1G page"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "walk_2M",
+          "description": "Read-write. Walk for 2M page"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "walk_4K",
+          "description": "Read-write. Walk to 4k page"
+        }
+      ]
+    },
+    {
+      "code": "PMCx08B",
+      "name": "BP Pipe Correction or Cancel",
+      "symbolic": "Core::X86::Pmc::Core::BP_Correct",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx08E",
+      "name": "Variable Target Predictions",
+      "symbolic": "Core::X86::Pmc::Core::Variable_Target_Predictions",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx091",
+      "name": "Early Redirects",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx094",
+      "name": "ITLB Instruction Fetch Hits",
+      "symbolic": "Core::X86::Pmc::Core::ITLB_Hits",
+      "unit_masks": [
+        {
+          "bit": "7:3",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "2",
+          "mnemonic": "IF1G",
+          "description": "Read-write. L1 Instruction TLB Hit (1G page size)"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "IF2M",
+          "description": "Read-write. L1 Instruction TLB Hit (2M page size)"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "IF4K",
+          "description": "Read-write. L1 Instruction TLB Hit (4k or 16k coalesced page size)"
+        }
+      ]
+    },
+    {
+      "code": "PMCx09F",
+      "name": "BP Redirects",
+      "symbolic": "Core::X86::Pmc::Core::BP_redirects",
+      "unit_masks": [
+        {
+          "bit": "7:2",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "1",
+          "mnemonic": "ExRedir",
+          "description": "Read-write. Mispredict redirect from EX (execution-time)"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Resync",
+          "description": "Read-write. Resync redirect (Retire-time) from RT"
+        }
+      ]
+    },
+    {
+      "code": "PMCx188",
+      "name": "Fetch IBS events",
+      "symbolic": "Core::X86::Pmc::Core::Fetch_IBS_events",
+      "unit_masks": [
+        {
+          "bit": "7:5",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "4",
+          "mnemonic": "SampleVal",
+          "description": "Read-write. Counts the number of valid Fetch Instruction Based Sampling (fetch IBS) samples that"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "SampleFiltered",
+          "description": "Read-write. Counts the number of Fetch IBS tagged fetches that were discarded due to IBS"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "SampleDiscarded",
+          "description": "Read-write. Counts when the Fetch IBS facility discards an IBS tagged fetch for reasons other"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "FetchTagged",
+          "description": "Read-write. Counts the number of fetches tagged for Fetch IBS. Not all tagged fetches create an"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx18E",
+      "name": "IC Tag Hit and Miss Events",
+      "symbolic": "Core::X86::Pmc::Core::IC_Tag_Hit_Miss_events",
+      "unit_masks": [
+        {
+          "bit": "7:5",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "4:0",
+          "mnemonic": "IcAccessTypes",
+          "description": "Read-write. Instruction Cache accesses."
+        }
+      ]
+    },
+    {
+      "code": "PMCx28F",
+      "name": "Op Cache Hit or Miss",
+      "symbolic": "Core::X86::Pmc::Core::Op_Cache_hit_miss",
+      "unit_masks": [
+        {
+          "bit": "7:3",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "2:0",
+          "mnemonic": "OpCacheAccesses",
+          "description": "Read-write. OpCacheAccesses"
+        }
+      ]
+    },
+    {
+      "code": "PMCx0A9",
+      "name": "Op Queue Empty",
+      "symbolic": "Core::X86::Pmc::Core::Dispatch_Empty",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx0AA",
+      "name": "Source of Op Dispatched From Decoder",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7:2",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "1",
+          "mnemonic": "Op_Cache",
+          "description": "Read-write. Count of ops dispatched from OpCache"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "x86_decoder",
+          "description": "Read-write. Count of ops dispatched from x86 decoder"
+        }
+      ]
+    },
+    {
+      "code": "PMCx0AB",
+      "name": "Types of Ops Dispatched From Decoder",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7:5",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "4:0",
+          "mnemonic": "DispOpType",
+          "description": "Read-write. DispOpType."
+        }
+      ]
+    },
+    {
+      "code": "PMCx0AE",
+      "name": "Dynamic Tokens Dispatch Stall Cycles 1",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "6",
+          "mnemonic": "FPSchRsrcStall",
+          "description": "Read-write. FP NSQ token stall"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "4",
+          "mnemonic": "TakenBrnchBufferRsrc",
+          "description": "Read-write. taken branch buffer resource stall."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "2",
+          "mnemonic": "StoreQueueRsrcStall",
+          "description": "Read-write. STQ Tokens unavailable"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "LoadQueueRsrcStall",
+          "description": "Read-write. Load Queue Token Stall."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "IntPhyRegFileRsrcStall",
+          "description": "Read-write. Integer Physical Register File resource stall."
+        }
+      ]
+    },
+    {
+      "code": "PMCx0AF",
+      "name": "Dynamic Tokens Dispatch Stall Cycles 2",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7:6",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "5",
+          "mnemonic": "RetQ",
+          "description": "Read-write. Retire queue tokens unavailable"
+        },
+        {
+          "bit": "4:3",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "2",
+          "mnemonic": "EX_Flush_recovery",
+          "description": "Read-write. Integer Execution flush recovery pending"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "AGTokens",
+          "description": "Read-write. Agen tokens unavailable"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "ALTokens",
+          "description": "Read-write. ALU tokens unavailable"
+        }
+      ]
+    },
+    {
+      "code": "PMCx1A0",
+      "name": "No_Dispatch_per_Slot",
+      "symbolic": "Core::X86::Pmc::Core::No_Dispatch_per_Slot",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "StallReason",
+          "description": "Read-write."
+        }
+      ]
+    },
+    {
+      "code": "PMCx1A2",
+      "name": "Dispatch Additional Resource Stalls",
+      "symbolic": "Core::X86::Pmc::Core::Additional_Resource_Stalls",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Stall",
+          "description": "Read-write."
+        }
+      ]
+    },
+    {
+      "code": "PMCx0C0",
+      "name": "Retired Instructions",
+      "symbolic": "Core::X86::Pmc::Core::Retired_Instructions",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx0C1",
+      "name": "Retired Macro-Ops",
+      "symbolic": "Core::X86::Pmc::Core::Retired_Macro_Ops",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx0C2",
+      "name": "Retired Branch Instructions",
+      "symbolic": "Core::X86::Pmc::Core::Retired_Branch_Instructions",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx0C3",
+      "name": "Retired Branch Instructions Mispredicted.",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx0C4",
+      "name": "Retired Taken Branch Instructions",
+      "symbolic": "Core::X86::Pmc::Core::Retired_Taken_Branch_Instructions",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx0C5",
+      "name": "Retired Taken Branch Instructions Mispredicted.",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx0C6",
+      "name": "Retired Far Control Transfers",
+      "symbolic": "Core::X86::Pmc::Core::Retired_Far_Control_Transfers",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx0C8",
+      "name": "Retired Near Return Branch Instructions",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx0C9",
+      "name": "Retired Near Return Branch Instructions Mispredicted",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx0CA",
+      "name": "Retired Indirect Branch Instructions Mispredicted",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx0CB",
+      "name": "Retired MMX FP Instructions",
+      "symbolic": "Core::X86::Pmc::Core::Retired_MMX_FP_Instructions",
+      "unit_masks": [
+        {
+          "bit": "7:3",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "2",
+          "mnemonic": "SSE",
+          "description": "Read-write. SSE instructions (SSE, SSE2, SSE3, SSSE3, SSE4A, SSE41, SSE42, AVX)."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "MMX",
+          "description": "Read-write. MMX instructions"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "X87",
+          "description": "Read-write. x87 instructions"
+        }
+      ]
+    },
+    {
+      "code": "PMCx0CC",
+      "name": "Retired Indirect Branch Instructions",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx0D1",
+      "name": "Retired Conditional Branch Instructions",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx0D3",
+      "name": "Div Cycles Busy count",
+      "symbolic": "Core::X86::Pmc::Core::Div_Cycles_Busy_count",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx0D4",
+      "name": "Div Op Count",
+      "symbolic": "Core::X86::Pmc::Core::Div_Op_Count",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx0D6",
+      "name": "Cycles with no retire",
+      "symbolic": "Core::X86::Pmc::Core::Cycles_With_No_Retire",
+      "unit_masks": [
+        {
+          "bit": "7:5",
+          "mnemonic": "CompletionFilter",
+          "description": "Read-write."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "ThreadNotSelected",
+          "description": "Read-write. The number cycles where ops could have retired (i.e. did not fall into the sub-"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "Other",
+          "description": "Read-write. The number of cycles where ops could have retired (self and older ops are complete), but"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "1",
+          "mnemonic": "NotCompleteSelf",
+          "description": "Read-write. The number of cycles where the oldest retire slot did not have its completion bits"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Empty",
+          "description": "Read-write. The number of cycles when there were no valid ops in the retire queue. This may be caused"
+        }
+      ]
+    },
+    {
+      "code": "PMCx1C1",
+      "name": "Retired Microcoded Instructions",
+      "symbolic": "Core::X86::Pmc::Core::Retired_Microcoded_Instructions",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx1C2",
+      "name": "Retired Microcode Ops",
+      "symbolic": "Core::X86::Pmc::Core::Retired_Microcode_Ops",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx1C7",
+      "name": "Retired Conditional Branch Instructions Mispredicted",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx1C8",
+      "name": "Retired Unconditional Branch Instructions Mispredicted",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx1C9",
+      "name": "Retired Unconditional Branch Instructions",
+      "symbolic": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx1CF",
+      "name": "Tagged IBS Ops",
+      "symbolic": "Core::X86::Pmc::Core::Tagged_IBS_Ops",
+      "unit_masks": [
+        {
+          "bit": "7:3",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "2",
+          "mnemonic": "IbsCountRollover",
+          "description": "Read-write. Number of times an op could not be tagged by IBS because of a previous tagged"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "IbsTaggedOpsRet",
+          "description": "Read-write. Number of Ops tagged by IBS that retired"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "IbsTaggedOps",
+          "description": "Read-write. Number of Ops tagged by IBS"
+        }
+      ]
+    },
+    {
+      "code": "PMCx1D0",
+      "name": "Retired Fused Instructions",
+      "symbolic": "Core::X86::Pmc::Core::Retired_fused_instructions",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx060",
+      "name": "Requests to L2 Group1",
+      "symbolic": "Core::X86::Pmc::L2::L2RequestG1",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "RdBlkL",
+          "description": "Read-write. Data Cache Reads (including hardware and software prefetch)."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "RdBlkX",
+          "description": "Read-write. Data Cache Stores"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "LsRdBlkC_S",
+          "description": "Read-write. Data Cache Shared Reads"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "CacheableIcRead",
+          "description": "Read-write. Instruction Cache Reads."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "2",
+          "mnemonic": "LsPrefetchL2Cmd",
+          "description": "Read-write."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "L2HwPf",
+          "description": "L2 Prefetcher. Read-write. All prefetches accepted by L2 pipeline, hit or miss. Types of PF and L2"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Group2",
+          "description": "Read-write. MiscRequests. Read-write. Various Noncacheable requests. Non-cached Data Reads, Non-"
+        }
+      ]
+    },
+    {
+      "code": "PMCx061",
+      "name": "Requests to L2 Group2",
+      "symbolic": "Core::X86::Pmc::L2::L2RequestG2",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "6",
+          "mnemonic": "LsRdSized",
+          "description": "Read-write. LS sized read, coherent non-cacheable."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "LsRdSizedNC",
+          "description": "Read-write. LS sized read, non-coherent, non-cacheable."
+        },
+        {
+          "bit": "4:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx063",
+      "name": "Write Combining Buffer Requests",
+      "symbolic": "Core::X86::Pmc::L2::L2WcbReq",
+      "unit_masks": [
+        {
+          "bit": "7:6",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "5",
+          "mnemonic": "WcbClose",
+          "description": "Read-write. Write Combining Buffer close"
+        },
+        {
+          "bit": "4:0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "code": "PMCx064",
+      "name": "Core to L2 Cacheable Request Access Status",
+      "symbolic": "Core::X86::Pmc::L2::L2CacheReqStat",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "LsRdBlkCS",
+          "description": "Data Cache Shared Read Hit in L2. Read-write. LsRdBlkCS"
+        },
+        {
+          "bit": "6",
+          "mnemonic": "LsRdBlkLHitX",
+          "description": "Data Cache Read Hit in L2. Read-write. Modifiable"
+        },
+        {
+          "bit": "5",
+          "mnemonic": "LsRdBlkLHitS",
+          "description": "Data Cache Read Hit Non-Modifiable Line in L2. Read-write."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "LsRdBlkX",
+          "description": "Data Cache Store Hit in L2. Read-write."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "LsRdBlkC",
+          "description": "Data Cache Req Miss in L2. Read-write."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "IcFillHitX",
+          "description": "Instruction Cache Hit Modifiable Line in L2. Read-write. IcFillHitX"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "IcFillHitS",
+          "description": "Instruction Cache Hit Non-Modifiable Line in L2.. Read-write."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "IcFillMiss",
+          "description": "Instruction Cache Req Miss in L2. Read-write. IcFillMiss"
+        }
+      ]
+    },
+    {
+      "code": "PMCx070",
+      "name": "L2 Prefetch Hit in L2",
+      "symbolic": "Core::X86::Pmc::L2::L2PfHitL2",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Prefetches",
+          "description": "Read-write."
+        }
+      ]
+    },
+    {
+      "code": "PMCx071",
+      "name": "L2 Prefetcher Hits in L3",
+      "symbolic": "Core::X86::Pmc::L2::L2PfMissL2HitL3",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Prefetches",
+          "description": "Read-write. L2Stream"
+        }
+      ]
+    },
+    {
+      "code": "PMCx072",
+      "name": "L2 Prefetcher Misses in L3",
+      "symbolic": "Core::X86::Pmc::L2::L2PfMissL2L3",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "Prefetches",
+          "description": "Read-write. L2Stream"
+        }
+      ]
+    },
+    {
+      "code": "PMCx165",
+      "name": "L2 Fill Response Source",
+      "symbolic": "Core::X86::Pmc::L2::L2FillRspSrc",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "AlternateMemories_NearFar",
+          "description": "Read-write. \"Requests that return from Extension Memory\""
+        },
+        {
+          "bit": "6",
+          "mnemonic": "DramIO_Far",
+          "description": "Read-write. Data returned from different node's DRAM/MMIO."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "4",
+          "mnemonic": "NearFarCache_Far",
+          "description": "Read-write. Data belonging to a different NUMA node returned from cache of a different"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "DramIO_Near",
+          "description": "Read-write. Data returned from local node's DRAM/MMIO."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "NearFarCache_Near",
+          "description": "Read-write. Data belonging to the local NUMA node returned from cache of a different"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "LocalCcx",
+          "description": "Read-write. Data returned from L3 or different L2 in the same CCX."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Reserved",
+          "description": ""
+        }
+      ]
+    }
+  ],
+  "l3_events": [
+    {
+      "code": "L3PMCx04",
+      "name": "L3 tag lookup state",
+      "symbolic": "Core::X86::Pmc::L3::L3LookupState",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "L3LookupMask",
+          "description": "Read-write. L3 Request Types"
+        }
+      ]
+    },
+    {
+      "code": "L3PMCxAC",
+      "name": "L3 XiSampledLatency",
+      "symbolic": "Core::X86::Pmc::L3::L3_XiSampledLatency",
+      "unit_masks": [
+        {
+          "bit": "7:6",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Ext_Far",
+          "description": "Read-write. Requests that target another NUMA node and return from Extension Memory (CXL\u2122)"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "Ext_Near",
+          "description": "Read-write. Requests that target the same NUMA node and return from Extension Memory (CXL)"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "NearCache_FarCache_Far",
+          "description": "Read-write. Requests that target another NUMA node and return from another"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "NearCache_FarCache_Near",
+          "description": "Read-write. Requests that target the same NUMA node and return from another"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "Dram_Far",
+          "description": "Read-write. Requests that target another NUMA node and return from DRAM"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Dram_Near",
+          "description": "Read-write. Requests that target the same NUMA node and return from DRAM"
+        }
+      ]
+    },
+    {
+      "code": "L3PMCxAD",
+      "name": "L3 XiSampledLatencyRequests",
+      "symbolic": "Core::X86::Pmc::L3::L3_XiSampledLatencyRequests",
+      "unit_masks": [
+        {
+          "bit": "7:6",
+          "mnemonic": "Reserved",
+          "description": ""
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Ext_Far",
+          "description": "Read-write. Requests that target another NUMA node and return from Extension Memory (CXL\u2122)"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "Ext_Near",
+          "description": "Read-write. Requests that target the same NUMA node and return from Extension Memory (CXL)"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "NearCache_FarCache_Far",
+          "description": "Read-write. Requests that target another NUMA node and return from another"
+        },
+        {
+          "bit": "2",
+          "mnemonic": "NearCache_FarCache_Near",
+          "description": "Read-write. Requests that target the same NUMA node and return from another"
+        },
+        {
+          "bit": "1",
+          "mnemonic": "Dram_Far",
+          "description": "Read-write. Requests that target another NUMA node and return from DRAM"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Dram_Near",
+          "description": "Read-write. Requests that target the same NUMA node and return from DRAM"
+        }
+      ]
+    }
+  ]
+}

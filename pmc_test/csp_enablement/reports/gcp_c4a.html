@@ -1,0 +1,38 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>PMC Enablement — gcp_c4a</title>
+<style>
+body{font-family:-apple-system,Segoe UI,sans-serif;max-width:1100px;margin:32px auto;padding:0 20px;line-height:1.5;color:#222;}
+h1{border-bottom:2px solid #C2233F;padding-bottom:6px;}
+h2{margin-top:1.6em;color:#23272F;}
+table{border-collapse:collapse;margin:12px 0;font-size:0.92em;}
+th,td{border:1px solid #d0d0d0;padding:6px 10px;text-align:left;}
+th{background:#f4f4f6;}
+code{background:#f3f3f5;padding:1px 4px;border-radius:3px;}
+tr:nth-child(even){background:#fafafa;}
+</style></head><body>
+<h1>PMC Enablement Report — GCP Turin shapes</h1>
+<p>_Generated 2026-05-25 17:42 UTC from `csp_matrix.json`_</p>
+<p><strong>Instance class:</strong> C4A / C3D / N4 (EPYC Turin)  </p>
+<p><strong>Hypervisor:</strong> KVM (gVisor for serverless)  </p>
+<p><strong>Vendor contact:</strong> GCP Compute Engine support  </p>
+<p><strong>Scope:</strong> Public Turin PPR (C1_pub_050) — 223 (event, umask) tuples</p>
+<h2>Headline</h2>
+<table><tr><th>Status</th><th>Count</th><th>% of public PPR</th><th>Notes</th></tr>
+<tr><td>**Supported (verified non-zero)**</td><td>0</td><td>0%</td><td>tuples that program AND produce signal</td></tr>
+<tr><td>**BLOCKED by hypervisor**</td><td>**0**</td><td>0%</td><td>works on BM, silently returns zero on this CSP — gap to escalate</td></tr>
+<tr><td>Zero-no-signal</td><td>0</td><td>0%</td><td>event legal, our workloads didn't exercise it</td></tr>
+<tr><td>Untested</td><td>223</td><td>100%</td><td>per-bit umask not yet probed</td></tr>
+</table>
+<p>BM-Turin reference: 75 supported / 34 no-signal / 114 untested.</p>
+<p>This CSP exposes <strong>0% of BM-verified events</strong> to guest workloads.</p>
+<h2>Events Supported (Verified Non-Zero)</h2>
+<h2>Severity Legend</h2>
+<p>- <strong>P0</strong> — Required for AMD&#x27;s BRH Pipeline-Utilization (top-down) model. Blocking these breaks tier-1 performance methodology.</p>
+<p>- <strong>P1</strong> — Used by upstream OSS tooling (PerfSpect, Linux perf metric groups, RHEL/Ubuntu pmu-tools). Blocking these breaks community observability.</p>
+<p>- <strong>P2</strong> — Documented in the public PPR but not on the critical path of any known major tool. Lower priority.</p>
+<h2>State Legend</h2>
+<p>- <strong>Y</strong> — Programmable AND returns non-zero on at least one well-known workload</p>
+<p>- <strong>B</strong> — Programmable on bare metal but returns 0 on this CSP (hypervisor filter)</p>
+<p>- <strong>Z</strong> — Programmable but our workload mix didn&#x27;t trigger it (no information)</p>
+<p>- <strong>?</strong> — Not yet probed in the current sweep</p>
+</body></html>

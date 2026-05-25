@@ -1,0 +1,213 @@
+{
+  "chip": "Genoa",
+  "source": "AMD PPR #55901 Rev 0.50. Vol 1 pp.342-344",
+  "dataset": "l3",
+  "event_count": 5,
+  "events": [
+    {
+      "code": "L3PMCx01",
+      "name": "L3 Cache Accesses",
+      "symbolic": "Core::X86::Pmc::L3::L3RequestG1",
+      "category": "L3",
+      "description": "Types of requests entering l3s.RQ (3 groups total). Group 1",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "Group3",
+          "description": "Command from Group 3 (count details in event 0x3)"
+        },
+        {
+          "bit": "6",
+          "mnemonic": "RdSized",
+          "description": "uncacheable coherent reads."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "RdSizedNC",
+          "description": "uncacheable non-coherent reads."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "WrSized",
+          "description": "uncacheable coherent writes."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "WrSizedNC",
+          "description": "uncacheable non-coherent writes."
+        },
+        {
+          "bit": "1:0",
+          "mnemonic": "",
+          "description": "Reserved."
+        }
+      ]
+    },
+    {
+      "code": "L3PMCx03",
+      "name": "L3 cache access types",
+      "symbolic": "Core::X86::Pmc::L3::L3FillVicReq",
+      "category": "L3",
+      "description": "Types of requests entering l3s.RQ (3 groups total). Group 3",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "RdBlkL",
+          "description": "L2 load or non-spec store miss."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "RdBlkL_Vic",
+          "description": "L2 load or non-spec store miss with victim."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "RdBlkX",
+          "description": "L2 non-spec store miss."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "RdBlkX_Vic",
+          "description": "L2 non-spec store miss with victim."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "RdBlkC_S",
+          "description": "L2 miss request for instruction line or shared copy of line."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "RdBlkC_S_Vic",
+          "description": "L2 miss request for instruction line or shared copy of line with victim."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "ChgToX",
+          "description": "L2 request to make line writeable."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "VicBlk",
+          "description": "L2 victim."
+        }
+      ]
+    },
+    {
+      "code": "L3PMCx04",
+      "name": "L3 tag lookup state",
+      "symbolic": "Core::X86::Pmc::L3::L3LookupState",
+      "category": "L3",
+      "description": "All L3 Requests.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:0",
+          "mnemonic": "L3LookupMask",
+          "description": "L3 Request Types ValidValues: Value Description 00h Reserved. 01h L3 Miss FDh- Reserved. 02h FEh L3 Hit FFh All coherent accesses to L3 AMD Confidential - Advance Information"
+        }
+      ]
+    },
+    {
+      "code": "L3PMCx09",
+      "name": "L3 Victim State",
+      "symbolic": "Core::X86::Pmc::L3::L3VictimState",
+      "category": "L3",
+      "description": "L3 victim lines. NOTE: To count all Modified lines, set bits 3, 5-7 simultaneously.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7",
+          "mnemonic": "Od",
+          "description": "Modified data written back to memory from CCX."
+        },
+        {
+          "bit": "6",
+          "mnemonic": "D",
+          "description": "Modified data written back to memory from CCX."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "M",
+          "description": "Modified data written back to memory from CCX."
+        },
+        {
+          "bit": "4",
+          "mnemonic": "E_Fe",
+          "description": "Clean L3 victim line in E or Fe state. No data written back to memory from CCX."
+        },
+        {
+          "bit": "3",
+          "mnemonic": "O",
+          "description": "Modified data written back to memory from CCX."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "F_S",
+          "description": "Clean L3 victim line in E or Fe state. No data written back to memory from CCX."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "0",
+          "mnemonic": "I",
+          "description": "No L3 victim generated."
+        }
+      ]
+    },
+    {
+      "code": "L3PMCxAC",
+      "name": "L3 XiSampledLatency",
+      "symbolic": "Core::X86::Pmc::L3::L3_XiSampledLatency",
+      "category": "L3",
+      "description": "When used in conjunction with L3_XiSampledLatencyRequests, this PMC Event will measure the average memory latency (excluding MMIO) observed by this CCX. Configure two PMCs with the L3_XiSampledLatency and L3_XiSampledLatencyRequests events and use the following equation to identify the observed latency. if (L3Size-per-CCX >= 32MB) L3LatScalingFactor=10 else L3LatScalingFactor=30 end Average Sampled Latency = L3_XiSampledLatency/L3_XiSampledLatencyRequests * L3LatScalingFactor ns Some ChL3PmcCfg fields must be programmed as follows to ensure that these events accurately measure latency: ChL3PmcCfg[EnAllSlices]=0x1 and ChL3PmcCfg[SliceId]=0x3. Other ChL3PmcCfg fields can be used to filter the measured latency based on originating thread (EnAllCores, CoreID) and Data Source (UnitMask). To measure average latency from all threads to all Data Sources, use the following configuration: ChL3PmcCfg[EnAllCores]=0x1, ChL3PmcCfg[ThreadMask]=0x3, and ChL3PmcCfg[UnitMask]=0xFF.",
+      "instance": "",
+      "unit_masks": [
+        {
+          "bit": "7:6",
+          "mnemonic": "",
+          "description": "Reserved."
+        },
+        {
+          "bit": "5",
+          "mnemonic": "Ext_Far",
+          "description": "Requests that target another NUMA node and return from Extension Memory (CXL)"
+        },
+        {
+          "bit": "4",
+          "mnemonic": "Ext_Near",
+          "description": "Requests that target the same NUMA node and return from Extension Memory (CXL)"
+        },
+        {
+          "bit": "3",
+          "mnemonic": "NearCache_FarCache_Far",
+          "description": "Requests that target another NUMA node and return from another CCX's cache."
+        },
+        {
+          "bit": "2",
+          "mnemonic": "NearCache_FarCache_Near",
+          "description": "Requests that target the same NUMA node and return from another CCX's cache."
+        },
+        {
+          "bit": "1",
+          "mnemonic": "Dram_Far",
+          "description": "Requests that target another NUMA node and return from DRAM"
+        },
+        {
+          "bit": "0",
+          "mnemonic": "Dram_Near",
+          "description": "Requests that target the same NUMA node and return from DRAM"
+        }
+      ]
+    }
+  ]
+}
