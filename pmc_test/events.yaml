@@ -1,0 +1,401 @@
+# Curated Genoa/Turin Zen 4/5 PMC event registry for the test harness.
+# Source datasets: pmc_datasets/Genoa/Genoa_pmc_core.json + perfspect_genoa_metrics.json
+# Each event entry:
+#   perf      — linux perf symbolic name (lowercased AMD PMC name)
+#   amd       — AMD PMC fully-qualified name (matches pmc_datasets)
+#   category  — FP | LS | IC_BP | DE | EX | L2
+#   nonzero_on — list of workload tags that MUST drive the counter > 0
+#   max_per_inst — soft upper bound (events per retired instruction); used by
+#                 the bounds check. null = skip bound check.
+#   notes     — short rationale / formula participation
+
+events:
+  # ─────────────────────────── EX (Retire) ───────────────────────────
+  - perf: cpu-cycles
+    amd:  Core::X86::Pmc::Core::LsNotHaltedCyc
+    category: EX
+    nonzero_on: [all]
+    max_per_inst: 100.0
+    notes: denominator for IPC
+
+  - perf: instructions
+    amd:  Core::X86::Pmc::Core::ExRetInstr
+    category: EX
+    nonzero_on: [all]
+    max_per_inst: 1.0
+    notes: "numerator for IPC; self-test: must equal itself"
+
+  - perf: ex_ret_ops
+    amd:  Core::X86::Pmc::Core::ExRetOps
+    category: EX
+    nonzero_on: [all]
+    max_per_inst: 4.0
+    notes: retired ops (>= instructions for fused/macro ops); TopDown Retiring
+
+  - perf: ex_ret_brn
+    amd:  Core::X86::Pmc::Core::ExRetBrn
+    category: EX
+    nonzero_on: [all]
+    max_per_inst: 0.3
+    notes: branch denominator
+
+  - perf: ex_ret_brn_misp
+    amd:  Core::X86::Pmc::Core::ExRetBrnMisp
+    category: EX
+    nonzero_on: [branch_random]
+    max_per_inst: 0.3
+    notes: branch misprediction numerator
+
+  - perf: ex_ret_brn_tkn
+    amd:  Core::X86::Pmc::Core::ExRetBrnTkn
+    category: EX
+    nonzero_on: [all]
+    max_per_inst: 0.3
+
+  - perf: ex_ret_cond
+    amd:  Core::X86::Pmc::Core::ExRetCond
+    category: EX
+    nonzero_on: [all]
+    max_per_inst: 0.3
+
+  - perf: ex_ret_near_ret
+    amd:  Core::X86::Pmc::Core::ExRetNearRet
+    category: EX
+    nonzero_on: [all]
+    max_per_inst: 0.2
+
+  - perf: ex_div_busy
+    amd:  Core::X86::Pmc::Core::ExDivBusy
+    category: EX
+    nonzero_on: []
+    max_per_inst: 100.0
+
+  - perf: ex_no_retire.not_complete
+    amd:  Core::X86::Pmc::Core::ExNoRetire
+    category: EX
+    nonzero_on: [all]
+    max_per_inst: 100.0
+    notes: backend stall classifier
+
+  - perf: ex_no_retire.load_not_complete
+    amd:  Core::X86::Pmc::Core::ExNoRetire
+    category: EX
+    nonzero_on: [dram_stream]
+    max_per_inst: 100.0
+    notes: backend-memory share
+
+  # ─────────────────────────── DE (Dispatch) ───────────────────────────
+  - perf: de_src_op_disp.all
+    amd:  Core::X86::Pmc::Core::DeSrcOpDisp
+    category: DE
+    nonzero_on: [all]
+    max_per_inst: 6.0
+
+  - perf: de_no_dispatch_per_slot.no_ops_from_frontend
+    amd:  Core::X86::Pmc::Core::DeNoDispatchPerSlot
+    category: DE
+    nonzero_on: [all]
+    max_per_inst: 600.0
+    notes: frontend bound (per slot, 6/cycle)
+
+  - perf: de_no_dispatch_per_slot.backend_stalls
+    amd:  Core::X86::Pmc::Core::DeNoDispatchPerSlot
+    category: DE
+    nonzero_on: [all]
+    max_per_inst: 600.0
+    notes: backend bound (per slot, 6/cycle)
+
+  - perf: de_dispatch_stall_cycle_dynamic_tokens_part1.load_queue_rsrc_stall
+    amd:  Core::X86::Pmc::Core::DeDisDispatchTokenStalls1
+    category: DE
+    nonzero_on: []
+    max_per_inst: 100.0
+    notes: "Zen4 kernel exposes this as de_dis_dispatch_token_stalls1.* ; Zen5 kernel renames to de_dispatch_stall_cycle_dynamic_tokens_part1.*"
+
+  - perf: de_op_queue_empty
+    amd:  Core::X86::Pmc::Core::DeOpQueueEmpty
+    category: DE
+    nonzero_on: []
+    max_per_inst: 100.0
+
+  # ─────────────────────────── FP ───────────────────────────
+  - perf: fp_ret_sse_avx_ops.all
+    amd:  Core::X86::Pmc::Core::FpRetSseAvxOps
+    category: FP
+    nonzero_on: [fp_avx, openssl]
+    max_per_inst: 4.0
+
+  - perf: fp_ret_x87_fp_ops.all
+    amd:  Core::X86::Pmc::Core::FpRetx87FpOps
+    category: FP
+    nonzero_on: []
+    max_per_inst: 1.0
+
+  - perf: fp_disp_faults.all
+    amd:  Core::X86::Pmc::Core::FpDispFaults
+    category: FP
+    nonzero_on: []
+    max_per_inst: 0.1
+
+  - perf: fp_pack_ops_retired.all
+    amd:  Core::X86::Pmc::Core::FpPackOpsRetired
+    category: FP
+    nonzero_on: [fp_avx]
+    max_per_inst: 4.0
+
+  - perf: sse_avx_ops_retired.all
+    amd:  Core::X86::Pmc::Core::SseAvxOpsRetired
+    category: FP
+    nonzero_on: [fp_avx, openssl]
+    max_per_inst: 4.0
+
+  # ─────────────────────────── LS (Load/Store, DC, TLB) ───────────────────────────
+  - perf: ls_dispatch.ld_st_dispatch
+    amd:  Core::X86::Pmc::Core::LsDispatch
+    category: LS
+    nonzero_on: [all]
+    max_per_inst: 3.0
+
+  - perf: all_data_cache_accesses
+    amd:  Core::X86::Pmc::Core::LsDcAccesses
+    category: LS
+    nonzero_on: [all]
+    max_per_inst: 3.0
+    notes: "Zen5 kernel 6.17 only exposes all_data_cache_accesses_pti (per-1k-instructions variant); raw event dropped from perf list. Counter underneath is the same (ls_dc_accesses raw)."
+
+  - perf: ls_l1_d_tlb_miss.all
+    amd:  Core::X86::Pmc::Core::LsL1DTlbMiss
+    category: LS
+    nonzero_on: [tlb_thrash, dram_stream]
+    max_per_inst: 1.0
+
+  - perf: ls_tablewalker.iside_l1
+    amd:  Core::X86::Pmc::Core::LsTablewalker
+    linux_perf_unavailable: true   # not exposed on kernel 6.17 amdzen4
+    category: LS
+    nonzero_on: [tlb_thrash]
+    max_per_inst: 1.0
+
+  - perf: ls_locks.bus_lock
+    amd:  Core::X86::Pmc::Core::LsLocks
+    category: LS
+    nonzero_on: []
+    max_per_inst: 0.01
+
+  - perf: ls_int_taken
+    amd:  Core::X86::Pmc::Core::LsIntTaken
+    category: LS
+    nonzero_on: []
+    max_per_inst: 0.01
+
+  - perf: ls_mab_alloc.all_allocations
+    amd:  Core::X86::Pmc::Core::LsMabAlloc
+    category: LS
+    nonzero_on: [dram_stream]
+    max_per_inst: 3.0
+
+  - perf: ls_any_fills_from_sys.all
+    amd:  Core::X86::Pmc::Core::LsAnyFillsFromSys
+    category: LS
+    nonzero_on: [dram_stream]
+    max_per_inst: 3.0
+
+  - perf: ls_dmnd_fills_from_sys.all
+    amd:  Core::X86::Pmc::Core::LsDmndFillsFromSys
+    category: LS
+    nonzero_on: [dram_stream]
+    max_per_inst: 3.0
+
+  - perf: ls_misal_loads.ma64
+    amd:  Core::X86::Pmc::Core::LsMisalLoads
+    category: LS
+    nonzero_on: []
+    max_per_inst: 1.0
+
+  - perf: ls_hw_pf_dc_fills.all
+    amd:  Core::X86::Pmc::Core::LsHwPfDcFills
+    category: LS
+    nonzero_on: [dram_stream]
+    max_per_inst: 3.0
+
+  - perf: ls_sw_pf_dc_fills.all
+    amd:  Core::X86::Pmc::Core::LsSwPfDcFills
+    category: LS
+    nonzero_on: []
+    max_per_inst: 1.0
+
+  - perf: ls_pref_instr_disp.all
+    amd:  Core::X86::Pmc::Core::LsPrefInstrDisp
+    category: LS
+    nonzero_on: []
+    max_per_inst: 1.0
+
+  - perf: ls_not_halted_cyc
+    amd:  Core::X86::Pmc::Core::LsNotHaltedCyc
+    category: LS
+    nonzero_on: [all]
+    max_per_inst: 100.0
+    notes: same as cpu-cycles; used in TopDown denominator (× 6 slots)
+
+  - perf: ls_stlf
+    amd:  Core::X86::Pmc::Core::LsSTLF
+    category: LS
+    nonzero_on: []
+    max_per_inst: 1.0
+
+  - perf: ls_tlb_flush.all
+    amd:  Core::X86::Pmc::Core::LsTlbFlush
+    category: LS
+    nonzero_on: []
+    max_per_inst: 0.1
+
+  # ─────────────────────────── IC_BP (Frontend) ───────────────────────────
+  - perf: ic_tag_hit_miss.all_instruction_cache_accesses
+    amd:  Core::X86::Pmc::Core::IcFw32
+    category: IC_BP
+    nonzero_on: [all]
+    max_per_inst: 1.0
+
+  - perf: ic_tag_hit_miss.instruction_cache_miss
+    amd:  Core::X86::Pmc::Core::IcFw32Miss
+    category: IC_BP
+    nonzero_on: []
+    max_per_inst: 0.1
+
+  - perf: ic_cache_fill_l2
+    amd:  Core::X86::Pmc::Core::IcCacheFillL2
+    category: IC_BP
+    nonzero_on: []
+    max_per_inst: 0.1
+
+  - perf: ic_cache_fill_sys
+    amd:  Core::X86::Pmc::Core::IcCacheFillSys
+    category: IC_BP
+    nonzero_on: []
+    max_per_inst: 0.01
+
+  - perf: bp_l1_tlb_miss_l2_tlb_hit
+    amd:  Core::X86::Pmc::Core::BpL1TlbMissL2TlbHit
+    category: IC_BP
+    nonzero_on: []
+    max_per_inst: 0.1
+
+  - perf: bp_l1_tlb_miss_l2_tlb_miss.if4k
+    amd:  Core::X86::Pmc::Core::BpL1TlbMissL2TlbMiss
+    category: IC_BP
+    nonzero_on: []
+    max_per_inst: 0.01
+
+  - perf: bp_dyn_ind_pred
+    amd:  Core::X86::Pmc::Core::BpDynIndPred
+    category: IC_BP
+    nonzero_on: []
+    max_per_inst: 0.1
+
+  - perf: bp_de_redirect
+    amd:  Core::X86::Pmc::Core::BpDeReDirect
+    category: IC_BP
+    nonzero_on: [branch_random]
+    max_per_inst: 0.1
+
+  - perf: op_cache_hit_miss.op_cache_hit
+    amd:  Core::X86::Pmc::Core::OpCacheHitMiss
+    category: IC_BP
+    nonzero_on: [all]
+    max_per_inst: 1.0
+
+  - perf: op_cache_hit_miss.op_cache_miss
+    amd:  Core::X86::Pmc::Core::OpCacheHitMiss
+    category: IC_BP
+    nonzero_on: []
+    max_per_inst: 0.1
+
+  # ─────────────────────────── L2 (per-core slice) ───────────────────────────
+  - perf: l2_request_g1.all_no_prefetch
+    amd:  Core::X86::Pmc::L2::L2RequestG1
+    category: L2
+    nonzero_on: [all]
+    max_per_inst: 3.0
+
+  - perf: l2_cache_req_stat.dc_hit_in_l2
+    amd:  Core::X86::Pmc::L2::L2CacheReqStat
+    category: L2
+    nonzero_on: [l2_pressure, dram_stream]
+    max_per_inst: 3.0
+
+  - perf: l2_cache_req_stat.ls_rd_blk_c
+    amd:  Core::X86::Pmc::L2::L2CacheReqStat
+    category: L2
+    nonzero_on: [dram_stream]
+    max_per_inst: 3.0
+
+  - perf: l2_cache_req_stat.ic_hit_in_l2
+    amd:  Core::X86::Pmc::L2::L2CacheReqStat
+    category: L2
+    nonzero_on: [all]
+    max_per_inst: 1.0
+
+  - perf: l2_cache_req_stat.ic_fill_miss
+    amd:  Core::X86::Pmc::L2::L2CacheReqStat
+    category: L2
+    nonzero_on: []
+    max_per_inst: 0.1
+
+  - perf: l2_pf_hit_l2.l2_hwpf
+    amd:  Core::X86::Pmc::L2::L2PfHitL2
+    category: L2
+    nonzero_on: [dram_stream]
+    max_per_inst: 1.0
+    notes: "Zen4 kernel exposes .all aggregate; Zen5 kernel exposes only per-prefetcher subevents (.l1_dc_hwpf, .l1_dc_l2_hwpf, .l2_hwpf). Using .l2_hwpf as the most representative single subevent. For full aggregate, sum all three at metric time."
+
+# ─────────────────────────── Derived metrics ───────────────────────────
+# Each metric formula references events by their `perf` name.
+# bounds: expected closed interval [lo, hi] on the chosen workload.
+
+metrics:
+  - name: ipc
+    formula: "instructions / cpu-cycles"
+    bounds_per_workload:
+      openssl: [0.5, 4.0]
+      fp_avx:  [0.2, 4.0]
+      branch_random: [0.5, 4.0]
+      dram_stream:   [0.05, 2.0]
+
+  - name: branch_misp_rate_pct
+    formula: "100 * ex_ret_brn_misp / ex_ret_brn"
+    bounds_per_workload:
+      branch_random: [5.0, 50.0]
+      openssl:       [0.0, 10.0]
+
+  - name: frontend_bound_pct
+    formula: "100 * de_no_dispatch_per_slot.no_ops_from_frontend / (ls_not_halted_cyc * 6)"
+    bounds_per_workload:
+      all: [0.0, 80.0]
+
+  - name: backend_bound_pct
+    formula: "100 * de_no_dispatch_per_slot.backend_stalls / (ls_not_halted_cyc * 6)"
+    bounds_per_workload:
+      all: [0.0, 100.0]
+
+  - name: backend_memory_pct
+    formula: "(100 * de_no_dispatch_per_slot.backend_stalls / (ls_not_halted_cyc * 6)) * (ex_no_retire.load_not_complete / ex_no_retire.not_complete)"
+    bounds_per_workload:
+      dram_stream: [10.0, 100.0]
+      openssl:     [0.0, 100.0]
+
+  - name: l2_dc_hit_rate_pct
+    formula: "100 * l2_cache_req_stat.dc_hit_in_l2 / (l2_cache_req_stat.dc_hit_in_l2 + l2_cache_req_stat.ls_rd_blk_c)"
+    bounds_per_workload:
+      l2_pressure: [10.0, 100.0]
+      dram_stream: [0.0, 100.0]
+
+  - name: l1_dtlb_mpki
+    formula: "1000 * ls_l1_d_tlb_miss.all / instructions"
+    bounds_per_workload:
+      tlb_thrash: [1.0, 1000.0]
+      openssl:    [0.0, 10.0]
+
+  - name: ic_miss_per_inst_pct
+    formula: "100 * ic_tag_hit_miss.instruction_cache_miss / ic_tag_hit_miss.all_instruction_cache_accesses"
+    bounds_per_workload:
+      all: [0.0, 100.0]
