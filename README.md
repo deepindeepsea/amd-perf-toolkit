@@ -230,11 +230,28 @@ If you see all-zero output from `amd_pipeline_metrics.sh`, run `cat /proc/sys/ke
 
 | File | Contents |
 |------|----------|
+| `pmc_test/csp_enablement/KNOWLEDGE_BASE.md` | **Master PMC enablement knowledge base** — what works on which CSP / instance tier, per-event diagnosis map, public-vs-NDA PPR rules, S3 workflow |
+| `pmc_test/csp_enablement/CLOUD_READINESS_PLAYBOOK.md` | Repeatable protocol for extending the PMC matrix to GCP / Azure / Oracle |
+| `pmc_test/csp_enablement/AWS_4WAY_MATRIX.md` | m8a 2xl / 24xl / metal / on-prem sweep + L2-PF cross-generation addendum |
 | `EPYC_PERF_KNOWLEDGE.md` | Full AMD EPYC Playbook knowledge base — L/M/H thresholds, perf events, tuning solutions |
 | `perfspect_genoa_metrics.json` | Genoa metric formulas from PerfSpect |
 | `AMD_OFFICIAL_PMC_EVENTS.md` | AMD Table 26 event codes (Family 19h) |
 | `AMD_PMC_REGISTER_REFERENCE.md` | PMC register format reference |
 | `amd_metric_groups.yaml` | PerfSpect AMD metric group structure |
+
+## CSP enablement sweeps
+
+Reusable sweep tooling for characterizing PMC support across cloud guests, partial-socket guests, full-socket guests, and bare metal:
+
+| Script | Location | Purpose |
+|---|---|---|
+| `run_pmc.sh` | `pmc_test/csp_enablement/` + `s3://amd-pmc-toolkit-pradeepn/artifacts/` | Bootstrap wrapper — runs on any EC2 instance, fetches workload + sweep from S3, runs it, uploads result back. Uses IMDSv2 for instance metadata. |
+| `sweep_runner.sh` | same | Generic `events.yaml` runner — default sweep |
+| `l2pf_sweep.sh` | same | Full 7-umask grid for L2 hardware-prefetch events 0x70/0x71/0x72 |
+| `l2pf_focus.sh` | same | 3-trial confirmation on 0x71/0x72 × 0x1F composite umask |
+| `mhammer.c` | same | STREAM-style memory hammer (12-thread default) used as workload |
+
+Results land in `s3://amd-pmc-toolkit-pradeepn/results/aws/{instance-type}/{instance-id}/{YYYY-MM-DD}/{sweep}.txt` and persist across instance termination. See `pmc_test/csp_enablement/KNOWLEDGE_BASE.md` for the complete workflow.
 
 ---
 

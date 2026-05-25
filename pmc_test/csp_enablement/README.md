@@ -46,6 +46,27 @@ blocks, with severity tagging, ready to hand to the CSP partner engineer.
 
 ## Files
 
+### Knowledge base (start here)
+
+| File | Purpose |
+|---|---|
+| `KNOWLEDGE_BASE.md` | **Master single-source-of-truth.** Headline truths, instance inventory, full PMC matrix, per-event diagnosis map, S3 workflow, common pitfalls. Read first. |
+| `CLOUD_READINESS_PLAYBOOK.md` | Hypervisor-agnostic protocol for adding a new CSP (GCP / Azure / Oracle) to the matrix. Phase 1–4 + per-CSP notes + asks template. |
+| `AWS_4WAY_MATRIX.md` | Full m8a 2xl/24xl/metal/on-prem sweep with the L2-PF addendum. |
+| `PERFSPECT_AWS_STATUS.md` | Superseded (banner inside points to KB). Kept for history. |
+
+### Sweep tooling (uploaded to S3 `artifacts/`, mirrored here for GitHub)
+
+| File | Purpose |
+|---|---|
+| `run_pmc.sh` | Bootstrap wrapper run on any EC2 instance. Pulls `mhammer.x86_64` + named sweep script from S3, runs it, uploads result back to `s3://amd-pmc-toolkit-pradeepn/results/aws/{type}/{iid}/{date}/{sweep}.txt`. Uses IMDSv2. |
+| `sweep_runner.sh` | Generic events.yaml sweep runner (the default sweep `run_pmc.sh` invokes). |
+| `l2pf_sweep.sh` | Full 7-umask grid for L2 prefetch events 0x70/0x71/0x72. |
+| `l2pf_focus.sh` | 3-trial confirmation sweep on 0x71/0x72 × 0x1F composite. |
+| `mhammer.c` | STREAM-style memory hammer used as the workload under the L2-PF sweeps. Build static: `gcc -O2 -pthread -static -o mhammer.x86_64 mhammer.c`. |
+
+### Matrix builders
+
 | File | Purpose |
 |---|---|
 | `build_csp_matrix.py` | Builds `csp_matrix.{csv,json}` from `public_ppr_coverage.csv` + per-CSP raw sweeps; tags severity + PerfSpect usage |
@@ -55,6 +76,17 @@ blocks, with severity tagging, ready to hand to the CSP partner engineer.
 | `reports/<csp>.md` | Per-CSP enablement report (vendor-facing) |
 | `reports/<csp>.html` | Self-contained HTML rendering of the same |
 | `raw/<csp>.csv` | (placeholder) Raw sweep output per CSP — populated when that CSP is swept |
+
+## S3 persistence layer
+
+Reusable artifacts and per-instance results live in **`s3://amd-pmc-toolkit-pradeepn`** (us-west-2, versioning ON). Survives instance termination. See KNOWLEDGE_BASE.md §6 for the layout and `s3_pmc_toolkit_bucket.md` in auto-memory for IAM details.
+
+Quick pull from any computer with AWS creds:
+```bash
+aws s3 ls s3://amd-pmc-toolkit-pradeepn/
+aws s3 sync s3://amd-pmc-toolkit-pradeepn/results/ ./results/   # mirror all sweep results
+aws s3 cp s3://amd-pmc-toolkit-pradeepn/reports/KNOWLEDGE_BASE.md .
+```
 
 ## State legend (per-CSP columns)
 
