@@ -1,0 +1,101 @@
+<!doctype html><meta charset=utf-8>
+<title>PMC Test Report 20260525T093204Z</title>
+<style>
+body{font:14px/1.4 -apple-system,Inter,Arial;color:#222;background:#fafafa;margin:24px}
+h1,h2{color:#000}
+.grid{display:grid;grid-template-columns:1fr 80px 80px 80px 80px;gap:2px;margin:8px 0 24px}
+.grid>div{padding:4px 8px;background:#fff;border:1px solid #eee}
+.grid>div.head{font-weight:600;background:#eee}
+.ok{background:#d4f4d4}
+.fail{background:#f8c8c8}
+.skip{background:#eee;color:#999}
+.extra{box-shadow:inset 0 0 0 2px #f80}
+.legend span{display:inline-block;padding:2px 8px;margin-right:6px;border:1px solid #ccc}
+table{border-collapse:collapse;margin:8px 0 24px;background:#fff;width:100%}
+td,th{border:1px solid #ddd;padding:4px 8px;font-size:13px;text-align:left}
+th{background:#eef}
+.muted{color:#888;font-size:12px}
+</style>
+<h1>AMD Zen4/5 PMC Test Report</h1>
+<p class=muted>Generated 20260525T093204Z UTC Host ip-172-31-54-193 CPU AMD EPYC 9R45 Cores 8 CCDs 1</p>
+<div class=legend>
+  <span class=ok>pass</span><span class=fail>fail</span><span class=skip>skip</span>
+  <span class=extra>orange border = PPR-only (not in PerfSpect)</span>
+</div>
+<h2>Per-event matrix</h2>
+<div class=grid>
+<div class=head>event</div><div class=head>prog</div><div class=head>sanity</div><div class=head>bounds</div><div class=head>ppr-only</div>
+<div class="">all_data_cache_accesses</div><div class=fail>N</div><div class=fail>N</div><div class=ok>Y</div><div></div>
+<div class="">bp_de_redirect</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">bp_dyn_ind_pred</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">bp_l1_tlb_miss_l2_tlb_hit</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">bp_l1_tlb_miss_l2_tlb_miss.if4k</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">cpu-cycles</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">de_dispatch_stall_cycle_dynamic_tokens_part1.load_queue_rsrc_stall</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">de_no_dispatch_per_slot.backend_stalls</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">de_no_dispatch_per_slot.no_ops_from_frontend</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">de_op_queue_empty</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">de_src_op_disp.all</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">ex_div_busy</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">ex_no_retire.load_not_complete</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">ex_no_retire.not_complete</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">ex_ret_brn</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">ex_ret_brn_misp</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">ex_ret_brn_tkn</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">ex_ret_cond</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">ex_ret_near_ret</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">ex_ret_ops</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">fp_disp_faults.all</div><div class=ok>Y</div><div class=fail>N</div><div class=ok>Y</div><div></div>
+<div class="">fp_pack_ops_retired.all</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">fp_ret_sse_avx_ops.all</div><div class=ok>Y</div><div class=ok>Y</div><div class=fail>N</div><div></div>
+<div class="">fp_ret_x87_fp_ops.all</div><div class=ok>Y</div><div class=fail>N</div><div class=ok>Y</div><div></div>
+<div class="">ic_cache_fill_l2</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">ic_cache_fill_sys</div><div class=ok>Y</div><div class=fail>N</div><div class=ok>Y</div><div></div>
+<div class="">ic_tag_hit_miss.all_instruction_cache_accesses</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">ic_tag_hit_miss.instruction_cache_miss</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">instructions</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">l2_cache_req_stat.dc_hit_in_l2</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">l2_cache_req_stat.ic_fill_miss</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">l2_cache_req_stat.ic_hit_in_l2</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">l2_cache_req_stat.ls_rd_blk_c</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">l2_pf_hit_l2.l2_hwpf</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">l2_request_g1.all_no_prefetch</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">ls_any_fills_from_sys.all</div><div class=ok>Y</div><div class=fail>N</div><div class=ok>Y</div><div></div>
+<div class="">ls_dispatch.ld_st_dispatch</div><div class=ok>Y</div><div class=fail>N</div><div class=ok>Y</div><div></div>
+<div class="">ls_dmnd_fills_from_sys.all</div><div class=ok>Y</div><div class=fail>N</div><div class=ok>Y</div><div></div>
+<div class="">ls_hw_pf_dc_fills.all</div><div class=ok>Y</div><div class=fail>N</div><div class=ok>Y</div><div></div>
+<div class="">ls_int_taken</div><div class=ok>Y</div><div class=fail>N</div><div class=ok>Y</div><div></div>
+<div class="">ls_l1_d_tlb_miss.all</div><div class=ok>Y</div><div class=fail>N</div><div class=ok>Y</div><div></div>
+<div class="">ls_locks.bus_lock</div><div class=ok>Y</div><div class=fail>N</div><div class=ok>Y</div><div></div>
+<div class="">ls_mab_alloc.all_allocations</div><div class=ok>Y</div><div class=fail>N</div><div class=ok>Y</div><div></div>
+<div class="">ls_misal_loads.ma64</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">ls_not_halted_cyc</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">ls_pref_instr_disp.all</div><div class=ok>Y</div><div class=fail>N</div><div class=ok>Y</div><div></div>
+<div class="">ls_stlf</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">ls_sw_pf_dc_fills.all</div><div class=ok>Y</div><div class=fail>N</div><div class=ok>Y</div><div></div>
+<div class="">ls_tablewalker.iside_l1</div><div class=skip>-</div><div class=fail>N</div><div class=ok>Y</div><div></div>
+<div class="">ls_tlb_flush.all</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">op_cache_hit_miss.op_cache_hit</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">op_cache_hit_miss.op_cache_miss</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+<div class="">sse_avx_ops_retired.all</div><div class=ok>Y</div><div class=ok>Y</div><div class=ok>Y</div><div></div>
+</div>
+<h2>Derived metric bounds</h2><table><tr><th>metric</th><th>workload</th><th>value</th><th>bounds</th><th>ok</th></tr>
+<tr><td>ipc</td><td>openssl</td><td>1.893</td><td>[0.5, 4.0]</td><td class=ok>Y</td></tr>
+<tr><td>ipc</td><td>fp_avx</td><td>0.626</td><td>[0.2, 4.0]</td><td class=ok>Y</td></tr>
+<tr><td>ipc</td><td>branch_random</td><td>1.086</td><td>[0.5, 4.0]</td><td class=ok>Y</td></tr>
+<tr><td>ipc</td><td>dram_stream</td><td>1.121</td><td>[0.05, 2.0]</td><td class=ok>Y</td></tr>
+<tr><td>branch_misp_rate_pct</td><td>branch_random</td><td>5.108</td><td>[5.0, 50.0]</td><td class=ok>Y</td></tr>
+<tr><td>branch_misp_rate_pct</td><td>openssl</td><td>0.070</td><td>[0.0, 10.0]</td><td class=ok>Y</td></tr>
+<tr><td>frontend_bound_pct</td><td>openssl</td><td>93.204</td><td>[0.0, 80.0]</td><td class=fail>N</td></tr>
+<tr><td>backend_bound_pct</td><td>openssl</td><td>9.224</td><td>[0.0, 100.0]</td><td class=ok>Y</td></tr>
+<tr><td>backend_memory_pct</td><td>dram_stream</td><td>77.842</td><td>[10.0, 100.0]</td><td class=ok>Y</td></tr>
+<tr><td>backend_memory_pct</td><td>openssl</td><td>0.016</td><td>[0.0, 100.0]</td><td class=ok>Y</td></tr>
+<tr><td>l2_dc_hit_rate_pct</td><td>l2_pressure</td><td>99.923</td><td>[10.0, 100.0]</td><td class=ok>Y</td></tr>
+<tr><td>l2_dc_hit_rate_pct</td><td>dram_stream</td><td>81.475</td><td>[0.0, 100.0]</td><td class=ok>Y</td></tr>
+<tr><td>l1_dtlb_mpki</td><td>tlb_thrash</td><td>7.637</td><td>[1.0, 1000.0]</td><td class=ok>Y</td></tr>
+<tr><td>l1_dtlb_mpki</td><td>openssl</td><td>0.000</td><td>[0.0, 10.0]</td><td class=ok>Y</td></tr>
+<tr><td>ic_miss_per_inst_pct</td><td>openssl</td><td>4.187</td><td>[0.0, 100.0]</td><td class=ok>Y</td></tr>
+</table>
+<h2>CCD scaling (1 core -> 1 CCD -> 2 CCDs)</h2>
+<table><tr><th>event</th><th>cat</th><th>1c</th><th>1 CCD</th><th>2 CCD</th><th>class</th></tr>
+</table>

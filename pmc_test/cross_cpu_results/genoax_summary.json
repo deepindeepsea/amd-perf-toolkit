@@ -1,0 +1,1914 @@
+{
+  "meta": {
+    "ts": "20260525T093843Z",
+    "host": "host-ruby-de91",
+    "ncpu": 96,
+    "ccd_topology": [
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      [
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      [
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
+      ],
+      [
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71
+      ],
+      [
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79
+      ],
+      [
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87
+      ],
+      [
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95
+      ]
+    ],
+    "mode": "all"
+  },
+  "programmability": [
+    {
+      "event": "cpu-cycles",
+      "amd": "Core::X86::Pmc::Core::LsNotHaltedCyc",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "instructions",
+      "amd": "Core::X86::Pmc::Core::ExRetInstr",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_ret_ops",
+      "amd": "Core::X86::Pmc::Core::ExRetOps",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_ret_brn",
+      "amd": "Core::X86::Pmc::Core::ExRetBrn",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_ret_brn_misp",
+      "amd": "Core::X86::Pmc::Core::ExRetBrnMisp",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_ret_brn_tkn",
+      "amd": "Core::X86::Pmc::Core::ExRetBrnTkn",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_ret_cond",
+      "amd": "Core::X86::Pmc::Core::ExRetCond",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_ret_near_ret",
+      "amd": "Core::X86::Pmc::Core::ExRetNearRet",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_div_busy",
+      "amd": "Core::X86::Pmc::Core::ExDivBusy",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_no_retire.not_complete",
+      "amd": "Core::X86::Pmc::Core::ExNoRetire",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_no_retire.load_not_complete",
+      "amd": "Core::X86::Pmc::Core::ExNoRetire",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "de_src_op_disp.all",
+      "amd": "Core::X86::Pmc::Core::DeSrcOpDisp",
+      "category": "DE",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "de_no_dispatch_per_slot.no_ops_from_frontend",
+      "amd": "Core::X86::Pmc::Core::DeNoDispatchPerSlot",
+      "category": "DE",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "de_no_dispatch_per_slot.backend_stalls",
+      "amd": "Core::X86::Pmc::Core::DeNoDispatchPerSlot",
+      "category": "DE",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "de_dispatch_stall_cycle_dynamic_tokens_part1.load_queue_rsrc_stall",
+      "amd": "Core::X86::Pmc::Core::DeDisDispatchTokenStalls1",
+      "category": "DE",
+      "ok": false,
+      "error": "    -e, --event <event>   event selector. use 'perf list' to list available events"
+    },
+    {
+      "event": "de_op_queue_empty",
+      "amd": "Core::X86::Pmc::Core::DeOpQueueEmpty",
+      "category": "DE",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "fp_ret_sse_avx_ops.all",
+      "amd": "Core::X86::Pmc::Core::FpRetSseAvxOps",
+      "category": "FP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "fp_ret_x87_fp_ops.all",
+      "amd": "Core::X86::Pmc::Core::FpRetx87FpOps",
+      "category": "FP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "fp_disp_faults.all",
+      "amd": "Core::X86::Pmc::Core::FpDispFaults",
+      "category": "FP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "fp_pack_ops_retired.all",
+      "amd": "Core::X86::Pmc::Core::FpPackOpsRetired",
+      "category": "FP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "sse_avx_ops_retired.all",
+      "amd": "Core::X86::Pmc::Core::SseAvxOpsRetired",
+      "category": "FP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_dispatch.ld_st_dispatch",
+      "amd": "Core::X86::Pmc::Core::LsDispatch",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "all_data_cache_accesses",
+      "amd": "Core::X86::Pmc::Core::LsDcAccesses",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_l1_d_tlb_miss.all",
+      "amd": "Core::X86::Pmc::Core::LsL1DTlbMiss",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_tablewalker.iside_l1",
+      "amd": "Core::X86::Pmc::Core::LsTablewalker",
+      "category": "LS",
+      "ok": null,
+      "error": "skipped: linux_perf_unavailable"
+    },
+    {
+      "event": "ls_locks.bus_lock",
+      "amd": "Core::X86::Pmc::Core::LsLocks",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_int_taken",
+      "amd": "Core::X86::Pmc::Core::LsIntTaken",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_mab_alloc.all_allocations",
+      "amd": "Core::X86::Pmc::Core::LsMabAlloc",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_any_fills_from_sys.all",
+      "amd": "Core::X86::Pmc::Core::LsAnyFillsFromSys",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_dmnd_fills_from_sys.all",
+      "amd": "Core::X86::Pmc::Core::LsDmndFillsFromSys",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_misal_loads.ma64",
+      "amd": "Core::X86::Pmc::Core::LsMisalLoads",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_hw_pf_dc_fills.all",
+      "amd": "Core::X86::Pmc::Core::LsHwPfDcFills",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_sw_pf_dc_fills.all",
+      "amd": "Core::X86::Pmc::Core::LsSwPfDcFills",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_pref_instr_disp.all",
+      "amd": "Core::X86::Pmc::Core::LsPrefInstrDisp",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_not_halted_cyc",
+      "amd": "Core::X86::Pmc::Core::LsNotHaltedCyc",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_stlf",
+      "amd": "Core::X86::Pmc::Core::LsSTLF",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_tlb_flush.all",
+      "amd": "Core::X86::Pmc::Core::LsTlbFlush",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ic_tag_hit_miss.all_instruction_cache_accesses",
+      "amd": "Core::X86::Pmc::Core::IcFw32",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ic_tag_hit_miss.instruction_cache_miss",
+      "amd": "Core::X86::Pmc::Core::IcFw32Miss",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ic_cache_fill_l2",
+      "amd": "Core::X86::Pmc::Core::IcCacheFillL2",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ic_cache_fill_sys",
+      "amd": "Core::X86::Pmc::Core::IcCacheFillSys",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "bp_l1_tlb_miss_l2_tlb_hit",
+      "amd": "Core::X86::Pmc::Core::BpL1TlbMissL2TlbHit",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "bp_l1_tlb_miss_l2_tlb_miss.if4k",
+      "amd": "Core::X86::Pmc::Core::BpL1TlbMissL2TlbMiss",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "bp_dyn_ind_pred",
+      "amd": "Core::X86::Pmc::Core::BpDynIndPred",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "bp_de_redirect",
+      "amd": "Core::X86::Pmc::Core::BpDeReDirect",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "op_cache_hit_miss.op_cache_hit",
+      "amd": "Core::X86::Pmc::Core::OpCacheHitMiss",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "op_cache_hit_miss.op_cache_miss",
+      "amd": "Core::X86::Pmc::Core::OpCacheHitMiss",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "l2_request_g1.all_no_prefetch",
+      "amd": "Core::X86::Pmc::L2::L2RequestG1",
+      "category": "L2",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "l2_cache_req_stat.dc_hit_in_l2",
+      "amd": "Core::X86::Pmc::L2::L2CacheReqStat",
+      "category": "L2",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "l2_cache_req_stat.ls_rd_blk_c",
+      "amd": "Core::X86::Pmc::L2::L2CacheReqStat",
+      "category": "L2",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "l2_cache_req_stat.ic_hit_in_l2",
+      "amd": "Core::X86::Pmc::L2::L2CacheReqStat",
+      "category": "L2",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "l2_cache_req_stat.ic_fill_miss",
+      "amd": "Core::X86::Pmc::L2::L2CacheReqStat",
+      "category": "L2",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "l2_pf_hit_l2.l2_hwpf",
+      "amd": "Core::X86::Pmc::L2::L2PfHitL2",
+      "category": "L2",
+      "ok": false,
+      "error": "    -e, --event <event>   event selector. use 'perf list' to list available events"
+    }
+  ],
+  "sanity": [
+    {
+      "event": "cpu-cycles",
+      "workload": "all",
+      "value": 402542569.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12258362770080566
+    },
+    {
+      "event": "instructions",
+      "workload": "all",
+      "value": 251620849.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12258362770080566
+    },
+    {
+      "event": "ex_ret_ops",
+      "workload": "all",
+      "value": 201964179.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12258362770080566
+    },
+    {
+      "event": "ex_ret_brn",
+      "workload": "all",
+      "value": 50328743.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12258362770080566
+    },
+    {
+      "event": "ex_ret_brn_tkn",
+      "workload": "all",
+      "value": 50208158.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12258362770080566
+    },
+    {
+      "event": "ex_ret_cond",
+      "workload": "all",
+      "value": 50168032.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12416577339172363
+    },
+    {
+      "event": "ex_ret_near_ret",
+      "workload": "all",
+      "value": 34432.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12416577339172363
+    },
+    {
+      "event": "ex_div_busy",
+      "workload": "all",
+      "value": 26438.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12416577339172363
+    },
+    {
+      "event": "ex_no_retire.not_complete",
+      "workload": "all",
+      "value": 301240145.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.12416577339172363
+    },
+    {
+      "event": "de_src_op_disp.all",
+      "workload": "all",
+      "value": 202239250.0,
+      "category": "DE",
+      "ok": true,
+      "duration_s": 0.12416577339172363
+    },
+    {
+      "event": "de_no_dispatch_per_slot.no_ops_from_frontend",
+      "workload": "all",
+      "value": 0.0,
+      "category": "DE",
+      "ok": false,
+      "duration_s": 0.013184547424316406
+    },
+    {
+      "event": "de_no_dispatch_per_slot.backend_stalls",
+      "workload": "all",
+      "value": 0.0,
+      "category": "DE",
+      "ok": false,
+      "duration_s": 0.013184547424316406
+    },
+    {
+      "event": "de_dispatch_stall_cycle_dynamic_tokens_part1.load_queue_rsrc_stall",
+      "workload": "all",
+      "value": 0.0,
+      "category": "DE",
+      "ok": false,
+      "duration_s": 0.013184547424316406
+    },
+    {
+      "event": "de_op_queue_empty",
+      "workload": "all",
+      "value": 0.0,
+      "category": "DE",
+      "ok": false,
+      "duration_s": 0.013184547424316406
+    },
+    {
+      "event": "fp_ret_x87_fp_ops.all",
+      "workload": "all",
+      "value": 0.0,
+      "category": "FP",
+      "ok": false,
+      "duration_s": 0.013184547424316406
+    },
+    {
+      "event": "fp_disp_faults.all",
+      "workload": "all",
+      "value": 0.0,
+      "category": "FP",
+      "ok": false,
+      "duration_s": 0.1244654655456543
+    },
+    {
+      "event": "ls_dispatch.ld_st_dispatch",
+      "workload": "all",
+      "value": 26271.0,
+      "category": "LS",
+      "ok": true,
+      "duration_s": 0.1244654655456543
+    },
+    {
+      "event": "all_data_cache_accesses",
+      "workload": "all",
+      "value": 791351.0,
+      "category": "LS",
+      "ok": true,
+      "duration_s": 0.1244654655456543
+    },
+    {
+      "event": "ls_locks.bus_lock",
+      "workload": "all",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.1244654655456543
+    },
+    {
+      "event": "ls_int_taken",
+      "workload": "all",
+      "value": 109.0,
+      "category": "LS",
+      "ok": true,
+      "duration_s": 0.1244654655456543
+    },
+    {
+      "event": "ls_misal_loads.ma64",
+      "workload": "all",
+      "value": 1027.0,
+      "category": "LS",
+      "ok": true,
+      "duration_s": 0.12555527687072754
+    },
+    {
+      "event": "ls_sw_pf_dc_fills.all",
+      "workload": "all",
+      "value": 154.0,
+      "category": "LS",
+      "ok": true,
+      "duration_s": 0.12555527687072754
+    },
+    {
+      "event": "ls_pref_instr_disp.all",
+      "workload": "all",
+      "value": 958.0,
+      "category": "LS",
+      "ok": true,
+      "duration_s": 0.12555527687072754
+    },
+    {
+      "event": "ls_not_halted_cyc",
+      "workload": "all",
+      "value": 403017108.0,
+      "category": "LS",
+      "ok": true,
+      "duration_s": 0.12555527687072754
+    },
+    {
+      "event": "ls_stlf",
+      "workload": "all",
+      "value": 34457.0,
+      "category": "LS",
+      "ok": true,
+      "duration_s": 0.12555527687072754
+    },
+    {
+      "event": "ls_tlb_flush.all",
+      "workload": "all",
+      "value": 37.0,
+      "category": "LS",
+      "ok": true,
+      "duration_s": 0.1228632926940918
+    },
+    {
+      "event": "ic_tag_hit_miss.all_instruction_cache_accesses",
+      "workload": "all",
+      "value": 874566.0,
+      "category": "IC_BP",
+      "ok": true,
+      "duration_s": 0.1228632926940918
+    },
+    {
+      "event": "ic_tag_hit_miss.instruction_cache_miss",
+      "workload": "all",
+      "value": 64663.0,
+      "category": "IC_BP",
+      "ok": true,
+      "duration_s": 0.1228632926940918
+    },
+    {
+      "event": "ic_cache_fill_l2",
+      "workload": "all",
+      "value": 44820.0,
+      "category": "IC_BP",
+      "ok": true,
+      "duration_s": 0.1228632926940918
+    },
+    {
+      "event": "ic_cache_fill_sys",
+      "workload": "all",
+      "value": 17821.0,
+      "category": "IC_BP",
+      "ok": true,
+      "duration_s": 0.1228632926940918
+    },
+    {
+      "event": "bp_l1_tlb_miss_l2_tlb_hit",
+      "workload": "all",
+      "value": 124.0,
+      "category": "IC_BP",
+      "ok": true,
+      "duration_s": 0.12478327751159668
+    },
+    {
+      "event": "bp_l1_tlb_miss_l2_tlb_miss.if4k",
+      "workload": "all",
+      "value": 138.0,
+      "category": "IC_BP",
+      "ok": true,
+      "duration_s": 0.12478327751159668
+    },
+    {
+      "event": "bp_dyn_ind_pred",
+      "workload": "all",
+      "value": 453.0,
+      "category": "IC_BP",
+      "ok": true,
+      "duration_s": 0.12478327751159668
+    },
+    {
+      "event": "op_cache_hit_miss.op_cache_hit",
+      "workload": "all",
+      "value": 50270746.0,
+      "category": "IC_BP",
+      "ok": true,
+      "duration_s": 0.12478327751159668
+    },
+    {
+      "event": "op_cache_hit_miss.op_cache_miss",
+      "workload": "all",
+      "value": 327583.0,
+      "category": "IC_BP",
+      "ok": true,
+      "duration_s": 0.12478327751159668
+    },
+    {
+      "event": "l2_request_g1.all_no_prefetch",
+      "workload": "all",
+      "value": 81007.0,
+      "category": "L2",
+      "ok": true,
+      "duration_s": 0.1247718334197998
+    },
+    {
+      "event": "l2_cache_req_stat.ic_hit_in_l2",
+      "workload": "all",
+      "value": 45697.0,
+      "category": "L2",
+      "ok": true,
+      "duration_s": 0.1247718334197998
+    },
+    {
+      "event": "l2_cache_req_stat.ic_fill_miss",
+      "workload": "all",
+      "value": 17591.0,
+      "category": "L2",
+      "ok": true,
+      "duration_s": 0.1247718334197998
+    },
+    {
+      "event": "ex_ret_brn_misp",
+      "workload": "branch_random",
+      "value": 34764749.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.45668625831604004
+    },
+    {
+      "event": "bp_de_redirect",
+      "workload": "branch_random",
+      "value": 44277.0,
+      "category": "IC_BP",
+      "ok": true,
+      "duration_s": 0.45668625831604004
+    },
+    {
+      "event": "ex_no_retire.load_not_complete",
+      "workload": "dram_stream",
+      "value": 282146586.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.1816692352294922
+    },
+    {
+      "event": "ls_l1_d_tlb_miss.all",
+      "workload": "dram_stream",
+      "value": 632163.0,
+      "category": "LS",
+      "ok": true,
+      "duration_s": 0.1816692352294922
+    },
+    {
+      "event": "ls_mab_alloc.all_allocations",
+      "workload": "dram_stream",
+      "value": 41602991.0,
+      "category": "LS",
+      "ok": true,
+      "duration_s": 0.1816692352294922
+    },
+    {
+      "event": "ls_any_fills_from_sys.all",
+      "workload": "dram_stream",
+      "value": 30184697.0,
+      "category": "LS",
+      "ok": true,
+      "duration_s": 0.1816692352294922
+    },
+    {
+      "event": "ls_dmnd_fills_from_sys.all",
+      "workload": "dram_stream",
+      "value": 26959601.0,
+      "category": "LS",
+      "ok": true,
+      "duration_s": 0.1816692352294922
+    },
+    {
+      "event": "ls_hw_pf_dc_fills.all",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.014129400253295898
+    },
+    {
+      "event": "l2_cache_req_stat.dc_hit_in_l2",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "category": "L2",
+      "ok": false,
+      "duration_s": 0.014129400253295898
+    },
+    {
+      "event": "l2_cache_req_stat.ls_rd_blk_c",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "category": "L2",
+      "ok": false,
+      "duration_s": 0.014129400253295898
+    },
+    {
+      "event": "l2_pf_hit_l2.l2_hwpf",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "category": "L2",
+      "ok": false,
+      "duration_s": 0.014129400253295898
+    },
+    {
+      "event": "fp_ret_sse_avx_ops.all",
+      "workload": "fp_avx",
+      "value": 3200000000.0,
+      "category": "FP",
+      "ok": true,
+      "duration_s": 0.23299169540405273
+    },
+    {
+      "event": "fp_pack_ops_retired.all",
+      "workload": "fp_avx",
+      "value": 200000981.0,
+      "category": "FP",
+      "ok": true,
+      "duration_s": 0.23299169540405273
+    },
+    {
+      "event": "sse_avx_ops_retired.all",
+      "workload": "fp_avx",
+      "value": 29746.0,
+      "category": "FP",
+      "ok": true,
+      "duration_s": 0.23299169540405273
+    },
+    {
+      "event": "fp_ret_sse_avx_ops.all",
+      "workload": "openssl",
+      "value": 72.0,
+      "category": "FP",
+      "ok": true,
+      "duration_s": 18.01808452606201
+    },
+    {
+      "event": "sse_avx_ops_retired.all",
+      "workload": "openssl",
+      "value": 36054750522.0,
+      "category": "FP",
+      "ok": true,
+      "duration_s": 18.01808452606201
+    },
+    {
+      "event": "ls_l1_d_tlb_miss.all",
+      "workload": "tlb_thrash",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.015674114227294922
+    },
+    {
+      "event": "ls_tablewalker.iside_l1",
+      "workload": "tlb_thrash",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.015674114227294922
+    },
+    {
+      "event": "l2_cache_req_stat.dc_hit_in_l2",
+      "workload": "l2_pressure",
+      "value": 223373024.0,
+      "category": "L2",
+      "ok": true,
+      "duration_s": 0.17045307159423828
+    }
+  ],
+  "bounds": [
+    {
+      "event": "cpu-cycles",
+      "workload": "all",
+      "value": 402642238.0,
+      "instructions": 251675318.0,
+      "per_inst": 1.5998479358234088,
+      "cap": 100.0,
+      "ok": true
+    },
+    {
+      "event": "instructions",
+      "workload": "all",
+      "value": 503333304.0,
+      "instructions": 503333304.0,
+      "per_inst": 1.0,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "ex_ret_ops",
+      "workload": "all",
+      "value": 202064491.0,
+      "instructions": 251699053.0,
+      "per_inst": 0.8028019517419479,
+      "cap": 4.0,
+      "ok": true
+    },
+    {
+      "event": "ex_ret_brn",
+      "workload": "all",
+      "value": 50334402.0,
+      "instructions": 251664984.0,
+      "per_inst": 0.2000055836134915,
+      "cap": 0.3,
+      "ok": true
+    },
+    {
+      "event": "ex_ret_brn_misp",
+      "workload": "branch_random",
+      "value": 34773440.0,
+      "instructions": 2871862728.0,
+      "per_inst": 0.01210832246993109,
+      "cap": 0.3,
+      "ok": true
+    },
+    {
+      "event": "ex_ret_brn_tkn",
+      "workload": "all",
+      "value": 50216011.0,
+      "instructions": 251675633.0,
+      "per_inst": 0.19952670984242643,
+      "cap": 0.3,
+      "ok": true
+    },
+    {
+      "event": "ex_ret_cond",
+      "workload": "all",
+      "value": 50172431.0,
+      "instructions": 251625349.0,
+      "per_inst": 0.1993933886207943,
+      "cap": 0.3,
+      "ok": true
+    },
+    {
+      "event": "ex_ret_near_ret",
+      "workload": "all",
+      "value": 35778.0,
+      "instructions": 251622418.0,
+      "per_inst": 0.00014218923848033287,
+      "cap": 0.2,
+      "ok": true
+    },
+    {
+      "event": "ex_div_busy",
+      "workload": "all",
+      "value": 25773.0,
+      "instructions": 251673449.0,
+      "per_inst": 0.00010240651170159789,
+      "cap": 100.0,
+      "ok": true
+    },
+    {
+      "event": "ex_no_retire.not_complete",
+      "workload": "all",
+      "value": 301208685.0,
+      "instructions": 251620074.0,
+      "per_inst": 1.197077324601693,
+      "cap": 100.0,
+      "ok": true
+    },
+    {
+      "event": "ex_no_retire.load_not_complete",
+      "workload": "dram_stream",
+      "value": 280154267.0,
+      "instructions": 461255492.0,
+      "per_inst": 0.607373292804067,
+      "cap": 100.0,
+      "ok": true
+    },
+    {
+      "event": "de_src_op_disp.all",
+      "workload": "all",
+      "value": 202347703.0,
+      "instructions": 251670313.0,
+      "per_inst": 0.8040189587239874,
+      "cap": 6.0,
+      "ok": true
+    },
+    {
+      "event": "de_no_dispatch_per_slot.no_ops_from_frontend",
+      "workload": "all",
+      "value": 11477847.0,
+      "instructions": 251633447.0,
+      "per_inst": 0.04561335997594946,
+      "cap": 600.0,
+      "ok": true
+    },
+    {
+      "event": "de_no_dispatch_per_slot.backend_stalls",
+      "workload": "all",
+      "value": 2201905731.0,
+      "instructions": 251627670.0,
+      "per_inst": 8.750650240492233,
+      "cap": 600.0,
+      "ok": true
+    },
+    {
+      "event": "de_dispatch_stall_cycle_dynamic_tokens_part1.load_queue_rsrc_stall",
+      "workload": "all",
+      "value": 0.0,
+      "instructions": 0.0,
+      "per_inst": 0.0,
+      "cap": 100.0,
+      "ok": true
+    },
+    {
+      "event": "de_op_queue_empty",
+      "workload": "all",
+      "value": 1644634.0,
+      "instructions": 251690695.0,
+      "per_inst": 0.006534345657871857,
+      "cap": 100.0,
+      "ok": true
+    },
+    {
+      "event": "fp_ret_sse_avx_ops.all",
+      "workload": "fp_avx",
+      "value": 3200000000.0,
+      "instructions": 502475457.0,
+      "per_inst": 6.368470251473397,
+      "cap": 4.0,
+      "ok": false
+    },
+    {
+      "event": "fp_ret_x87_fp_ops.all",
+      "workload": "all",
+      "value": 0.0,
+      "instructions": 251701074.0,
+      "per_inst": 0.0,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "fp_disp_faults.all",
+      "workload": "all",
+      "value": 0.0,
+      "instructions": 251691998.0,
+      "per_inst": 0.0,
+      "cap": 0.1,
+      "ok": true
+    },
+    {
+      "event": "fp_pack_ops_retired.all",
+      "workload": "fp_avx",
+      "value": 200001003.0,
+      "instructions": 502528808.0,
+      "per_inst": 0.39798912980925066,
+      "cap": 4.0,
+      "ok": true
+    },
+    {
+      "event": "sse_avx_ops_retired.all",
+      "workload": "fp_avx",
+      "value": 35762.0,
+      "instructions": 502518078.0,
+      "per_inst": 7.116559894189519e-05,
+      "cap": 4.0,
+      "ok": true
+    },
+    {
+      "event": "ls_dispatch.ld_st_dispatch",
+      "workload": "all",
+      "value": 27555.0,
+      "instructions": 251648781.0,
+      "per_inst": 0.0001094978481139553,
+      "cap": 3.0,
+      "ok": true
+    },
+    {
+      "event": "all_data_cache_accesses",
+      "workload": "all",
+      "value": 813238.0,
+      "instructions": 251636738.0,
+      "per_inst": 0.0032317936024111073,
+      "cap": 3.0,
+      "ok": true
+    },
+    {
+      "event": "ls_l1_d_tlb_miss.all",
+      "workload": "tlb_thrash",
+      "value": 5035717.0,
+      "instructions": 315026974.0,
+      "per_inst": 0.01598503434820156,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "ls_tablewalker.iside_l1",
+      "workload": "tlb_thrash",
+      "value": 0.0,
+      "instructions": 0.0,
+      "per_inst": 0.0,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "ls_locks.bus_lock",
+      "workload": "all",
+      "value": 0.0,
+      "instructions": 251743173.0,
+      "per_inst": 0.0,
+      "cap": 0.01,
+      "ok": true
+    },
+    {
+      "event": "ls_int_taken",
+      "workload": "all",
+      "value": 109.0,
+      "instructions": 251696122.0,
+      "per_inst": 4.3306189675818685e-07,
+      "cap": 0.01,
+      "ok": true
+    },
+    {
+      "event": "ls_mab_alloc.all_allocations",
+      "workload": "dram_stream",
+      "value": 41555046.0,
+      "instructions": 462002887.0,
+      "per_inst": 0.0899454249514246,
+      "cap": 3.0,
+      "ok": true
+    },
+    {
+      "event": "ls_any_fills_from_sys.all",
+      "workload": "dram_stream",
+      "value": 30232722.0,
+      "instructions": 462162830.0,
+      "per_inst": 0.0654157367004179,
+      "cap": 3.0,
+      "ok": true
+    },
+    {
+      "event": "ls_dmnd_fills_from_sys.all",
+      "workload": "dram_stream",
+      "value": 27093023.0,
+      "instructions": 453399731.0,
+      "per_inst": 0.05975526924165731,
+      "cap": 3.0,
+      "ok": true
+    },
+    {
+      "event": "ls_misal_loads.ma64",
+      "workload": "all",
+      "value": 1949.0,
+      "instructions": 251717667.0,
+      "per_inst": 7.742801779582678e-06,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "ls_hw_pf_dc_fills.all",
+      "workload": "dram_stream",
+      "value": 2855386.0,
+      "instructions": 463900012.0,
+      "per_inst": 0.006155175525194856,
+      "cap": 3.0,
+      "ok": true
+    },
+    {
+      "event": "ls_sw_pf_dc_fills.all",
+      "workload": "all",
+      "value": 152.0,
+      "instructions": 251656944.0,
+      "per_inst": 6.03996844211857e-07,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "ls_pref_instr_disp.all",
+      "workload": "all",
+      "value": 919.0,
+      "instructions": 251614428.0,
+      "per_inst": 3.6524137638084887e-06,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "ls_not_halted_cyc",
+      "workload": "all",
+      "value": 402683441.0,
+      "instructions": 251704798.0,
+      "per_inst": 1.59982425523728,
+      "cap": 100.0,
+      "ok": true
+    },
+    {
+      "event": "ls_stlf",
+      "workload": "all",
+      "value": 29310.0,
+      "instructions": 251684377.0,
+      "per_inst": 0.00011645538093927856,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "ls_tlb_flush.all",
+      "workload": "all",
+      "value": 37.0,
+      "instructions": 251617982.0,
+      "per_inst": 1.4704831389991833e-07,
+      "cap": 0.1,
+      "ok": true
+    },
+    {
+      "event": "ic_tag_hit_miss.all_instruction_cache_accesses",
+      "workload": "all",
+      "value": 937807.0,
+      "instructions": 251688198.0,
+      "per_inst": 0.003726066646954976,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "ic_tag_hit_miss.instruction_cache_miss",
+      "workload": "all",
+      "value": 81714.0,
+      "instructions": 251720406.0,
+      "per_inst": 0.0003246220729518448,
+      "cap": 0.1,
+      "ok": true
+    },
+    {
+      "event": "ic_cache_fill_l2",
+      "workload": "all",
+      "value": 50719.0,
+      "instructions": 251679117.0,
+      "per_inst": 0.00020152248070705049,
+      "cap": 0.1,
+      "ok": true
+    },
+    {
+      "event": "ic_cache_fill_sys",
+      "workload": "all",
+      "value": 18105.0,
+      "instructions": 251633729.0,
+      "per_inst": 7.194981400923403e-05,
+      "cap": 0.01,
+      "ok": true
+    },
+    {
+      "event": "bp_l1_tlb_miss_l2_tlb_hit",
+      "workload": "all",
+      "value": 127.0,
+      "instructions": 251677550.0,
+      "per_inst": 5.046139395428794e-07,
+      "cap": 0.1,
+      "ok": true
+    },
+    {
+      "event": "bp_l1_tlb_miss_l2_tlb_miss.if4k",
+      "workload": "all",
+      "value": 140.0,
+      "instructions": 251683243.0,
+      "per_inst": 5.562547523277106e-07,
+      "cap": 0.01,
+      "ok": true
+    },
+    {
+      "event": "bp_dyn_ind_pred",
+      "workload": "all",
+      "value": 447.0,
+      "instructions": 251611890.0,
+      "per_inst": 1.776545615550998e-06,
+      "cap": 0.1,
+      "ok": true
+    },
+    {
+      "event": "bp_de_redirect",
+      "workload": "branch_random",
+      "value": 46909.0,
+      "instructions": 2871904774.0,
+      "per_inst": 1.6333758843495695e-05,
+      "cap": 0.1,
+      "ok": true
+    },
+    {
+      "event": "op_cache_hit_miss.op_cache_hit",
+      "workload": "all",
+      "value": 50273006.0,
+      "instructions": 251678913.0,
+      "per_inst": 0.19975056869385002,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "op_cache_hit_miss.op_cache_miss",
+      "workload": "all",
+      "value": 338992.0,
+      "instructions": 251667179.0,
+      "per_inst": 0.0013469853373291873,
+      "cap": 0.1,
+      "ok": true
+    },
+    {
+      "event": "l2_request_g1.all_no_prefetch",
+      "workload": "all",
+      "value": 93586.0,
+      "instructions": 251767393.0,
+      "per_inst": 0.0003717161260830945,
+      "cap": 3.0,
+      "ok": true
+    },
+    {
+      "event": "l2_cache_req_stat.dc_hit_in_l2",
+      "workload": "l2_pressure",
+      "value": 214695057.0,
+      "instructions": 1723315498.0,
+      "per_inst": 0.12458256033161956,
+      "cap": 3.0,
+      "ok": true
+    },
+    {
+      "event": "l2_cache_req_stat.ls_rd_blk_c",
+      "workload": "dram_stream",
+      "value": 595409.0,
+      "instructions": 461319071.0,
+      "per_inst": 0.0012906663466336512,
+      "cap": 3.0,
+      "ok": true
+    },
+    {
+      "event": "l2_cache_req_stat.ic_hit_in_l2",
+      "workload": "all",
+      "value": 51428.0,
+      "instructions": 251695864.0,
+      "per_inst": 0.00020432596381480468,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "l2_cache_req_stat.ic_fill_miss",
+      "workload": "all",
+      "value": 16944.0,
+      "instructions": 251686154.0,
+      "per_inst": 6.732193937057022e-05,
+      "cap": 0.1,
+      "ok": true
+    },
+    {
+      "event": "l2_pf_hit_l2.l2_hwpf",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "instructions": 0.0,
+      "per_inst": 0.0,
+      "cap": 1.0,
+      "ok": true
+    }
+  ],
+  "metrics": [
+    {
+      "metric": "ipc",
+      "workload": "openssl",
+      "value": 1.9085141156943117,
+      "bounds": [
+        0.5,
+        4.0
+      ],
+      "ok": true,
+      "formula": "instructions / cpu-cycles"
+    },
+    {
+      "metric": "ipc",
+      "workload": "fp_avx",
+      "value": 0.6250940105946872,
+      "bounds": [
+        0.2,
+        4.0
+      ],
+      "ok": true,
+      "formula": "instructions / cpu-cycles"
+    },
+    {
+      "metric": "ipc",
+      "workload": "branch_random",
+      "value": 1.7557741952509411,
+      "bounds": [
+        0.5,
+        4.0
+      ],
+      "ok": true,
+      "formula": "instructions / cpu-cycles"
+    },
+    {
+      "metric": "ipc",
+      "workload": "dram_stream",
+      "value": 0.7990554866265779,
+      "bounds": [
+        0.05,
+        2.0
+      ],
+      "ok": true,
+      "formula": "instructions / cpu-cycles"
+    },
+    {
+      "metric": "branch_misp_rate_pct",
+      "workload": "branch_random",
+      "value": 5.097528170052024,
+      "bounds": [
+        5.0,
+        50.0
+      ],
+      "ok": true,
+      "formula": "100 * ex_ret_brn_misp / ex_ret_brn"
+    },
+    {
+      "metric": "branch_misp_rate_pct",
+      "workload": "openssl",
+      "value": 0.03141546257624644,
+      "bounds": [
+        0.0,
+        10.0
+      ],
+      "ok": true,
+      "formula": "100 * ex_ret_brn_misp / ex_ret_brn"
+    },
+    {
+      "metric": "frontend_bound_pct",
+      "workload": "openssl",
+      "value": 0.5833303916784329,
+      "bounds": [
+        0.0,
+        80.0
+      ],
+      "ok": true,
+      "formula": "100 * de_no_dispatch_per_slot.no_ops_from_frontend / (ls_not_halted_cyc * 6)"
+    },
+    {
+      "metric": "backend_bound_pct",
+      "workload": "openssl",
+      "value": 67.46753669629854,
+      "bounds": [
+        0.0,
+        100.0
+      ],
+      "ok": true,
+      "formula": "100 * de_no_dispatch_per_slot.backend_stalls / (ls_not_halted_cyc * 6)"
+    },
+    {
+      "metric": "backend_memory_pct",
+      "workload": "dram_stream",
+      "value": 23.751641907756706,
+      "bounds": [
+        10.0,
+        100.0
+      ],
+      "ok": true,
+      "formula": "(100 * de_no_dispatch_per_slot.backend_stalls / (ls_not_halted_cyc * 6)) * (ex_no_retire.load_not_complete / ex_no_retire.not_complete)"
+    },
+    {
+      "metric": "backend_memory_pct",
+      "workload": "openssl",
+      "value": 0.12781595188412984,
+      "bounds": [
+        0.0,
+        100.0
+      ],
+      "ok": true,
+      "formula": "(100 * de_no_dispatch_per_slot.backend_stalls / (ls_not_halted_cyc * 6)) * (ex_no_retire.load_not_complete / ex_no_retire.not_complete)"
+    },
+    {
+      "metric": "l2_dc_hit_rate_pct",
+      "workload": "l2_pressure",
+      "value": 97.21951534724911,
+      "bounds": [
+        10.0,
+        100.0
+      ],
+      "ok": true,
+      "formula": "100 * l2_cache_req_stat.dc_hit_in_l2 / (l2_cache_req_stat.dc_hit_in_l2 + l2_cache_req_stat.ls_rd_blk_c)"
+    },
+    {
+      "metric": "l2_dc_hit_rate_pct",
+      "workload": "dram_stream",
+      "value": 96.53845213634416,
+      "bounds": [
+        0.0,
+        100.0
+      ],
+      "ok": true,
+      "formula": "100 * l2_cache_req_stat.dc_hit_in_l2 / (l2_cache_req_stat.dc_hit_in_l2 + l2_cache_req_stat.ls_rd_blk_c)"
+    },
+    {
+      "metric": "l1_dtlb_mpki",
+      "workload": "tlb_thrash",
+      "value": 15.906635517831244,
+      "bounds": [
+        1.0,
+        1000.0
+      ],
+      "ok": true,
+      "formula": "1000 * ls_l1_d_tlb_miss.all / instructions"
+    },
+    {
+      "metric": "l1_dtlb_mpki",
+      "workload": "openssl",
+      "value": 0.000565394189070027,
+      "bounds": [
+        0.0,
+        10.0
+      ],
+      "ok": true,
+      "formula": "1000 * ls_l1_d_tlb_miss.all / instructions"
+    },
+    {
+      "metric": "ic_miss_per_inst_pct",
+      "workload": "openssl",
+      "value": 3.820695426719718,
+      "bounds": [
+        0.0,
+        100.0
+      ],
+      "ok": true,
+      "formula": "100 * ic_tag_hit_miss.instruction_cache_miss / ic_tag_hit_miss.all_instruction_cache_accesses"
+    }
+  ],
+  "ccd_scale": [
+    {
+      "event": "cpu-cycles",
+      "category": "EX",
+      "v_1core": 15851524.0,
+      "v_1ccd": 3925334387.0,
+      "v_2ccd": 20524813796.0,
+      "scale_class": "irregular"
+    },
+    {
+      "event": "instructions",
+      "category": "EX",
+      "v_1core": 12952216.0,
+      "v_1ccd": 111637504.0,
+      "v_2ccd": 245630616.0,
+      "scale_class": "linear"
+    },
+    {
+      "event": "ex_ret_ops",
+      "category": "EX",
+      "v_1core": 13121101.0,
+      "v_1ccd": 121680581.0,
+      "v_2ccd": 270907991.0,
+      "scale_class": "linear"
+    },
+    {
+      "event": "ex_ret_brn",
+      "category": "EX",
+      "v_1core": 4194788.0,
+      "v_1ccd": 35868042.0,
+      "v_2ccd": 76309044.0,
+      "scale_class": "linear"
+    },
+    {
+      "event": "ex_ret_brn_misp",
+      "category": "EX",
+      "v_1core": 24876.0,
+      "v_1ccd": 253479.0,
+      "v_2ccd": 1053235.0,
+      "scale_class": "irregular"
+    },
+    {
+      "event": "ex_ret_brn_tkn",
+      "category": "EX",
+      "v_1core": 2120314.0,
+      "v_1ccd": 18337504.0,
+      "v_2ccd": 39611518.0,
+      "scale_class": "linear"
+    },
+    {
+      "event": "ex_ret_cond",
+      "category": "EX",
+      "v_1core": 4112078.0,
+      "v_1ccd": 35007507.0,
+      "v_2ccd": 72170318.0,
+      "scale_class": "linear"
+    },
+    {
+      "event": "ex_ret_near_ret",
+      "category": "EX",
+      "v_1core": 18833.0,
+      "v_1ccd": 236347.0,
+      "v_2ccd": 995813.0,
+      "scale_class": "irregular"
+    },
+    {
+      "event": "ex_div_busy",
+      "category": "EX",
+      "v_1core": 2868.0,
+      "v_1ccd": 323334.0,
+      "v_2ccd": 1399179.0,
+      "scale_class": "irregular"
+    },
+    {
+      "event": "ex_no_retire.not_complete",
+      "category": "EX",
+      "v_1core": 13057005.0,
+      "v_1ccd": 3771674350.0,
+      "v_2ccd": 20554859215.0,
+      "scale_class": "irregular"
+    },
+    {
+      "event": "ex_no_retire.load_not_complete",
+      "category": "EX",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "de_src_op_disp.all",
+      "category": "DE",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "de_no_dispatch_per_slot.no_ops_from_frontend",
+      "category": "DE",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "de_no_dispatch_per_slot.backend_stalls",
+      "category": "DE",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "de_dispatch_stall_cycle_dynamic_tokens_part1.load_queue_rsrc_stall",
+      "category": "DE",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "de_op_queue_empty",
+      "category": "DE",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ls_dispatch.ld_st_dispatch",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "all_data_cache_accesses",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ls_l1_d_tlb_miss.all",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ls_tablewalker.iside_l1",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ls_locks.bus_lock",
+      "category": "LS",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "ls_int_taken",
+      "category": "LS",
+      "v_1core": 4.0,
+      "v_1ccd": 1076.0,
+      "v_2ccd": 5550.0,
+      "scale_class": "irregular"
+    },
+    {
+      "event": "ls_mab_alloc.all_allocations",
+      "category": "LS",
+      "v_1core": 18588.0,
+      "v_1ccd": 5532019.0,
+      "v_2ccd": 10687687.0,
+      "scale_class": "irregular"
+    },
+    {
+      "event": "ls_any_fills_from_sys.all",
+      "category": "LS",
+      "v_1core": 16845.0,
+      "v_1ccd": 5518365.0,
+      "v_2ccd": 10591749.0,
+      "scale_class": "irregular"
+    },
+    {
+      "event": "ls_dmnd_fills_from_sys.all",
+      "category": "LS",
+      "v_1core": 12012.0,
+      "v_1ccd": 5499925.0,
+      "v_2ccd": 10555933.0,
+      "scale_class": "irregular"
+    },
+    {
+      "event": "ls_misal_loads.ma64",
+      "category": "LS",
+      "v_1core": 661.0,
+      "v_1ccd": 7373.0,
+      "v_2ccd": 31394.0,
+      "scale_class": "irregular"
+    },
+    {
+      "event": "ls_hw_pf_dc_fills.all",
+      "category": "LS",
+      "v_1core": 3680.0,
+      "v_1ccd": 13513.0,
+      "v_2ccd": 26147.0,
+      "scale_class": "linear"
+    },
+    {
+      "event": "ls_sw_pf_dc_fills.all",
+      "category": "LS",
+      "v_1core": 240.0,
+      "v_1ccd": 581.0,
+      "v_2ccd": 1087.0,
+      "scale_class": "irregular"
+    },
+    {
+      "event": "ls_pref_instr_disp.all",
+      "category": "LS",
+      "v_1core": 1069.0,
+      "v_1ccd": 2833.0,
+      "v_2ccd": 4662.0,
+      "scale_class": "irregular"
+    },
+    {
+      "event": "ls_not_halted_cyc",
+      "category": "LS",
+      "v_1core": 15741362.0,
+      "v_1ccd": 3950300190.0,
+      "v_2ccd": 20272654880.0,
+      "scale_class": "irregular"
+    },
+    {
+      "event": "ls_stlf",
+      "category": "LS",
+      "v_1core": 2020133.0,
+      "v_1ccd": 15940576.0,
+      "v_2ccd": 31827116.0,
+      "scale_class": "linear"
+    },
+    {
+      "event": "ls_tlb_flush.all",
+      "category": "LS",
+      "v_1core": 37.0,
+      "v_1ccd": 44.0,
+      "v_2ccd": 64.0,
+      "scale_class": "saturating"
+    },
+    {
+      "event": "l2_request_g1.all_no_prefetch",
+      "category": "L2",
+      "v_1core": 78849.0,
+      "v_1ccd": 5693797.0,
+      "v_2ccd": 11605668.0,
+      "scale_class": "irregular"
+    },
+    {
+      "event": "l2_cache_req_stat.dc_hit_in_l2",
+      "category": "L2",
+      "v_1core": 9919.0,
+      "v_1ccd": 38483.0,
+      "v_2ccd": 236510.0,
+      "scale_class": "irregular"
+    },
+    {
+      "event": "l2_cache_req_stat.ls_rd_blk_c",
+      "category": "L2",
+      "v_1core": 5095.0,
+      "v_1ccd": 5351058.0,
+      "v_2ccd": 10612972.0,
+      "scale_class": "irregular"
+    },
+    {
+      "event": "l2_cache_req_stat.ic_hit_in_l2",
+      "category": "L2",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "l2_cache_req_stat.ic_fill_miss",
+      "category": "L2",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    },
+    {
+      "event": "l2_pf_hit_l2.l2_hwpf",
+      "category": "L2",
+      "v_1core": 0.0,
+      "v_1ccd": 0.0,
+      "v_2ccd": 0.0,
+      "scale_class": "always_zero"
+    }
+  ],
+  "ppr_extras": []
+}

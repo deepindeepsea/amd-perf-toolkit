@@ -1,0 +1,1504 @@
+{
+  "meta": {
+    "ts": "20260525T093204Z",
+    "host": "ip-172-31-54-193",
+    "ncpu": 8,
+    "ccd_topology": [
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    ],
+    "mode": "all"
+  },
+  "programmability": [
+    {
+      "event": "cpu-cycles",
+      "amd": "Core::X86::Pmc::Core::LsNotHaltedCyc",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "instructions",
+      "amd": "Core::X86::Pmc::Core::ExRetInstr",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_ret_ops",
+      "amd": "Core::X86::Pmc::Core::ExRetOps",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_ret_brn",
+      "amd": "Core::X86::Pmc::Core::ExRetBrn",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_ret_brn_misp",
+      "amd": "Core::X86::Pmc::Core::ExRetBrnMisp",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_ret_brn_tkn",
+      "amd": "Core::X86::Pmc::Core::ExRetBrnTkn",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_ret_cond",
+      "amd": "Core::X86::Pmc::Core::ExRetCond",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_ret_near_ret",
+      "amd": "Core::X86::Pmc::Core::ExRetNearRet",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_div_busy",
+      "amd": "Core::X86::Pmc::Core::ExDivBusy",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_no_retire.not_complete",
+      "amd": "Core::X86::Pmc::Core::ExNoRetire",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ex_no_retire.load_not_complete",
+      "amd": "Core::X86::Pmc::Core::ExNoRetire",
+      "category": "EX",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "de_src_op_disp.all",
+      "amd": "Core::X86::Pmc::Core::DeSrcOpDisp",
+      "category": "DE",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "de_no_dispatch_per_slot.no_ops_from_frontend",
+      "amd": "Core::X86::Pmc::Core::DeNoDispatchPerSlot",
+      "category": "DE",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "de_no_dispatch_per_slot.backend_stalls",
+      "amd": "Core::X86::Pmc::Core::DeNoDispatchPerSlot",
+      "category": "DE",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "de_dispatch_stall_cycle_dynamic_tokens_part1.load_queue_rsrc_stall",
+      "amd": "Core::X86::Pmc::Core::DeDisDispatchTokenStalls1",
+      "category": "DE",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "de_op_queue_empty",
+      "amd": "Core::X86::Pmc::Core::DeOpQueueEmpty",
+      "category": "DE",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "fp_ret_sse_avx_ops.all",
+      "amd": "Core::X86::Pmc::Core::FpRetSseAvxOps",
+      "category": "FP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "fp_ret_x87_fp_ops.all",
+      "amd": "Core::X86::Pmc::Core::FpRetx87FpOps",
+      "category": "FP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "fp_disp_faults.all",
+      "amd": "Core::X86::Pmc::Core::FpDispFaults",
+      "category": "FP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "fp_pack_ops_retired.all",
+      "amd": "Core::X86::Pmc::Core::FpPackOpsRetired",
+      "category": "FP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "sse_avx_ops_retired.all",
+      "amd": "Core::X86::Pmc::Core::SseAvxOpsRetired",
+      "category": "FP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_dispatch.ld_st_dispatch",
+      "amd": "Core::X86::Pmc::Core::LsDispatch",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "all_data_cache_accesses",
+      "amd": "Core::X86::Pmc::Core::LsDcAccesses",
+      "category": "LS",
+      "ok": false,
+      "error": "    -e, --event <event>   event selector. use 'perf list' to list available events"
+    },
+    {
+      "event": "ls_l1_d_tlb_miss.all",
+      "amd": "Core::X86::Pmc::Core::LsL1DTlbMiss",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_tablewalker.iside_l1",
+      "amd": "Core::X86::Pmc::Core::LsTablewalker",
+      "category": "LS",
+      "ok": null,
+      "error": "skipped: linux_perf_unavailable"
+    },
+    {
+      "event": "ls_locks.bus_lock",
+      "amd": "Core::X86::Pmc::Core::LsLocks",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_int_taken",
+      "amd": "Core::X86::Pmc::Core::LsIntTaken",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_mab_alloc.all_allocations",
+      "amd": "Core::X86::Pmc::Core::LsMabAlloc",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_any_fills_from_sys.all",
+      "amd": "Core::X86::Pmc::Core::LsAnyFillsFromSys",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_dmnd_fills_from_sys.all",
+      "amd": "Core::X86::Pmc::Core::LsDmndFillsFromSys",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_misal_loads.ma64",
+      "amd": "Core::X86::Pmc::Core::LsMisalLoads",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_hw_pf_dc_fills.all",
+      "amd": "Core::X86::Pmc::Core::LsHwPfDcFills",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_sw_pf_dc_fills.all",
+      "amd": "Core::X86::Pmc::Core::LsSwPfDcFills",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_pref_instr_disp.all",
+      "amd": "Core::X86::Pmc::Core::LsPrefInstrDisp",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_not_halted_cyc",
+      "amd": "Core::X86::Pmc::Core::LsNotHaltedCyc",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_stlf",
+      "amd": "Core::X86::Pmc::Core::LsSTLF",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ls_tlb_flush.all",
+      "amd": "Core::X86::Pmc::Core::LsTlbFlush",
+      "category": "LS",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ic_tag_hit_miss.all_instruction_cache_accesses",
+      "amd": "Core::X86::Pmc::Core::IcFw32",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ic_tag_hit_miss.instruction_cache_miss",
+      "amd": "Core::X86::Pmc::Core::IcFw32Miss",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ic_cache_fill_l2",
+      "amd": "Core::X86::Pmc::Core::IcCacheFillL2",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "ic_cache_fill_sys",
+      "amd": "Core::X86::Pmc::Core::IcCacheFillSys",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "bp_l1_tlb_miss_l2_tlb_hit",
+      "amd": "Core::X86::Pmc::Core::BpL1TlbMissL2TlbHit",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "bp_l1_tlb_miss_l2_tlb_miss.if4k",
+      "amd": "Core::X86::Pmc::Core::BpL1TlbMissL2TlbMiss",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "bp_dyn_ind_pred",
+      "amd": "Core::X86::Pmc::Core::BpDynIndPred",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "bp_de_redirect",
+      "amd": "Core::X86::Pmc::Core::BpDeReDirect",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "op_cache_hit_miss.op_cache_hit",
+      "amd": "Core::X86::Pmc::Core::OpCacheHitMiss",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "op_cache_hit_miss.op_cache_miss",
+      "amd": "Core::X86::Pmc::Core::OpCacheHitMiss",
+      "category": "IC_BP",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "l2_request_g1.all_no_prefetch",
+      "amd": "Core::X86::Pmc::L2::L2RequestG1",
+      "category": "L2",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "l2_cache_req_stat.dc_hit_in_l2",
+      "amd": "Core::X86::Pmc::L2::L2CacheReqStat",
+      "category": "L2",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "l2_cache_req_stat.ls_rd_blk_c",
+      "amd": "Core::X86::Pmc::L2::L2CacheReqStat",
+      "category": "L2",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "l2_cache_req_stat.ic_hit_in_l2",
+      "amd": "Core::X86::Pmc::L2::L2CacheReqStat",
+      "category": "L2",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "l2_cache_req_stat.ic_fill_miss",
+      "amd": "Core::X86::Pmc::L2::L2CacheReqStat",
+      "category": "L2",
+      "ok": true,
+      "error": ""
+    },
+    {
+      "event": "l2_pf_hit_l2.l2_hwpf",
+      "amd": "Core::X86::Pmc::L2::L2PfHitL2",
+      "category": "L2",
+      "ok": true,
+      "error": ""
+    }
+  ],
+  "sanity": [
+    {
+      "event": "cpu-cycles",
+      "workload": "all",
+      "value": 401184421.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.09468436241149902
+    },
+    {
+      "event": "instructions",
+      "workload": "all",
+      "value": 251279187.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.09468436241149902
+    },
+    {
+      "event": "ex_ret_ops",
+      "workload": "all",
+      "value": 201612462.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.09468436241149902
+    },
+    {
+      "event": "ex_ret_brn",
+      "workload": "all",
+      "value": 50221568.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.09468436241149902
+    },
+    {
+      "event": "ex_ret_brn_tkn",
+      "workload": "all",
+      "value": 50119037.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.09468436241149902
+    },
+    {
+      "event": "ex_ret_cond",
+      "workload": "all",
+      "value": 50142304.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.09385800361633301
+    },
+    {
+      "event": "ex_ret_near_ret",
+      "workload": "all",
+      "value": 27259.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.09385800361633301
+    },
+    {
+      "event": "ex_div_busy",
+      "workload": "all",
+      "value": 7944.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.09385800361633301
+    },
+    {
+      "event": "ex_no_retire.not_complete",
+      "workload": "all",
+      "value": 120482747.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.09385800361633301
+    },
+    {
+      "event": "de_src_op_disp.all",
+      "workload": "all",
+      "value": 201729756.0,
+      "category": "DE",
+      "ok": true,
+      "duration_s": 0.09385800361633301
+    },
+    {
+      "event": "de_no_dispatch_per_slot.no_ops_from_frontend",
+      "workload": "all",
+      "value": 3005947818.0,
+      "category": "DE",
+      "ok": true,
+      "duration_s": 0.09405946731567383
+    },
+    {
+      "event": "de_no_dispatch_per_slot.backend_stalls",
+      "workload": "all",
+      "value": 1091571.0,
+      "category": "DE",
+      "ok": true,
+      "duration_s": 0.09405946731567383
+    },
+    {
+      "event": "de_dispatch_stall_cycle_dynamic_tokens_part1.load_queue_rsrc_stall",
+      "workload": "all",
+      "value": 330.0,
+      "category": "DE",
+      "ok": true,
+      "duration_s": 0.09405946731567383
+    },
+    {
+      "event": "de_op_queue_empty",
+      "workload": "all",
+      "value": 350536512.0,
+      "category": "DE",
+      "ok": true,
+      "duration_s": 0.09405946731567383
+    },
+    {
+      "event": "fp_ret_x87_fp_ops.all",
+      "workload": "all",
+      "value": 0.0,
+      "category": "FP",
+      "ok": false,
+      "duration_s": 0.09405946731567383
+    },
+    {
+      "event": "fp_disp_faults.all",
+      "workload": "all",
+      "value": 0.0,
+      "category": "FP",
+      "ok": false,
+      "duration_s": 0.004041194915771484
+    },
+    {
+      "event": "ls_dispatch.ld_st_dispatch",
+      "workload": "all",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.004041194915771484
+    },
+    {
+      "event": "all_data_cache_accesses",
+      "workload": "all",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.004041194915771484
+    },
+    {
+      "event": "ls_locks.bus_lock",
+      "workload": "all",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.004041194915771484
+    },
+    {
+      "event": "ls_int_taken",
+      "workload": "all",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.004041194915771484
+    },
+    {
+      "event": "ls_misal_loads.ma64",
+      "workload": "all",
+      "value": 1759.0,
+      "category": "LS",
+      "ok": true,
+      "duration_s": 0.0946042537689209
+    },
+    {
+      "event": "ls_sw_pf_dc_fills.all",
+      "workload": "all",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.0946042537689209
+    },
+    {
+      "event": "ls_pref_instr_disp.all",
+      "workload": "all",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.0946042537689209
+    },
+    {
+      "event": "ls_not_halted_cyc",
+      "workload": "all",
+      "value": 401165069.0,
+      "category": "LS",
+      "ok": true,
+      "duration_s": 0.0946042537689209
+    },
+    {
+      "event": "ls_stlf",
+      "workload": "all",
+      "value": 115988.0,
+      "category": "LS",
+      "ok": true,
+      "duration_s": 0.0946042537689209
+    },
+    {
+      "event": "ls_tlb_flush.all",
+      "workload": "all",
+      "value": 22.0,
+      "category": "LS",
+      "ok": true,
+      "duration_s": 0.09418773651123047
+    },
+    {
+      "event": "ic_tag_hit_miss.all_instruction_cache_accesses",
+      "workload": "all",
+      "value": 50716016.0,
+      "category": "IC_BP",
+      "ok": true,
+      "duration_s": 0.09418773651123047
+    },
+    {
+      "event": "ic_tag_hit_miss.instruction_cache_miss",
+      "workload": "all",
+      "value": 299145.0,
+      "category": "IC_BP",
+      "ok": true,
+      "duration_s": 0.09418773651123047
+    },
+    {
+      "event": "ic_cache_fill_l2",
+      "workload": "all",
+      "value": 88176.0,
+      "category": "IC_BP",
+      "ok": true,
+      "duration_s": 0.09418773651123047
+    },
+    {
+      "event": "ic_cache_fill_sys",
+      "workload": "all",
+      "value": 0.0,
+      "category": "IC_BP",
+      "ok": false,
+      "duration_s": 0.09418773651123047
+    },
+    {
+      "event": "bp_l1_tlb_miss_l2_tlb_hit",
+      "workload": "all",
+      "value": 252.0,
+      "category": "IC_BP",
+      "ok": true,
+      "duration_s": 0.09418082237243652
+    },
+    {
+      "event": "bp_l1_tlb_miss_l2_tlb_miss.if4k",
+      "workload": "all",
+      "value": 93.0,
+      "category": "IC_BP",
+      "ok": true,
+      "duration_s": 0.09418082237243652
+    },
+    {
+      "event": "bp_dyn_ind_pred",
+      "workload": "all",
+      "value": 830.0,
+      "category": "IC_BP",
+      "ok": true,
+      "duration_s": 0.09418082237243652
+    },
+    {
+      "event": "op_cache_hit_miss.op_cache_hit",
+      "workload": "all",
+      "value": 50177787.0,
+      "category": "IC_BP",
+      "ok": true,
+      "duration_s": 0.09418082237243652
+    },
+    {
+      "event": "op_cache_hit_miss.op_cache_miss",
+      "workload": "all",
+      "value": 202227.0,
+      "category": "IC_BP",
+      "ok": true,
+      "duration_s": 0.09418082237243652
+    },
+    {
+      "event": "l2_request_g1.all_no_prefetch",
+      "workload": "all",
+      "value": 107344.0,
+      "category": "L2",
+      "ok": true,
+      "duration_s": 0.09456539154052734
+    },
+    {
+      "event": "l2_cache_req_stat.ic_hit_in_l2",
+      "workload": "all",
+      "value": 78110.0,
+      "category": "L2",
+      "ok": true,
+      "duration_s": 0.09456539154052734
+    },
+    {
+      "event": "l2_cache_req_stat.ic_fill_miss",
+      "workload": "all",
+      "value": 12208.0,
+      "category": "L2",
+      "ok": true,
+      "duration_s": 0.09456539154052734
+    },
+    {
+      "event": "ex_ret_brn_misp",
+      "workload": "branch_random",
+      "value": 34687557.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.5935132503509521
+    },
+    {
+      "event": "bp_de_redirect",
+      "workload": "branch_random",
+      "value": 14019.0,
+      "category": "IC_BP",
+      "ok": true,
+      "duration_s": 0.5935132503509521
+    },
+    {
+      "event": "ex_no_retire.load_not_complete",
+      "workload": "dram_stream",
+      "value": 209301111.0,
+      "category": "EX",
+      "ok": true,
+      "duration_s": 0.09560537338256836
+    },
+    {
+      "event": "ls_l1_d_tlb_miss.all",
+      "workload": "dram_stream",
+      "value": 739437.0,
+      "category": "LS",
+      "ok": true,
+      "duration_s": 0.09560537338256836
+    },
+    {
+      "event": "ls_mab_alloc.all_allocations",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.09560537338256836
+    },
+    {
+      "event": "ls_any_fills_from_sys.all",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.09560537338256836
+    },
+    {
+      "event": "ls_dmnd_fills_from_sys.all",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.09560537338256836
+    },
+    {
+      "event": "ls_hw_pf_dc_fills.all",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.09535789489746094
+    },
+    {
+      "event": "l2_cache_req_stat.dc_hit_in_l2",
+      "workload": "dram_stream",
+      "value": 3762227.0,
+      "category": "L2",
+      "ok": true,
+      "duration_s": 0.09535789489746094
+    },
+    {
+      "event": "l2_cache_req_stat.ls_rd_blk_c",
+      "workload": "dram_stream",
+      "value": 719087.0,
+      "category": "L2",
+      "ok": true,
+      "duration_s": 0.09535789489746094
+    },
+    {
+      "event": "l2_pf_hit_l2.l2_hwpf",
+      "workload": "dram_stream",
+      "value": 1036373.0,
+      "category": "L2",
+      "ok": true,
+      "duration_s": 0.09535789489746094
+    },
+    {
+      "event": "fp_ret_sse_avx_ops.all",
+      "workload": "fp_avx",
+      "value": 3200000000.0,
+      "category": "FP",
+      "ok": true,
+      "duration_s": 0.18367719650268555
+    },
+    {
+      "event": "fp_pack_ops_retired.all",
+      "workload": "fp_avx",
+      "value": 200000296.0,
+      "category": "FP",
+      "ok": true,
+      "duration_s": 0.18367719650268555
+    },
+    {
+      "event": "sse_avx_ops_retired.all",
+      "workload": "fp_avx",
+      "value": 26778.0,
+      "category": "FP",
+      "ok": true,
+      "duration_s": 0.18367719650268555
+    },
+    {
+      "event": "fp_ret_sse_avx_ops.all",
+      "workload": "openssl",
+      "value": 72.0,
+      "category": "FP",
+      "ok": true,
+      "duration_s": 18.00739312171936
+    },
+    {
+      "event": "sse_avx_ops_retired.all",
+      "workload": "openssl",
+      "value": 43288701942.0,
+      "category": "FP",
+      "ok": true,
+      "duration_s": 18.00739312171936
+    },
+    {
+      "event": "ls_l1_d_tlb_miss.all",
+      "workload": "tlb_thrash",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.004869222640991211
+    },
+    {
+      "event": "ls_tablewalker.iside_l1",
+      "workload": "tlb_thrash",
+      "value": 0.0,
+      "category": "LS",
+      "ok": false,
+      "duration_s": 0.004869222640991211
+    },
+    {
+      "event": "l2_cache_req_stat.dc_hit_in_l2",
+      "workload": "l2_pressure",
+      "value": 225659463.0,
+      "category": "L2",
+      "ok": true,
+      "duration_s": 0.09407973289489746
+    }
+  ],
+  "bounds": [
+    {
+      "event": "cpu-cycles",
+      "workload": "all",
+      "value": 401240241.0,
+      "instructions": 251314576.0,
+      "per_inst": 1.5965657360041066,
+      "cap": 100.0,
+      "ok": true
+    },
+    {
+      "event": "instructions",
+      "workload": "all",
+      "value": 502597826.0,
+      "instructions": 502597826.0,
+      "per_inst": 1.0,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "ex_ret_ops",
+      "workload": "all",
+      "value": 201555670.0,
+      "instructions": 251221208.0,
+      "per_inst": 0.8023035618871796,
+      "cap": 4.0,
+      "ok": true
+    },
+    {
+      "event": "ex_ret_brn",
+      "workload": "all",
+      "value": 50219148.0,
+      "instructions": 251264933.0,
+      "per_inst": 0.19986532700924087,
+      "cap": 0.3,
+      "ok": true
+    },
+    {
+      "event": "ex_ret_brn_misp",
+      "workload": "branch_random",
+      "value": 34690671.0,
+      "instructions": 2866980794.0,
+      "per_inst": 0.012100070943133078,
+      "cap": 0.3,
+      "ok": true
+    },
+    {
+      "event": "ex_ret_brn_tkn",
+      "workload": "all",
+      "value": 50116636.0,
+      "instructions": 251248175.0,
+      "per_inst": 0.1994706469012163,
+      "cap": 0.3,
+      "ok": true
+    },
+    {
+      "event": "ex_ret_cond",
+      "workload": "all",
+      "value": 50144381.0,
+      "instructions": 251222047.0,
+      "per_inst": 0.199601832716537,
+      "cap": 0.3,
+      "ok": true
+    },
+    {
+      "event": "ex_ret_near_ret",
+      "workload": "all",
+      "value": 27968.0,
+      "instructions": 251250079.0,
+      "per_inst": 0.00011131538788491287,
+      "cap": 0.2,
+      "ok": true
+    },
+    {
+      "event": "ex_div_busy",
+      "workload": "all",
+      "value": 8255.0,
+      "instructions": 251294093.0,
+      "per_inst": 3.284995640546155e-05,
+      "cap": 100.0,
+      "ok": true
+    },
+    {
+      "event": "ex_no_retire.not_complete",
+      "workload": "all",
+      "value": 120539371.0,
+      "instructions": 251256892.0,
+      "per_inst": 0.4797455307216011,
+      "cap": 100.0,
+      "ok": true
+    },
+    {
+      "event": "ex_no_retire.load_not_complete",
+      "workload": "dram_stream",
+      "value": 219050643.0,
+      "instructions": 421705918.0,
+      "per_inst": 0.5194393382926156,
+      "cap": 100.0,
+      "ok": true
+    },
+    {
+      "event": "de_src_op_disp.all",
+      "workload": "all",
+      "value": 201734982.0,
+      "instructions": 251220720.0,
+      "per_inst": 0.8030188831558162,
+      "cap": 6.0,
+      "ok": true
+    },
+    {
+      "event": "de_no_dispatch_per_slot.no_ops_from_frontend",
+      "workload": "all",
+      "value": 3006912028.0,
+      "instructions": 251292341.0,
+      "per_inst": 11.965792574633223,
+      "cap": 600.0,
+      "ok": true
+    },
+    {
+      "event": "de_no_dispatch_per_slot.backend_stalls",
+      "workload": "all",
+      "value": 1173948.0,
+      "instructions": 251255253.0,
+      "per_inst": 0.004672332164135888,
+      "cap": 600.0,
+      "ok": true
+    },
+    {
+      "event": "de_dispatch_stall_cycle_dynamic_tokens_part1.load_queue_rsrc_stall",
+      "workload": "all",
+      "value": 1024.0,
+      "instructions": 251824365.0,
+      "per_inst": 4.066326147591001e-06,
+      "cap": 100.0,
+      "ok": true
+    },
+    {
+      "event": "de_op_queue_empty",
+      "workload": "all",
+      "value": 350579204.0,
+      "instructions": 251244792.0,
+      "per_inst": 1.3953690391321625,
+      "cap": 100.0,
+      "ok": true
+    },
+    {
+      "event": "fp_ret_sse_avx_ops.all",
+      "workload": "fp_avx",
+      "value": 3200000000.0,
+      "instructions": 501732977.0,
+      "per_inst": 6.377894511007994,
+      "cap": 4.0,
+      "ok": false
+    },
+    {
+      "event": "fp_ret_x87_fp_ops.all",
+      "workload": "all",
+      "value": 0.0,
+      "instructions": 251280895.0,
+      "per_inst": 0.0,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "fp_disp_faults.all",
+      "workload": "all",
+      "value": 0.0,
+      "instructions": 251271480.0,
+      "per_inst": 0.0,
+      "cap": 0.1,
+      "ok": true
+    },
+    {
+      "event": "fp_pack_ops_retired.all",
+      "workload": "fp_avx",
+      "value": 200000296.0,
+      "instructions": 501693714.0,
+      "per_inst": 0.39865019317343886,
+      "cap": 4.0,
+      "ok": true
+    },
+    {
+      "event": "sse_avx_ops_retired.all",
+      "workload": "fp_avx",
+      "value": 27232.0,
+      "instructions": 501706805.0,
+      "per_inst": 5.427871364033023e-05,
+      "cap": 4.0,
+      "ok": true
+    },
+    {
+      "event": "ls_dispatch.ld_st_dispatch",
+      "workload": "all",
+      "value": 23077.0,
+      "instructions": 251241113.0,
+      "per_inst": 9.185200512943118e-05,
+      "cap": 3.0,
+      "ok": true
+    },
+    {
+      "event": "all_data_cache_accesses",
+      "workload": "all",
+      "value": 0.0,
+      "instructions": 0.0,
+      "per_inst": 0.0,
+      "cap": 3.0,
+      "ok": true
+    },
+    {
+      "event": "ls_l1_d_tlb_miss.all",
+      "workload": "tlb_thrash",
+      "value": 1959379.0,
+      "instructions": 267520699.0,
+      "per_inst": 0.007324214564795227,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "ls_tablewalker.iside_l1",
+      "workload": "tlb_thrash",
+      "value": 0.0,
+      "instructions": 0.0,
+      "per_inst": 0.0,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "ls_locks.bus_lock",
+      "workload": "all",
+      "value": 0.0,
+      "instructions": 251218570.0,
+      "per_inst": 0.0,
+      "cap": 0.01,
+      "ok": true
+    },
+    {
+      "event": "ls_int_taken",
+      "workload": "all",
+      "value": 0.0,
+      "instructions": 251205050.0,
+      "per_inst": 0.0,
+      "cap": 0.01,
+      "ok": true
+    },
+    {
+      "event": "ls_mab_alloc.all_allocations",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "instructions": 409132758.0,
+      "per_inst": 0.0,
+      "cap": 3.0,
+      "ok": true
+    },
+    {
+      "event": "ls_any_fills_from_sys.all",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "instructions": 413055864.0,
+      "per_inst": 0.0,
+      "cap": 3.0,
+      "ok": true
+    },
+    {
+      "event": "ls_dmnd_fills_from_sys.all",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "instructions": 411041290.0,
+      "per_inst": 0.0,
+      "cap": 3.0,
+      "ok": true
+    },
+    {
+      "event": "ls_misal_loads.ma64",
+      "workload": "all",
+      "value": 1661.0,
+      "instructions": 251302923.0,
+      "per_inst": 6.609553045270389e-06,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "ls_hw_pf_dc_fills.all",
+      "workload": "dram_stream",
+      "value": 0.0,
+      "instructions": 409021655.0,
+      "per_inst": 0.0,
+      "cap": 3.0,
+      "ok": true
+    },
+    {
+      "event": "ls_sw_pf_dc_fills.all",
+      "workload": "all",
+      "value": 0.0,
+      "instructions": 251271900.0,
+      "per_inst": 0.0,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "ls_pref_instr_disp.all",
+      "workload": "all",
+      "value": 0.0,
+      "instructions": 251255004.0,
+      "per_inst": 0.0,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "ls_not_halted_cyc",
+      "workload": "all",
+      "value": 401213295.0,
+      "instructions": 251267140.0,
+      "per_inst": 1.5967599066077642,
+      "cap": 100.0,
+      "ok": true
+    },
+    {
+      "event": "ls_stlf",
+      "workload": "all",
+      "value": 156515.0,
+      "instructions": 251892203.0,
+      "per_inst": 0.0006213570651887149,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "ls_tlb_flush.all",
+      "workload": "all",
+      "value": 22.0,
+      "instructions": 251215132.0,
+      "per_inst": 8.757434245640904e-08,
+      "cap": 0.1,
+      "ok": true
+    },
+    {
+      "event": "ic_tag_hit_miss.all_instruction_cache_accesses",
+      "workload": "all",
+      "value": 50659495.0,
+      "instructions": 251270851.0,
+      "per_inst": 0.20161309916525097,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "ic_tag_hit_miss.instruction_cache_miss",
+      "workload": "all",
+      "value": 303908.0,
+      "instructions": 251254406.0,
+      "per_inst": 0.0012095628683223968,
+      "cap": 0.1,
+      "ok": true
+    },
+    {
+      "event": "ic_cache_fill_l2",
+      "workload": "all",
+      "value": 84606.0,
+      "instructions": 251250240.0,
+      "per_inst": 0.0003367399768453952,
+      "cap": 0.1,
+      "ok": true
+    },
+    {
+      "event": "ic_cache_fill_sys",
+      "workload": "all",
+      "value": 0.0,
+      "instructions": 251264494.0,
+      "per_inst": 0.0,
+      "cap": 0.01,
+      "ok": true
+    },
+    {
+      "event": "bp_l1_tlb_miss_l2_tlb_hit",
+      "workload": "all",
+      "value": 3084.0,
+      "instructions": 251282779.0,
+      "per_inst": 1.2273025681556952e-05,
+      "cap": 0.1,
+      "ok": true
+    },
+    {
+      "event": "bp_l1_tlb_miss_l2_tlb_miss.if4k",
+      "workload": "all",
+      "value": 94.0,
+      "instructions": 251239237.0,
+      "per_inst": 3.741453808029197e-07,
+      "cap": 0.01,
+      "ok": true
+    },
+    {
+      "event": "bp_dyn_ind_pred",
+      "workload": "all",
+      "value": 777.0,
+      "instructions": 251248303.0,
+      "per_inst": 3.092558201278677e-06,
+      "cap": 0.1,
+      "ok": true
+    },
+    {
+      "event": "bp_de_redirect",
+      "workload": "branch_random",
+      "value": 13156.0,
+      "instructions": 2866771279.0,
+      "per_inst": 4.5891348557772406e-06,
+      "cap": 0.1,
+      "ok": true
+    },
+    {
+      "event": "op_cache_hit_miss.op_cache_hit",
+      "workload": "all",
+      "value": 50175481.0,
+      "instructions": 251252143.0,
+      "per_inst": 0.1997017036388024,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "op_cache_hit_miss.op_cache_miss",
+      "workload": "all",
+      "value": 220280.0,
+      "instructions": 251248266.0,
+      "per_inst": 0.0008767423692388786,
+      "cap": 0.1,
+      "ok": true
+    },
+    {
+      "event": "l2_request_g1.all_no_prefetch",
+      "workload": "all",
+      "value": 106061.0,
+      "instructions": 251292695.0,
+      "per_inst": 0.00042206161225657595,
+      "cap": 3.0,
+      "ok": true
+    },
+    {
+      "event": "l2_cache_req_stat.dc_hit_in_l2",
+      "workload": "l2_pressure",
+      "value": 235006090.0,
+      "instructions": 1722312906.0,
+      "per_inst": 0.1364479643514905,
+      "cap": 3.0,
+      "ok": true
+    },
+    {
+      "event": "l2_cache_req_stat.ls_rd_blk_c",
+      "workload": "dram_stream",
+      "value": 600483.0,
+      "instructions": 408180725.0,
+      "per_inst": 0.0014711204209850919,
+      "cap": 3.0,
+      "ok": true
+    },
+    {
+      "event": "l2_cache_req_stat.ic_hit_in_l2",
+      "workload": "all",
+      "value": 79819.0,
+      "instructions": 251251716.0,
+      "per_inst": 0.00031768539244524005,
+      "cap": 1.0,
+      "ok": true
+    },
+    {
+      "event": "l2_cache_req_stat.ic_fill_miss",
+      "workload": "all",
+      "value": 11562.0,
+      "instructions": 251797838.0,
+      "per_inst": 4.5917789016123326e-05,
+      "cap": 0.1,
+      "ok": true
+    },
+    {
+      "event": "l2_pf_hit_l2.l2_hwpf",
+      "workload": "dram_stream",
+      "value": 844306.0,
+      "instructions": 411729561.0,
+      "per_inst": 0.002050632453859683,
+      "cap": 1.0,
+      "ok": true
+    }
+  ],
+  "metrics": [
+    {
+      "metric": "ipc",
+      "workload": "openssl",
+      "value": 1.8934778619321233,
+      "bounds": [
+        0.5,
+        4.0
+      ],
+      "ok": true,
+      "formula": "instructions / cpu-cycles"
+    },
+    {
+      "metric": "ipc",
+      "workload": "fp_avx",
+      "value": 0.6257544972436755,
+      "bounds": [
+        0.2,
+        4.0
+      ],
+      "ok": true,
+      "formula": "instructions / cpu-cycles"
+    },
+    {
+      "metric": "ipc",
+      "workload": "branch_random",
+      "value": 1.0861023018602496,
+      "bounds": [
+        0.5,
+        4.0
+      ],
+      "ok": true,
+      "formula": "instructions / cpu-cycles"
+    },
+    {
+      "metric": "ipc",
+      "workload": "dram_stream",
+      "value": 1.1210679063893667,
+      "bounds": [
+        0.05,
+        2.0
+      ],
+      "ok": true,
+      "formula": "instructions / cpu-cycles"
+    },
+    {
+      "metric": "branch_misp_rate_pct",
+      "workload": "branch_random",
+      "value": 5.1081118573300115,
+      "bounds": [
+        5.0,
+        50.0
+      ],
+      "ok": true,
+      "formula": "100 * ex_ret_brn_misp / ex_ret_brn"
+    },
+    {
+      "metric": "branch_misp_rate_pct",
+      "workload": "openssl",
+      "value": 0.06950985152430525,
+      "bounds": [
+        0.0,
+        10.0
+      ],
+      "ok": true,
+      "formula": "100 * ex_ret_brn_misp / ex_ret_brn"
+    },
+    {
+      "metric": "frontend_bound_pct",
+      "workload": "openssl",
+      "value": 93.20408716605272,
+      "bounds": [
+        0.0,
+        80.0
+      ],
+      "ok": false,
+      "formula": "100 * de_no_dispatch_per_slot.no_ops_from_frontend / (ls_not_halted_cyc * 6)"
+    },
+    {
+      "metric": "backend_bound_pct",
+      "workload": "openssl",
+      "value": 9.224446671572194,
+      "bounds": [
+        0.0,
+        100.0
+      ],
+      "ok": true,
+      "formula": "100 * de_no_dispatch_per_slot.backend_stalls / (ls_not_halted_cyc * 6)"
+    },
+    {
+      "metric": "backend_memory_pct",
+      "workload": "dram_stream",
+      "value": 77.84222104033849,
+      "bounds": [
+        10.0,
+        100.0
+      ],
+      "ok": true,
+      "formula": "(100 * de_no_dispatch_per_slot.backend_stalls / (ls_not_halted_cyc * 6)) * (ex_no_retire.load_not_complete / ex_no_retire.not_complete)"
+    },
+    {
+      "metric": "backend_memory_pct",
+      "workload": "openssl",
+      "value": 0.016073157650219702,
+      "bounds": [
+        0.0,
+        100.0
+      ],
+      "ok": true,
+      "formula": "(100 * de_no_dispatch_per_slot.backend_stalls / (ls_not_halted_cyc * 6)) * (ex_no_retire.load_not_complete / ex_no_retire.not_complete)"
+    },
+    {
+      "metric": "l2_dc_hit_rate_pct",
+      "workload": "l2_pressure",
+      "value": 99.92283887748563,
+      "bounds": [
+        10.0,
+        100.0
+      ],
+      "ok": true,
+      "formula": "100 * l2_cache_req_stat.dc_hit_in_l2 / (l2_cache_req_stat.dc_hit_in_l2 + l2_cache_req_stat.ls_rd_blk_c)"
+    },
+    {
+      "metric": "l2_dc_hit_rate_pct",
+      "workload": "dram_stream",
+      "value": 81.4745406204802,
+      "bounds": [
+        0.0,
+        100.0
+      ],
+      "ok": true,
+      "formula": "100 * l2_cache_req_stat.dc_hit_in_l2 / (l2_cache_req_stat.dc_hit_in_l2 + l2_cache_req_stat.ls_rd_blk_c)"
+    },
+    {
+      "metric": "l1_dtlb_mpki",
+      "workload": "tlb_thrash",
+      "value": 7.636535176207443,
+      "bounds": [
+        1.0,
+        1000.0
+      ],
+      "ok": true,
+      "formula": "1000 * ls_l1_d_tlb_miss.all / instructions"
+    },
+    {
+      "metric": "l1_dtlb_mpki",
+      "workload": "openssl",
+      "value": 0.00035489461236703324,
+      "bounds": [
+        0.0,
+        10.0
+      ],
+      "ok": true,
+      "formula": "1000 * ls_l1_d_tlb_miss.all / instructions"
+    },
+    {
+      "metric": "ic_miss_per_inst_pct",
+      "workload": "openssl",
+      "value": 4.186844879979582,
+      "bounds": [
+        0.0,
+        100.0
+      ],
+      "ok": true,
+      "formula": "100 * ic_tag_hit_miss.instruction_cache_miss / ic_tag_hit_miss.all_instruction_cache_accesses"
+    }
+  ],
+  "ccd_scale": [
+    {
+      "event": "*",
+      "skipped": "need >=2 CCDs, found 1"
+    }
+  ],
+  "ppr_extras": []
+}
