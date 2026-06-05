@@ -10,6 +10,7 @@ Targets AMD Zen4 (EPYC Genoa) and Zen5 (EPYC Turin) on bare-metal and cloud (AWS
 
 | Script | Output | Purpose |
 |--------|--------|---------|
+| `amd_topdown.py` | Terminal / SQLite | Top-down (TMA) profiler with always-on memory-hierarchy counters — collect / list / query / compare runs |
 | `amd_pipeline_metrics.sh` | Terminal | Human-readable pipeline + CCD report |
 | `amd_perf_html_report.py` | HTML | PerfSpect-style report with Chart.js visualizations |
 | `amd_perf_excel_report.py` | Excel (.xlsx) | Netflix PerfSpect benchmark profile format |
@@ -21,6 +22,83 @@ Targets AMD Zen4 (EPYC Genoa) and Zen5 (EPYC Turin) on bare-metal and cloud (AWS
 ---
 
 ## Quick Start
+
+### Top-down profiler with memory-hierarchy counters (`amd_topdown.py`)
+
+`amd_topdown.py` runs the AMD 6-slot Top-down Microarchitecture Analysis (TMA)
+funnel **and** an always-on memory-hierarchy block (L1D / L2 / dTLB, best-effort
+L3) on every collect. Runs are stored in a SQLite database so you can list them,
+view a single funnel, or compare any two side by side. See `MEMORY_HIERARCHY.md`
+for what each counter means and how to read it.
+
+| Subcommand | What it does |
+|---|---|
+| `collect` | Attach to a running process (or system-wide) for N seconds, store one run, print its run ID |
+| `list` | List stored runs (run ID, label, timestamp) |
+| `query` | Show the funnel + memory-hierarchy panel for one run (select by `--label`) |
+| `compare` | Show two runs side by side (`compare <run_a_id> <run_b_id>`) |
+
+The database location is set with `TOPDOWN_DB_PATH` (defaults to a temp path).
+Use the same value for every command so they share one store.
+
+#### How `collect` works
+
+`collect` does **not** launch your workload — it attaches to one that is already
+running. Start your benchmark in another shell, then point `collect` at it by
+process name with `--process` (it resolves the PID for you); if the name is not
+found it falls back to system-wide collection. Each `collect` prints a line like:
+
+```
+  ✓ Saved run cc1cb38067c0  (30.2s)  Labels: {'thp': 'never', ...}
+```
+
+That 12-character hex string is the **run ID** — that is where IDs like
+`cc1cb38067c0` and `0d63019dd85d` come from. You pass two of them to `compare`.
+You can always re-list them later with `list`.
+
+#### Worked example — THP off vs THP on (A/B)
+
+This reproduces the comparison in `MEMORY_HIERARCHY.md`. The workload is a 2 GiB
+single-thread random pointer chase pinned to one CCD (cores 0–7). Run A is with
+transparent huge pages disabled, run B with them enabled.
+
+```bash
+export TOPDOWN_DB_PATH=$PWD/data.db
+
+# ---- Run A: THP = never ---------------------------------------------------
+sudo sh -c 'echo never > /sys/kernel/mm/transparent_hugepage/enabled'
+taskset -c 0-7 ./your_microbench &          # start workload in background
+python3 amd_topdown.py collect \
+    --process your_microbench --duration 30 \
+    --label thp=never --label workload=mb2g_ccd1_mem
+#   ✓ Saved run cc1cb38067c0   <-- this is run A's ID (yours will differ)
+kill %1
+
+# ---- Run B: THP = always --------------------------------------------------
+sudo sh -c 'echo always > /sys/kernel/mm/transparent_hugepage/enabled'
+taskset -c 0-7 ./your_microbench &
+python3 amd_topdown.py collect \
+    --process your_microbench --duration 30 \
+    --label thp=always --label workload=mb2g_ccd1_mem
+#   ✓ Saved run 0d63019dd85d   <-- this is run B's ID (yours will differ)
+kill %1
+
+# ---- Inspect ---------------------------------------------------------------
+python3 amd_topdown.py list                 # re-list both run IDs any time
+
+# Single-run funnel + memory walls (select by label):
+python3 amd_topdown.py query \
+    --label thp=never --label workload=mb2g_ccd1_mem --funnel
+
+# Side-by-side compare — paste the two run IDs printed above:
+python3 amd_topdown.py compare cc1cb38067c0 0d63019dd85d
+```
+
+The TMA funnel stays flat (~99% `Backend_Bound → Memory_Bound`) across both runs
+because the workload is DRAM-latency-bound by construction. The win shows up only
+in the memory-hierarchy block: dTLB page-table walks collapse and reloads shift
+almost entirely onto huge pages. That blind-spot is exactly why the
+memory-hierarchy counters exist.
 
 ### Profiling a workload (bare-metal or cloud VM)
 
@@ -210,74 +288,4 @@ cat /proc/sys/kernel/perf_event_paranoid
 sudo sysctl kernel.perf_event_paranoid=-1
 
 # Fix permanently (survives reboot)
-echo 'kernel.perf_event_paranoid = -1' | sudo tee -a /etc/sysctl.conf
-sudo sysctl -p
-```
-
-| Value | Effect |
-|-------|--------|
-| `-1` | Full access — all PMC events, uncore, NDA events. **Use this on bare-metal perf machines.** |
-| `0` | Hardware events allowed; raw/ftrace tracepoints blocked |
-| `1` | CPU events blocked; software events (task-clock) allowed |
-| `≥ 2` | Kernel profiling blocked |
-| `4` | Everything blocked — `perf stat` returns nothing (all counters will show 0) |
-
-If you see all-zero output from `amd_pipeline_metrics.sh`, run `cat /proc/sys/kernel/perf_event_paranoid` first — a value of 2 or higher is almost always the cause.
-
----
-
-## Reference Files
-
-| File | Contents |
-|------|----------|
-| `pmc_test/csp_enablement/KNOWLEDGE_BASE.md` | **Master PMC enablement knowledge base** — what works on which CSP / instance tier, per-event diagnosis map, public-vs-NDA PPR rules, S3 workflow |
-| `pmc_test/csp_enablement/CLOUD_READINESS_PLAYBOOK.md` | Repeatable protocol for extending the PMC matrix to GCP / Azure / Oracle |
-| `pmc_test/csp_enablement/AWS_4WAY_MATRIX.md` | m8a 2xl / 24xl / metal / on-prem sweep + L2-PF cross-generation addendum |
-| `EPYC_PERF_KNOWLEDGE.md` | Full AMD EPYC Playbook knowledge base — L/M/H thresholds, perf events, tuning solutions |
-| `perfspect_genoa_metrics.json` | Genoa metric formulas from PerfSpect |
-| `AMD_OFFICIAL_PMC_EVENTS.md` | AMD Table 26 event codes (Family 19h) |
-| `AMD_PMC_REGISTER_REFERENCE.md` | PMC register format reference |
-| `amd_metric_groups.yaml` | PerfSpect AMD metric group structure |
-
-## CSP enablement sweeps
-
-Reusable sweep tooling for characterizing PMC support across cloud guests, partial-socket guests, full-socket guests, and bare metal:
-
-| Script | Location | Purpose |
-|---|---|---|
-| `run_pmc.sh` | `pmc_test/csp_enablement/` + `s3://amd-pmc-toolkit-pradeepn/artifacts/` | Bootstrap wrapper — runs on any EC2 instance, fetches workload + sweep from S3, runs it, uploads result back. Uses IMDSv2 for instance metadata. |
-| `sweep_runner.sh` | same | Generic `events.yaml` runner — default sweep |
-| `l2pf_sweep.sh` | same | Full 7-umask grid for L2 hardware-prefetch events 0x70/0x71/0x72 |
-| `l2pf_focus.sh` | same | 3-trial confirmation on 0x71/0x72 × 0x1F composite umask |
-| `mhammer.c` | same | STREAM-style memory hammer (12-thread default) used as workload |
-
-Results land in `s3://amd-pmc-toolkit-pradeepn/results/aws/{instance-type}/{instance-id}/{YYYY-MM-DD}/{sweep}.txt` and persist across instance termination. See `pmc_test/csp_enablement/KNOWLEDGE_BASE.md` for the complete workflow.
-
----
-
-## NABU Agent IDs (AMD internal)
-
-| Agent | ID | Coverage |
-|-------|----|----------|
-| EPYC Playbook | `9c936425-8ba1-4c7f-b5fe-dbcd1d8c5f9c` | Architecture, PMC methodology, L/M/H thresholds |
-| Cruncher | `f7578702-ce56-4f3d-b746-448c6dd64e00` | AMD-validated cloud benchmark insights |
-| EPDW | `6bb60d83-1310-4490-9c34-27b1b4f9f150` | Historical cloud benchmark data warehouse |
-| Competitive Intel | `5e4eeb15-370a-448a-8474-0c03a15d994b` | AMD vs Intel/ARM/NVIDIA (restricted) |
-
----
-
-## Architecture Notes
-
-- Uses AMD's **6-slot dispatch model**, not Intel's 4-wide TopDown methodology
-- Symbolic event names via `perf stat` — not raw hex masks
-- `perf stat -j` JSON output → reliable Python parsing
-- Effective frequency from `cpu-cycles / (task-clock_ms × 1e6)` — no MSR or root access required
-- CPU utilization from `task-clock` metric-value ("CPUs utilized" float emitted by perf)
-
----
-
-## Tested On
-
-- AMD EPYC 9684X (Zen4, Genoa-X, 96-core) — bare-metal
-- AMD EPYC 9754 (Zen4, Genoa) — EC2 M7A
-- AMD EPYC 9R14 (Zen5, Turin) — EC2 M8A
+echo 'ker

@@ -72,13 +72,20 @@ behavior is unchanged. Confirmed independently by the L1D-from-DRAM share rising
 
 ## How to run it
 
-Collect a run (memory-hierarchy counters are gathered automatically):
+Collect a run (memory-hierarchy counters are gathered automatically).
+`collect` attaches to an already-running process — start the workload first,
+then point `collect` at it by name with `--process`:
 
 ```bash
-TOPDOWN_DB_PATH=$PWD/data.db python3 amd_topdown.py collect \
-    --label thp=never --label workload=mb2g_ccd1_mem -- \
-    taskset -c 0-7 ./your_microbench
+export TOPDOWN_DB_PATH=$PWD/data.db
+taskset -c 0-7 ./your_microbench &          # start the workload
+python3 amd_topdown.py collect \
+    --process your_microbench --duration 30 \
+    --label thp=never --label workload=mb2g_ccd1_mem
 ```
+
+Each `collect` prints `✓ Saved run <id>` — that 12-char hex is the run ID you
+pass to `compare`.
 
 Single-run unified panel (funnel + IPC + memory walls):
 
@@ -98,9 +105,4 @@ TOPDOWN_DB_PATH=$PWD/data.db python3 amd_topdown.py compare <run_a_id> <run_b_id
 - **One bad event aborts the whole `-M` list.** When probing perf metricgroups,
   test each group individually against a real workload/PID — an idle `sleep`
   reports `<not counted>` falsely. `l3_cache` genuinely errors on this part
-  (uncore L3/XI event syntax), so `L3 hit rate` is reported as `n/a` rather than
-  guessed.
-- Counters come from shipped Zen 4 (family 19h) event JSON and standard
-  metricgroups only. Nothing here is synthesized.
-- Validated on AMD EPYC 9684X (Genoa-X, Zen 4, 12 CCDs × 8 cores, SMT off,
-  L3 = 96 MB/CCD = 32 MB base + 64 MB 3D V-Cache).
+  (uncore L3/XI event syntax), 
