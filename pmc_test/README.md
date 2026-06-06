@@ -66,6 +66,78 @@ cache-stress and latency tools are picked up from the host PATH if present.
 > 32 MB vs 96 MB on Genoa-X separates 3D V-Cache (96 MB L3/CCD) from
 > base L3 (32 MB) — useful as a Genoa-vs-Genoa-X regression check.
 
+
+### Workload details
+
+Each bundled microbenchmark is a single self-contained C file under
+`workloads/` and takes optional positional arguments so you can resize its
+footprint or iteration count. All defaults are chosen so the workload runs for
+a few seconds and isolates one part of the core or memory hierarchy.
+
+**`fp_avx`** — `fp_avx [iters]` (default 200M). A tight loop of two
+256-bit `_mm256_fmadd_ps` (AVX2 fused multiply-add) operations per iteration,
+with no memory traffic at all. It keeps the floating-point/SIMD retire pipe
+fully saturated, so it is the cleanest driver for the FP op-retire counters
+(`fp_ret_sse_avx_ops`, `fp_pack_ops_retired`, `sse_avx_ops_retired`,
+`fp_ops_retired_by_width/type`). Because it is pure ALU work pinned to one
+thread, it also doubles as the spinner for SMT-contention experiments: run two
+copies on a core's two sibling threads to light up
+`de_no_dispatch_per_slot.smt_contention` and `ex_no_retire.thread_not_selected`.
+
+**`branch_random`** — `branch_random [bytes] [passes]` (default 64 MiB, 4
+passes). It fills a byte array with deterministic pseudo-random values
+(seeded `0xC0FFEE` so runs are repeatable), then walks it taking a
+data-dependent branch (`if (a[i] & 1)`) on every element. The branch outcome is
+effectively a coin flip, so the predictor mispredicts ~50% of the time —
+maximising `ex_ret_brn_misp`, `ex_ret_brn_tkn_misp`,
+`ex_ret_near_ret_mispred`, and the front-end redirect/flush counters
+(`bp_de_redirect`, `bp_pred_flush`).
+
+**`l2_pressure`** — `l2_pressure [bytes] [passes]` (default 768 KiB, 40000
+passes). The working set is sized to overflow the 32 KiB L1-D but stay within
+the 1 MiB/core L2 on Zen4/5, and it touches one element per 64-byte cache line.
+The result is a stream of L1 misses that all hit in L2, which is exactly what
+the L2 demand/hit counters need to see
+(`l2_request_g1`, `l2_cache_req_stat.dc_hit_in_l2`, `l2_pf_hit_l2`).
+
+**`dram_stream`** — `dram_stream [MB] [iters]` (default 512 MiB, 5 iters).
+The buffer is far larger than the 96 MiB L3/CCD, so a read pass followed by a
+write pass (one access per cache line) misses all caches and goes to DRAM,
+exercising the demand-fill-from-system and hardware-prefetch paths
+(`ls_dmnd_fills_from_sys`, `ls_any_fills_from_sys`, `ls_mab_alloc`,
+`l2_cache_req_stat.ls_rd_blk_c`, `ls_hw_pf_dc_fills`).
+
+**`tlb_thrash`** — `tlb_thrash [pages] [passes]` (default 65536 pages = 256
+MiB at 4 KiB, 20 passes). It touches exactly one byte on each distinct 4 KiB
+page, sweeping far more pages than the DTLB can hold, so nearly every access
+forces an L2-TLB lookup and a page-table walk. This is the driver for the
+data-TLB miss and tablewalker counters (`ls_l1_d_tlb_miss`, `ls_tablewalker`,
+`bp_l1_tlb_miss_l2_tlb_*`). Run it under THP=always to instead light up the
+2 MiB huge-page reload counters.
+
+**`syscall_heavy`** — `syscall_heavy [iters]` (default 5M). A tight loop that
+calls `clock_gettime(CLOCK_MONOTONIC)` every iteration and `getpid()` every
+65536 iterations. The constant kernel entry/exit drives mode switches,
+interrupts, and TLB activity on the kernel side
+(`ls_int_taken`, `ls_rd_tsc`, `ls_tlb_flush`, `ic_oc_mode_switch`).
+
+**`ccd_pingpong`** — `ccd_pingpong [threads] [iters]` (default 2 threads, 5M
+iters). All threads hammer a single shared `atomic_long` counter, so the
+cacheline holding it ping-pongs between cores (false sharing). When the threads
+are pinned to *different* CCDs this becomes cross-CCD coherence and L3 traffic
+that is completely invisible to a single-core or single-CCD run — making it the
+key diagnostic for `ls_dmnd_fills_from_sys` (cross-CCD source) plus
+`l2_cache_req_stat.ls_rd_blk_c`, `ls_wcb_close_flush`, and `ls_mab_alloc`. This
+is also the workload `--mode ccd-scale` pins at 1 core / 1 CCD / 2 CCDs to
+classify how each counter scales.
+
+**`stream`** — `stream [MB] [ntimes]` (default 256 MiB, 10 iters). A minimal
+McCalpin STREAM with three 64-byte-aligned `double` arrays; it times the Copy,
+Scale, Add, and Triad kernels and reports the best (minimum-time) sustained
+bandwidth in MB/s for each. It measures real DRAM read+write bandwidth and is
+the recommended regression check for separating 3D V-Cache (96 MiB L3/CCD) from
+base L3 on Genoa-X by varying the array size.
+
 ## Per-test raw output logs
 
 Every `perf stat -j` invocation now writes a full log to
