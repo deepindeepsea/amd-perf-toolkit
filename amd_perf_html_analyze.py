@@ -624,6 +624,51 @@ def build_meta_section(meta):
                      f'text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Storage</h4>'
                      f'{stor_html}</div>')
 
+    # ── Daemons / running services ──────────────────────────────────────────────
+    services   = meta.get("services_running", [])
+    perf_svc   = meta.get("services_perf_relevant", [])
+    if services:
+        # Highlight perf-relevant daemons first — these perturb benchmarks.
+        pr_html = ""
+        if perf_svc:
+            chips = "".join(
+                f'<span style="display:inline-block;background:#7c2d12;color:#fdba74;'
+                f'font-size:10px;font-family:monospace;padding:2px 8px;border-radius:10px;'
+                f'margin:2px 4px 2px 0">{s}</span>' for s in perf_svc)
+            pr_html = (f'<div style="margin-bottom:6px"><span style="color:#94a3b8;'
+                       f'font-size:11px">Perf-relevant (may perturb results):</span><br>{chips}</div>')
+        all_html = (f'<details><summary style="cursor:pointer;color:#94a3b8;font-size:12px">'
+                    f'All {len(services)} running services</summary>'
+                    f'<pre style="background:#0f172a;color:#94a3b8;font-size:10px;'
+                    f'padding:8px;border-radius:4px;overflow-x:auto;white-space:pre-wrap;'
+                    f'margin-top:6px">{", ".join(services)}</pre></details>')
+        parts.append(f'<div style="margin-bottom:18px"><h4 style="color:#00C2DE;font-size:12px;'
+                     f'text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">'
+                     f'Daemons / Running Services</h4>{pr_html}{all_html}</div>')
+
+    # ── dmesg — notable kernel messages ─────────────────────────────────────────
+    dmesg_notable = meta.get("dmesg_notable", [])
+    dmesg_count   = meta.get("dmesg_notable_count", 0)
+    microcode     = meta.get("microcode", "")
+    if dmesg_notable or microcode:
+        mc_html = ""
+        if microcode:
+            mc_html = (f'<div style="color:#94a3b8;font-size:11px;margin-bottom:6px">'
+                       f'Microcode revision: <span style="color:#e2e8f0;font-family:monospace">'
+                       f'{microcode}</span></div>')
+        dm_html = ""
+        if dmesg_notable:
+            joined = "\n".join(dmesg_notable)
+            dm_html = (f'<details><summary style="cursor:pointer;color:#94a3b8;font-size:12px">'
+                       f'{len(dmesg_notable)} of {dmesg_count} notable lines '
+                       f'(microcode / MCE / thermal / EDAC / errors)</summary>'
+                       f'<pre style="background:#0f172a;color:#94a3b8;font-size:10px;'
+                       f'padding:8px;border-radius:4px;overflow-x:auto;white-space:pre-wrap;'
+                       f'margin-top:6px">{joined}</pre></details>')
+        parts.append(f'<div style="margin-bottom:18px"><h4 style="color:#00C2DE;font-size:12px;'
+                     f'text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">'
+                     f'Kernel Messages (dmesg)</h4>{mc_html}{dm_html}</div>')
+
     # ── lstopo ────────────────────────────────────────────────────────────────
     lstopo = meta.get("lstopo","").strip()
     if lstopo:

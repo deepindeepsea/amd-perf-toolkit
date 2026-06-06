@@ -249,6 +249,49 @@ if ts_file and os.path.exists(ts_file) and os.path.getsize(ts_file) > 0:
     except Exception:
         pass
 
+# ── Daemons / running services ────────────────────────────────────────────────
+# Running systemd services — useful to spot noisy neighbours that perturb a
+# benchmark (kubelet, containerd, monitoring agents, irqbalance, tuned, etc.).
+services = []
+svc_out = sh("systemctl list-units --type=service --state=running "
+             "--no-legend --no-pager --plain 2>/dev/null")
+for line in svc_out.split('\n'):
+    line = line.strip()
+    if not line:
+        continue
+    unit = line.split()[0]
+    if unit.endswith('.service'):
+        services.append(unit[:-len('.service')])
+meta['services_running'] = services
+meta['services_count']   = len(services)
+# Perf-relevant daemons that change frequency/power/IRQ behaviour if present.
+PERF_RELEVANT = ('tuned', 'irqbalance', 'cpupower', 'thermald', 'power-profiles-daemon',
+                 'kubelet', 'containerd', 'dockerd', 'docker', 'numad', 'ksm', 'ksmtuned')
+meta['services_perf_relevant'] = sorted(
+    s for s in services if any(s == p or s.startswith(p) for p in PERF_RELEVANT))
+
+# ── dmesg — notable kernel messages ───────────────────────────────────────────
+# Filtered to lines that matter for perf/qual: microcode, MCE, thermal/throttle,
+# EDAC/ECC, firmware, errors/failures. Full dmesg is too noisy for a report.
+dmesg_raw = run(['dmesg', '--ctime'], sudo=True, timeout=15)
+if not dmesg_raw:
+    dmesg_raw = run(['dmesg'], sudo=True, timeout=15)
+notable = []
+DMESG_PAT = re.compile(
+    r'microcode|machine check|\bMCE\b|hardware error|thermal|throttl|'
+    r'EDAC|ECC|corrected error|uncorrect|firmware|\bBUG\b|'
+    r'\berror\b|\bfail(ed|ure)?\b|tainted|soft lockup|hung task',
+    re.IGNORECASE)
+for line in dmesg_raw.split('\n'):
+    if line.strip() and DMESG_PAT.search(line):
+        notable.append(line.strip())
+# Keep the last 40 notable lines (most recent state) to bound report size.
+meta['dmesg_notable']       = notable[-40:]
+meta['dmesg_notable_count'] = len(notable)
+# Microcode revision (cross-check against BIOS expectations).
+mc = sh("grep -m1 '^microcode' /proc/cpuinfo | awk '{print $3}'")
+meta['microcode'] = mc
+
 # ── System misc ───────────────────────────────────────────────────────────────
 meta['uptime'] = sh('uptime -p 2>/dev/null || uptime')
 meta['load']   = sh('cat /proc/loadavg')
