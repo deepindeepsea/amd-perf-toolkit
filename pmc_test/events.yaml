@@ -1,401 +1,1533 @@
-# Curated Genoa/Turin Zen 4/5 PMC event registry for the test harness.
-# Source datasets: pmc_datasets/Genoa/Genoa_pmc_core.json + perfspect_genoa_metrics.json
-# Each event entry:
-#   perf      — linux perf symbolic name (lowercased AMD PMC name)
-#   amd       — AMD PMC fully-qualified name (matches pmc_datasets)
-#   category  — FP | LS | IC_BP | DE | EX | L2
-#   nonzero_on — list of workload tags that MUST drive the counter > 0
-#   max_per_inst — soft upper bound (events per retired instruction); used by
-#                 the bounds check. null = skip bound check.
-#   notes     — short rationale / formula participation
-
 events:
-  # ─────────────────────────── EX (Retire) ───────────────────────────
-  - perf: cpu-cycles
-    amd:  Core::X86::Pmc::Core::LsNotHaltedCyc
-    category: EX
-    nonzero_on: [all]
-    max_per_inst: 100.0
-    notes: denominator for IPC
-
-  - perf: instructions
-    amd:  Core::X86::Pmc::Core::ExRetInstr
-    category: EX
-    nonzero_on: [all]
-    max_per_inst: 1.0
-    notes: "numerator for IPC; self-test: must equal itself"
-
-  - perf: ex_ret_ops
-    amd:  Core::X86::Pmc::Core::ExRetOps
-    category: EX
-    nonzero_on: [all]
-    max_per_inst: 4.0
-    notes: retired ops (>= instructions for fused/macro ops); TopDown Retiring
-
-  - perf: ex_ret_brn
-    amd:  Core::X86::Pmc::Core::ExRetBrn
-    category: EX
-    nonzero_on: [all]
-    max_per_inst: 0.3
-    notes: branch denominator
-
-  - perf: ex_ret_brn_misp
-    amd:  Core::X86::Pmc::Core::ExRetBrnMisp
-    category: EX
-    nonzero_on: [branch_random]
-    max_per_inst: 0.3
-    notes: branch misprediction numerator
-
-  - perf: ex_ret_brn_tkn
-    amd:  Core::X86::Pmc::Core::ExRetBrnTkn
-    category: EX
-    nonzero_on: [all]
-    max_per_inst: 0.3
-
-  - perf: ex_ret_cond
-    amd:  Core::X86::Pmc::Core::ExRetCond
-    category: EX
-    nonzero_on: [all]
-    max_per_inst: 0.3
-
-  - perf: ex_ret_near_ret
-    amd:  Core::X86::Pmc::Core::ExRetNearRet
-    category: EX
-    nonzero_on: [all]
-    max_per_inst: 0.2
-
-  - perf: ex_div_busy
-    amd:  Core::X86::Pmc::Core::ExDivBusy
-    category: EX
-    nonzero_on: []
-    max_per_inst: 100.0
-
-  - perf: ex_no_retire.not_complete
-    amd:  Core::X86::Pmc::Core::ExNoRetire
-    category: EX
-    nonzero_on: [all]
-    max_per_inst: 100.0
-    notes: backend stall classifier
-
-  - perf: ex_no_retire.load_not_complete
-    amd:  Core::X86::Pmc::Core::ExNoRetire
-    category: EX
-    nonzero_on: [dram_stream]
-    max_per_inst: 100.0
-    notes: backend-memory share
-
-  # ─────────────────────────── DE (Dispatch) ───────────────────────────
-  - perf: de_src_op_disp.all
-    amd:  Core::X86::Pmc::Core::DeSrcOpDisp
-    category: DE
-    nonzero_on: [all]
-    max_per_inst: 6.0
-
-  - perf: de_no_dispatch_per_slot.no_ops_from_frontend
-    amd:  Core::X86::Pmc::Core::DeNoDispatchPerSlot
-    category: DE
-    nonzero_on: [all]
-    max_per_inst: 600.0
-    notes: frontend bound (per slot, 6/cycle)
-
-  - perf: de_no_dispatch_per_slot.backend_stalls
-    amd:  Core::X86::Pmc::Core::DeNoDispatchPerSlot
-    category: DE
-    nonzero_on: [all]
-    max_per_inst: 600.0
-    notes: backend bound (per slot, 6/cycle)
-
-  - perf: de_dispatch_stall_cycle_dynamic_tokens_part1.load_queue_rsrc_stall
-    amd:  Core::X86::Pmc::Core::DeDisDispatchTokenStalls1
-    category: DE
-    nonzero_on: []
-    max_per_inst: 100.0
-    notes: "Zen4 kernel exposes this as de_dis_dispatch_token_stalls1.* ; Zen5 kernel renames to de_dispatch_stall_cycle_dynamic_tokens_part1.*"
-
-  - perf: de_op_queue_empty
-    amd:  Core::X86::Pmc::Core::DeOpQueueEmpty
-    category: DE
-    nonzero_on: []
-    max_per_inst: 100.0
-
-  # ─────────────────────────── FP ───────────────────────────
-  - perf: fp_ret_sse_avx_ops.all
-    amd:  Core::X86::Pmc::Core::FpRetSseAvxOps
-    category: FP
-    nonzero_on: [fp_avx, openssl]
-    max_per_inst: 4.0
-
-  - perf: fp_ret_x87_fp_ops.all
-    amd:  Core::X86::Pmc::Core::FpRetx87FpOps
-    category: FP
-    nonzero_on: []
-    max_per_inst: 1.0
-
-  - perf: fp_disp_faults.all
-    amd:  Core::X86::Pmc::Core::FpDispFaults
-    category: FP
-    nonzero_on: []
-    max_per_inst: 0.1
-
-  - perf: fp_pack_ops_retired.all
-    amd:  Core::X86::Pmc::Core::FpPackOpsRetired
-    category: FP
-    nonzero_on: [fp_avx]
-    max_per_inst: 4.0
-
-  - perf: sse_avx_ops_retired.all
-    amd:  Core::X86::Pmc::Core::SseAvxOpsRetired
-    category: FP
-    nonzero_on: [fp_avx, openssl]
-    max_per_inst: 4.0
-
-  # ─────────────────────────── LS (Load/Store, DC, TLB) ───────────────────────────
-  - perf: ls_dispatch.ld_st_dispatch
-    amd:  Core::X86::Pmc::Core::LsDispatch
-    category: LS
-    nonzero_on: [all]
-    max_per_inst: 3.0
-
-  - perf: all_data_cache_accesses
-    amd:  Core::X86::Pmc::Core::LsDcAccesses
-    category: LS
-    nonzero_on: [all]
-    max_per_inst: 3.0
-    notes: "Zen5 kernel 6.17 only exposes all_data_cache_accesses_pti (per-1k-instructions variant); raw event dropped from perf list. Counter underneath is the same (ls_dc_accesses raw)."
-
-  - perf: ls_l1_d_tlb_miss.all
-    amd:  Core::X86::Pmc::Core::LsL1DTlbMiss
-    category: LS
-    nonzero_on: [tlb_thrash, dram_stream]
-    max_per_inst: 1.0
-
-  - perf: ls_tablewalker.iside_l1
-    amd:  Core::X86::Pmc::Core::LsTablewalker
-    linux_perf_unavailable: true   # not exposed on kernel 6.17 amdzen4
-    category: LS
-    nonzero_on: [tlb_thrash]
-    max_per_inst: 1.0
-
-  - perf: ls_locks.bus_lock
-    amd:  Core::X86::Pmc::Core::LsLocks
-    category: LS
-    nonzero_on: []
-    max_per_inst: 0.01
-
-  - perf: ls_int_taken
-    amd:  Core::X86::Pmc::Core::LsIntTaken
-    category: LS
-    nonzero_on: []
-    max_per_inst: 0.01
-
-  - perf: ls_mab_alloc.all_allocations
-    amd:  Core::X86::Pmc::Core::LsMabAlloc
-    category: LS
-    nonzero_on: [dram_stream]
-    max_per_inst: 3.0
-
-  - perf: ls_any_fills_from_sys.all
-    amd:  Core::X86::Pmc::Core::LsAnyFillsFromSys
-    category: LS
-    nonzero_on: [dram_stream]
-    max_per_inst: 3.0
-
-  - perf: ls_dmnd_fills_from_sys.all
-    amd:  Core::X86::Pmc::Core::LsDmndFillsFromSys
-    category: LS
-    nonzero_on: [dram_stream]
-    max_per_inst: 3.0
-
-  - perf: ls_misal_loads.ma64
-    amd:  Core::X86::Pmc::Core::LsMisalLoads
-    category: LS
-    nonzero_on: []
-    max_per_inst: 1.0
-
-  - perf: ls_hw_pf_dc_fills.all
-    amd:  Core::X86::Pmc::Core::LsHwPfDcFills
-    category: LS
-    nonzero_on: [dram_stream]
-    max_per_inst: 3.0
-
-  - perf: ls_sw_pf_dc_fills.all
-    amd:  Core::X86::Pmc::Core::LsSwPfDcFills
-    category: LS
-    nonzero_on: []
-    max_per_inst: 1.0
-
-  - perf: ls_pref_instr_disp.all
-    amd:  Core::X86::Pmc::Core::LsPrefInstrDisp
-    category: LS
-    nonzero_on: []
-    max_per_inst: 1.0
-
-  - perf: ls_not_halted_cyc
-    amd:  Core::X86::Pmc::Core::LsNotHaltedCyc
-    category: LS
-    nonzero_on: [all]
-    max_per_inst: 100.0
-    notes: same as cpu-cycles; used in TopDown denominator (× 6 slots)
-
-  - perf: ls_stlf
-    amd:  Core::X86::Pmc::Core::LsSTLF
-    category: LS
-    nonzero_on: []
-    max_per_inst: 1.0
-
-  - perf: ls_tlb_flush.all
-    amd:  Core::X86::Pmc::Core::LsTlbFlush
-    category: LS
-    nonzero_on: []
-    max_per_inst: 0.1
-
-  # ─────────────────────────── IC_BP (Frontend) ───────────────────────────
-  - perf: ic_tag_hit_miss.all_instruction_cache_accesses
-    amd:  Core::X86::Pmc::Core::IcFw32
-    category: IC_BP
-    nonzero_on: [all]
-    max_per_inst: 1.0
-
-  - perf: ic_tag_hit_miss.instruction_cache_miss
-    amd:  Core::X86::Pmc::Core::IcFw32Miss
-    category: IC_BP
-    nonzero_on: []
-    max_per_inst: 0.1
-
-  - perf: ic_cache_fill_l2
-    amd:  Core::X86::Pmc::Core::IcCacheFillL2
-    category: IC_BP
-    nonzero_on: []
-    max_per_inst: 0.1
-
-  - perf: ic_cache_fill_sys
-    amd:  Core::X86::Pmc::Core::IcCacheFillSys
-    category: IC_BP
-    nonzero_on: []
-    max_per_inst: 0.01
-
-  - perf: bp_l1_tlb_miss_l2_tlb_hit
-    amd:  Core::X86::Pmc::Core::BpL1TlbMissL2TlbHit
-    category: IC_BP
-    nonzero_on: []
-    max_per_inst: 0.1
-
-  - perf: bp_l1_tlb_miss_l2_tlb_miss.if4k
-    amd:  Core::X86::Pmc::Core::BpL1TlbMissL2TlbMiss
-    category: IC_BP
-    nonzero_on: []
-    max_per_inst: 0.01
-
-  - perf: bp_dyn_ind_pred
-    amd:  Core::X86::Pmc::Core::BpDynIndPred
-    category: IC_BP
-    nonzero_on: []
-    max_per_inst: 0.1
-
-  - perf: bp_de_redirect
-    amd:  Core::X86::Pmc::Core::BpDeReDirect
-    category: IC_BP
-    nonzero_on: [branch_random]
-    max_per_inst: 0.1
-
-  - perf: op_cache_hit_miss.op_cache_hit
-    amd:  Core::X86::Pmc::Core::OpCacheHitMiss
-    category: IC_BP
-    nonzero_on: [all]
-    max_per_inst: 1.0
-
-  - perf: op_cache_hit_miss.op_cache_miss
-    amd:  Core::X86::Pmc::Core::OpCacheHitMiss
-    category: IC_BP
-    nonzero_on: []
-    max_per_inst: 0.1
-
-  # ─────────────────────────── L2 (per-core slice) ───────────────────────────
-  - perf: l2_request_g1.all_no_prefetch
-    amd:  Core::X86::Pmc::L2::L2RequestG1
-    category: L2
-    nonzero_on: [all]
-    max_per_inst: 3.0
-
-  - perf: l2_cache_req_stat.dc_hit_in_l2
-    amd:  Core::X86::Pmc::L2::L2CacheReqStat
-    category: L2
-    nonzero_on: [l2_pressure, dram_stream]
-    max_per_inst: 3.0
-
-  - perf: l2_cache_req_stat.ls_rd_blk_c
-    amd:  Core::X86::Pmc::L2::L2CacheReqStat
-    category: L2
-    nonzero_on: [dram_stream]
-    max_per_inst: 3.0
-
-  - perf: l2_cache_req_stat.ic_hit_in_l2
-    amd:  Core::X86::Pmc::L2::L2CacheReqStat
-    category: L2
-    nonzero_on: [all]
-    max_per_inst: 1.0
-
-  - perf: l2_cache_req_stat.ic_fill_miss
-    amd:  Core::X86::Pmc::L2::L2CacheReqStat
-    category: L2
-    nonzero_on: []
-    max_per_inst: 0.1
-
-  - perf: l2_pf_hit_l2.l2_hwpf
-    amd:  Core::X86::Pmc::L2::L2PfHitL2
-    category: L2
-    nonzero_on: [dram_stream]
-    max_per_inst: 1.0
-    notes: "Zen4 kernel exposes .all aggregate; Zen5 kernel exposes only per-prefetcher subevents (.l1_dc_hwpf, .l1_dc_l2_hwpf, .l2_hwpf). Using .l2_hwpf as the most representative single subevent. For full aggregate, sum all three at metric time."
-
-# ─────────────────────────── Derived metrics ───────────────────────────
-# Each metric formula references events by their `perf` name.
-# bounds: expected closed interval [lo, hi] on the chosen workload.
-
-metrics:
-  - name: ipc
-    formula: "instructions / cpu-cycles"
-    bounds_per_workload:
-      openssl: [0.5, 4.0]
-      fp_avx:  [0.2, 4.0]
-      branch_random: [0.5, 4.0]
-      dram_stream:   [0.05, 2.0]
-
-  - name: branch_misp_rate_pct
-    formula: "100 * ex_ret_brn_misp / ex_ret_brn"
-    bounds_per_workload:
-      branch_random: [5.0, 50.0]
-      openssl:       [0.0, 10.0]
-
-  - name: frontend_bound_pct
-    formula: "100 * de_no_dispatch_per_slot.no_ops_from_frontend / (ls_not_halted_cyc * 6)"
-    bounds_per_workload:
-      all: [0.0, 80.0]
-
-  - name: backend_bound_pct
-    formula: "100 * de_no_dispatch_per_slot.backend_stalls / (ls_not_halted_cyc * 6)"
-    bounds_per_workload:
-      all: [0.0, 100.0]
-
-  - name: backend_memory_pct
-    formula: "(100 * de_no_dispatch_per_slot.backend_stalls / (ls_not_halted_cyc * 6)) * (ex_no_retire.load_not_complete / ex_no_retire.not_complete)"
-    bounds_per_workload:
-      dram_stream: [10.0, 100.0]
-      openssl:     [0.0, 100.0]
-
-  - name: l2_dc_hit_rate_pct
-    formula: "100 * l2_cache_req_stat.dc_hit_in_l2 / (l2_cache_req_stat.dc_hit_in_l2 + l2_cache_req_stat.ls_rd_blk_c)"
-    bounds_per_workload:
-      l2_pressure: [10.0, 100.0]
-      dram_stream: [0.0, 100.0]
-
-  - name: l1_dtlb_mpki
-    formula: "1000 * ls_l1_d_tlb_miss.all / instructions"
-    bounds_per_workload:
-      tlb_thrash: [1.0, 1000.0]
-      openssl:    [0.0, 10.0]
-
-  - name: ic_miss_per_inst_pct
-    formula: "100 * ic_tag_hit_miss.instruction_cache_miss / ic_tag_hit_miss.all_instruction_cache_accesses"
-    bounds_per_workload:
-      all: [0.0, 100.0]
+- perf: all_data_cache_accesses
+  amd: all_data_cache_accesses
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: bp_de_redirect
+  amd: bp_de_redirect
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: bp_dyn_ind_pred
+  amd: bp_dyn_ind_pred
+  category: PUBLIC
+  nonzero_on:
+  - fp_avx
+- perf: bp_l1_tlb_fetch_hit.all
+  amd: bp_l1_tlb_fetch_hit.all
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: bp_l1_tlb_fetch_hit.if1g
+  amd: bp_l1_tlb_fetch_hit.if1g
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: no 1G/2M code pages (instruction TLB)
+- perf: bp_l1_tlb_fetch_hit.if2m
+  amd: bp_l1_tlb_fetch_hit.if2m
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: no 1G/2M code pages (instruction TLB)
+- perf: bp_l1_tlb_fetch_hit.if4k
+  amd: bp_l1_tlb_fetch_hit.if4k
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: bp_l1_tlb_miss_l2_tlb_hit
+  amd: bp_l1_tlb_miss_l2_tlb_hit
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: bp_l1_tlb_miss_l2_tlb_miss.all
+  amd: bp_l1_tlb_miss_l2_tlb_miss.all
+  category: PUBLIC
+  nonzero_on:
+  - dram_stream
+- perf: bp_l1_tlb_miss_l2_tlb_miss.coalesced_4k
+  amd: bp_l1_tlb_miss_l2_tlb_miss.coalesced_4k
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: page coalescing not triggered by these access patterns
+- perf: bp_l1_tlb_miss_l2_tlb_miss.if1g
+  amd: bp_l1_tlb_miss_l2_tlb_miss.if1g
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: no 1G/2M code pages (instruction TLB)
+- perf: bp_l1_tlb_miss_l2_tlb_miss.if2m
+  amd: bp_l1_tlb_miss_l2_tlb_miss.if2m
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: bp_l1_tlb_miss_l2_tlb_miss.if4k
+  amd: bp_l1_tlb_miss_l2_tlb_miss.if4k
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: bp_l2_btb_correct
+  amd: bp_l2_btb_correct
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: de_dis_dispatch_token_stalls1.fp_flush_recovery_stall
+  amd: de_dis_dispatch_token_stalls1.fp_flush_recovery_stall
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: de_dis_dispatch_token_stalls1.fp_reg_file_rsrc_stall
+  amd: de_dis_dispatch_token_stalls1.fp_reg_file_rsrc_stall
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: de_dis_dispatch_token_stalls1.fp_sch_rsrc_stall
+  amd: de_dis_dispatch_token_stalls1.fp_sch_rsrc_stall
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: de_dis_dispatch_token_stalls1.int_phy_reg_file_rsrc_stall
+  amd: de_dis_dispatch_token_stalls1.int_phy_reg_file_rsrc_stall
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: de_dis_dispatch_token_stalls1.load_queue_rsrc_stall
+  amd: de_dis_dispatch_token_stalls1.load_queue_rsrc_stall
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: de_dis_dispatch_token_stalls1.store_queue_rsrc_stall
+  amd: de_dis_dispatch_token_stalls1.store_queue_rsrc_stall
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: de_dis_dispatch_token_stalls1.taken_brnch_buffer_rsrc
+  amd: de_dis_dispatch_token_stalls1.taken_brnch_buffer_rsrc
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: de_dis_dispatch_token_stalls2.int_sch0_token_stall
+  amd: de_dis_dispatch_token_stalls2.int_sch0_token_stall
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: de_dis_dispatch_token_stalls2.int_sch1_token_stall
+  amd: de_dis_dispatch_token_stalls2.int_sch1_token_stall
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: de_dis_dispatch_token_stalls2.int_sch2_token_stall
+  amd: de_dis_dispatch_token_stalls2.int_sch2_token_stall
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: de_dis_dispatch_token_stalls2.int_sch3_token_stall
+  amd: de_dis_dispatch_token_stalls2.int_sch3_token_stall
+  category: PUBLIC
+  nonzero_on:
+  - dram_stream
+- perf: de_dis_dispatch_token_stalls2.retire_token_stall
+  amd: de_dis_dispatch_token_stalls2.retire_token_stall
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: de_dis_ops_from_decoder.any_fp_dispatch
+  amd: de_dis_ops_from_decoder.any_fp_dispatch
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: de_dis_ops_from_decoder.disp_op_type.any_integer_dispatch
+  amd: de_dis_ops_from_decoder.disp_op_type.any_integer_dispatch
+  category: PUBLIC
+  nonzero_on:
+  - branch_random
+- perf: de_no_dispatch_per_slot.backend_stalls
+  amd: de_no_dispatch_per_slot.backend_stalls
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: de_no_dispatch_per_slot.no_ops_from_frontend
+  amd: de_no_dispatch_per_slot.no_ops_from_frontend
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: de_no_dispatch_per_slot.smt_contention
+  amd: de_no_dispatch_per_slot.smt_contention
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: SMT sibling idle (1 thread/core workloads)
+- perf: de_op_queue_empty
+  amd: de_op_queue_empty
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: de_src_op_disp.all
+  amd: de_src_op_disp.all
+  category: PUBLIC
+  nonzero_on:
+  - branch_random
+- perf: de_src_op_disp.decoder
+  amd: de_src_op_disp.decoder
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: de_src_op_disp.loop_buffer
+  amd: de_src_op_disp.loop_buffer
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: loop buffer/LSD not populated by these loops
+- perf: de_src_op_disp.op_cache
+  amd: de_src_op_disp.op_cache
+  category: PUBLIC
+  nonzero_on:
+  - branch_random
+- perf: ex_div_busy
+  amd: ex_div_busy
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: ex_div_count
+  amd: ex_div_count
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ex_no_retire.all
+  amd: ex_no_retire.all
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ex_no_retire.empty
+  amd: ex_no_retire.empty
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ex_no_retire.load_not_complete
+  amd: ex_no_retire.load_not_complete
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: ex_no_retire.not_complete
+  amd: ex_no_retire.not_complete
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: ex_no_retire.other
+  amd: ex_no_retire.other
+  category: PUBLIC
+  nonzero_on:
+  - branch_random
+- perf: ex_no_retire.thread_not_selected
+  amd: ex_no_retire.thread_not_selected
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: SMT sibling idle (1 thread/core workloads)
+- perf: ex_ret_brn
+  amd: ex_ret_brn
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ex_ret_brn_far
+  amd: ex_ret_brn_far
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ex_ret_brn_ind_misp
+  amd: ex_ret_brn_ind_misp
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ex_ret_brn_misp
+  amd: ex_ret_brn_misp
+  category: PUBLIC
+  nonzero_on:
+  - branch_random
+- perf: ex_ret_brn_tkn
+  amd: ex_ret_brn_tkn
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ex_ret_brn_tkn_misp
+  amd: ex_ret_brn_tkn_misp
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ex_ret_cond
+  amd: ex_ret_cond
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ex_ret_fused_instr
+  amd: ex_ret_fused_instr
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ex_ret_ind_brch_instr
+  amd: ex_ret_ind_brch_instr
+  category: PUBLIC
+  nonzero_on:
+  - branch_random
+- perf: ex_ret_instr
+  amd: ex_ret_instr
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ex_ret_msprd_brnch_instr_dir_msmtch
+  amd: ex_ret_msprd_brnch_instr_dir_msmtch
+  category: PUBLIC
+  nonzero_on:
+  - branch_random
+- perf: ex_ret_near_ret
+  amd: ex_ret_near_ret
+  category: PUBLIC
+  nonzero_on:
+  - branch_random
+- perf: ex_ret_near_ret_mispred
+  amd: ex_ret_near_ret_mispred
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ex_ret_ops
+  amd: ex_ret_ops
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ex_ret_ucode_instr
+  amd: ex_ret_ucode_instr
+  category: PUBLIC
+  nonzero_on:
+  - branch_random
+- perf: ex_ret_ucode_ops
+  amd: ex_ret_ucode_ops
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ex_ret_uncond_brnch_instr
+  amd: ex_ret_uncond_brnch_instr
+  category: PUBLIC
+  nonzero_on:
+  - branch_random
+- perf: ex_ret_uncond_brnch_instr_mispred
+  amd: ex_ret_uncond_brnch_instr_mispred
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ex_tagged_ibs_ops.ibs_tagged_ops
+  amd: ex_tagged_ibs_ops.ibs_tagged_ops
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: IBS sampling not enabled
+- perf: ex_tagged_ibs_ops.ibs_tagged_ops_ret
+  amd: ex_tagged_ibs_ops.ibs_tagged_ops_ret
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: IBS sampling not enabled
+- perf: fp_disp_faults.all
+  amd: fp_disp_faults.all
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: fp_disp_faults.sse_avx_all
+  amd: fp_disp_faults.sse_avx_all
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: fp_disp_faults.x87_fill_fault
+  amd: fp_disp_faults.x87_fill_fault
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: x87 path not emitted by compiler (SSE/AVX used)
+- perf: fp_disp_faults.xmm_fill_fault
+  amd: fp_disp_faults.xmm_fill_fault
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: 'FP register fill-fault: fires only on first-use/dirty-upper-register
+    transitions, not steady-state loops'
+- perf: fp_disp_faults.ymm_fill_fault
+  amd: fp_disp_faults.ymm_fill_fault
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: 'FP register fill-fault: fires only on first-use/dirty-upper-register
+    transitions, not steady-state loops'
+- perf: fp_disp_faults.ymm_spill_fault
+  amd: fp_disp_faults.ymm_spill_fault
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: specific FP/SSE op-subtype not emitted by suite FP loop
+- perf: fp_ops_retired_by_type.all
+  amd: fp_ops_retired_by_type.all
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_ops_retired_by_type.scalar_add
+  amd: fp_ops_retired_by_type.scalar_add
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_ops_retired_by_type.scalar_all
+  amd: fp_ops_retired_by_type.scalar_all
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_ops_retired_by_type.scalar_blend
+  amd: fp_ops_retired_by_type.scalar_blend
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: specific FP/SSE op-subtype not emitted by suite FP loop
+- perf: fp_ops_retired_by_type.scalar_cmp
+  amd: fp_ops_retired_by_type.scalar_cmp
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_ops_retired_by_type.scalar_cvt
+  amd: fp_ops_retired_by_type.scalar_cvt
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_ops_retired_by_type.scalar_div
+  amd: fp_ops_retired_by_type.scalar_div
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_ops_retired_by_type.scalar_mac
+  amd: fp_ops_retired_by_type.scalar_mac
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: specific FP/SSE op-subtype not emitted by suite FP loop
+- perf: fp_ops_retired_by_type.scalar_mul
+  amd: fp_ops_retired_by_type.scalar_mul
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_ops_retired_by_type.scalar_other
+  amd: fp_ops_retired_by_type.scalar_other
+  category: PUBLIC
+  nonzero_on:
+  - branch_random
+- perf: fp_ops_retired_by_type.scalar_sqrt
+  amd: fp_ops_retired_by_type.scalar_sqrt
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: specific FP/SSE op-subtype not emitted by suite FP loop
+- perf: fp_ops_retired_by_type.scalar_sub
+  amd: fp_ops_retired_by_type.scalar_sub
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_ops_retired_by_type.vector_add
+  amd: fp_ops_retired_by_type.vector_add
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_ops_retired_by_type.vector_all
+  amd: fp_ops_retired_by_type.vector_all
+  category: PUBLIC
+  nonzero_on:
+  - fp_avx
+- perf: fp_ops_retired_by_type.vector_blend
+  amd: fp_ops_retired_by_type.vector_blend
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: fp_ops_retired_by_type.vector_cmp
+  amd: fp_ops_retired_by_type.vector_cmp
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: specific FP/SSE op-subtype not emitted by suite FP loop
+- perf: fp_ops_retired_by_type.vector_cvt
+  amd: fp_ops_retired_by_type.vector_cvt
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: specific FP/SSE op-subtype not emitted by suite FP loop
+- perf: fp_ops_retired_by_type.vector_div
+  amd: fp_ops_retired_by_type.vector_div
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: specific FP/SSE op-subtype not emitted by suite FP loop
+- perf: fp_ops_retired_by_type.vector_logical
+  amd: fp_ops_retired_by_type.vector_logical
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_ops_retired_by_type.vector_mac
+  amd: fp_ops_retired_by_type.vector_mac
+  category: PUBLIC
+  nonzero_on:
+  - fp_avx
+- perf: fp_ops_retired_by_type.vector_mul
+  amd: fp_ops_retired_by_type.vector_mul
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_ops_retired_by_type.vector_other
+  amd: fp_ops_retired_by_type.vector_other
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: fp_ops_retired_by_type.vector_shuffle
+  amd: fp_ops_retired_by_type.vector_shuffle
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_ops_retired_by_type.vector_sqrt
+  amd: fp_ops_retired_by_type.vector_sqrt
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: specific FP/SSE op-subtype not emitted by suite FP loop
+- perf: fp_ops_retired_by_type.vector_sub
+  amd: fp_ops_retired_by_type.vector_sub
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: specific FP/SSE op-subtype not emitted by suite FP loop
+- perf: fp_ops_retired_by_width.all
+  amd: fp_ops_retired_by_width.all
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_ops_retired_by_width.mmx_uops_retired
+  amd: fp_ops_retired_by_width.mmx_uops_retired
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: fp_ops_retired_by_width.pack_128_uops_retired
+  amd: fp_ops_retired_by_width.pack_128_uops_retired
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_ops_retired_by_width.pack_256_uops_retired
+  amd: fp_ops_retired_by_width.pack_256_uops_retired
+  category: PUBLIC
+  nonzero_on:
+  - fp_avx
+- perf: fp_ops_retired_by_width.pack_512_uops_retired
+  amd: fp_ops_retired_by_width.pack_512_uops_retired
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_ops_retired_by_width.scalar_uops_retired
+  amd: fp_ops_retired_by_width.scalar_uops_retired
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_ops_retired_by_width.x87_uops_retired
+  amd: fp_ops_retired_by_width.x87_uops_retired
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_pack_ops_retired.all
+  amd: fp_pack_ops_retired.all
+  category: PUBLIC
+  nonzero_on:
+  - fp_avx
+- perf: fp_pack_ops_retired.fp128_add
+  amd: fp_pack_ops_retired.fp128_add
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_pack_ops_retired.fp128_all
+  amd: fp_pack_ops_retired.fp128_all
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_pack_ops_retired.fp128_blend
+  amd: fp_pack_ops_retired.fp128_blend
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: fp_pack_ops_retired.fp128_cmp
+  amd: fp_pack_ops_retired.fp128_cmp
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: FMA-dominated FP loop; this packed subtype not isolated
+- perf: fp_pack_ops_retired.fp128_cvt
+  amd: fp_pack_ops_retired.fp128_cvt
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: FMA-dominated FP loop; this packed subtype not isolated
+- perf: fp_pack_ops_retired.fp128_div
+  amd: fp_pack_ops_retired.fp128_div
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: FMA-dominated FP loop; this packed subtype not isolated
+- perf: fp_pack_ops_retired.fp128_logical
+  amd: fp_pack_ops_retired.fp128_logical
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_pack_ops_retired.fp128_mac
+  amd: fp_pack_ops_retired.fp128_mac
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: FMA-dominated FP loop; this packed subtype not isolated
+- perf: fp_pack_ops_retired.fp128_mul
+  amd: fp_pack_ops_retired.fp128_mul
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_pack_ops_retired.fp128_other
+  amd: fp_pack_ops_retired.fp128_other
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: fp_pack_ops_retired.fp128_shuffle
+  amd: fp_pack_ops_retired.fp128_shuffle
+  category: PUBLIC
+  nonzero_on:
+  - fp_avx
+- perf: fp_pack_ops_retired.fp128_sqrt
+  amd: fp_pack_ops_retired.fp128_sqrt
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: FMA-dominated FP loop; this packed subtype not isolated
+- perf: fp_pack_ops_retired.fp128_sub
+  amd: fp_pack_ops_retired.fp128_sub
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: FMA-dominated FP loop; this packed subtype not isolated
+- perf: fp_pack_ops_retired.fp256_add
+  amd: fp_pack_ops_retired.fp256_add
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: FMA-dominated FP loop; this packed subtype not isolated
+- perf: fp_pack_ops_retired.fp256_all
+  amd: fp_pack_ops_retired.fp256_all
+  category: PUBLIC
+  nonzero_on:
+  - fp_avx
+- perf: fp_pack_ops_retired.fp256_blend
+  amd: fp_pack_ops_retired.fp256_blend
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: FMA-dominated FP loop; this packed subtype not isolated
+- perf: fp_pack_ops_retired.fp256_cmp
+  amd: fp_pack_ops_retired.fp256_cmp
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: FMA-dominated FP loop; this packed subtype not isolated
+- perf: fp_pack_ops_retired.fp256_cvt
+  amd: fp_pack_ops_retired.fp256_cvt
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: FMA-dominated FP loop; this packed subtype not isolated
+- perf: fp_pack_ops_retired.fp256_div
+  amd: fp_pack_ops_retired.fp256_div
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: FMA-dominated FP loop; this packed subtype not isolated
+- perf: fp_pack_ops_retired.fp256_logical
+  amd: fp_pack_ops_retired.fp256_logical
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: FMA-dominated FP loop; this packed subtype not isolated
+- perf: fp_pack_ops_retired.fp256_mac
+  amd: fp_pack_ops_retired.fp256_mac
+  category: PUBLIC
+  nonzero_on:
+  - fp_avx
+- perf: fp_pack_ops_retired.fp256_mul
+  amd: fp_pack_ops_retired.fp256_mul
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: FMA-dominated FP loop; this packed subtype not isolated
+- perf: fp_pack_ops_retired.fp256_other
+  amd: fp_pack_ops_retired.fp256_other
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: FMA-dominated FP loop; this packed subtype not isolated
+- perf: fp_pack_ops_retired.fp256_shuffle
+  amd: fp_pack_ops_retired.fp256_shuffle
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_pack_ops_retired.fp256_sqrt
+  amd: fp_pack_ops_retired.fp256_sqrt
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: FMA-dominated FP loop; this packed subtype not isolated
+- perf: fp_pack_ops_retired.fp256_sub
+  amd: fp_pack_ops_retired.fp256_sub
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: FMA-dominated FP loop; this packed subtype not isolated
+- perf: fp_ret_sse_avx_ops.add_sub_flops
+  amd: fp_ret_sse_avx_ops.add_sub_flops
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_ret_sse_avx_ops.all
+  amd: fp_ret_sse_avx_ops.all
+  category: PUBLIC
+  nonzero_on:
+  - fp_avx
+- perf: fp_ret_sse_avx_ops.bfloat_mac_flops
+  amd: fp_ret_sse_avx_ops.bfloat_mac_flops
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: no bf16 instructions in suite
+- perf: fp_ret_sse_avx_ops.div_flops
+  amd: fp_ret_sse_avx_ops.div_flops
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_ret_sse_avx_ops.mac_flops
+  amd: fp_ret_sse_avx_ops.mac_flops
+  category: PUBLIC
+  nonzero_on:
+  - fp_avx
+- perf: fp_ret_sse_avx_ops.mult_flops
+  amd: fp_ret_sse_avx_ops.mult_flops
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: fp_ret_x87_fp_ops.add_sub_ops
+  amd: fp_ret_x87_fp_ops.add_sub_ops
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: x87 path not emitted by compiler (SSE/AVX used)
+- perf: fp_ret_x87_fp_ops.all
+  amd: fp_ret_x87_fp_ops.all
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: x87 path not emitted by compiler (SSE/AVX used)
+- perf: fp_ret_x87_fp_ops.div_sqrt_ops
+  amd: fp_ret_x87_fp_ops.div_sqrt_ops
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: x87 path not emitted by compiler (SSE/AVX used)
+- perf: fp_ret_x87_fp_ops.mul_ops
+  amd: fp_ret_x87_fp_ops.mul_ops
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: x87 path not emitted by compiler (SSE/AVX used)
+- perf: fp_retired_ser_ops.all
+  amd: fp_retired_ser_ops.all
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: fp_retired_ser_ops.sse_bot_ret
+  amd: fp_retired_ser_ops.sse_bot_ret
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: specific FP/SSE op-subtype not emitted by suite FP loop
+- perf: fp_retired_ser_ops.sse_ctrl_ret
+  amd: fp_retired_ser_ops.sse_ctrl_ret
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: fp_retired_ser_ops.x87_bot_ret
+  amd: fp_retired_ser_ops.x87_bot_ret
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: x87 path not emitted by compiler (SSE/AVX used)
+- perf: fp_retired_ser_ops.x87_ctrl_ret
+  amd: fp_retired_ser_ops.x87_ctrl_ret
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: ic_cache_fill_l2
+  amd: ic_cache_fill_l2
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ic_cache_fill_sys
+  amd: ic_cache_fill_sys
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ic_tag_hit_miss.all_instruction_cache_accesses
+  amd: ic_tag_hit_miss.all_instruction_cache_accesses
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ic_tag_hit_miss.instruction_cache_hit
+  amd: ic_tag_hit_miss.instruction_cache_hit
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ic_tag_hit_miss.instruction_cache_miss
+  amd: ic_tag_hit_miss.instruction_cache_miss
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_cache_req_stat.all
+  amd: l2_cache_req_stat.all
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: l2_cache_req_stat.dc_access_in_l2
+  amd: l2_cache_req_stat.dc_access_in_l2
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: l2_cache_req_stat.dc_hit_in_l2
+  amd: l2_cache_req_stat.dc_hit_in_l2
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: l2_cache_req_stat.ic_access_in_l2
+  amd: l2_cache_req_stat.ic_access_in_l2
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_cache_req_stat.ic_dc_hit_in_l2
+  amd: l2_cache_req_stat.ic_dc_hit_in_l2
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: l2_cache_req_stat.ic_dc_miss_in_l2
+  amd: l2_cache_req_stat.ic_dc_miss_in_l2
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: l2_cache_req_stat.ic_fill_hit_s
+  amd: l2_cache_req_stat.ic_fill_hit_s
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_cache_req_stat.ic_fill_hit_x
+  amd: l2_cache_req_stat.ic_fill_hit_x
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: instruction-cache L2 refill not isolated by data workloads
+- perf: l2_cache_req_stat.ic_fill_miss
+  amd: l2_cache_req_stat.ic_fill_miss
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_cache_req_stat.ic_hit_in_l2
+  amd: l2_cache_req_stat.ic_hit_in_l2
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_cache_req_stat.ls_rd_blk_c
+  amd: l2_cache_req_stat.ls_rd_blk_c
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_cache_req_stat.ls_rd_blk_cs
+  amd: l2_cache_req_stat.ls_rd_blk_cs
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_cache_req_stat.ls_rd_blk_l_hit_s
+  amd: l2_cache_req_stat.ls_rd_blk_l_hit_s
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_cache_req_stat.ls_rd_blk_l_hit_x
+  amd: l2_cache_req_stat.ls_rd_blk_l_hit_x
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: l2_cache_req_stat.ls_rd_blk_x
+  amd: l2_cache_req_stat.ls_rd_blk_x
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_pf_hit_l2.all
+  amd: l2_pf_hit_l2.all
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: l2_pf_hit_l2.l1_region
+  amd: l2_pf_hit_l2.l1_region
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_pf_hit_l2.l1_stream
+  amd: l2_pf_hit_l2.l1_stream
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_pf_hit_l2.l1_stride
+  amd: l2_pf_hit_l2.l1_stride
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_pf_hit_l2.l2_burst
+  amd: l2_pf_hit_l2.l2_burst
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: l2_pf_hit_l2.l2_next_line
+  amd: l2_pf_hit_l2.l2_next_line
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: l2_pf_hit_l2.l2_stream
+  amd: l2_pf_hit_l2.l2_stream
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: l2_pf_hit_l2.l2_stride
+  amd: l2_pf_hit_l2.l2_stride
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_pf_hit_l2.l2_up_down
+  amd: l2_pf_hit_l2.l2_up_down
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: l2_pf_miss_l2_hit_l3.all
+  amd: l2_pf_miss_l2_hit_l3.all
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: l2_pf_miss_l2_hit_l3.l1_region
+  amd: l2_pf_miss_l2_hit_l3.l1_region
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_pf_miss_l2_hit_l3.l1_stream
+  amd: l2_pf_miss_l2_hit_l3.l1_stream
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: l2_pf_miss_l2_hit_l3.l1_stride
+  amd: l2_pf_miss_l2_hit_l3.l1_stride
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_pf_miss_l2_hit_l3.l2_burst
+  amd: l2_pf_miss_l2_hit_l3.l2_burst
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: l2_pf_miss_l2_hit_l3.l2_next_line
+  amd: l2_pf_miss_l2_hit_l3.l2_next_line
+  category: PUBLIC
+  nonzero_on:
+  - tlb_thrash
+- perf: l2_pf_miss_l2_hit_l3.l2_stream
+  amd: l2_pf_miss_l2_hit_l3.l2_stream
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: l2_pf_miss_l2_hit_l3.l2_stride
+  amd: l2_pf_miss_l2_hit_l3.l2_stride
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: l2_pf_miss_l2_hit_l3.l2_up_down
+  amd: l2_pf_miss_l2_hit_l3.l2_up_down
+  category: PUBLIC
+  nonzero_on:
+  - tlb_thrash
+- perf: l2_pf_miss_l2_l3.all
+  amd: l2_pf_miss_l2_l3.all
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_pf_miss_l2_l3.l1_region
+  amd: l2_pf_miss_l2_l3.l1_region
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_pf_miss_l2_l3.l1_stream
+  amd: l2_pf_miss_l2_l3.l1_stream
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_pf_miss_l2_l3.l1_stride
+  amd: l2_pf_miss_l2_l3.l1_stride
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_pf_miss_l2_l3.l2_burst
+  amd: l2_pf_miss_l2_l3.l2_burst
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_pf_miss_l2_l3.l2_next_line
+  amd: l2_pf_miss_l2_l3.l2_next_line
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_pf_miss_l2_l3.l2_stream
+  amd: l2_pf_miss_l2_l3.l2_stream
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_pf_miss_l2_l3.l2_stride
+  amd: l2_pf_miss_l2_l3.l2_stride
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_pf_miss_l2_l3.l2_up_down
+  amd: l2_pf_miss_l2_l3.l2_up_down
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_request_g1.all
+  amd: l2_request_g1.all
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_request_g1.all_dc
+  amd: l2_request_g1.all_dc
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: l2_request_g1.all_no_prefetch
+  amd: l2_request_g1.all_no_prefetch
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: l2_request_g1.cacheable_ic_read
+  amd: l2_request_g1.cacheable_ic_read
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_request_g1.change_to_x
+  amd: l2_request_g1.change_to_x
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_request_g1.group2
+  amd: l2_request_g1.group2
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_request_g1.l2_hw_pf
+  amd: l2_request_g1.l2_hw_pf
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: l2_request_g1.ls_rd_blk_c_s
+  amd: l2_request_g1.ls_rd_blk_c_s
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_request_g1.prefetch_l2_cmd
+  amd: l2_request_g1.prefetch_l2_cmd
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: l2_request_g1.rd_blk_l
+  amd: l2_request_g1.rd_blk_l
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: l2_request_g1.rd_blk_x
+  amd: l2_request_g1.rd_blk_x
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_alloc_mab_count
+  amd: ls_alloc_mab_count
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_any_fills_from_sys.all
+  amd: ls_any_fills_from_sys.all
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: ls_any_fills_from_sys.all_dram_io
+  amd: ls_any_fills_from_sys.all_dram_io
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_any_fills_from_sys.alternate_memories
+  amd: ls_any_fills_from_sys.alternate_memories
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: single-socket box; no remote/CXL/far-memory traffic
+- perf: ls_any_fills_from_sys.dram_io_all
+  amd: ls_any_fills_from_sys.dram_io_all
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_any_fills_from_sys.dram_io_far
+  amd: ls_any_fills_from_sys.dram_io_far
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: single-socket box; no remote/CXL/far-memory traffic
+- perf: ls_any_fills_from_sys.dram_io_near
+  amd: ls_any_fills_from_sys.dram_io_near
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_any_fills_from_sys.far_all
+  amd: ls_any_fills_from_sys.far_all
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: single-socket box; no remote/CXL/far-memory traffic
+- perf: ls_any_fills_from_sys.far_cache
+  amd: ls_any_fills_from_sys.far_cache
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: single-socket box; no remote/CXL/far-memory traffic
+- perf: ls_any_fills_from_sys.local_all
+  amd: ls_any_fills_from_sys.local_all
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: ls_any_fills_from_sys.local_ccx
+  amd: ls_any_fills_from_sys.local_ccx
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: ls_any_fills_from_sys.local_l2
+  amd: ls_any_fills_from_sys.local_l2
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: ls_any_fills_from_sys.near_cache
+  amd: ls_any_fills_from_sys.near_cache
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: ls_any_fills_from_sys.remote_cache
+  amd: ls_any_fills_from_sys.remote_cache
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: ls_bad_status2.stli_other
+  amd: ls_bad_status2.stli_other
+  category: PUBLIC
+  nonzero_on:
+  - branch_random
+- perf: ls_dispatch.ld_dispatch
+  amd: ls_dispatch.ld_dispatch
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_dispatch.ld_st_dispatch
+  amd: ls_dispatch.ld_st_dispatch
+  category: PUBLIC
+  nonzero_on:
+  - branch_random
+- perf: ls_dispatch.store_dispatch
+  amd: ls_dispatch.store_dispatch
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_dmnd_fills_from_sys.all
+  amd: ls_dmnd_fills_from_sys.all
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: ls_dmnd_fills_from_sys.alternate_memories
+  amd: ls_dmnd_fills_from_sys.alternate_memories
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: single-socket box; no remote/CXL/far-memory traffic
+- perf: ls_dmnd_fills_from_sys.dram_io_far
+  amd: ls_dmnd_fills_from_sys.dram_io_far
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: single-socket box; no remote/CXL/far-memory traffic
+- perf: ls_dmnd_fills_from_sys.dram_io_near
+  amd: ls_dmnd_fills_from_sys.dram_io_near
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_dmnd_fills_from_sys.far_cache
+  amd: ls_dmnd_fills_from_sys.far_cache
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: single-socket box; no remote/CXL/far-memory traffic
+- perf: ls_dmnd_fills_from_sys.local_ccx
+  amd: ls_dmnd_fills_from_sys.local_ccx
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: ls_dmnd_fills_from_sys.local_l2
+  amd: ls_dmnd_fills_from_sys.local_l2
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: ls_dmnd_fills_from_sys.near_cache
+  amd: ls_dmnd_fills_from_sys.near_cache
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: ls_hw_pf_dc_fills.all
+  amd: ls_hw_pf_dc_fills.all
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_hw_pf_dc_fills.alternate_memories
+  amd: ls_hw_pf_dc_fills.alternate_memories
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: single-socket box; no remote/CXL/far-memory traffic
+- perf: ls_hw_pf_dc_fills.dram_io_far
+  amd: ls_hw_pf_dc_fills.dram_io_far
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: single-socket box; no remote/CXL/far-memory traffic
+- perf: ls_hw_pf_dc_fills.dram_io_near
+  amd: ls_hw_pf_dc_fills.dram_io_near
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_hw_pf_dc_fills.far_cache
+  amd: ls_hw_pf_dc_fills.far_cache
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: single-socket box; no remote/CXL/far-memory traffic
+- perf: ls_hw_pf_dc_fills.local_ccx
+  amd: ls_hw_pf_dc_fills.local_ccx
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: ls_hw_pf_dc_fills.local_l2
+  amd: ls_hw_pf_dc_fills.local_l2
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_hw_pf_dc_fills.near_cache
+  amd: ls_hw_pf_dc_fills.near_cache
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_inef_sw_pref.data_pipe_sw_pf_dc_hit
+  amd: ls_inef_sw_pref.data_pipe_sw_pf_dc_hit
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_inef_sw_pref.mab_mch_cnt
+  amd: ls_inef_sw_pref.mab_mch_cnt
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_int_taken
+  amd: ls_int_taken
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_l1_d_tlb_miss.all
+  amd: ls_l1_d_tlb_miss.all
+  category: PUBLIC
+  nonzero_on:
+  - tlb_thrash
+- perf: ls_l1_d_tlb_miss.all_l2_miss
+  amd: ls_l1_d_tlb_miss.all_l2_miss
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_l1_d_tlb_miss.tlb_reload_1g_l2_hit
+  amd: ls_l1_d_tlb_miss.tlb_reload_1g_l2_hit
+  category: PUBLIC
+  nonzero_on:
+  - tlb_thrash
+- perf: ls_l1_d_tlb_miss.tlb_reload_1g_l2_miss
+  amd: ls_l1_d_tlb_miss.tlb_reload_1g_l2_miss
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_l1_d_tlb_miss.tlb_reload_2m_l2_hit
+  amd: ls_l1_d_tlb_miss.tlb_reload_2m_l2_hit
+  category: PUBLIC
+  nonzero_on:
+  - tlb_thrash
+- perf: ls_l1_d_tlb_miss.tlb_reload_2m_l2_miss
+  amd: ls_l1_d_tlb_miss.tlb_reload_2m_l2_miss
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_l1_d_tlb_miss.tlb_reload_4k_l2_hit
+  amd: ls_l1_d_tlb_miss.tlb_reload_4k_l2_hit
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: ls_l1_d_tlb_miss.tlb_reload_4k_l2_miss
+  amd: ls_l1_d_tlb_miss.tlb_reload_4k_l2_miss
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_l1_d_tlb_miss.tlb_reload_coalesced_page_hit
+  amd: ls_l1_d_tlb_miss.tlb_reload_coalesced_page_hit
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: page coalescing not triggered by these access patterns
+- perf: ls_l1_d_tlb_miss.tlb_reload_coalesced_page_miss
+  amd: ls_l1_d_tlb_miss.tlb_reload_coalesced_page_miss
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: page coalescing not triggered by these access patterns
+- perf: ls_locks.bus_lock
+  amd: ls_locks.bus_lock
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: no split/bus-lock in workloads
+- perf: ls_mab_alloc.all_allocations
+  amd: ls_mab_alloc.all_allocations
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_mab_alloc.hardware_prefetcher_allocations
+  amd: ls_mab_alloc.hardware_prefetcher_allocations
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_mab_alloc.load_store_allocations
+  amd: ls_mab_alloc.load_store_allocations
+  category: PUBLIC
+  nonzero_on:
+  - l2_pressure
+- perf: ls_misal_loads.ma4k
+  amd: ls_misal_loads.ma4k
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_misal_loads.ma64
+  amd: ls_misal_loads.ma64
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_not_halted_cyc
+  amd: ls_not_halted_cyc
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_not_halted_p0_cyc.p0_freq_cyc
+  amd: ls_not_halted_p0_cyc.p0_freq_cyc
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_pref_instr_disp.all
+  amd: ls_pref_instr_disp.all
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_pref_instr_disp.prefetch
+  amd: ls_pref_instr_disp.prefetch
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_pref_instr_disp.prefetch_nta
+  amd: ls_pref_instr_disp.prefetch_nta
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: matching SW prefetch instruction not issued by workloads
+- perf: ls_pref_instr_disp.prefetch_w
+  amd: ls_pref_instr_disp.prefetch_w
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: ls_ret_cl_flush
+  amd: ls_ret_cl_flush
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: no CLFLUSH executed in workloads
+- perf: ls_ret_cpuid
+  amd: ls_ret_cpuid
+  category: PUBLIC
+  nonzero_on:
+  - fp_avx
+- perf: ls_smi_rx
+  amd: ls_smi_rx
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: no SMIs during run
+- perf: ls_st_commit_cancel2.st_commit_cancel_wcb_full
+  amd: ls_st_commit_cancel2.st_commit_cancel_wcb_full
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_stlf
+  amd: ls_stlf
+  category: PUBLIC
+  nonzero_on:
+  - branch_random
+- perf: ls_sw_pf_dc_fills.all
+  amd: ls_sw_pf_dc_fills.all
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_sw_pf_dc_fills.alternate_memories
+  amd: ls_sw_pf_dc_fills.alternate_memories
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: single-socket box; no remote/CXL/far-memory traffic
+- perf: ls_sw_pf_dc_fills.dram_io_far
+  amd: ls_sw_pf_dc_fills.dram_io_far
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: single-socket box; no remote/CXL/far-memory traffic
+- perf: ls_sw_pf_dc_fills.dram_io_near
+  amd: ls_sw_pf_dc_fills.dram_io_near
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_sw_pf_dc_fills.far_cache
+  amd: ls_sw_pf_dc_fills.far_cache
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: single-socket box; no remote/CXL/far-memory traffic
+- perf: ls_sw_pf_dc_fills.local_ccx
+  amd: ls_sw_pf_dc_fills.local_ccx
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_sw_pf_dc_fills.local_l2
+  amd: ls_sw_pf_dc_fills.local_l2
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_sw_pf_dc_fills.near_cache
+  amd: ls_sw_pf_dc_fills.near_cache
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: ls_tlb_flush.all
+  amd: ls_tlb_flush.all
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: op_cache_hit_miss.all_op_cache_accesses
+  amd: op_cache_hit_miss.all_op_cache_accesses
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: op_cache_hit_miss.op_cache_hit
+  amd: op_cache_hit_miss.op_cache_hit
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: op_cache_hit_miss.op_cache_miss
+  amd: op_cache_hit_miss.op_cache_miss
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: sse_avx_ops_retired.all
+  amd: sse_avx_ops_retired.all
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: sse_avx_ops_retired.mmx_add
+  amd: sse_avx_ops_retired.mmx_add
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: legacy MMX not emitted by compiler
+- perf: sse_avx_ops_retired.mmx_all
+  amd: sse_avx_ops_retired.mmx_all
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: sse_avx_ops_retired.mmx_cmp
+  amd: sse_avx_ops_retired.mmx_cmp
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: legacy MMX not emitted by compiler
+- perf: sse_avx_ops_retired.mmx_logical
+  amd: sse_avx_ops_retired.mmx_logical
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: legacy MMX not emitted by compiler
+- perf: sse_avx_ops_retired.mmx_mac
+  amd: sse_avx_ops_retired.mmx_mac
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: legacy MMX not emitted by compiler
+- perf: sse_avx_ops_retired.mmx_mov
+  amd: sse_avx_ops_retired.mmx_mov
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: legacy MMX not emitted by compiler
+- perf: sse_avx_ops_retired.mmx_mul
+  amd: sse_avx_ops_retired.mmx_mul
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: legacy MMX not emitted by compiler
+- perf: sse_avx_ops_retired.mmx_other
+  amd: sse_avx_ops_retired.mmx_other
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: sse_avx_ops_retired.mmx_pack
+  amd: sse_avx_ops_retired.mmx_pack
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: legacy MMX not emitted by compiler
+- perf: sse_avx_ops_retired.mmx_shift
+  amd: sse_avx_ops_retired.mmx_shift
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: legacy MMX not emitted by compiler
+- perf: sse_avx_ops_retired.mmx_shuffle
+  amd: sse_avx_ops_retired.mmx_shuffle
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: legacy MMX not emitted by compiler
+- perf: sse_avx_ops_retired.mmx_sub
+  amd: sse_avx_ops_retired.mmx_sub
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: legacy MMX not emitted by compiler
+- perf: sse_avx_ops_retired.sse_avx_add
+  amd: sse_avx_ops_retired.sse_avx_add
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: sse_avx_ops_retired.sse_avx_aes
+  amd: sse_avx_ops_retired.sse_avx_aes
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: no AES/SHA/CLMUL crypto instructions in suite
+- perf: sse_avx_ops_retired.sse_avx_all
+  amd: sse_avx_ops_retired.sse_avx_all
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: sse_avx_ops_retired.sse_avx_clm
+  amd: sse_avx_ops_retired.sse_avx_clm
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: no AES/SHA/CLMUL crypto instructions in suite
+- perf: sse_avx_ops_retired.sse_avx_cmp
+  amd: sse_avx_ops_retired.sse_avx_cmp
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: sse_avx_ops_retired.sse_avx_logical
+  amd: sse_avx_ops_retired.sse_avx_logical
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: sse_avx_ops_retired.sse_avx_mac
+  amd: sse_avx_ops_retired.sse_avx_mac
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: specific FP/SSE op-subtype not emitted by suite FP loop
+- perf: sse_avx_ops_retired.sse_avx_mov
+  amd: sse_avx_ops_retired.sse_avx_mov
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: sse_avx_ops_retired.sse_avx_mul
+  amd: sse_avx_ops_retired.sse_avx_mul
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: specific FP/SSE op-subtype not emitted by suite FP loop
+- perf: sse_avx_ops_retired.sse_avx_other
+  amd: sse_avx_ops_retired.sse_avx_other
+  category: PUBLIC
+  nonzero_on:
+  - stream
+- perf: sse_avx_ops_retired.sse_avx_pack
+  amd: sse_avx_ops_retired.sse_avx_pack
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: specific FP/SSE op-subtype not emitted by suite FP loop
+- perf: sse_avx_ops_retired.sse_avx_sha
+  amd: sse_avx_ops_retired.sse_avx_sha
+  category: PUBLIC
+  expect_zero: true
+  zero_reason: no AES/SHA/CLMUL crypto instructions in suite
+- perf: sse_avx_ops_retired.sse_avx_shift
+  amd: sse_avx_ops_retired.sse_avx_shift
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: sse_avx_ops_retired.sse_avx_shuffle
+  amd: sse_avx_ops_retired.sse_avx_shuffle
+  category: PUBLIC
+  nonzero_on:
+  - ccd_pingpong
+- perf: sse_avx_ops_retired.sse_avx_sub
+  amd: sse_avx_ops_retired.sse_avx_sub
+  category: PUBLIC
+  nonzero_on:
+  - stream

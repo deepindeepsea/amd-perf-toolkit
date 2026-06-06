@@ -156,11 +156,16 @@ def mode_programmability(events):
 
 def mode_sanity(events, root, restrict_perf=None):
     by_tag = {}
+    res = []
     for e in events:
         if restrict_perf is not None and e["perf"] not in restrict_perf: continue
+        if e.get("expect_zero"):
+            res.append({"event": e["perf"], "workload": (e.get("nonzero_on") or ["-"])[0],
+                        "category": e.get("category"), "ok": None,
+                        "skipped": "expect_zero: " + e.get("zero_reason", "not exercised by suite")})
+            continue
         for tag in (e.get("nonzero_on") or ["all"]):
             by_tag.setdefault(tag, []).append(e)
-    res = []
     for tag, evs in by_tag.items():
         cmd = workload_cmd(tag, root)
         if not cmd:
@@ -325,7 +330,8 @@ def render_html(summary, ts, ppr_only):
     body.append('<div class=head>event</div><div class=head>prog</div><div class=head>sanity</div><div class=head>bounds</div><div class=head>ppr-only</div>')
     for ev, st in sorted(by_ev.items()):
         prog = st.get("prog")
-        san  = all(st.get("sanity", {}).values()) if st.get("sanity") else None
+        _sv = [v for v in st.get("sanity", {}).values() if v is not None]
+        san  = (all(_sv) if _sv else None)
         bnd  = st.get("bounds")
         extra = "extra" if ev in ppr_only else ""
         def cell(v):
