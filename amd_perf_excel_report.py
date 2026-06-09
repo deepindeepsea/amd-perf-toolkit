@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 AMD Performance Excel Report Generator
-Matches the Netflix/PerfSpect benchmark profile format.
+Matches the PerfSpect benchmark profile format.
 
 Each workload run produces a sheet with two columns (System A / System B)
 of PerfSpect-style metrics, making it easy to compare Genoa vs Turin,
@@ -46,14 +46,10 @@ try:
                                   numbers)
     from openpyxl.utils import get_column_letter
     from openpyxl.chart import BarChart, Reference
+    from openpyxl.chart.series import SeriesLabel
+    HAVE_OPENPYXL = True
 except ImportError:
-    print("Installing openpyxl…")
-    subprocess.run([sys.executable, "-m", "pip", "install", "openpyxl",
-                    "--break-system-packages", "-q"], check=True)
-    import openpyxl
-    from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
-    from openpyxl.utils import get_column_letter
-    from openpyxl.chart import BarChart, Reference
+    HAVE_OPENPYXL = False
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -139,7 +135,7 @@ def safe_div(num, denom, default=0.0):
 def calculate_metrics(events: dict, cpu_info: str) -> list:
     """
     Returns an ordered list of (metric_name, value) tuples matching the
-    Netflix/PerfSpect sheet layout.  Unknown/unsupported metrics get None.
+    PerfSpect sheet layout.  Unknown/unsupported metrics get None.
     """
 
     # Raw events
@@ -247,7 +243,7 @@ def calculate_metrics(events: dict, cpu_info: str) -> list:
 # Style helpers
 # ─────────────────────────────────────────────────────────────────────────────
 
-# Netflix-style colors
+# PerfSpect-style colors
 AMD_RED     = "FFE53935"   # AMD/header red
 AMD_DARK    = "FF1A1A2E"   # dark header
 SECTION_BG  = "FFF5F5F5"   # light grey section separator
@@ -319,7 +315,7 @@ def write_sheet(wb, sheet_name, metrics_a, label_a,
                 metrics_b=None, label_b=None,
                 workload_a="", workload_b="", timestamp=""):
     """
-    Write one sheet in the Netflix PerfSpect format.
+    Write one sheet in the PerfSpect format.
     metrics_a / metrics_b are lists of (name, value) from calculate_metrics().
     """
     ws = wb.create_sheet(title=sheet_name[:31])  # Excel 31-char sheet name limit
@@ -481,13 +477,13 @@ def write_sheet(wb, sheet_name, metrics_a, label_a,
         data_ref_a = Reference(ws, min_col=2, min_row=chart_labels_row[0],
                                max_row=chart_labels_row[-1])
         chart.add_data(data_ref_a, titles_from_data=False)
-        chart.series[0].title.v = label_a
+        chart.series[0].tx = SeriesLabel(v=label_a)
 
         if label_b and chart_rows_b:
             data_ref_b = Reference(ws, min_col=3, min_row=chart_labels_row[0],
                                    max_row=chart_labels_row[-1])
             chart.add_data(data_ref_b, titles_from_data=False)
-            chart.series[1].title.v = label_b
+            chart.series[1].tx = SeriesLabel(v=label_b)
 
         chart.set_categories(labels_ref)
 
@@ -598,6 +594,12 @@ def main():
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     # ── Merge mode ─────────────────────────────────────────────────────────
+    # Writing .xlsx requires openpyxl; collection (--json-only) does not.
+    if (args.merge or not args.json_only) and not HAVE_OPENPYXL:
+        sys.exit("Error: openpyxl is required to write .xlsx. Install it "
+                 "(pip install openpyxl) or use --json-only to collect metrics "
+                 "and merge on a machine that has openpyxl.")
+
     if args.merge:
         file_a, file_b = args.merge
         with open(file_a) as f:
